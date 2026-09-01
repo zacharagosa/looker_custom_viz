@@ -1,0 +1,27 @@
+[
+  {
+    "id": "radial_progress_gauge",
+    "name": "Radial KPI Progress Gauge",
+    "date_added": "2026-09-01",
+    "library": "D3.js v7",
+    "category": "KPI & Progress",
+    "description": "Multi-tier concentric progress rings inspired by Apple Fitness and cloud quota meters with smooth arc animations, customizable goal thresholds, and central metric readouts.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "0 to 1 (optional category grouping)",
+      "measures": "1 to 6 measures (e.g. Sales, Orders, AOV)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/x/qWzt7S8XGqdj30LxOMiWCI"
+  }
+]
