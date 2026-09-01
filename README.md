@@ -10,8 +10,8 @@ This repository is continuously maintained by an autonomous daily AI automation 
 
 | ID | Name | Category | Engine | Required Fields | Status | Live Demo |
 | :--- | :--- | :--- | :--- | :--- | :---: | :--- |
-| [`radial_progress_gauge`](visualizations/radial_progress_gauge/) | **Radial KPI Progress Gauge** | KPI & Progress | D3.js v7 | 1–6 measures (or 1 dim + 1 meas) | 🟢 Ready | [Open in Looker](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/x/qWzt7S8XGqdj30LxOMiWCI) |
-| [`calendar_activity_heatmap`](visualizations/calendar_activity_heatmap/) | **Calendar Activity Heatmap** | Time Series & Activity | D3.js v7 | 1 Date dim + 1 measure | 🟢 Ready | [Open in Looker](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/x/aS3KgfaVBa5FBZTTmahEx5) |
+| [`radial_progress_gauge`](visualizations/radial_progress_gauge/) | **Radial KPI Progress Gauge** | KPI & Progress | D3.js v7 | 1–6 measures (or 1 dim + 1 meas) | 🟢 Ready | [Open in Looker](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.total_sale_price&limit=6&vis=%7B%22type%22%3A%22radial_progress_gauge%22%2C%22showCenterText%22%3Atrue%2C%22colorPalette%22%3A%22google%22%7D&origin=share-expanded&toggle=vis) |
+| [`calendar_activity_heatmap`](visualizations/calendar_activity_heatmap/) | **Calendar Activity Heatmap** | Time Series & Activity | D3.js v7 | 1 Date dim + 1 measure | 🟢 Ready | [Open in Looker](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=order_items.created_date,order_items.count&f[order_items.created_date]=365+days&sorts=order_items.created_date+asc&limit=400&vis=%7B%22type%22%3A%22calendar_activity_heatmap%22%2C%22colorPalette%22%3A%22github_green%22%2C%22cellSize%22%3A13%2C%22cellRadius%22%3A3%2C%22cellSpacing%22%3A3%2C%22showSummary%22%3Atrue%2C%22showMonthLabels%22%3Atrue%2C%22showDayLabels%22%3Atrue%2C%22showLegend%22%3Atrue%7D&origin=share-expanded&toggle=vis) |
 
 ---
 

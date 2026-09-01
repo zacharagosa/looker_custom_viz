@@ -164,14 +164,28 @@ def create_demo_query(viz_id, base_dir=None, profile="default"):
         cmd = f"looker-cli api query create_query {temp_path} --profile {profile}"
         res = run_cmd(cmd)
         q_res = json.loads(res.stdout)
-        share_url = q_res.get("share_url") or q_res.get("expanded_share_url")
+        share_url = q_res.get("share_url")
+        expanded_share_url = q_res.get("expanded_share_url")
         slug = q_res.get("slug")
         client_id = q_res.get("client_id")
+
+        # Format URL so the visualization pane is open/expanded by default
+        if expanded_share_url:
+            if "toggle=" not in expanded_share_url:
+                demo_url = expanded_share_url + "&toggle=vis"
+            else:
+                demo_url = expanded_share_url
+        elif share_url:
+            demo_url = share_url + "?toggle=vis"
+        else:
+            demo_url = None
+
         print(f"  -> Demo query created!")
-        print(f"  -> Share URL: {share_url}")
+        print(f"  -> Live Demo URL (vis open): {demo_url}")
         return {
+            "demo_url": demo_url,
             "share_url": share_url,
-            "expanded_share_url": q_res.get("expanded_share_url"),
+            "expanded_share_url": expanded_share_url,
             "slug": slug,
             "client_id": client_id
         }
@@ -233,7 +247,7 @@ def main():
                 catalog = json.load(f)
             for item in catalog:
                 if item.get("id") == args.viz:
-                    item["looker_demo_url"] = query_info["share_url"]
+                    item["looker_demo_url"] = query_info["demo_url"]
                     item["deployed"] = True
                     item["instance_wide"] = True
             with open(catalog_path, "w", encoding="utf-8") as f:
@@ -246,7 +260,7 @@ def main():
     print("DEPLOYMENT & INSTANCE-WIDE REGISTRATION COMPLETE!")
     print(f"Visualization: {args.viz}")
     print(f"Label: {label}")
-    print(f"Live Looker URL: {query_info['share_url']}")
+    print(f"Live Looker URL (viz open): {query_info['demo_url']}")
     print("="*60 + "\n")
 
 if __name__ == "__main__":
