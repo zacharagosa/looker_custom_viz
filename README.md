@@ -11,6 +11,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | ID | Name | Category | Engine | Required Fields | Status | Live Demo |
 | :--- | :--- | :--- | :--- | :--- | :---: | :--- |
 | [`radial_progress_gauge`](visualizations/radial_progress_gauge/) | **Radial KPI Progress Gauge** | KPI & Progress | D3.js v7 | 1–6 measures (or 1 dim + 1 meas) | 🟢 Ready | [Open in Looker](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/x/qWzt7S8XGqdj30LxOMiWCI) |
+| [`calendar_activity_heatmap`](visualizations/calendar_activity_heatmap/) | **Calendar Activity Heatmap** | Time Series & Activity | D3.js v7 | 1 Date dim + 1 measure | 🟢 Ready | [Open in Looker](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/x/aS3KgfaVBa5FBZTTmahEx5) |
 
 ---
 

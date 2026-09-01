@@ -1,0 +1,26 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "order_items.created_date",
+    "order_items.count"
+  ],
+  "filters": {
+    "order_items.created_date": "365 days"
+  },
+  "sorts": [
+    "order_items.created_date asc"
+  ],
+  "limit": "400",
+  "vis_config": {
+    "type": "calendar_activity_heatmap",
+    "colorPalette": "github_green",
+    "cellSize": 13,
+    "cellRadius": 3,
+    "cellSpacing": 3,
+    "showSummary": true,
+    "showMonthLabels": true,
+    "showDayLabels": true,
+    "showLegend": true
+  }
+}

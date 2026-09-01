@@ -23,5 +23,30 @@
     },
     "deployed": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/x/qWzt7S8XGqdj30LxOMiWCI"
+  },
+  {
+    "id": "calendar_activity_heatmap",
+    "name": "Calendar Activity Heatmap",
+    "date_added": "2026-09-01",
+    "library": "D3.js v7",
+    "category": "Time Series & Activity",
+    "description": "53-week rolling calendar activity grid inspired by GitHub contribution graphs, with quantile color scaling, day-of-week/month axes, interactive hover cards, and peak metric summaries.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Date field (YYYY-MM-DD)",
+      "measures": "1 Numeric count or sum measure"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "order_items.created_date",
+        "order_items.count"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/x/aS3KgfaVBa5FBZTTmahEx5"
   }
 ]

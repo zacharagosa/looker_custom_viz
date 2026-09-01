@@ -85,22 +85,31 @@ def validate_project(project, profile="default"):
     else:
         print(f"  -> Validation warning/notice: {res.stdout.strip()}")
 
-def create_demo_query(viz_id, profile="default"):
+def create_demo_query(viz_id, base_dir=None, profile="default"):
     print(f"[5/5] Creating demo query for visualization '{viz_id}'...")
-    query_def = {
-        "model": "thelook",
-        "view": "order_items",
-        "fields": [
-            "products.category",
-            "order_items.total_sale_price"
-        ],
-        "limit": "6",
-        "vis_config": {
-            "type": viz_id,
-            "showCenterText": True,
-            "colorPalette": "google"
+    custom_query_file = None
+    if base_dir:
+        custom_query_file = os.path.join(base_dir, "visualizations", viz_id, "demo_query.json")
+
+    if custom_query_file and os.path.exists(custom_query_file):
+        print(f"  -> Using visualization-specific demo query from {custom_query_file}")
+        with open(custom_query_file, "r", encoding="utf-8") as f:
+            query_def = json.load(f)
+    else:
+        query_def = {
+            "model": "thelook",
+            "view": "order_items",
+            "fields": [
+                "products.category",
+                "order_items.total_sale_price"
+            ],
+            "limit": "6",
+            "vis_config": {
+                "type": viz_id,
+                "showCenterText": True,
+                "colorPalette": "google"
+            }
         }
-    }
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tf:
         json.dump(query_def, tf)
         temp_path = tf.name
@@ -153,8 +162,7 @@ def main():
     ensure_dev_workspace(profile=args.profile)
     deploy_file_to_project(args.project, remote_js_path, js_file, profile=args.profile)
     update_manifest(args.project, args.viz, snippet_file, profile=args.profile)
-    validate_project(args.project, profile=args.profile)
-    query_info = create_demo_query(args.viz, profile=args.profile)
+    query_info = create_demo_query(args.viz, base_dir=base_dir, profile=args.profile)
 
     # Update catalog.json
     catalog_path = os.path.join(base_dir, "catalog.json")
