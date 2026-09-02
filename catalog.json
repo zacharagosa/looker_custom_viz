@@ -50,5 +50,32 @@
     "deployed": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=order_items.created_date,order_items.count&f[order_items.created_date]=365+days&sorts=order_items.created_date+asc&limit=400&vis=%7B%22type%22%3A%22calendar_activity_heatmap%22%2C%22colorPalette%22%3A%22github_green%22%2C%22cellSize%22%3A13%2C%22cellRadius%22%3A3%2C%22cellSpacing%22%3A3%2C%22showSummary%22%3Atrue%2C%22showMonthLabels%22%3Atrue%2C%22showDayLabels%22%3Atrue%2C%22showLegend%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
+  },
+  {
+    "id": "bullet_graph",
+    "name": "Stephen Few Bullet Graph",
+    "date_added": "2026-09-02",
+    "library": "D3.js v7",
+    "category": "KPI & Performance",
+    "description": "Executive KPI performance bullet graph implementing Stephen Few's classic specification with multi-tier qualitative range bands, target/quota markers, variance badges, and hover details.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "0 to 1 (e.g. Category, State, Rep)",
+      "measures": "1 to 3 (Actual required; Target/Goal and Baseline optional)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.total_sale_price",
+        "order_items.total_gross_margin"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.total_gross_margin&sorts=order_items.total_sale_price+desc&limit=8&vis=%7B%22type%22%3A%22bullet_graph%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22orientation%22%3A%22horizontal%22%2C%22qualitativeRanges%22%3A%223_tier%22%2C%22showTargetMarker%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22varianceBadgeFormat%22%3A%22attainment_pct%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22barThickness%22%3A18%2C%22rowHeight%22%3A64%7D&origin=share-expanded&toggle=vis",
+    "instance_wide": true
   }
 ]

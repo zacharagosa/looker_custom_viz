@@ -1,0 +1,25 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.total_sale_price",
+    "order_items.total_gross_margin"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "8",
+  "vis_config": {
+    "type": "bullet_graph",
+    "colorTheme": "executive_slate",
+    "orientation": "horizontal",
+    "qualitativeRanges": "3_tier",
+    "showTargetMarker": true,
+    "showVarianceBadge": true,
+    "varianceBadgeFormat": "attainment_pct",
+    "valueFormat": "compact_currency",
+    "barThickness": 18,
+    "rowHeight": 64
+  }
+}
