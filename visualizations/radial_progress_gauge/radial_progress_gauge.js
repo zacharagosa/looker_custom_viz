@@ -149,7 +149,8 @@
       var container = document.createElement('div');
       container.className = 'radial-gauge-container';
       container.style.width = '100%';
-      container.style.height = '100%';
+      container.style.flex = '1 1 auto';
+      container.style.minHeight = '0';
       container.style.display = 'flex';
       container.style.alignItems = 'center';
       container.style.justifyContent = 'center';
@@ -191,6 +192,12 @@
         return;
       }
       container.innerHTML = '';
+
+      // Clean up any existing legend elements to prevent duplicate stacking on re-renders
+      var oldLegends = element.querySelectorAll('.radial-gauge-legend');
+      for (var lIdx = 0; lIdx < oldLegends.length; lIdx++) {
+        oldLegends[lIdx].remove();
+      }
 
       if (!data || data.length === 0) {
         this.addError({
@@ -444,6 +451,7 @@
       // Legend if enabled
       if (config.showLegend !== false && ringsData.length > 1) {
         var legendContainer = document.createElement('div');
+        legendContainer.className = 'radial-gauge-legend';
         legendContainer.style.display = 'flex';
         legendContainer.style.flexWrap = 'wrap';
         legendContainer.style.justifyContent = 'center';
@@ -451,6 +459,9 @@
         legendContainer.style.padding = '8px 12px';
         legendContainer.style.fontSize = '12px';
         legendContainer.style.color = '#3C4043';
+        legendContainer.style.flexShrink = '0';
+        legendContainer.style.position = 'relative';
+        legendContainer.style.zIndex = '10';
 
         ringsData.forEach(function (d) {
           var item = document.createElement('div');
