@@ -1055,4 +1055,4 @@
   };
 
   looker.plugins.visualizations.add(visObject);
-})();\n
+})();
