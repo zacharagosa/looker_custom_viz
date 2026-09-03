@@ -1,0 +1,29 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.created_month",
+    "order_items.total_sale_price"
+  ],
+  "pivots": [
+    "order_items.created_month"
+  ],
+  "filters": {
+    "order_items.created_date": "6 months"
+  },
+  "sorts": [
+    "order_items.created_month asc 0",
+    "products.category"
+  ],
+  "limit": "12",
+  "vis_config": {
+    "type": "sparkline_matrix_table",
+    "colorTheme": "executive_slate",
+    "showSparklines": true,
+    "showMicroBars": true,
+    "showVarianceBadge": true,
+    "showSearch": true,
+    "valueFormat": "compact_currency"
+  }
+}
