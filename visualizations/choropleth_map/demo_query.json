@@ -1,0 +1,24 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.state",
+    "order_items.total_sale_price"
+  ],
+  "filters": {
+    "users.country": "USA"
+  },
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "choropleth_map",
+    "colorTheme": "google_blue",
+    "colorScaleMode": "quantile",
+    "showLabels": true,
+    "showLegend": true,
+    "nullColor": "#e2e8f0",
+    "highlightColor": "#f59e0b"
+  }
+}
