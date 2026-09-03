@@ -75,7 +75,7 @@ All custom visualizations built by this repository are consolidated on a single 
 👉 **[Open Custom Visualizations Showcase Dashboard](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/7CQgKOwKT6t6wJrPuaypnh)**
 
 ### Dashboard Organization:
-- **Category Tabs**: Visualizations are grouped by category into clean tabs (`🎯 KPI & Performance`, `📊 Comparison & Variance`, `📅 Time Series & Activity`, etc.).
+- **Category Tabs**: Visualizations are grouped by category into clean tabs (`🎯 KPI & Performance`, `📊 Comparison & Variance`, `📅 Time Series & Activity`, `🗺️ Geospatial & Maps`, `📋 Advanced Tables & Grids`, `🎮 Gaming & Telemetry`, `🎬 Media & Entertainment`, `📡 Telco & Networks`).
 - **5 Visualizations per Tab**: Each tab accommodates up to 5 custom visualizations with overflow protection.
 - **Descriptive Header Cards**: Every visualization tile features a top banner detailing the chart's purpose, category, required dimension/measure shapes, and a one-click link to open the standalone Explore.
 
@@ -84,7 +84,12 @@ All custom visualizations built by this repository are consolidated on a single 
 ## 🤖 Daily Automation Workflow
 
 The daily automation runs every morning via Jetski's Sidecar Runner:
-1. **Community Gap Research**: Checks Looker community forums, Google Cloud Community, and GitHub for chart types that users need but Looker lacks out of the box.
+1. **Community Gap Research & Industry Ideation**: Checks Looker community forums, Google Cloud Community, GitHub, D3.js gallery, and Vega specs for unmet visual needs. Actively prioritizes:
+   - **Gaming & Telemetry**: Retention cohort decay curves, Level progression drop-off balancing, In-game economy/telemetry funnels, Matchmaking latency & MMR distributions.
+   - **Telco & Infrastructure**: Cell tower / network topology graphs, Bandwidth & packet flow sankey/chord diagrams, Subscriber churn risk scorecards, Hexbin coverage density grids.
+   - **Media & Entertainment**: Broadcast programming schedule / daypart heatmaps (Nielsen GRP/CPP grids), Ad spot reach & frequency curves, Viewer drop-off & stream retention decay curves.
+   - **Geospatial & Maps**: D3 TopoJSON/GeoJSON choropleth maps, Hexbin density grids, Origin-Destination connection arc maps.
+   - **Advanced Tables & Grids**: Pivot matrices with inline sparklines & micro-bars, Heatmap grid tables with quantile color scales, Collapsible financial P&L tree tables.
 2. **Concept Novelty Check**: Cross-references against `catalog.json` to ensure a completely new, unique visualization is built each day.
 3. **Engineering & Coding**: Generates a self-contained JavaScript bundle adhering to the Looker Custom Visualization API (`looker.plugins.visualizations.add`).
 4. **Argolis Deployment**: Pushes the bundle to the user's Argolis Looker instance, creates a live demo query, and updates instance-wide registration.
