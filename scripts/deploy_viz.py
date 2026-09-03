@@ -200,6 +200,7 @@ def main():
     parser.add_argument("--profile", default="default", help="Looker CLI profile (default: default)")
     parser.add_argument("--dashboard", default="164", help="Looker showcase dashboard ID/slug (default: 164)")
     parser.add_argument("--skip-dashboard-sync", action="store_true", help="Skip syncing to the showcase dashboard")
+    parser.add_argument("--deploy-to-project", action="store_true", help="Also upload to LookML project and manifest.lkml (causes project-scoped duplicate registration)")
     args = parser.parse_args()
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -234,11 +235,15 @@ def main():
         except Exception as e:
             print(f"Notice reading catalog: {e}")
 
-    remote_js_path = f"visualizations/{args.viz}.js"
+    # Optional project-level deployment
+    if args.deploy_to_project:
+        remote_js_path = f"visualizations/{args.viz}.js"
+        ensure_dev_workspace(profile=args.profile)
+        deploy_file_to_project(args.project, remote_js_path, js_file, profile=args.profile)
+        update_manifest(args.project, args.viz, snippet_file, profile=args.profile)
+    else:
+        print("[2-3/6] Skipping project manifest deployment (registering instance-wide only to prevent duplicates).")
 
-    ensure_dev_workspace(profile=args.profile)
-    deploy_file_to_project(args.project, remote_js_path, js_file, profile=args.profile)
-    update_manifest(args.project, args.viz, snippet_file, profile=args.profile)
     register_instance_wide(args.viz, label, js_file, deps, profile=args.profile)
     query_info = create_demo_query(args.viz, base_dir=base_dir, profile=args.profile)
 
