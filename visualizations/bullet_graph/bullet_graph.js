@@ -135,7 +135,7 @@
           { 'Sunset Warmth': 'sunset_warmth' }
         ],
         default: 'executive_slate',
-        section: 'Theme & Aesthetics',
+        section: 'Style',
         order: 1
       },
       orientation: {
@@ -147,8 +147,8 @@
           { 'Vertical (Columnar)': 'vertical' }
         ],
         default: 'horizontal',
-        section: 'Layout',
-        order: 2
+        section: 'Display',
+        order: 1
       },
       qualitativeRanges: {
         type: 'string',
@@ -159,36 +159,36 @@
           { '4-Tier (Poor, Fair, Good, Stretch)': '4_tier' }
         ],
         default: '3_tier',
-        section: 'Performance Bands',
-        order: 3
+        section: 'Display',
+        order: 2
       },
       band1Pct: {
         type: 'number',
         label: 'Band 1: Poor / Low Threshold (%)',
         default: 60,
-        section: 'Performance Bands',
-        order: 4
+        section: 'Display',
+        order: 3
       },
       band2Pct: {
         type: 'number',
         label: 'Band 2: Satisfactory Threshold (%)',
         default: 85,
-        section: 'Performance Bands',
-        order: 5
+        section: 'Display',
+        order: 4
       },
       band3Pct: {
         type: 'number',
         label: 'Band 3: Good / Target Threshold (%)',
         default: 100,
-        section: 'Performance Bands',
-        order: 6
+        section: 'Display',
+        order: 5
       },
       band4Pct: {
         type: 'number',
         label: 'Band 4: Stretch Threshold (%) (4-Tier only)',
         default: 120,
-        section: 'Performance Bands',
-        order: 7
+        section: 'Display',
+        order: 6
       },
       targetCalculationMode: {
         type: 'string',
@@ -200,36 +200,36 @@
           { 'Fixed Static Target Value': 'fixed' }
         ],
         default: 'second_measure',
-        section: 'Targets & Quotas',
-        order: 8
+        section: 'Display',
+        order: 7
       },
       targetMultiplier: {
         type: 'number',
         label: 'Target Multiplier (when source is Multiplier)',
         default: 1.15,
-        section: 'Targets & Quotas',
-        order: 9
+        section: 'Display',
+        order: 8
       },
       fixedTargetValue: {
         type: 'number',
         label: 'Fixed Target Value (when source is Fixed)',
         default: 100000,
-        section: 'Targets & Quotas',
-        order: 10
+        section: 'Display',
+        order: 9
       },
       showTargetMarker: {
         type: 'boolean',
         label: 'Show Target Marker Line',
         default: true,
-        section: 'Markers & Badges',
-        order: 11
+        section: 'Display',
+        order: 10
       },
       showVarianceBadge: {
         type: 'boolean',
         label: 'Show Attainment / Variance Badge',
         default: true,
-        section: 'Markers & Badges',
-        order: 12
+        section: 'Display',
+        order: 11
       },
       varianceBadgeFormat: {
         type: 'string',
@@ -241,15 +241,15 @@
           { 'Delta Amount (e.g. +$12.5K)': 'delta_val' }
         ],
         default: 'attainment_pct',
-        section: 'Markers & Badges',
-        order: 13
+        section: 'Display',
+        order: 12
       },
       showValueLabels: {
         type: 'boolean',
         label: 'Show Actual & Target Value Readouts',
         default: true,
-        section: 'Labels & Typography',
-        order: 14
+        section: 'Display',
+        order: 13
       },
       valueFormat: {
         type: 'string',
@@ -264,30 +264,8 @@
           { 'Percentage (85.4%)': 'percentage' }
         ],
         default: 'auto',
-        section: 'Labels & Typography',
-        order: 15
-      },
-      barThickness: {
-        type: 'number',
-        label: 'Actual Performance Bar Thickness (px)',
-        display: 'range',
-        min: 8,
-        max: 32,
-        step: 2,
-        default: 18,
-        section: 'Sizing & Spacing',
-        order: 16
-      },
-      rowHeight: {
-        type: 'number',
-        label: 'Row / Item Height (px)',
-        display: 'range',
-        min: 44,
-        max: 96,
-        step: 4,
-        default: 64,
-        section: 'Sizing & Spacing',
-        order: 17
+        section: 'Display',
+        order: 14
       },
       sortBy: {
         type: 'string',
@@ -302,15 +280,37 @@
           { 'Category Name (A to Z)': 'label_asc' }
         ],
         default: 'default',
-        section: 'Sorting',
-        order: 18
+        section: 'Display',
+        order: 15
+      },
+      barThickness: {
+        type: 'number',
+        label: 'Actual Performance Bar Thickness (px)',
+        display: 'range',
+        min: 8,
+        max: 32,
+        step: 2,
+        default: 18,
+        section: 'Style',
+        order: 2
+      },
+      rowHeight: {
+        type: 'number',
+        label: 'Row / Item Height (px)',
+        display: 'range',
+        min: 44,
+        max: 96,
+        step: 4,
+        default: 64,
+        section: 'Style',
+        order: 3
       },
       enableAnimation: {
         type: 'boolean',
         label: 'Enable Smooth Entry Animations',
         default: true,
-        section: 'Animation',
-        order: 19
+        section: 'Style',
+        order: 4
       }
     },
 

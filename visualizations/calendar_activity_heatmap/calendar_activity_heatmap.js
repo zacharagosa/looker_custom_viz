@@ -56,7 +56,7 @@
           { 'Cyber Purple': 'cyber_purple' }
         ],
         default: 'github_green',
-        section: 'Theme & Colors',
+        section: 'Style',
         order: 1
       },
       cellSize: {
@@ -67,7 +67,7 @@
         max: 22,
         step: 1,
         default: 13,
-        section: 'Grid Style',
+        section: 'Style',
         order: 2
       },
       cellRadius: {
@@ -78,7 +78,7 @@
         max: 6,
         step: 1,
         default: 3,
-        section: 'Grid Style',
+        section: 'Style',
         order: 3
       },
       cellSpacing: {
@@ -89,43 +89,43 @@
         max: 5,
         step: 1,
         default: 3,
-        section: 'Grid Style',
+        section: 'Style',
         order: 4
       },
       showSummary: {
         type: 'boolean',
         label: 'Show Metric Summary Header',
         default: true,
-        section: 'Header & Summary',
-        order: 5
+        section: 'Display',
+        order: 1
       },
       summaryTitle: {
         type: 'string',
         label: 'Custom Activity Title',
         default: '',
-        section: 'Header & Summary',
-        order: 6
+        section: 'Display',
+        order: 2
       },
       showMonthLabels: {
         type: 'boolean',
         label: 'Show Month Labels',
         default: true,
-        section: 'Axes & Labels',
-        order: 7
+        section: 'Display',
+        order: 3
       },
       showDayLabels: {
         type: 'boolean',
         label: 'Show Day Labels',
         default: true,
-        section: 'Axes & Labels',
-        order: 8
+        section: 'Display',
+        order: 4
       },
       showLegend: {
         type: 'boolean',
         label: 'Show Intensity Legend',
         default: true,
-        section: 'Axes & Labels',
-        order: 9
+        section: 'Display',
+        order: 5
       }
     },
 

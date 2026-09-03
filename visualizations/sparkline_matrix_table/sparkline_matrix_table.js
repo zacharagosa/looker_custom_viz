@@ -152,12 +152,12 @@
           { "Compact Scorecard (Dense Status Badges)": "compact_scorecard" }
         ],
         default: "sparkline_matrix",
-        section: "Display Mode",
+        section: "Display",
         order: 1
       },
       pageSize: {
         type: "string",
-        label: "Pagination Page Size (5,000+ Row Support)",
+        label: "Pagination Page Size (5,000+ Rows)",
         display: "select",
         values: [
           { "15 Rows per Page": "15" },
@@ -167,57 +167,43 @@
           { "All Rows (No Pagination)": "all" }
         ],
         default: "25",
-        section: "High-Density Data",
+        section: "Display",
         order: 2
-      },
-      colorTheme: {
-        type: "string",
-        label: "Color Theme",
-        display: "select",
-        values: [
-          { "Executive Slate": "executive_slate" },
-          { "Google Vibrant": "google_vibrant" },
-          { "Emerald Growth": "emerald_growth" },
-          { "Midnight Cyber (Dark)": "midnight_cyber" }
-        ],
-        default: "executive_slate",
-        section: "Theme",
-        order: 3
       },
       showSparklines: {
         type: "boolean",
         label: "Show Inline Trend Sparklines",
         default: true,
-        section: "Visuals",
-        order: 4
+        section: "Display",
+        order: 3
       },
       showMicroBars: {
         type: "boolean",
         label: "Show Volume Micro Bullet Bars",
         default: true,
-        section: "Visuals",
-        order: 5
+        section: "Display",
+        order: 4
       },
       showVarianceBadge: {
         type: "boolean",
         label: "Show Period Growth / Delta Badges",
         default: true,
-        section: "Visuals",
-        order: 6
+        section: "Display",
+        order: 5
       },
       showSearch: {
         type: "boolean",
         label: "Enable Instant Search Bar",
         default: true,
-        section: "Controls",
-        order: 7
+        section: "Display",
+        order: 6
       },
       showSummaryRow: {
         type: "boolean",
         label: "Show Grand Total Summary Row",
         default: true,
-        section: "Controls",
-        order: 8
+        section: "Display",
+        order: 7
       },
       valueFormat: {
         type: "string",
@@ -231,15 +217,29 @@
           { "Percentage (12.4%)": "percent" }
         ],
         default: "compact_currency",
-        section: "Formatting",
-        order: 9
+        section: "Display",
+        order: 8
+      },
+      colorTheme: {
+        type: "string",
+        label: "Color Theme",
+        display: "select",
+        values: [
+          { "Executive Slate": "executive_slate" },
+          { "Google Vibrant": "google_vibrant" },
+          { "Emerald Growth": "emerald_growth" },
+          { "Midnight Cyber (Dark)": "midnight_cyber" }
+        ],
+        default: "executive_slate",
+        section: "Style",
+        order: 1
       },
       rowHeight: {
         type: "number",
         label: "Row Height (px)",
         default: 46,
-        section: "Layout",
-        order: 10
+        section: "Style",
+        order: 2
       }
     },
 

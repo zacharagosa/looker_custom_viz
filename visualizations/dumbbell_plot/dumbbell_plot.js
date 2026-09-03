@@ -216,7 +216,7 @@
           { "Ocean Breeze": "ocean_breeze" }
         ],
         default: "executive_slate",
-        section: "Theme & Aesthetics",
+        section: "Style",
         order: 1
       },
       bridgeColorMode: {
@@ -229,43 +229,43 @@
           { "Gradient (Dot A to Dot B)": "gradient" }
         ],
         default: "directional",
-        section: "Styling & Encoding",
-        order: 2
+        section: "Display",
+        order: 1
       },
       showDirectionArrows: {
         type: "boolean",
         label: "Show Direction Arrows (A -> B)",
         default: true,
-        section: "Styling & Encoding",
-        order: 3
+        section: "Display",
+        order: 2
       },
       pointRadius: {
         type: "number",
         label: "Marker Dot Radius (px)",
         default: 8,
-        section: "Styling & Encoding",
-        order: 4
+        section: "Style",
+        order: 2
       },
       bridgeThickness: {
         type: "number",
         label: "Bridge Line Thickness (px)",
         default: 3,
-        section: "Styling & Encoding",
-        order: 5
+        section: "Style",
+        order: 3
       },
       rowHeight: {
         type: "number",
         label: "Row Height (px)",
         default: 52,
-        section: "Layout",
-        order: 6
+        section: "Style",
+        order: 4
       },
       showVarianceBadge: {
         type: "boolean",
         label: "Show Variance / Delta Badges",
         default: true,
-        section: "Labels & Badges",
-        order: 7
+        section: "Display",
+        order: 3
       },
       badgeMetric: {
         type: "string",
@@ -278,15 +278,15 @@
           { "Ratio Multiplier (1.25x)": "ratio" }
         ],
         default: "both",
-        section: "Labels & Badges",
-        order: 8
+        section: "Display",
+        order: 4
       },
       showPointLabels: {
         type: "boolean",
         label: "Show Value Numbers at Dots",
         default: true,
-        section: "Labels & Badges",
-        order: 9
+        section: "Display",
+        order: 5
       },
       valueFormat: {
         type: "string",
@@ -300,8 +300,8 @@
           { "Percentage (12.4%)": "percent" }
         ],
         default: "compact_currency",
-        section: "Labels & Badges",
-        order: 10
+        section: "Display",
+        order: 6
       },
       sortBy: {
         type: "string",
@@ -316,50 +316,50 @@
           { "Category Name (A to Z)": "category_asc" }
         ],
         default: "none",
-        section: "Layout",
-        order: 11
+        section: "Display",
+        order: 7
       },
       showLegend: {
         type: "boolean",
         label: "Show Top Summary Header & Legend",
         default: true,
-        section: "Theme & Aesthetics",
-        order: 12
+        section: "Display",
+        order: 8
       },
       labelPointA: {
         type: "string",
         label: "Custom Label for Point A (Baseline)",
         default: "",
-        section: "Labels & Badges",
-        order: 13
+        section: "Display",
+        order: 9
       },
       labelPointB: {
         type: "string",
         label: "Custom Label for Point B (Comparison)",
         default: "",
-        section: "Labels & Badges",
-        order: 14
+        section: "Display",
+        order: 10
       },
       showGridLines: {
         type: "boolean",
         label: "Show Vertical Axis Grid Lines",
         default: true,
-        section: "Layout",
-        order: 15
+        section: "Display",
+        order: 11
       },
       zeroBaseline: {
         type: "boolean",
         label: "Force Axis Zero Baseline",
         default: false,
-        section: "Layout",
-        order: 16
+        section: "Display",
+        order: 12
       },
       enableAnimation: {
         type: "boolean",
         label: "Enable Smooth Render Transitions",
         default: true,
-        section: "Theme & Aesthetics",
-        order: 17
+        section: "Style",
+        order: 5
       }
     },
 

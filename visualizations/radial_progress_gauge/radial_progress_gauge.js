@@ -53,15 +53,36 @@
         type: 'number',
         label: 'Goal / Target Value (0 = Auto)',
         default: 0,
-        section: 'Goals & Targets',
+        section: 'Display',
         order: 1
       },
       targetField: {
         type: 'string',
         label: 'Optional Target Measure/Dimension Name',
         default: '',
-        section: 'Goals & Targets',
+        section: 'Display',
         order: 2
+      },
+      showCenterText: {
+        type: 'boolean',
+        label: 'Show Center Metric & %',
+        default: true,
+        section: 'Display',
+        order: 3
+      },
+      centerTitle: {
+        type: 'string',
+        label: 'Custom Center Title',
+        default: '',
+        section: 'Display',
+        order: 4
+      },
+      showLegend: {
+        type: 'boolean',
+        label: 'Show Metric Legend',
+        default: true,
+        section: 'Display',
+        order: 5
       },
       colorPalette: {
         type: 'string',
@@ -75,7 +96,7 @@
         ],
         default: 'google',
         section: 'Style',
-        order: 3
+        order: 1
       },
       ringThickness: {
         type: 'number',
@@ -86,7 +107,7 @@
         step: 2,
         default: 16,
         section: 'Style',
-        order: 4
+        order: 2
       },
       ringSpacing: {
         type: 'number',
@@ -97,7 +118,7 @@
         step: 1,
         default: 6,
         section: 'Style',
-        order: 5
+        order: 3
       },
       trackOpacity: {
         type: 'number',
@@ -108,28 +129,7 @@
         step: 5,
         default: 18,
         section: 'Style',
-        order: 6
-      },
-      showCenterText: {
-        type: 'boolean',
-        label: 'Show Center Metric & %',
-        default: true,
-        section: 'Center KPI',
-        order: 7
-      },
-      centerTitle: {
-        type: 'string',
-        label: 'Custom Center Title',
-        default: '',
-        section: 'Center KPI',
-        order: 8
-      },
-      showLegend: {
-        type: 'boolean',
-        label: 'Show Metric Legend',
-        default: true,
-        section: 'Legend',
-        order: 9
+        order: 4
       }
     },
 

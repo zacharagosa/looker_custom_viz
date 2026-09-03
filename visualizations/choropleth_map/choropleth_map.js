@@ -248,7 +248,7 @@
           { "Hybrid (Choropleth + Proportional Pins)": "both_hybrid" }
         ],
         default: "choropleth",
-        section: "Display Mode",
+        section: "Display",
         order: 1
       },
       aggregationType: {
@@ -262,8 +262,44 @@
           { "Max (Peak Record per State)": "max" }
         ],
         default: "sum",
-        section: "High-Density Data",
+        section: "Display",
         order: 2
+      },
+      showLabels: {
+        type: "boolean",
+        label: "Show State Postal Code Labels",
+        default: true,
+        section: "Display",
+        order: 3
+      },
+      showLegend: {
+        type: "boolean",
+        label: "Show Gradient Legend Bar",
+        default: true,
+        section: "Display",
+        order: 4
+      },
+      enableZoom: {
+        type: "boolean",
+        label: "Enable Pan & Zoom Navigation",
+        default: true,
+        section: "Display",
+        order: 5
+      },
+      valueFormat: {
+        type: "string",
+        label: "Metric Display Format",
+        display: "select",
+        values: [
+          { "Compact Currency ($1.2M / $45K)": "compact_currency" },
+          { "Full Currency ($1,240,000)": "full_currency" },
+          { "Compact Number (1.2M / 45K)": "compact_number" },
+          { "Full Number (1,240,000)": "full_number" },
+          { "Percentage (12.4%)": "percent" }
+        ],
+        default: "compact_currency",
+        section: "Display",
+        order: 6
       },
       colorTheme: {
         type: "string",
@@ -278,8 +314,8 @@
           { "Cool Purple": "cool_purple" }
         ],
         default: "google_blue",
-        section: "Aesthetics",
-        order: 3
+        section: "Style",
+        order: 1
       },
       colorScaleMode: {
         type: "string",
@@ -291,60 +327,24 @@
           { "Quantize (Equal Value Buckets)": "quantize" }
         ],
         default: "quantile",
-        section: "Aesthetics",
-        order: 4
-      },
-      showLabels: {
-        type: "boolean",
-        label: "Show State Postal Code Labels",
-        default: true,
-        section: "Labels & Layers",
-        order: 5
-      },
-      showLegend: {
-        type: "boolean",
-        label: "Show Gradient Legend Bar",
-        default: true,
-        section: "Labels & Layers",
-        order: 6
-      },
-      enableZoom: {
-        type: "boolean",
-        label: "Enable Pan & Zoom Navigation",
-        default: true,
-        section: "Interactivity",
-        order: 7
-      },
-      valueFormat: {
-        type: "string",
-        label: "Metric Display Format",
-        display: "select",
-        values: [
-          { "Compact Currency ($1.2M / $45K)": "compact_currency" },
-          { "Full Currency ($1,240,000)": "full_currency" },
-          { "Compact Number (1.2M / 45K)": "compact_number" },
-          { "Full Number (1,240,000)": "full_number" },
-          { "Percentage (12.4%)": "percent" }
-        ],
-        default: "compact_currency",
-        section: "Formatting",
-        order: 8
+        section: "Style",
+        order: 2
       },
       nullColor: {
         type: "string",
         label: "No Data State Color",
         display: "color",
         default: "#f1f5f9",
-        section: "Aesthetics",
-        order: 9
+        section: "Style",
+        order: 3
       },
       highlightColor: {
         type: "string",
         label: "Hover Highlight Stroke Color",
         display: "color",
         default: "#f59e0b",
-        section: "Aesthetics",
-        order: 10
+        section: "Style",
+        order: 4
       }
     },
 
