@@ -62,8 +62,22 @@ python3 scripts/deploy_viz.py --viz radial_progress_gauge --project thelookevent
 1. Switches Looker API session to `dev` workspace mode.
 2. Checks and uploads `visualizations/<viz_id>.js` to the target LookML project.
 3. Automatically updates `manifest.lkml` with the custom visualization declaration and dependencies.
-4. Validates the LookML project for syntax or schema errors.
+4. Registers the visualization instance-wide via `POST /api/4.0/vis_manifest`.
 5. Generates an instant Explore demo query and returns a shareable Looker link.
+6. Updates `catalog.json` with metadata, required fields, and live demo link.
+7. Automatically syncs the visualization to the consolidated **Showcase Dashboard** ([View Dashboard](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/7CQgKOwKT6t6wJrPuaypnh)), organized by category into tabs (up to 5 viz per tab) with descriptive markdown cards!
+
+---
+
+## 📊 Consolidated Showcase Dashboard
+
+All custom visualizations built by this repository are consolidated on a single interactive Looker User-Defined Dashboard:
+👉 **[Open Custom Visualizations Showcase Dashboard](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/7CQgKOwKT6t6wJrPuaypnh)**
+
+### Dashboard Organization:
+- **Category Tabs**: Visualizations are grouped by category into clean tabs (`🎯 KPI & Performance`, `📊 Comparison & Variance`, `📅 Time Series & Activity`, etc.).
+- **5 Visualizations per Tab**: Each tab accommodates up to 5 custom visualizations with overflow protection.
+- **Descriptive Header Cards**: Every visualization tile features a top banner detailing the chart's purpose, category, required dimension/measure shapes, and a one-click link to open the standalone Explore.
 
 ---
 
@@ -73,5 +87,6 @@ The daily automation runs every morning via Jetski's Sidecar Runner:
 1. **Community Gap Research**: Checks Looker community forums, Google Cloud Community, and GitHub for chart types that users need but Looker lacks out of the box.
 2. **Concept Novelty Check**: Cross-references against `catalog.json` to ensure a completely new, unique visualization is built each day.
 3. **Engineering & Coding**: Generates a self-contained JavaScript bundle adhering to the Looker Custom Visualization API (`looker.plugins.visualizations.add`).
-4. **Git Version Control**: Commits and pushes the new code, documentation, and manifest snippets to GitHub.
-5. **Argolis Deployment**: Pushes the bundle to the user's Argolis Looker instance, creates a live demo query, and notifies the user with direct links.
+4. **Argolis Deployment**: Pushes the bundle to the user's Argolis Looker instance, creates a live demo query, and updates instance-wide registration.
+5. **Dashboard Sync**: Adds the new visualization to the consolidated showcase dashboard under its corresponding category tab.
+6. **Git Version Control**: Commits and pushes the new code, documentation, and manifest snippets to GitHub.

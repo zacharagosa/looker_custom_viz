@@ -198,6 +198,8 @@ def main():
     parser.add_argument("--viz", required=True, help="Visualization directory name, e.g. radial_progress_gauge")
     parser.add_argument("--project", default="thelookevent", help="Looker project ID (default: thelookevent)")
     parser.add_argument("--profile", default="default", help="Looker CLI profile (default: default)")
+    parser.add_argument("--dashboard", default="164", help="Looker showcase dashboard ID/slug (default: 164)")
+    parser.add_argument("--skip-dashboard-sync", action="store_true", help="Skip syncing to the showcase dashboard")
     args = parser.parse_args()
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -256,11 +258,25 @@ def main():
         except Exception as e:
             print(f"Notice updating catalog: {e}")
 
+    # Step 7: Sync to consolidated showcase dashboard organized by category (max 5 viz/tab)
+    dash_url = None
+    if not args.skip_dashboard_sync:
+        print(f"[7/7] Syncing to Looker Showcase Dashboard '{args.dashboard}' by category tabs...")
+        try:
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            from sync_dashboard import sync_dashboard
+            dash_url = sync_dashboard(dashboard_id=args.dashboard, profile=args.profile)
+            print(f"  -> Showcase Dashboard updated successfully: {dash_url}")
+        except Exception as e:
+            print(f"  -> Notice syncing to showcase dashboard: {e}")
+
     print("\n" + "="*60)
     print("DEPLOYMENT & INSTANCE-WIDE REGISTRATION COMPLETE!")
     print(f"Visualization: {args.viz}")
     print(f"Label: {label}")
     print(f"Live Looker URL (viz open): {query_info['demo_url']}")
+    if dash_url:
+        print(f"Showcase Dashboard: {dash_url}")
     print("="*60 + "\n")
 
 if __name__ == "__main__":

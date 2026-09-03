@@ -1,0 +1,14 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.total_sale_price"
+  ],
+  "limit": "6",
+  "vis_config": {
+    "type": "radial_progress_gauge",
+    "showCenterText": true,
+    "colorPalette": "google"
+  }
+}
