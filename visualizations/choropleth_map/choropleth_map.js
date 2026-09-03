@@ -2,18 +2,12 @@
  * Interactive US Choropleth Map - Looker Custom Visualization
  * Built with D3.js v7 & TopoJSON Client
  *
- * Geospatial analytics visualization for regional performance, sales density,
- * customer penetration, and state-by-state variance analysis.
- *
- * Features:
- * - Full 50-state + DC Albers USA projection with auto-scaling responsive SVG
- * - Automatic name resolution: handles full state names ("California") and abbreviations ("CA")
- * - Quantile, Linear, and Quantize color scaling modes
- * - 6 Executive color themes (Google Blue, Emerald Forest, Thermal Heat, Midnight Cyber, Sunset Amber, Cool Purple)
- * - State postal abbreviation labels with automated contrast threshold
- * - Interactive hover states with boundary glow and elevation drop shadows
- * - Glassmorphism floating tooltip with national rank, % of total, and Looker drill-down links
- * - Integrated gradient legend with tick readouts
+ * Multi-Modal Geospatial Analytics Visualization:
+ * - Map Modes: Choropleth filled polygons, Proportional Bubble Pins, or Hybrid overlay
+ * - Expanded Row Limit Support: Client-side high-density aggregation across 5,000+ rows
+ * - Interactive Pan & Zoom with floating navigation controls
+ * - Executive color themes and automated dark/light mode adaptation
+ * - Glassmorphism tooltip with ranks, percentages, record volume, and drill-down links
  */
 
 (function () {
@@ -73,7 +67,6 @@
     "WY": { name: "Wyoming", fips: "56" }
   };
 
-  // Build reverse lookups
   var NAME_TO_CODE = {};
   var FIPS_TO_CODE = {};
   Object.keys(STATE_LOOKUP).forEach(function (code) {
@@ -155,7 +148,9 @@
       text: "#202124",
       subtext: "#5f6368",
       border: "#ffffff",
-      hoverStroke: "#1a73e8"
+      hoverStroke: "#1a73e8",
+      bubbleStroke: "#1a73e8",
+      bubbleFill: "rgba(26, 115, 232, 0.75)"
     },
     emerald_forest: {
       name: "Emerald Forest",
@@ -164,7 +159,9 @@
       text: "#064e3b",
       subtext: "#047857",
       border: "#ffffff",
-      hoverStroke: "#059669"
+      hoverStroke: "#059669",
+      bubbleStroke: "#059669",
+      bubbleFill: "rgba(5, 150, 105, 0.75)"
     },
     thermal_heat: {
       name: "Thermal Heat",
@@ -173,7 +170,9 @@
       text: "#431407",
       subtext: "#9a3412",
       border: "#ffffff",
-      hoverStroke: "#ea580c"
+      hoverStroke: "#ea580c",
+      bubbleStroke: "#c2410c",
+      bubbleFill: "rgba(234, 88, 12, 0.75)"
     },
     midnight_cyber: {
       name: "Midnight Cyber (Dark)",
@@ -182,7 +181,9 @@
       text: "#f8fafc",
       subtext: "#94a3b8",
       border: "#0f172a",
-      hoverStroke: "#38bdf8"
+      hoverStroke: "#38bdf8",
+      bubbleStroke: "#38bdf8",
+      bubbleFill: "rgba(56, 189, 248, 0.75)"
     },
     sunset_amber: {
       name: "Sunset Amber",
@@ -191,7 +192,9 @@
       text: "#431407",
       subtext: "#9a3412",
       border: "#ffffff",
-      hoverStroke: "#c2410c"
+      hoverStroke: "#c2410c",
+      bubbleStroke: "#ea580c",
+      bubbleFill: "rgba(234, 88, 12, 0.75)"
     },
     cool_purple: {
       name: "Cool Purple",
@@ -200,7 +203,9 @@
       text: "#3b0764",
       subtext: "#6b21a8",
       border: "#ffffff",
-      hoverStroke: "#9333ea"
+      hoverStroke: "#9333ea",
+      bubbleStroke: "#9333ea",
+      bubbleFill: "rgba(147, 51, 234, 0.75)"
     }
   };
 
@@ -233,6 +238,33 @@
     id: "choropleth_map",
     label: "Interactive US Choropleth Map",
     options: {
+      mapMode: {
+        type: "string",
+        label: "Map Display Mode",
+        display: "select",
+        values: [
+          { "Choropleth Filled Polygons": "choropleth" },
+          { "Proportional Bubble Pins": "bubble_pins" },
+          { "Hybrid (Choropleth + Proportional Pins)": "both_hybrid" }
+        ],
+        default: "choropleth",
+        section: "Display Mode",
+        order: 1
+      },
+      aggregationType: {
+        type: "string",
+        label: "High-Density Aggregation",
+        display: "select",
+        values: [
+          { "Sum (Aggregate Total Value)": "sum" },
+          { "Average (Mean Value per Record)": "avg" },
+          { "Count (Total Records / Transactions)": "count" },
+          { "Max (Peak Record per State)": "max" }
+        ],
+        default: "sum",
+        section: "High-Density Data",
+        order: 2
+      },
       colorTheme: {
         type: "string",
         label: "Color Theme",
@@ -247,7 +279,7 @@
         ],
         default: "google_blue",
         section: "Aesthetics",
-        order: 1
+        order: 3
       },
       colorScaleMode: {
         type: "string",
@@ -260,21 +292,28 @@
         ],
         default: "quantile",
         section: "Aesthetics",
-        order: 2
+        order: 4
       },
       showLabels: {
         type: "boolean",
         label: "Show State Postal Code Labels",
         default: true,
         section: "Labels & Layers",
-        order: 3
+        order: 5
       },
       showLegend: {
         type: "boolean",
         label: "Show Gradient Legend Bar",
         default: true,
         section: "Labels & Layers",
-        order: 4
+        order: 6
+      },
+      enableZoom: {
+        type: "boolean",
+        label: "Enable Pan & Zoom Navigation",
+        default: true,
+        section: "Interactivity",
+        order: 7
       },
       valueFormat: {
         type: "string",
@@ -289,7 +328,7 @@
         ],
         default: "compact_currency",
         section: "Formatting",
-        order: 5
+        order: 8
       },
       nullColor: {
         type: "string",
@@ -297,7 +336,7 @@
         display: "color",
         default: "#f1f5f9",
         section: "Aesthetics",
-        order: 6
+        order: 9
       },
       highlightColor: {
         type: "string",
@@ -305,7 +344,7 @@
         display: "color",
         default: "#f59e0b",
         section: "Aesthetics",
-        order: 7
+        order: 10
       }
     },
 
@@ -348,7 +387,7 @@
       if (!data || data.length === 0) {
         this.addError({
           title: "No Data",
-          message: "The query returned no rows to visualize on the choropleth map."
+          message: "The query returned no rows to visualize on the map."
         });
         done();
         return;
@@ -393,7 +432,7 @@
             console.error("Choropleth Map render error:", err);
             self.addError({
               title: "Rendering Error",
-              message: err.message || "An unexpected error occurred while rendering the choropleth map."
+              message: err.message || "An unexpected error occurred while rendering the map."
             });
           }
           done();
@@ -411,15 +450,18 @@
       container.style.backgroundColor = theme.bg;
       container.style.color = theme.text;
 
+      var mapMode = config.mapMode || "choropleth";
+      var aggType = config.aggregationType || "sum";
       var fields = queryResponse.fields;
       var dimField = fields.dimensions[0];
       var measField = fields.measures[0];
       var metricLabel = measField.label_short || measField.label || measField.name;
+      var totalRawRows = data.length;
 
-      // Extract and map row data
+      // Client-Side High-Density Aggregation across expanded row limits (5,000+ rows)
       var dataByCode = {};
-      var values = [];
-      var totalSum = 0;
+      var totalSumAll = 0;
+      var totalCountAll = 0;
 
       data.forEach(function (row) {
         var rawDim = row[dimField.name] ? (row[dimField.name].value || row[dimField.name].rendered) : null;
@@ -428,28 +470,88 @@
 
         var cellMeas = row[measField.name];
         var val = cellMeas && cellMeas.value !== null && !isNaN(cellMeas.value) ? Number(cellMeas.value) : 0;
-        var rendered = cellMeas && cellMeas.rendered ? cellMeas.rendered : null;
         var links = (cellMeas && cellMeas.links) || (row[dimField.name] && row[dimField.name].links) || [];
 
-        dataByCode[code] = {
-          code: code,
-          stateName: STATE_LOOKUP[code].name,
-          value: val,
-          rendered: rendered,
-          links: links
-        };
-        values.push(val);
-        totalSum += val;
+        if (!dataByCode[code]) {
+          dataByCode[code] = {
+            code: code,
+            stateName: STATE_LOOKUP[code].name,
+            sum: 0,
+            count: 0,
+            min: Infinity,
+            max: -Infinity,
+            rawValues: [],
+            links: links
+          };
+        }
+
+        dataByCode[code].sum += val;
+        dataByCode[code].count += 1;
+        if (val < dataByCode[code].min) dataByCode[code].min = val;
+        if (val > dataByCode[code].max) dataByCode[code].max = val;
+        dataByCode[code].rawValues.push(val);
+        totalSumAll += val;
+        totalCountAll += 1;
       });
 
-      // Compute ranking
+      // Compute display values per state based on aggregationType
+      var values = [];
+      var counts = [];
+      Object.keys(dataByCode).forEach(function (code) {
+        var d = dataByCode[code];
+        var computedVal = 0;
+        switch (aggType) {
+          case "avg":
+            computedVal = d.count > 0 ? d.sum / d.count : 0;
+            break;
+          case "count":
+            computedVal = d.count;
+            break;
+          case "max":
+            computedVal = d.max === -Infinity ? 0 : d.max;
+            break;
+          case "sum":
+          default:
+            computedVal = d.sum;
+            break;
+        }
+        d.value = computedVal;
+        values.push(computedVal);
+        counts.push(d.count);
+      });
+
+      // National rankings
       var sortedEntries = Object.values(dataByCode).sort(function (a, b) { return b.value - a.value; });
+      var activeTotal = d3.sum(sortedEntries, function (d) { return d.value; });
       sortedEntries.forEach(function (item, rankIdx) {
         item.rank = rankIdx + 1;
-        item.pctOfTotal = totalSum > 0 ? (item.value / totalSum) * 100 : 0;
+        item.pctOfTotal = activeTotal > 0 ? (item.value / activeTotal) * 100 : 0;
       });
 
-      // Color Scale
+      // High-Density Data Header Chip (for expanded row limits)
+      if (totalRawRows > 50) {
+        var densityChip = document.createElement("div");
+        densityChip.className = "looker-density-chip";
+        densityChip.style.position = "absolute";
+        densityChip.style.top = "14px";
+        densityChip.style.left = "16px";
+        densityChip.style.zIndex = "10";
+        densityChip.style.display = "flex";
+        densityChip.style.alignItems = "center";
+        densityChip.style.gap = "8px";
+        densityChip.style.padding = "5px 12px";
+        densityChip.style.borderRadius = "20px";
+        densityChip.style.fontSize = "11px";
+        densityChip.style.fontWeight = "600";
+        densityChip.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
+        densityChip.style.border = "1px solid " + (themeKey === "midnight_cyber" ? "#334155" : "#e2e8f0");
+        densityChip.style.backgroundColor = themeKey === "midnight_cyber" ? "rgba(30, 41, 59, 0.9)" : "rgba(255, 255, 255, 0.92)";
+        densityChip.style.color = theme.text;
+        densityChip.innerHTML = "⚡ <span>High-Density Dataset: <strong>" + totalRawRows.toLocaleString() + "</strong> rows aggregated into <strong>" + Object.keys(dataByCode).length + "</strong> territories (" + aggType.toUpperCase() + ")</span>";
+        container.appendChild(densityChip);
+      }
+
+      // Color Scale Setup
       var scaleMode = config.colorScaleMode || "quantile";
       var colorScale;
       var colors = theme.range;
@@ -469,7 +571,6 @@
             .domain([d3.min(values) || 0, d3.max(values) || 100])
             .range(colors);
         } else {
-          // Quantile (default)
           colorScale = d3.scaleQuantile()
             .domain(values)
             .range(colors);
@@ -478,8 +579,12 @@
         colorScale = function () { return config.nullColor || "#f1f5f9"; };
       }
 
-      var width = container.clientWidth || 850;
-      var height = container.clientHeight || 500;
+      // Proportional Bubble Radius Scale (for bubble_pins and both_hybrid modes)
+      var maxValForBubble = d3.max(values) || 1;
+      var radiusScale = d3.scaleSqrt()
+        .domain([0, maxValForBubble])
+        .range([5, 28]);
+
       var mapWidth = 960;
       var mapHeight = 600;
 
@@ -498,14 +603,83 @@
 
       var pathGenerator = d3.geoPath().projection(projection);
 
-      // Map group
-      var mapGroup = svg.append("g").attr("class", "states-group");
+      // Root zoomable container
+      var rootZoomG = svg.append("g").attr("class", "zoom-root-group");
+
+      // Zoom & Pan Behavior
+      if (config.enableZoom !== false) {
+        var zoom = d3.zoom()
+          .scaleExtent([0.85, 8])
+          .on("zoom", function (event) {
+            rootZoomG.attr("transform", event.transform);
+          });
+
+        svg.call(zoom);
+
+        // Zoom Navigation Controls (Top Right)
+        var zoomControls = document.createElement("div");
+        zoomControls.className = "looker-zoom-controls";
+        zoomControls.style.position = "absolute";
+        zoomControls.style.top = "14px";
+        zoomControls.style.right = "16px";
+        zoomControls.style.zIndex = "10";
+        zoomControls.style.display = "flex";
+        zoomControls.style.flexDirection = "column";
+        zoomControls.style.gap = "4px";
+        zoomControls.style.background = themeKey === "midnight_cyber" ? "rgba(30, 41, 59, 0.9)" : "rgba(255, 255, 255, 0.95)";
+        zoomControls.style.border = "1px solid " + (themeKey === "midnight_cyber" ? "#334155" : "#cbd5e1");
+        zoomControls.style.borderRadius = "8px";
+        zoomControls.style.padding = "4px";
+        zoomControls.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+
+        function createBtn(text, title, onClick) {
+          var btn = document.createElement("button");
+          btn.innerHTML = text;
+          btn.title = title;
+          btn.style.width = "28px";
+          btn.style.height = "28px";
+          btn.style.border = "none";
+          btn.style.background = "transparent";
+          btn.style.cursor = "pointer";
+          btn.style.fontSize = "15px";
+          btn.style.fontWeight = "700";
+          btn.style.color = theme.text;
+          btn.style.borderRadius = "4px";
+          btn.style.display = "flex";
+          btn.style.alignItems = "center";
+          btn.style.justifyContent = "center";
+          btn.addEventListener("mouseenter", function () {
+            btn.style.backgroundColor = themeKey === "midnight_cyber" ? "#475569" : "#f1f5f9";
+          });
+          btn.addEventListener("mouseleave", function () {
+            btn.style.backgroundColor = "transparent";
+          });
+          btn.addEventListener("click", onClick);
+          return btn;
+        }
+
+        zoomControls.appendChild(createBtn("+", "Zoom In", function () {
+          svg.transition().duration(250).call(zoom.scaleBy, 1.35);
+        }));
+        zoomControls.appendChild(createBtn("&minus;", "Zoom Out", function () {
+          svg.transition().duration(250).call(zoom.scaleBy, 0.74);
+        }));
+        zoomControls.appendChild(createBtn("&#x21ba;", "Reset View", function () {
+          svg.transition().duration(250).call(zoom.transform, d3.zoomIdentity);
+        }));
+        container.appendChild(zoomControls);
+      }
+
+      // Map group inside zoomable root
+      var mapGroup = rootZoomG.append("g").attr("class", "states-group");
+      var bubblesGroup = rootZoomG.append("g").attr("class", "bubbles-group");
+      var labelsGroup = rootZoomG.append("g").attr("class", "labels-group").style("pointer-events", "none");
 
       var tooltip = this._tooltip;
       var highlightColor = config.highlightColor || "#f59e0b";
       var nullColor = config.nullColor || "#f1f5f9";
 
-      // Render States
+      // Render State Polygons
       var states = mapGroup.selectAll("path.state")
         .data(geoData.features)
         .enter()
@@ -514,32 +688,44 @@
         .attr("d", pathGenerator)
         .attr("fill", function (d) {
           var code = FIPS_TO_CODE[String(d.id)];
-          if (code && dataByCode[code]) {
-            return colorScale(dataByCode[code].value);
+          var info = code ? dataByCode[code] : null;
+
+          // In bubble_pins mode, keep polygon neutral to let pins stand out
+          if (mapMode === "bubble_pins") {
+            return themeKey === "midnight_cyber" ? "#1e293b" : "#f8fafc";
+          }
+          // In choropleth and both_hybrid modes, fill with metric color scale
+          if (info) {
+            return colorScale(info.value);
           }
           return nullColor;
         })
-        .attr("stroke", theme.border)
-        .attr("stroke-width", 1.2)
+        .attr("stroke", function () {
+          return mapMode === "bubble_pins"
+            ? (themeKey === "midnight_cyber" ? "#334155" : "#cbd5e1")
+            : theme.border;
+        })
+        .attr("stroke-width", mapMode === "bubble_pins" ? 1.0 : 1.2)
         .style("cursor", "pointer")
-        .style("transition", "fill 0.2s ease, stroke 0.2s ease, transform 0.15s ease");
+        .style("transition", "fill 0.2s ease, stroke 0.2s ease");
 
-      // Hover interactions
-      states.on("mouseenter", function (event, d) {
-        var code = FIPS_TO_CODE[String(d.id)];
-        var info = code ? dataByCode[code] : null;
-        var stateName = (code && STATE_LOOKUP[code]) ? STATE_LOOKUP[code].name : (d.properties && d.properties.name) || "Unknown State";
-
-        d3.select(this)
-          .raise()
-          .attr("stroke", highlightColor)
-          .attr("stroke-width", 2.5);
-
+      // Shared Tooltip Presenter
+      function showStateTooltip(d, code, info) {
         if (!tooltip) return;
+        var stateName = (code && STATE_LOOKUP[code]) ? STATE_LOOKUP[code].name : (d.properties && d.properties.name) || "Unknown State";
         var fmt = config.valueFormat || "compact_currency";
-        var valStr = info ? (info.rendered || formatValue(info.value, fmt)) : "No Data";
+        var valStr = info ? formatValue(info.value, fmt) : "No Data";
+        var sumStr = info ? formatValue(info.sum, fmt) : "-";
+        var avgStr = info ? formatValue(info.count > 0 ? info.sum / info.count : 0, fmt) : "-";
         var rankStr = info ? ("#" + info.rank + " of " + sortedEntries.length) : "Unranked";
         var pctStr = info ? (info.pctOfTotal.toFixed(1) + "% of National Total") : "-";
+        var countStr = info ? info.count.toLocaleString() : "0";
+
+        var aggLabel = aggType.toUpperCase();
+        if (aggType === "sum") aggLabel = "Total Sum";
+        if (aggType === "avg") aggLabel = "Average per Record";
+        if (aggType === "count") aggLabel = "Record Frequency";
+        if (aggType === "max") aggLabel = "Peak Record";
 
         tooltip.innerHTML = "" +
           "<div style=\"font-size:13px;font-weight:700;color:" + theme.text + ";margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;gap:8px;\">" +
@@ -547,81 +733,161 @@
           (info ? "<span style=\"font-size:10.5px;padding:2px 7px;background:#e0f2fe;color:#0369a1;border-radius:10px;font-weight:600;\">" + rankStr + "</span>" : "") +
           "</div>" +
           "<div style=\"margin-top:4px;font-size:12px;color:" + theme.subtext + ";\">" +
-          "  <span>" + metricLabel + ": </span>" +
+          "  <span>" + metricLabel + " (" + aggLabel + "): </span>" +
           "  <span style=\"font-weight:700;color:" + (themeKey === "midnight_cyber" ? "#38bdf8" : "#1e40af") + ";font-size:13px;\">" + valStr + "</span>" +
           "</div>" +
           (info ? "<div style=\"font-size:11px;color:" + theme.subtext + ";margin-top:3px;\">" + pctStr + "</div>" : "") +
+          (info && info.count > 1 ? "<div style=\"font-size:11px;color:" + theme.subtext + ";margin-top:2px;border-top:1px dashed #e2e8f0;padding-top:3px;\">Records Aggregated: <strong>" + countStr + "</strong> | Sum: " + sumStr + " | Avg: " + avgStr + "</div>" : "") +
           (info && info.links && info.links.length > 0 ? "<div style=\"margin-top:6px;font-size:10px;color:#2563eb;font-weight:600;\">Click state to explore drill-down &rarr;</div>" : "");
 
-        tooltip.style.backgroundColor = themeKey === "midnight_cyber" ? "rgba(15, 23, 42, 0.95)" : "rgba(255, 255, 255, 0.96)";
+        tooltip.style.backgroundColor = themeKey === "midnight_cyber" ? "rgba(15, 23, 42, 0.96)" : "rgba(255, 255, 255, 0.97)";
         tooltip.style.border = "1px solid " + (themeKey === "midnight_cyber" ? "#334155" : "#e2e8f0");
         tooltip.style.display = "block";
         tooltip.style.opacity = "1";
-      });
+      }
 
-      states.on("mousemove", function (event) {
+      function moveTooltip(event) {
         if (!tooltip) return;
-        var ttW = tooltip.offsetWidth || 180;
-        var ttH = tooltip.offsetHeight || 100;
+        var ttW = tooltip.offsetWidth || 220;
+        var ttH = tooltip.offsetHeight || 120;
         var left = event.clientX + 14;
         var top = event.clientY - 15;
         if (left + ttW > window.innerWidth - 10) left = event.clientX - ttW - 14;
         if (top + ttH > window.innerHeight - 10) top = window.innerHeight - ttH - 10;
         tooltip.style.left = left + "px";
         tooltip.style.top = top + "px";
+      }
+
+      function hideTooltip() {
+        if (tooltip) tooltip.style.display = "none";
+      }
+
+      // State Hover interactions
+      states.on("mouseenter", function (event, d) {
+        var code = FIPS_TO_CODE[String(d.id)];
+        var info = code ? dataByCode[code] : null;
+
+        d3.select(this)
+          .raise()
+          .attr("stroke", highlightColor)
+          .attr("stroke-width", 2.5);
+
+        showStateTooltip(d, code, info);
       });
+
+      states.on("mousemove", moveTooltip);
 
       states.on("mouseleave", function (event, d) {
         d3.select(this)
-          .attr("stroke", theme.border)
-          .attr("stroke-width", 1.2);
-        if (tooltip) tooltip.style.display = "none";
+          .attr("stroke", mapMode === "bubble_pins" ? (themeKey === "midnight_cyber" ? "#334155" : "#cbd5e1") : theme.border)
+          .attr("stroke-width", mapMode === "bubble_pins" ? 1.0 : 1.2);
+        hideTooltip();
       });
 
       states.on("click", function (event, d) {
         var code = FIPS_TO_CODE[String(d.id)];
         var info = code ? dataByCode[code] : null;
-        if (info && info.links && info.links.length > 0 && LookerCharts && LookerCharts.Utils) {
-          LookerCharts.Utils.openDrillMenu({
+        if (info && info.links && info.links.length > 0 && window.LookerCharts && window.LookerCharts.Utils) {
+          window.LookerCharts.Utils.openDrillMenu({
             links: info.links,
             event: event
           });
         }
       });
 
+      // Render Proportional Bubble Pins (for bubble_pins and both_hybrid modes)
+      if (mapMode === "bubble_pins" || mapMode === "both_hybrid") {
+        geoData.features.forEach(function (d) {
+          var code = FIPS_TO_CODE[String(d.id)];
+          if (!code || !dataByCode[code]) return;
+          var info = dataByCode[code];
+          var centroid = pathGenerator.centroid(d);
+          if (!centroid || isNaN(centroid[0]) || isNaN(centroid[1])) return;
+
+          var r = radiusScale(info.value);
+          var bubbleG = bubblesGroup.append("g")
+            .attr("class", "bubble-node")
+            .attr("transform", "translate(" + centroid[0] + "," + centroid[1] + ")")
+            .style("cursor", "pointer");
+
+          // Pulsing halo for top 3 states
+          if (info.rank <= 3) {
+            bubbleG.append("circle")
+              .attr("r", r + 4)
+              .attr("fill", "none")
+              .attr("stroke", highlightColor)
+              .attr("stroke-width", 1.5)
+              .attr("stroke-dasharray", "3,3")
+              .attr("opacity", 0.7);
+          }
+
+          var bubbleCircle = bubbleG.append("circle")
+            .attr("r", r)
+            .attr("fill", mapMode === "both_hybrid" ? "rgba(255, 255, 255, 0.85)" : theme.bubbleFill)
+            .attr("stroke", mapMode === "both_hybrid" ? (themeKey === "midnight_cyber" ? "#38bdf8" : "#1e40af") : theme.bubbleStroke)
+            .attr("stroke-width", 2.0)
+            .style("transition", "transform 0.15s ease, fill 0.15s ease");
+
+          bubbleG.on("mouseenter", function (event) {
+            d3.select(this).raise();
+            bubbleCircle.attr("transform", "scale(1.25)");
+            showStateTooltip(d, code, info);
+          });
+          bubbleG.on("mousemove", moveTooltip);
+          bubbleG.on("mouseleave", function () {
+            bubbleCircle.attr("transform", "scale(1.0)");
+            hideTooltip();
+          });
+          bubbleG.on("click", function (event) {
+            if (info.links && info.links.length > 0 && window.LookerCharts && window.LookerCharts.Utils) {
+              window.LookerCharts.Utils.openDrillMenu({
+                links: info.links,
+                event: event
+              });
+            }
+          });
+        });
+      }
+
       // State Postal Code Labels
       if (config.showLabels !== false) {
-        var labelsGroup = svg.append("g").attr("class", "state-labels").style("pointer-events", "none");
-
         geoData.features.forEach(function (d) {
           var code = FIPS_TO_CODE[String(d.id)];
           if (!code) return;
           var centroid = pathGenerator.centroid(d);
           if (!centroid || isNaN(centroid[0]) || isNaN(centroid[1])) return;
 
-          // Small states adjustment (manual offsets for tiny northeastern states if needed)
           var x = centroid[0];
           var y = centroid[1];
-
           var info = dataByCode[code];
           var hasValue = !!info;
 
+          // In bubble mode, nudge label below the circle if bubble is large
+          var yOffset = 3;
+          if ((mapMode === "bubble_pins" || mapMode === "both_hybrid") && info) {
+            var r = radiusScale(info.value);
+            if (r > 12) yOffset = 4;
+          }
+
           labelsGroup.append("text")
             .attr("x", x)
-            .attr("y", y + 3)
+            .attr("y", y + yOffset)
             .attr("text-anchor", "middle")
             .attr("font-size", "10px")
             .attr("font-weight", "700")
             .attr("fill", function () {
+              if (mapMode === "bubble_pins") {
+                return themeKey === "midnight_cyber" ? "#ffffff" : "#0f172a";
+              }
               if (!hasValue) return theme.subtext;
               return themeKey === "midnight_cyber" ? "#ffffff" : "#0f172a";
             })
-            .attr("opacity", hasValue ? 0.9 : 0.45)
+            .attr("opacity", hasValue ? 0.9 : 0.4)
             .text(code);
         });
       }
 
-      // Legend Bar
+      // Legend Bar (Fixed on overlay SVG)
       if (config.showLegend !== false && values.length > 0) {
         var legendWidth = 260;
         var legendHeight = 12;
@@ -632,7 +898,6 @@
           .attr("class", "map-legend")
           .attr("transform", "translate(" + legendX + "," + legendY + ")");
 
-        // Gradient
         var legendGradId = "map-legend-grad";
         var legendGrad = svg.append("defs").append("linearGradient")
           .attr("id", legendGradId)
@@ -647,7 +912,6 @@
             .attr("stop-color", col);
         });
 
-        // Legend Rect
         legendG.append("rect")
           .attr("width", legendWidth)
           .attr("height", legendHeight)
@@ -656,7 +920,6 @@
           .attr("stroke", theme.subtext)
           .attr("stroke-width", 0.5);
 
-        // Min & Max Tick Labels
         var minVal = d3.min(values) || 0;
         var maxVal = d3.max(values) || 100;
         var midVal = (minVal + maxVal) / 2;
@@ -689,14 +952,17 @@
           .attr("fill", theme.subtext)
           .text(formatValue(maxVal, fmt));
 
-        // Legend Title
+        var legendTitle = metricLabel;
+        if (aggType !== "sum") legendTitle += " (" + aggType.toUpperCase() + ")";
+        if (mapMode === "bubble_pins") legendTitle += " [Proportional Pins]";
+
         legendG.append("text")
           .attr("x", 0)
           .attr("y", -6)
           .attr("font-size", "11px")
           .attr("font-weight", "700")
           .attr("fill", theme.text)
-          .text(metricLabel);
+          .text(legendTitle);
       }
     }
   };
