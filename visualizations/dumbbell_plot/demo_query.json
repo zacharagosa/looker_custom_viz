@@ -1,0 +1,29 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.total_gross_margin",
+    "order_items.total_sale_price"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "10",
+  "vis_config": {
+    "type": "dumbbell_plot",
+    "colorTheme": "executive_slate",
+    "bridgeColorMode": "directional",
+    "showDirectionArrows": true,
+    "showVarianceBadge": true,
+    "badgeMetric": "both",
+    "showPointLabels": true,
+    "valueFormat": "compact_currency",
+    "pointRadius": 8,
+    "bridgeThickness": 3,
+    "rowHeight": 54,
+    "sortBy": "none",
+    "showLegend": true,
+    "showGridLines": true
+  }
+}

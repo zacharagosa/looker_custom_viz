@@ -77,5 +77,32 @@
     "deployed": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.total_gross_margin&sorts=order_items.total_sale_price+desc&limit=8&vis=%7B%22type%22%3A%22bullet_graph%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22orientation%22%3A%22horizontal%22%2C%22qualitativeRanges%22%3A%223_tier%22%2C%22showTargetMarker%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22varianceBadgeFormat%22%3A%22attainment_pct%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22barThickness%22%3A18%2C%22rowHeight%22%3A64%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
+  },
+  {
+    "id": "dumbbell_plot",
+    "name": "Dumbbell Divergence Plot",
+    "date_added": "2026-09-03",
+    "library": "D3.js v7",
+    "category": "Comparison & Variance",
+    "description": "Executive dumbbell and connected dot plot designed for variance analysis, period-over-period comparisons (2024 vs 2025), target vs actuals, and range divergence across categories with directional chevrons and variance pills.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Dimension (e.g. Category, State, Rep)",
+      "measures": "1 to 2 Measures (Baseline/Start and Comparison/End), or 1 pivoted measure (2 pivots)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.total_gross_margin",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.total_gross_margin,order_items.total_sale_price&sorts=order_items.total_sale_price+desc&limit=10&vis=%7B%22type%22%3A%22dumbbell_plot%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22bridgeColorMode%22%3A%22directional%22%2C%22showDirectionArrows%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22badgeMetric%22%3A%22both%22%2C%22showPointLabels%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22pointRadius%22%3A8%2C%22bridgeThickness%22%3A3%2C%22rowHeight%22%3A54%2C%22sortBy%22%3A%22none%22%2C%22showLegend%22%3Atrue%2C%22showGridLines%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "instance_wide": true
   }
 ]
