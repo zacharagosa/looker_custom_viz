@@ -42,7 +42,8 @@ VIZ_EMOJI_MAP = {
     "calendar_activity_heatmap": "📅",
     "radial_progress_gauge": "⭕",
     "choropleth_map": "🗺️",
-    "sparkline_matrix_table": "📋"
+    "sparkline_matrix_table": "📋",
+    "retention_cohort_decay": "🎮"
 }
 
 def get_headers(profile="default"):

@@ -1,0 +1,27 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.created_month",
+    "order_items.created_month",
+    "order_items.order_count"
+  ],
+  "filters": {
+    "users.created_date": "6 months",
+    "order_items.created_date": "6 months"
+  },
+  "sorts": [
+    "users.created_month asc",
+    "order_items.created_month asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "retention_cohort_decay",
+    "viewMode": "split_view",
+    "valueDisplay": "retention_pct",
+    "periodZeroHandling": "index_100",
+    "showBenchmark": true,
+    "showLabels": true,
+    "colorTheme": "indigo_violet"
+  }
+}

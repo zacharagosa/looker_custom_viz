@@ -159,5 +159,32 @@
     "deployed": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price&pivots=order_items.created_month&f[order_items.created_date]=6+months&sorts=order_items.created_month+asc+0,products.category&limit=12&vis=%7B%22type%22%3A%22sparkline_matrix_table%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22showSparklines%22%3Atrue%2C%22showMicroBars%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
+  },
+  {
+    "id": "retention_cohort_decay",
+    "name": "Player & Customer Retention Cohort Decay",
+    "date_added": "2026-09-04",
+    "library": "D3.js v7",
+    "category": "Gaming & Telemetry",
+    "description": "Multi-mode retention cohort decay matrix and interactive D3 B\u00e9zier curve visualization for gaming telemetry (D1/D7/D30 player retention) and SaaS lifecycle analytics with dynamic Period 0 indexing (100%), benchmark outperformance variance, and dual synchronized split view.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Cohort Dimension (e.g. users.created_month) + 1 Activity Period Dimension (e.g. order_items.created_month) OR 1 Pivot",
+      "measures": "1 Numeric Measure (e.g. order_items.order_count or users count)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "users.created_month",
+        "order_items.created_month",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.created_month,order_items.created_month,order_items.order_count&f[users.created_date]=6+months&f[order_items.created_date]=6+months&sorts=users.created_month+asc,order_items.created_month+asc&limit=500&vis=%7B%22type%22%3A%22retention_cohort_decay%22%2C%22viewMode%22%3A%22split_view%22%2C%22valueDisplay%22%3A%22retention_pct%22%2C%22periodZeroHandling%22%3A%22index_100%22%2C%22showBenchmark%22%3Atrue%2C%22showLabels%22%3Atrue%2C%22colorTheme%22%3A%22indigo_violet%22%7D&origin=share-expanded&toggle=vis",
+    "instance_wide": true
   }
 ]
