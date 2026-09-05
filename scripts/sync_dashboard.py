@@ -43,7 +43,8 @@ VIZ_EMOJI_MAP = {
     "radial_progress_gauge": "⭕",
     "choropleth_map": "🗺️",
     "sparkline_matrix_table": "📋",
-    "retention_cohort_decay": "🎮"
+    "retention_cohort_decay": "🎮",
+    "broadcast_daypart_grid": "🎬"
 }
 
 def get_headers(profile="default"):
@@ -53,6 +54,27 @@ def get_headers(profile="default"):
     prof_conf = conf["profiles"].get(profile, {})
     host = prof_conf.get("host", LOOKER_HOST)
     token = prof_conf.get("access_token")
+    client_id = prof_conf.get("client_id")
+    client_secret = prof_conf.get("client_secret")
+
+    # Refresh token if needed
+    if client_id and client_secret:
+        try:
+            req = urllib.request.Request(f"https://{host}/api/4.0/user", headers={"Authorization": f"Bearer {token}"})
+            with urllib.request.urlopen(req) as resp:
+                pass
+        except Exception:
+            login_url = f"https://{host}/api/4.0/login?client_id={client_id}&client_secret={client_secret}"
+            req = urllib.request.Request(login_url, method="POST")
+            with urllib.request.urlopen(req) as resp:
+                data = json.load(resp)
+                token = data["access_token"]
+            # Save back to config
+            for p in conf.get("profiles", {}).values():
+                p["access_token"] = token
+            with open(config_path, "w", encoding="utf-8") as f:
+                yaml.dump(conf, f)
+
     return host, {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"

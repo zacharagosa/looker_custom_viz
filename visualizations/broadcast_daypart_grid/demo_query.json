@@ -1,0 +1,30 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "order_items.created_day_of_week",
+    "order_items.created_hour_of_day",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "filters": {
+    "order_items.created_date": "365 days"
+  },
+  "sorts": [
+    "order_items.created_day_of_week asc",
+    "order_items.created_hour_of_day asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "broadcast_daypart_grid",
+    "viewMode": "split_view",
+    "daypartPreset": "nielsen",
+    "startOfWeek": "monday",
+    "highlightPeaks": "top_5",
+    "colorPalette": "nielsen_broadcast",
+    "colorScaleMode": "quantile",
+    "valueFormat": "compact_currency",
+    "showMarginals": true,
+    "showCellValues": true
+  }
+}
