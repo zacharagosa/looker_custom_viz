@@ -44,7 +44,8 @@ VIZ_EMOJI_MAP = {
     "choropleth_map": "🗺️",
     "sparkline_matrix_table": "📋",
     "retention_cohort_decay": "🎮",
-    "broadcast_daypart_grid": "🎬"
+    "broadcast_daypart_grid": "🎬",
+    "network_topology_graph": "📡"
 }
 
 def get_headers(profile="default"):

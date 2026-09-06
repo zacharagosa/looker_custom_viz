@@ -1,0 +1,30 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "distribution_centers.name",
+    "users.state",
+    "order_items.total_sale_price",
+    "order_items.average_shipping_time",
+    "order_items.order_count"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "network_topology_graph",
+    "viewMode": "force_directed",
+    "flowAnimation": "pulse",
+    "nodeSizing": "volume",
+    "edgeMetric": "latency",
+    "colorTheme": "cyber_dark",
+    "showExecutiveHUD": true,
+    "showSearch": true,
+    "showLabels": "always",
+    "valueFormat": "bandwidth",
+    "baseNodeRadius": 13,
+    "linkDistance": 110,
+    "latencyThreshold": 3.8
+  }
+}

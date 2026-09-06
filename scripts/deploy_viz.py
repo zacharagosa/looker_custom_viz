@@ -110,8 +110,13 @@ def register_instance_wide(viz_id, label, js_local_path, dependencies, profile="
             with urllib.request.urlopen(req) as resp:
                 data = json.load(resp)
                 token = data["access_token"]
+                expires_in = data.get("expires_in", 3600)
+            import datetime
+            exp_dt = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=expires_in + 86400)
+            exp_str = exp_dt.strftime("%Y-%m-%d %H:%M:%S +0000")
             for p in conf.get("profiles", {}).values():
                 p["access_token"] = token
+                p["expiration"] = exp_str
             with open(config_path, "w", encoding="utf-8") as f:
                 yaml.dump(conf, f)
 
