@@ -243,5 +243,34 @@
     "deployed": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=distribution_centers.name,users.state,order_items.total_sale_price,order_items.average_shipping_time,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22network_topology_graph%22%2C%22viewMode%22%3A%22force_directed%22%2C%22flowAnimation%22%3A%22pulse%22%2C%22nodeSizing%22%3A%22volume%22%2C%22edgeMetric%22%3A%22latency%22%2C%22colorTheme%22%3A%22cyber_dark%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showLabels%22%3A%22always%22%2C%22valueFormat%22%3A%22bandwidth%22%2C%22baseNodeRadius%22%3A13%2C%22linkDistance%22%3A110%2C%22latencyThreshold%22%3A3.8%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
+  },
+  {
+    "id": "sankey_flow_diagram",
+    "name": "Sankey Flow & Multi-Stage Allocation Diagram",
+    "date_added": "2026-09-07",
+    "library": "D3.js v7",
+    "category": "Flow & Hierarchy",
+    "description": "Interactive multi-mode Sankey flow, alluvial attribution, and hierarchical breakdown diagram for e-commerce conversions, marketing multi-touch attribution, financial cost allocations, and telemetry packet paths with draggable nodes, B\u00e9zier ribbons, path search, and Looker drill-down.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "2 to 8 Dimensions representing sequential stages (e.g. Origin -> Intermediate -> Destination)",
+      "measures": "1 to 2 Measures: Flow Volume / Value (e.g. Total Sales, Units, Traffic) and optional secondary measure"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "users.traffic_source",
+        "products.category",
+        "order_items.status",
+        "order_items.total_sale_price",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.traffic_source,products.category,order_items.status,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=365+days&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sankey_flow_diagram%22%2C%22viewMode%22%3A%22sankey%22%2C%22nodeAlignment%22%3A%22justify%22%2C%22linkColorMode%22%3A%22gradient%22%2C%22colorPalette%22%3A%22corporate_blue%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curvature%22%3A0.5%2C%22nodeWidth%22%3A18%2C%22nodePadding%22%3A16%2C%22showNodeValues%22%3Atrue%2C%22showNodePercentages%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22enableAnimation%22%3Atrue%2C%22highlightFlowsOnHover%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "instance_wide": true
   }
 ]

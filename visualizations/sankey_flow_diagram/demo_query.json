@@ -1,0 +1,34 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.traffic_source",
+    "products.category",
+    "order_items.status",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "filters": {
+    "order_items.created_date": "365 days"
+  },
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "sankey_flow_diagram",
+    "viewMode": "sankey",
+    "nodeAlignment": "justify",
+    "linkColorMode": "gradient",
+    "colorPalette": "corporate_blue",
+    "valueFormat": "compact_currency",
+    "curvature": 0.5,
+    "nodeWidth": 18,
+    "nodePadding": 16,
+    "showNodeValues": true,
+    "showNodePercentages": true,
+    "showSearch": true,
+    "enableAnimation": true,
+    "highlightFlowsOnHover": true
+  }
+}

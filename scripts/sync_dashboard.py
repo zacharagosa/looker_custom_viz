@@ -45,7 +45,8 @@ VIZ_EMOJI_MAP = {
     "sparkline_matrix_table": "📋",
     "retention_cohort_decay": "🎮",
     "broadcast_daypart_grid": "🎬",
-    "network_topology_graph": "📡"
+    "network_topology_graph": "📡",
+    "sankey_flow_diagram": "🌊"
 }
 
 def get_headers(profile="default"):
