@@ -454,7 +454,14 @@
               var pObj = row[mName];
               if (pObj && typeof pObj === "object") {
                 Object.keys(pObj).forEach(function (pk) {
-                  if (periods.indexOf(pk) === -1) periods.push(pk);
+                  var sub = pObj[pk];
+                  if (sub && typeof sub === "object" && sub.value === undefined && sub.rendered === undefined && !Array.isArray(sub)) {
+                    Object.keys(sub).forEach(function (subKey) {
+                      if (periods.indexOf(subKey) === -1) periods.push(subKey);
+                    });
+                  } else {
+                    if (periods.indexOf(pk) === -1) periods.push(pk);
+                  }
                 });
               }
             });
@@ -481,11 +488,21 @@
           if (primaryMeasure && row[primaryMeasure]) {
             var measObj = row[primaryMeasure];
             periods.forEach(function (p) {
-              var cell = measObj[p];
+              var cell = measObj ? measObj[p] : null;
+              if (cell === undefined && typeof measObj === "object" && measObj !== null) {
+                for (var k in measObj) {
+                  if (measObj[k] && typeof measObj[k] === "object" && measObj[k][p] !== undefined) {
+                    cell = measObj[k][p];
+                    break;
+                  }
+                }
+              }
               var numVal = 0;
               var drillLinks = null;
               if (cell && typeof cell === "object") {
-                numVal = cell.value !== undefined ? (Number(cell.value) || 0) : 0;
+                numVal = (cell.value !== undefined && cell.value !== null)
+                  ? (Number(cell.value) || 0)
+                  : ((cell.rendered !== undefined && cell.rendered !== null) ? (Number(cell.rendered) || 0) : 0);
                 drillLinks = cell.links;
               } else if (cell !== undefined && cell !== null) {
                 numVal = Number(cell) || 0;
@@ -845,7 +862,7 @@
       // Create Tooltip DOM
       var tooltip = d3.select(chartContainer)
         .append("div")
-        .className = "looker-bump-tooltip";
+        .attr("class", "looker-bump-tooltip");
       var tooltipEl = tooltip.node();
       tooltipEl.style.position = "absolute";
       tooltipEl.style.display = "none";
@@ -891,7 +908,7 @@
           .style("transition", "opacity 0.2s, stroke-width 0.2s");
 
         if (animateTrajectories) {
-          var totalLength = pathEl.node().getTotalLength ? pathEl.node().getTotalLength() : 800;
+          var totalLength = (pathEl.node() && typeof pathEl.node().getTotalLength === "function") ? pathEl.node().getTotalLength() : 800;
           pathEl
             .attr("stroke-dasharray", totalLength + " " + totalLength)
             .attr("stroke-dashoffset", totalLength)
@@ -1025,7 +1042,8 @@
 
     highlightEntity: function (entityName, theme, baseLineWidth) {
       var sClass = sanitizeClass(entityName);
-      d3.selectAll(".bump-line-path")
+      var root = d3.select(this.container);
+      root.selectAll(".bump-line-path")
         .attr("opacity", function () {
           return d3.select(this).classed("entity-" + sClass) ? 1.0 : 0.12;
         })
@@ -1036,12 +1054,12 @@
           return d3.select(this).classed("entity-" + sClass) ? "url(#bump-glow)" : "none";
         });
 
-      d3.selectAll(".bump-node-group")
+      root.selectAll(".bump-node-group")
         .attr("opacity", function () {
           return d3.select(this).classed("entity-" + sClass) ? 1.0 : 0.15;
         });
 
-      d3.selectAll(".bump-end-label")
+      root.selectAll(".bump-end-label")
         .attr("opacity", function () {
           return d3.select(this).classed("entity-" + sClass) ? 1.0 : 0.15;
         });
@@ -1052,39 +1070,41 @@
         this.applySearchFilter(theme);
         return;
       }
-      d3.selectAll(".bump-line-path")
+      var root = d3.select(this.container);
+      root.selectAll(".bump-line-path")
         .attr("opacity", 0.85)
         .attr("stroke-width", baseLineWidth)
         .style("filter", "none");
 
-      d3.selectAll(".bump-node-group").attr("opacity", 1.0);
-      d3.selectAll(".bump-end-label").attr("opacity", 1.0);
+      root.selectAll(".bump-node-group").attr("opacity", 1.0);
+      root.selectAll(".bump-end-label").attr("opacity", 1.0);
     },
 
     applySearchFilter: function (theme) {
       var term = this.searchFilter;
+      var root = d3.select(this.container);
       if (!term) {
-        d3.selectAll(".bump-line-path").attr("opacity", 0.85);
-        d3.selectAll(".bump-node-group").attr("opacity", 1.0);
-        d3.selectAll(".bump-end-label").attr("opacity", 1.0);
+        root.selectAll(".bump-line-path").attr("opacity", 0.85);
+        root.selectAll(".bump-node-group").attr("opacity", 1.0);
+        root.selectAll(".bump-end-label").attr("opacity", 1.0);
         return;
       }
 
-      d3.selectAll(".bump-line-path").each(function () {
+      root.selectAll(".bump-line-path").each(function () {
         var el = d3.select(this);
         var cls = el.attr("class") || "";
         var match = cls.toLowerCase().indexOf(term) !== -1;
         el.attr("opacity", match ? 1.0 : 0.08);
       });
 
-      d3.selectAll(".bump-node-group").each(function () {
+      root.selectAll(".bump-node-group").each(function () {
         var el = d3.select(this);
         var cls = el.attr("class") || "";
         var match = cls.toLowerCase().indexOf(term) !== -1;
         el.attr("opacity", match ? 1.0 : 0.1);
       });
 
-      d3.selectAll(".bump-end-label").each(function () {
+      root.selectAll(".bump-end-label").each(function () {
         var el = d3.select(this);
         var cls = el.attr("class") || "";
         var match = cls.toLowerCase().indexOf(term) !== -1;
