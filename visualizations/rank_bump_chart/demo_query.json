@@ -1,0 +1,35 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.created_month",
+    "order_items.total_sale_price"
+  ],
+  "pivots": [
+    "order_items.created_month"
+  ],
+  "filters": {
+    "order_items.created_date": "6 months"
+  },
+  "sorts": [
+    "order_items.created_month asc 0",
+    "order_items.total_sale_price desc 0"
+  ],
+  "limit": "12",
+  "vis_config": {
+    "type": "rank_bump_chart",
+    "viewMode": "bump",
+    "colorPalette": "corporate_modern",
+    "valueFormat": "compact_currency",
+    "curveInterpolation": "bumpX",
+    "lineWidth": 4,
+    "nodeRadius": 14,
+    "showNodeRanks": true,
+    "showEndLabels": true,
+    "showRankBadges": true,
+    "showSearch": true,
+    "showExecutiveHUD": true,
+    "tieBreaker": "value"
+  }
+}

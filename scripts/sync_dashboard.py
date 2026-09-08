@@ -33,6 +33,7 @@ CATEGORY_TAB_MAP = {
     "Telco & Networks": "📡 Telco & Networks",
     "Telco": "📡 Telco & Networks",
     "Flow & Hierarchy": "🌊 Flow & Hierarchy",
+    "Rank & Volatility": "🏆 Rank & Volatility",
     "Distribution & Density": "📈 Distribution & Density",
 }
 
@@ -46,7 +47,8 @@ VIZ_EMOJI_MAP = {
     "retention_cohort_decay": "🎮",
     "broadcast_daypart_grid": "🎬",
     "network_topology_graph": "📡",
-    "sankey_flow_diagram": "🌊"
+    "sankey_flow_diagram": "🌊",
+    "rank_bump_chart": "🏆"
 }
 
 def get_headers(profile="default"):

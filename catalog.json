@@ -272,5 +272,33 @@
     "deployed": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.traffic_source,products.category,order_items.status,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=365+days&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sankey_flow_diagram%22%2C%22viewMode%22%3A%22sankey%22%2C%22nodeAlignment%22%3A%22justify%22%2C%22linkColorMode%22%3A%22gradient%22%2C%22colorPalette%22%3A%22corporate_blue%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curvature%22%3A0.5%2C%22nodeWidth%22%3A18%2C%22nodePadding%22%3A16%2C%22showNodeValues%22%3Atrue%2C%22showNodePercentages%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22enableAnimation%22%3Atrue%2C%22highlightFlowsOnHover%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
+  },
+  {
+    "id": "rank_bump_chart",
+    "name": "Rank Bump & Trajectory Chart",
+    "date_added": "2026-09-08",
+    "library": "D3.js v7",
+    "category": "Rank & Volatility",
+    "description": "Interactive multi-mode rank bump chart and trajectory tracker for competitive leaderboards, product category market share shifts, and customer segment volatility over time with smooth cubic B\u00e9zier curves, net rank shift delta badges (+2, -1), executive KPI HUD, and Looker drill-down.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Entity Dimension (e.g. products.category)",
+      "pivots": "1 Chronological Pivot (e.g. order_items.created_month) OR 2-12 chronological measures",
+      "measures": "1 Numeric Measure (e.g. order_items.total_sale_price)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.created_month",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price&pivots=order_items.created_month&f[order_items.created_date]=6+months&sorts=order_items.created_month+asc+0,order_items.total_sale_price+desc+0&limit=12&vis=%7B%22type%22%3A%22rank_bump_chart%22%2C%22viewMode%22%3A%22bump%22%2C%22colorPalette%22%3A%22corporate_modern%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curveInterpolation%22%3A%22bumpX%22%2C%22lineWidth%22%3A4%2C%22nodeRadius%22%3A14%2C%22showNodeRanks%22%3Atrue%2C%22showEndLabels%22%3Atrue%2C%22showRankBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22tieBreaker%22%3A%22value%22%7D&origin=share-expanded&toggle=vis",
+    "instance_wide": true
   }
 ]
