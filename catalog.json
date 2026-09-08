@@ -4,7 +4,7 @@
     "name": "Radial KPI Progress Gauge",
     "date_added": "2026-09-01",
     "library": "D3.js v7",
-    "category": "KPI & Progress",
+    "category": "Performance & Variance",
     "description": "Multi-tier concentric progress rings inspired by Apple Fitness and cloud quota meters with smooth arc animations, customizable goal thresholds, and central metric readouts.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -30,7 +30,7 @@
     "name": "Calendar Activity Heatmap",
     "date_added": "2026-09-01",
     "library": "D3.js v7",
-    "category": "Time Series & Activity",
+    "category": "Time Series & Schedules",
     "description": "53-week rolling calendar activity grid inspired by GitHub contribution graphs, with quantile color scaling, day-of-week/month axes, interactive hover cards, and peak metric summaries.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -56,7 +56,7 @@
     "name": "Stephen Few Bullet Graph",
     "date_added": "2026-09-02",
     "library": "D3.js v7",
-    "category": "KPI & Performance",
+    "category": "Performance & Variance",
     "description": "Executive KPI performance bullet graph implementing Stephen Few's classic specification with multi-tier qualitative range bands, target/quota markers, variance badges, and hover details.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -83,7 +83,7 @@
     "name": "Dumbbell Divergence Plot",
     "date_added": "2026-09-03",
     "library": "D3.js v7",
-    "category": "Comparison & Variance",
+    "category": "Performance & Variance",
     "description": "Executive dumbbell and connected dot plot designed for variance analysis, period-over-period comparisons (2024 vs 2025), target vs actuals, and range divergence across categories with directional chevrons and variance pills.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -110,7 +110,7 @@
     "name": "Interactive US Choropleth Map",
     "date_added": "2026-09-03",
     "library": "D3.js v7",
-    "category": "Geospatial & Maps",
+    "category": "Geospatial Intelligence",
     "description": "Pure SVG 50-state US choropleth heatmap with Albers USA projection, quantile color scaling, automatic state name & postal code parsing, hover elevation, and Looker drill-down links.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js",
@@ -137,7 +137,7 @@
     "name": "Sparkline Metric Matrix Table",
     "date_added": "2026-09-03",
     "library": "D3.js v7",
-    "category": "Advanced Tables & Grids",
+    "category": "Leaderboards & Grids",
     "description": "Executive scorecard table featuring in-cell SVG trend sparklines with shaded gradient fills, micro bullet bars, period growth percentage badges, and client-side search filtering.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -165,7 +165,7 @@
     "name": "Player & Customer Retention Cohort Decay",
     "date_added": "2026-09-04",
     "library": "D3.js v7",
-    "category": "Gaming & Telemetry",
+    "category": "Telemetry & Cohort Decay",
     "description": "Multi-mode retention cohort decay matrix and interactive D3 B\u00e9zier curve visualization for gaming telemetry (D1/D7/D30 player retention) and SaaS lifecycle analytics with dynamic Period 0 indexing (100%), benchmark outperformance variance, and dual synchronized split view.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -192,7 +192,7 @@
     "name": "Broadcast Programming Schedule & Daypart Performance Grid",
     "date_added": "2026-09-05",
     "library": "D3.js v7",
-    "category": "Media & Entertainment",
+    "category": "Time Series & Schedules",
     "description": "Multi-mode 7-day x 24-hour programming schedule and Nielsen daypart performance grid for television, streaming, ad-ops pacing, and diurnal retail conversion analytics with peak anomaly detection, marginal rollups, and interactive diurnal spline curves.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -220,7 +220,7 @@
     "name": "Network Topology & Latency Flow Graph",
     "date_added": "2026-09-06",
     "library": "D3.js v7",
-    "category": "Telco & Networks",
+    "category": "Flow, Networks & Hierarchy",
     "description": "Interactive multi-modal network topology, packet flow, and transmission latency graph designed for telecommunications, cell tower networks, cloud infrastructure, and microservice meshes. Features D3 physics force-directed layout, hierarchical concentric radial tiers, circular peering chord ring, and adjacency latency matrix with real-time packet pulse flow animations, bottleneck detection, neighbor node focus, and Looker drill-down.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -249,7 +249,7 @@
     "name": "Sankey Flow & Multi-Stage Allocation Diagram",
     "date_added": "2026-09-07",
     "library": "D3.js v7",
-    "category": "Flow & Hierarchy",
+    "category": "Flow, Networks & Hierarchy",
     "description": "Interactive multi-mode Sankey flow, alluvial attribution, and hierarchical breakdown diagram for e-commerce conversions, marketing multi-touch attribution, financial cost allocations, and telemetry packet paths with draggable nodes, B\u00e9zier ribbons, path search, and Looker drill-down.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
@@ -278,7 +278,7 @@
     "name": "Rank Bump & Trajectory Chart",
     "date_added": "2026-09-08",
     "library": "D3.js v7",
-    "category": "Rank & Volatility",
+    "category": "Leaderboards & Grids",
     "description": "Interactive multi-mode rank bump chart and trajectory tracker for competitive leaderboards, product category market share shifts, and customer segment volatility over time with smooth cubic B\u00e9zier curves, net rank shift delta badges (+2, -1), executive KPI HUD, and Looker drill-down.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"

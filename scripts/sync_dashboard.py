@@ -14,28 +14,55 @@ import subprocess
 
 DASHBOARD_ID = "164"  # Slug: 7CQgKOwKT6t6wJrPuaypnh
 LOOKER_HOST = "3417a175-fe20-4370-974f-2f2b535340ab.looker.app"
+# Limit dashboard to exactly 6 consolidated executive tabs (max 5 visualizations per tab)
+MAX_TABS = 6
 MAX_VIZ_PER_TAB = 5
 
 CATEGORY_TAB_MAP = {
-    "KPI & Performance": "🎯 KPI & Performance",
-    "KPI & Progress": "🎯 KPI & Performance",
-    "Comparison & Variance": "📊 Comparison & Variance",
-    "Time Series & Activity": "📅 Time Series & Activity",
-    "Geospatial & Maps": "🗺️ Geospatial & Maps",
-    "Maps": "🗺️ Geospatial & Maps",
-    "Advanced Tables & Grids": "📋 Advanced Tables & Grids",
-    "Tables & Grids": "📋 Advanced Tables & Grids",
-    "Tables": "📋 Advanced Tables & Grids",
-    "Gaming & Telemetry": "🎮 Gaming & Telemetry",
-    "Gaming": "🎮 Gaming & Telemetry",
-    "Media & Entertainment": "🎬 Media & Entertainment",
-    "Media": "🎬 Media & Entertainment",
-    "Telco & Networks": "📡 Telco & Networks",
-    "Telco": "📡 Telco & Networks",
-    "Flow & Hierarchy": "🌊 Flow & Hierarchy",
-    "Rank & Volatility": "🏆 Rank & Volatility",
-    "Distribution & Density": "📈 Distribution & Density",
+    # 1. Performance & Variance (KPI progress, targets, and divergence)
+    "Performance & Variance": "🎯 Performance & Variance",
+    "KPI & Performance": "🎯 Performance & Variance",
+    "KPI & Progress": "🎯 Performance & Variance",
+    "Comparison & Variance": "🎯 Performance & Variance",
+
+    # 2. Leaderboards & Grids (rankings, bump charts, and matrix tables)
+    "Leaderboards & Grids": "🏆 Leaderboards & Grids",
+    "Rank & Volatility": "🏆 Leaderboards & Grids",
+    "Advanced Tables & Grids": "🏆 Leaderboards & Grids",
+    "Tables & Grids": "🏆 Leaderboards & Grids",
+    "Tables": "🏆 Leaderboards & Grids",
+
+    # 3. Time Series & Schedules (daily activity, broadcast dayparts, calendars)
+    "Time Series & Schedules": "📅 Time Series & Schedules",
+    "Time Series & Activity": "📅 Time Series & Schedules",
+    "Media & Entertainment": "📅 Time Series & Schedules",
+    "Media": "📅 Time Series & Schedules",
+
+    # 4. Flow, Networks & Hierarchy (sankey flows, topology graphs, allocations)
+    "Flow, Networks & Hierarchy": "🌊 Flow, Networks & Hierarchy",
+    "Flow & Hierarchy": "🌊 Flow, Networks & Hierarchy",
+    "Telco & Networks": "🌊 Flow, Networks & Hierarchy",
+    "Telco": "🌊 Flow, Networks & Hierarchy",
+
+    # 5. Geospatial Intelligence (choropleths, regional maps, density)
+    "Geospatial Intelligence": "🗺️ Geospatial Intelligence",
+    "Geospatial & Maps": "🗺️ Geospatial Intelligence",
+    "Maps": "🗺️ Geospatial Intelligence",
+
+    # 6. Telemetry & Cohort Decay (retention decay, game balance, user curves)
+    "Telemetry & Cohort Decay": "🎮 Telemetry & Cohort Decay",
+    "Gaming & Telemetry": "🎮 Telemetry & Cohort Decay",
+    "Gaming": "🎮 Telemetry & Cohort Decay",
 }
+
+TAB_ORDER = [
+    "🎯 Performance & Variance",
+    "🏆 Leaderboards & Grids",
+    "📅 Time Series & Schedules",
+    "🌊 Flow, Networks & Hierarchy",
+    "🗺️ Geospatial Intelligence",
+    "🎮 Telemetry & Cohort Decay"
+]
 
 VIZ_EMOJI_MAP = {
     "dumbbell_plot": "📊",
@@ -145,24 +172,19 @@ def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
     with open(catalog_path, "r", encoding="utf-8") as f:
         catalog = json.load(f)
 
-    # Group visualizations by Category Tab
-    tabs_dict = {}
+    # Group visualizations by Category Tab according to predefined TAB_ORDER
+    tabs_dict = {tab: [] for tab in TAB_ORDER}
     for item in catalog:
         cat = item.get("category", "Other")
-        tab_name = CATEGORY_TAB_MAP.get(cat, f"✨ {cat}")
-        
-        # Check if tab has reached MAX_VIZ_PER_TAB (5)
-        part = 1
-        current_tab_name = tab_name
-        while current_tab_name in tabs_dict and len(tabs_dict[current_tab_name]) >= MAX_VIZ_PER_TAB:
-            part += 1
-            current_tab_name = f"{tab_name} (Part {part})"
-        
-        if current_tab_name not in tabs_dict:
-            tabs_dict[current_tab_name] = []
-        tabs_dict[current_tab_name].append(item)
+        tab_name = CATEGORY_TAB_MAP.get(cat, "🎯 Performance & Variance")
+        if tab_name not in tabs_dict:
+            tabs_dict[tab_name] = []
+        tabs_dict[tab_name].append(item)
 
-    print(f"[*] Identified {len(tabs_dict)} category tabs:")
+    # Filter out empty tabs while strictly preserving TAB_ORDER
+    tabs_dict = {k: v for k, v in tabs_dict.items() if len(v) > 0}
+
+    print(f"[*] Identified {len(tabs_dict)} consolidated category tabs (Limit <= {MAX_TABS} tabs):")
     for t_name, items in tabs_dict.items():
         v_ids = [it["id"] for it in items]
         print(f"    - '{t_name}': {len(items)} viz ({', '.join(v_ids)})")

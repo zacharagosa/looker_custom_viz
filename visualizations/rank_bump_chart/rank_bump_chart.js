@@ -389,10 +389,19 @@
       // Clean up previous SVG and controls cleanly
       container.innerHTML = "";
 
-      // Validate dimensions and measures
-      var dimensions = queryResponse.fields.dimension_like || [];
-      var measures = queryResponse.fields.measure_like || [];
-      var pivots = queryResponse.fields.pivots || [];
+      // Validate dimensions and measures (support standard dimensions/measures and dimension_like/measure_like)
+      var dimensions = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
+        ? queryResponse.fields.dimensions
+        : (queryResponse.fields.dimension_like || []);
+      var measures = (queryResponse.fields.measures && queryResponse.fields.measures.length > 0)
+        ? queryResponse.fields.measures
+        : (queryResponse.fields.measure_like || []);
+      if (measures.length === 0 && queryResponse.fields.table_calculations && queryResponse.fields.table_calculations.length > 0) {
+        measures = queryResponse.fields.table_calculations;
+      }
+      var pivots = (queryResponse.fields.pivots && queryResponse.fields.pivots.length > 0)
+        ? queryResponse.fields.pivots
+        : (queryResponse.pivots || []);
 
       if (dimensions.length === 0 && measures.length === 0) {
         this.addError({
@@ -423,23 +432,26 @@
       // Extract Entities, Periods, and Metrics
       var periods = [];
       var entitiesMap = {}; // entityName -> { name: string, values: { [period]: number }, drills: { [period]: any } }
-      var isPivoted = pivots.length > 0 && queryResponse.pivots && queryResponse.pivots.length > 0;
+      var isPivoted = (pivots.length > 0) || (queryResponse.pivots && queryResponse.pivots.length > 0);
 
-      var entityDim = dimensions[0] ? dimensions[0].name : "entity";
-      var entityLabel = dimensions[0] ? dimensions[0].label_short || dimensions[0].label : "Entity";
+      var entityDim = dimensions[0] ? (dimensions[0].name || dimensions[0]) : "entity";
+      var entityLabel = dimensions[0] ? (dimensions[0].label_short || dimensions[0].label || dimensions[0].name || "Entity") : "Entity";
 
       if (isPivoted) {
         // Collect periods in order from queryResponse.pivots
-        queryResponse.pivots.forEach(function (p) {
-          var pKey = p.key;
-          if (periods.indexOf(pKey) === -1) periods.push(pKey);
-        });
+        if (queryResponse.pivots && queryResponse.pivots.length > 0) {
+          queryResponse.pivots.forEach(function (p) {
+            var pKey = (typeof p === "object" && p !== null) ? (p.key || p.name || String(p)) : String(p);
+            if (pKey && periods.indexOf(pKey) === -1) periods.push(pKey);
+          });
+        }
 
         // If no pivots metadata array, fallback to scan data
         if (periods.length === 0) {
           data.forEach(function (row) {
             measures.forEach(function (m) {
-              var pObj = row[m.name];
+              var mName = m.name || m;
+              var pObj = row[mName];
               if (pObj && typeof pObj === "object") {
                 Object.keys(pObj).forEach(function (pk) {
                   if (periods.indexOf(pk) === -1) periods.push(pk);
@@ -449,10 +461,20 @@
           });
         }
 
-        var primaryMeasure = measures[0] ? measures[0].name : null;
+        var primaryMeasure = measures[0] ? (measures[0].name || measures[0]) : null;
 
         data.forEach(function (row) {
-          var entityVal = row[entityDim] ? (row[entityDim].rendered || row[entityDim].value || "Unknown") : "Unknown";
+          var entityCell = row[entityDim];
+          var entityVal = "Unknown";
+          if (entityCell !== undefined && entityCell !== null) {
+            if (typeof entityCell === "object") {
+              entityVal = (entityCell.rendered !== undefined && entityCell.rendered !== null && entityCell.rendered !== "")
+                ? String(entityCell.rendered)
+                : ((entityCell.value !== undefined && entityCell.value !== null) ? String(entityCell.value) : "Unknown");
+            } else {
+              entityVal = String(entityCell);
+            }
+          }
           if (!entitiesMap[entityVal]) {
             entitiesMap[entityVal] = { name: entityVal, values: {}, drills: {} };
           }
@@ -463,7 +485,7 @@
               var numVal = 0;
               var drillLinks = null;
               if (cell && typeof cell === "object") {
-                numVal = Number(cell.value) || 0;
+                numVal = cell.value !== undefined ? (Number(cell.value) || 0) : 0;
                 drillLinks = cell.links;
               } else if (cell !== undefined && cell !== null) {
                 numVal = Number(cell) || 0;
@@ -476,21 +498,33 @@
       } else if (measures.length >= 2) {
         // Unpivoted: Each measure represents a distinct period/milestone
         measures.forEach(function (m) {
-          periods.push(m.label_short || m.label || m.name);
+          var mLabel = m.label_short || m.label || m.name || String(m);
+          periods.push(mLabel);
         });
 
         data.forEach(function (row) {
-          var entityVal = row[entityDim] ? (row[entityDim].rendered || row[entityDim].value || "Unknown") : "Unknown";
+          var entityCell = row[entityDim];
+          var entityVal = "Unknown";
+          if (entityCell !== undefined && entityCell !== null) {
+            if (typeof entityCell === "object") {
+              entityVal = (entityCell.rendered !== undefined && entityCell.rendered !== null && entityCell.rendered !== "")
+                ? String(entityCell.rendered)
+                : ((entityCell.value !== undefined && entityCell.value !== null) ? String(entityCell.value) : "Unknown");
+            } else {
+              entityVal = String(entityCell);
+            }
+          }
           if (!entitiesMap[entityVal]) {
             entitiesMap[entityVal] = { name: entityVal, values: {}, drills: {} };
           }
           measures.forEach(function (m, idx) {
             var p = periods[idx];
-            var cell = row[m.name];
+            var mName = m.name || m;
+            var cell = row[mName];
             var numVal = 0;
             var drillLinks = null;
             if (cell && typeof cell === "object") {
-              numVal = Number(cell.value) || 0;
+              numVal = cell.value !== undefined ? (Number(cell.value) || 0) : 0;
               drillLinks = cell.links;
             } else if (cell !== undefined && cell !== null) {
               numVal = Number(cell) || 0;
@@ -501,21 +535,41 @@
         });
       } else if (dimensions.length >= 2 && measures.length >= 1) {
         // Multi-dimensional unpivoted: Dim 0 = Entity, Dim 1 = Period, Measure 0 = Value
-        var periodDim = dimensions[1].name;
-        var measName = measures[0].name;
+        var periodDim = dimensions[1].name || dimensions[1];
+        var measName = measures[0].name || measures[0];
 
         data.forEach(function (row) {
-          var eVal = row[entityDim] ? (row[entityDim].rendered || row[entityDim].value || "Unknown") : "Unknown";
-          var pVal = row[periodDim] ? (row[periodDim].rendered || row[periodDim].value || "Unknown") : "Unknown";
+          var entityCell = row[entityDim];
+          var entityVal = "Unknown";
+          if (entityCell !== undefined && entityCell !== null) {
+            if (typeof entityCell === "object") {
+              entityVal = (entityCell.rendered !== undefined && entityCell.rendered !== null && entityCell.rendered !== "")
+                ? String(entityCell.rendered)
+                : ((entityCell.value !== undefined && entityCell.value !== null) ? String(entityCell.value) : "Unknown");
+            } else {
+              entityVal = String(entityCell);
+            }
+          }
+          var periodCell = row[periodDim];
+          var pVal = "Unknown";
+          if (periodCell !== undefined && periodCell !== null) {
+            if (typeof periodCell === "object") {
+              pVal = (periodCell.rendered !== undefined && periodCell.rendered !== null && periodCell.rendered !== "")
+                ? String(periodCell.rendered)
+                : ((periodCell.value !== undefined && periodCell.value !== null) ? String(periodCell.value) : "Unknown");
+            } else {
+              pVal = String(periodCell);
+            }
+          }
           if (periods.indexOf(pVal) === -1) periods.push(pVal);
 
-          if (!entitiesMap[eVal]) {
-            entitiesMap[eVal] = { name: eVal, values: {}, drills: {} };
+          if (!entitiesMap[entityVal]) {
+            entitiesMap[entityVal] = { name: entityVal, values: {}, drills: {} };
           }
           var cell = row[measName];
-          var numVal = cell ? (Number(cell.value) || 0) : 0;
-          entitiesMap[eVal].values[pVal] = numVal;
-          if (cell && cell.links) entitiesMap[eVal].drills[pVal] = cell.links;
+          var numVal = cell ? (cell.value !== undefined ? (Number(cell.value) || 0) : (Number(cell) || 0)) : 0;
+          entitiesMap[entityVal].values[pVal] = numVal;
+          if (cell && cell.links) entitiesMap[entityVal].drills[pVal] = cell.links;
         });
       }
 
@@ -683,8 +737,8 @@
       chartContainer.style.position = "relative";
       container.appendChild(chartContainer);
 
-      var width = chartContainer.clientWidth || element.clientWidth || 900;
-      var height = chartContainer.clientHeight || element.clientHeight || 550;
+      var width = Math.max(chartContainer.clientWidth || container.clientWidth || 900, 400);
+      var height = Math.max(chartContainer.clientHeight || container.clientHeight || 550, 320);
 
       var margin = {
         top: 40,
@@ -698,8 +752,9 @@
 
       var svg = d3.select(chartContainer)
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("viewBox", "0 0 " + width + " " + height)
+        .attr("width", "100%")
+        .attr("height", "100%")
         .style("display", "block")
         .style("overflow", "visible");
 
