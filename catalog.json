@@ -198,21 +198,22 @@
       "https://d3js.org/d3.v7.min.js"
     ],
     "fields_required": {
-      "dimensions": "2 Dimensions: Day of Week (e.g. order_items.created_day_of_week) + Hour of Day (e.g. order_items.created_hour_of_day) [Optional 3rd Dimension for Slicing]",
-      "measures": "1 to 2 Measures (e.g. order_items.total_sale_price, order_items.order_count)"
+      "dimensions": "2 Dimensions: Day of Week (e.g. ad_spot_airings.airing_day_of_week) + Hour of Day (e.g. ad_spot_airings.airing_hour_of_day) [Optional 3rd Dimension for Slicing, e.g. broadcast_programming.network]",
+      "measures": "1 to 2 Measures (e.g. nielsen_ratings_markets.total_grps, ad_spot_airings.total_spend_mxn)"
     },
     "suggested_dataset": {
-      "model": "thelook",
-      "explore": "order_items",
+      "model": "tvun_media_analytics",
+      "explore": "ad_spot_airings",
       "fields": [
-        "order_items.created_day_of_week",
-        "order_items.created_hour_of_day",
-        "order_items.total_sale_price",
-        "order_items.order_count"
+        "ad_spot_airings.airing_day_of_week",
+        "ad_spot_airings.airing_hour_of_day",
+        "broadcast_programming.network",
+        "nielsen_ratings_markets.total_grps",
+        "ad_spot_airings.total_spend_mxn"
       ]
     },
     "deployed": true,
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=order_items.created_day_of_week,order_items.created_hour_of_day,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=365+days&sorts=order_items.created_day_of_week+asc,order_items.created_hour_of_day+asc&limit=500&vis=%7B%22type%22%3A%22broadcast_daypart_grid%22%2C%22viewMode%22%3A%22split_view%22%2C%22daypartPreset%22%3A%22nielsen%22%2C%22startOfWeek%22%3A%22monday%22%2C%22highlightPeaks%22%3A%22top_5%22%2C%22colorPalette%22%3A%22nielsen_broadcast%22%2C%22colorScaleMode%22%3A%22quantile%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22showMarginals%22%3Atrue%2C%22showCellValues%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/tvun_media_analytics/ad_spot_airings?fields=ad_spot_airings.airing_day_of_week,ad_spot_airings.airing_hour_of_day,broadcast_programming.network,nielsen_ratings_markets.total_grps,ad_spot_airings.total_spend_mxn&sorts=ad_spot_airings.airing_day_of_week+asc,ad_spot_airings.airing_hour_of_day+asc&limit=1500&vis=%7B%22type%22%3A%22broadcast_daypart_grid%22%2C%22viewMode%22%3A%22split_view%22%2C%22daypartPreset%22%3A%22nielsen%22%2C%22startOfWeek%22%3A%22monday%22%2C%22highlightPeaks%22%3A%22top_5%22%2C%22colorPalette%22%3A%22nielsen_broadcast%22%2C%22colorScaleMode%22%3A%22quantile%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22showMarginals%22%3Atrue%2C%22showCellValues%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
   },
   {

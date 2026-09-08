@@ -1,20 +1,18 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "tvun_media_analytics",
+  "view": "ad_spot_airings",
   "fields": [
-    "order_items.created_day_of_week",
-    "order_items.created_hour_of_day",
-    "order_items.total_sale_price",
-    "order_items.order_count"
+    "ad_spot_airings.airing_day_of_week",
+    "ad_spot_airings.airing_hour_of_day",
+    "broadcast_programming.network",
+    "nielsen_ratings_markets.total_grps",
+    "ad_spot_airings.total_spend_mxn"
   ],
-  "filters": {
-    "order_items.created_date": "365 days"
-  },
   "sorts": [
-    "order_items.created_day_of_week asc",
-    "order_items.created_hour_of_day asc"
+    "ad_spot_airings.airing_day_of_week asc",
+    "ad_spot_airings.airing_hour_of_day asc"
   ],
-  "limit": "500",
+  "limit": "1500",
   "vis_config": {
     "type": "broadcast_daypart_grid",
     "viewMode": "split_view",
@@ -23,8 +21,9 @@
     "highlightPeaks": "top_5",
     "colorPalette": "nielsen_broadcast",
     "colorScaleMode": "quantile",
-    "valueFormat": "compact_currency",
+    "valueFormat": "compact_num",
     "showMarginals": true,
-    "showCellValues": true
+    "showCellValues": true,
+    "showSearch": true
   }
 }

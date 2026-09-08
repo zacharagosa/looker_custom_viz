@@ -227,28 +227,42 @@
     return null;
   }
 
-  function formatMetricValue(val, fmt) {
+  function formatMetricValue(val, fmt, meas) {
     if (val === null || val === undefined || isNaN(val)) return "-";
     var num = Number(val);
-    switch (fmt) {
-      case "compact_currency":
-        if (Math.abs(num) >= 1e9) return "$" + (num / 1e9).toFixed(2) + "B";
-        if (Math.abs(num) >= 1e6) return "$" + (num / 1e6).toFixed(2) + "M";
-        if (Math.abs(num) >= 1e3) return "$" + (num / 1e3).toFixed(1) + "k";
-        return "$" + num.toLocaleString(undefined, { maximumFractionDigits: 0 });
-      case "currency":
-        return "$" + Math.round(num).toLocaleString();
-      case "compact_num":
-        if (Math.abs(num) >= 1e9) return (num / 1e9).toFixed(2) + "B";
-        if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M";
-        if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "k";
-        return num.toLocaleString();
-      case "percent":
-        return (num * 100).toFixed(1) + "%";
-      case "integer":
-      default:
-        return Math.round(num).toLocaleString();
+    var measName = (meas && (meas.name || meas.label || "")) ? String(meas.name || meas.label).toLowerCase() : "";
+
+    // Check if measure is explicitly GRP, ratings, impressions, spots or count
+    var isRatingOrCount = measName.indexOf("grp") !== -1 || measName.indexOf("rating") !== -1 ||
+      measName.indexOf("trp") !== -1 || measName.indexOf("impression") !== -1 ||
+      measName.indexOf("count") !== -1 || measName.indexOf("spot") !== -1;
+
+    var isSpendOrCost = measName.indexOf("spend") !== -1 || measName.indexOf("cost") !== -1 ||
+      measName.indexOf("rate") !== -1 || measName.indexOf("price") !== -1 ||
+      measName.indexOf("budget") !== -1 || measName.indexOf("revenue") !== -1;
+
+    // If metric is rating/GRP or if format is compact_num/integer, format as number
+    if (fmt === "compact_num" || (isRatingOrCount && !isSpendOrCost && fmt !== "currency")) {
+      var suffix = (measName.indexOf("grp") !== -1) ? " GRP" : "";
+      if (Math.abs(num) >= 1e9) return (num / 1e9).toFixed(2) + "B" + suffix;
+      if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M" + suffix;
+      if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "k" + suffix;
+      return (Math.abs(num) >= 100 ? Math.round(num).toLocaleString() : num.toFixed(1)) + suffix;
     }
+
+    if (fmt === "percent") {
+      return (num * 100).toFixed(1) + "%";
+    }
+
+    if (fmt === "integer") {
+      return Math.round(num).toLocaleString();
+    }
+
+    // Currency formatting
+    if (Math.abs(num) >= 1e9) return "$" + (num / 1e9).toFixed(2) + "B";
+    if (Math.abs(num) >= 1e6) return "$" + (num / 1e6).toFixed(2) + "M";
+    if (Math.abs(num) >= 1e3) return "$" + (num / 1e3).toFixed(1) + "k";
+    return "$" + num.toLocaleString(undefined, { maximumFractionDigits: 0 });
   }
 
   function getHourLabel(hour, format24) {
@@ -461,8 +475,15 @@
         return;
       }
 
-      var dimensions = queryResponse.fields.dimensions || [];
-      var measures = queryResponse.fields.measures || [];
+      var dimensions = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
+        ? queryResponse.fields.dimensions
+        : (queryResponse.fields.dimension_like || []);
+      var measures = (queryResponse.fields.measures && queryResponse.fields.measures.length > 0)
+        ? queryResponse.fields.measures
+        : (queryResponse.fields.measure_like || []);
+      if (measures.length === 0 && queryResponse.fields.table_calculations && queryResponse.fields.table_calculations.length > 0) {
+        measures = queryResponse.fields.table_calculations;
+      }
 
       if (dimensions.length < 2 || measures.length < 1) {
         this.addError({
@@ -500,16 +521,23 @@
       container.style.color = theme.text;
 
       // Identify dimensions and measures
-      var dimensions = queryResponse.fields.dimensions;
-      var measures = queryResponse.fields.measures;
+      var dimensions = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
+        ? queryResponse.fields.dimensions
+        : (queryResponse.fields.dimension_like || []);
+      var measures = (queryResponse.fields.measures && queryResponse.fields.measures.length > 0)
+        ? queryResponse.fields.measures
+        : (queryResponse.fields.measure_like || []);
+      if (measures.length === 0 && queryResponse.fields.table_calculations && queryResponse.fields.table_calculations.length > 0) {
+        measures = queryResponse.fields.table_calculations;
+      }
 
       var dayDim = null;
       var hourDim = null;
       var sliceDim = null;
 
       dimensions.forEach(function (dim) {
-        var name = dim.name.toLowerCase();
-        var label = dim.label.toLowerCase();
+        var name = (dim.name || "").toLowerCase();
+        var label = (dim.label || "").toLowerCase();
         if (!dayDim && (name.indexOf("day_of_week") !== -1 || name.indexOf("dayofweek") !== -1 || label.indexOf("day of week") !== -1 || name.indexOf("day") !== -1)) {
           dayDim = dim;
         } else if (!hourDim && (name.indexOf("hour") !== -1 || label.indexOf("hour") !== -1 || name.indexOf("time_of_day") !== -1)) {
@@ -535,7 +563,8 @@
       if (sliceDim) {
         var sliceSet = new Set();
         data.forEach(function (row) {
-          var val = row[sliceDim.name] && row[sliceDim.name].value;
+          var sliceCell = row[sliceDim.name];
+          var val = (sliceCell && typeof sliceCell === "object") ? (sliceCell.value !== undefined ? sliceCell.value : sliceCell.rendered) : sliceCell;
           if (val !== null && val !== undefined && val !== "") {
             sliceSet.add(String(val));
           }
@@ -558,16 +587,26 @@
 
       data.forEach(function (row) {
         if (sliceDim && self._selectedSlice !== "ALL") {
-          var sVal = row[sliceDim.name] && String(row[sliceDim.name].value);
-          if (sVal !== self._selectedSlice) return;
+          var sliceCell = row[sliceDim.name];
+          var sVal = (sliceCell && typeof sliceCell === "object") ? (sliceCell.value !== undefined ? sliceCell.value : sliceCell.rendered) : sliceCell;
+          if (String(sVal) !== self._selectedSlice) return;
         }
 
-        var dayVal = row[dayDim.name] && row[dayDim.name].value;
+        var dayCell = row[dayDim.name];
+        var dayVal = (dayCell && typeof dayCell === "object") ? (dayCell.value !== undefined ? dayCell.value : dayCell.rendered) : dayCell;
         var dayKey = normalizeDayString(dayVal);
-        var hourVal = row[hourDim.name] && row[hourDim.name].value;
+
+        var hourCell = row[hourDim.name];
+        var hourVal = (hourCell && typeof hourCell === "object") ? (hourCell.value !== undefined ? hourCell.value : hourCell.rendered) : hourCell;
         var hourNum = normalizeHourNumber(hourVal);
-        var measObj = row[activeMeasure.name];
-        var measVal = measObj ? Number(measObj.value) : 0;
+
+        var measCell = row[activeMeasure.name];
+        var measVal = 0;
+        if (measCell && typeof measCell === "object") {
+          measVal = measCell.value !== undefined ? Number(measCell.value) : (Number(measCell.rendered) || 0);
+        } else if (measCell !== undefined && measCell !== null) {
+          measVal = Number(measCell) || 0;
+        }
 
         if (dayKey && hourNum !== null && !isNaN(measVal) && matrix[dayKey]) {
           matrix[dayKey][hourNum] += measVal;
@@ -886,7 +925,7 @@
       wrap.style.overflowX = "auto";
       targetElem.appendChild(wrap);
 
-      var margin = { top: showMarginals ? 54 : 36, right: showMarginals ? 130 : 20, bottom: 20, left: 110 };
+      var margin = { top: showMarginals ? 78 : 54, right: showMarginals ? 130 : 20, bottom: 20, left: 110 };
       var baseCellWidth = 38;
       var cellHeight = 36;
       var gridWidth = baseCellWidth * 24;
@@ -926,16 +965,16 @@
       // Marginal Top Mini-Bars (Hourly totals)
       if (showMarginals) {
         var topBarsG = svg.append("g")
-          .attr("transform", "translate(" + margin.left + ", 8)");
+          .attr("transform", "translate(" + margin.left + ", 6)");
 
         for (var h = 0; h < 24; h++) {
-          var barH = maxHourTotal > 0 ? (hourTotals[h] / maxHourTotal) * 26 : 0;
+          var barH = maxHourTotal > 0 ? (hourTotals[h] / maxHourTotal) * 22 : 0;
           var bx = h * baseCellWidth + spacing;
           var bw = baseCellWidth - (spacing * 2);
 
           topBarsG.append("rect")
             .attr("x", bx)
-            .attr("y", 28 - barH)
+            .attr("y", 24 - barH)
             .attr("width", Math.max(1, bw))
             .attr("height", Math.max(1, barH))
             .attr("fill", theme.scale[Math.min(theme.scale.length - 1, 3)])
@@ -944,43 +983,83 @@
         }
       }
 
-      // Column Daypart Band Dividers and Headers
+      // Segment contiguous daypart ranges for clean, non-overlapping header placement
+      var daypartSegments = [];
       dayparts.forEach(function (dp) {
-        var minHour = Math.min.apply(null, dp.hours);
-        var maxHour = Math.max.apply(null, dp.hours);
+        var sortedHours = dp.hours.slice().sort(function (a, b) { return a - b; });
+        var curStart = null;
+        var curEnd = null;
+        for (var i = 0; i < sortedHours.length; i++) {
+          var h = sortedHours[i];
+          if (curStart === null) {
+            curStart = h;
+            curEnd = h;
+          } else if (h === curEnd + 1) {
+            curEnd = h;
+          } else {
+            daypartSegments.push({ dp: dp, start: curStart, end: curEnd });
+            curStart = h;
+            curEnd = h;
+          }
+        }
+        if (curStart !== null) {
+          daypartSegments.push({ dp: dp, start: curStart, end: curEnd });
+        }
+      });
 
-        // Header label above hours
-        var headerX = (minHour * baseCellWidth) + 4;
+      var daypartHeaderY = showMarginals ? 44 : 22;
+      var daypartBarY = showMarginals ? 50 : 28;
+
+      daypartSegments.forEach(function (seg) {
+        var dp = seg.dp;
+        var segX1 = seg.start * baseCellWidth;
+        var segX2 = (seg.end + 1) * baseCellWidth;
+        var segWidth = segX2 - segX1;
+        var segCenter = segX1 + (segWidth / 2);
+
+        // Header label above hours (centered above its hourly segment)
         svg.append("text")
-          .attr("x", margin.left + headerX)
-          .attr("y", showMarginals ? 46 : 24)
-          .attr("font-size", "10px")
+          .attr("x", margin.left + segCenter)
+          .attr("y", daypartHeaderY)
+          .attr("text-anchor", "middle")
+          .attr("font-size", segWidth < 60 ? "8px" : "9px")
           .attr("font-weight", "700")
+          .attr("letter-spacing", "0.4px")
           .attr("fill", dp.color)
           .text(dp.name.toUpperCase());
 
-        // Vertical boundary line at start of daypart
-        if (minHour > 0) {
+        // Header accent line spanning the daypart segment
+        svg.append("rect")
+          .attr("x", margin.left + segX1 + 2)
+          .attr("y", daypartBarY)
+          .attr("width", Math.max(2, segWidth - 4))
+          .attr("height", 2.5)
+          .attr("rx", 1.2)
+          .attr("fill", dp.color)
+          .attr("opacity", 0.7);
+
+        // Vertical boundary dashed line on the left of daypart segment
+        if (segX1 > 0) {
           g.append("line")
-            .attr("x1", minHour * baseCellWidth)
-            .attr("y1", -6)
-            .attr("x2", minHour * baseCellWidth)
+            .attr("x1", segX1)
+            .attr("y1", -20)
+            .attr("x2", segX1)
             .attr("y2", cellHeight * 7 + 4)
             .attr("stroke", theme.dividerColor)
             .attr("stroke-width", 1.5)
             .attr("stroke-dasharray", "3,3")
-            .attr("opacity", 0.6);
+            .attr("opacity", 0.5);
         }
       });
 
-      // Hour Labels on X-axis (Top of cells)
+      // Hour Labels on X-axis (Above heatmap cells)
       for (var h = 0; h < 24; h++) {
         var hx = (h * baseCellWidth) + (baseCellWidth / 2);
         g.append("text")
           .attr("x", hx)
-          .attr("y", -6)
+          .attr("y", -8)
           .attr("text-anchor", "middle")
-          .attr("font-size", "10px")
+          .attr("font-size", "9.5px")
           .attr("font-weight", "600")
           .attr("fill", theme.subtext)
           .text(getHourLabel(h, false));
