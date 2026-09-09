@@ -75,7 +75,8 @@ VIZ_EMOJI_MAP = {
     "broadcast_daypart_grid": "🎬",
     "network_topology_graph": "📡",
     "sankey_flow_diagram": "🌊",
-    "rank_bump_chart": "🏆"
+    "rank_bump_chart": "🏆",
+    "flow_arc_map": "🌐"
 }
 
 def get_headers(profile="default"):

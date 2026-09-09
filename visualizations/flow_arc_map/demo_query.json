@@ -1,0 +1,33 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "distribution_centers.name",
+    "distribution_centers.latitude",
+    "distribution_centers.longitude",
+    "users.state",
+    "order_items.total_sale_price",
+    "order_items.order_count",
+    "order_items.average_shipping_time"
+  ],
+  "filters": {
+    "users.country": "USA"
+  },
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "flow_arc_map",
+    "viewMode": "curved_arcs",
+    "topRoutes": "50",
+    "arcCurvature": "0.35",
+    "flowAnimation": "pulse",
+    "colorTheme": "cyber_dark",
+    "arcColorMode": "by_origin",
+    "showExecutiveHUD": true,
+    "showHubFilter": true,
+    "showSearch": true,
+    "valueFormat": "compact_currency"
+  }
+}
