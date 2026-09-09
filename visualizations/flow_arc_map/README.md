@@ -76,6 +76,9 @@ The **Geospatial Flow & Route Arc Map** provides pure SVG/Canvas rendering with 
 - **Arc Coloring Scheme**: `by_origin` (Color by Origin Hub), `by_volume` (Color by Volume Intensity), `by_latency` (Turbo gradient by Transit Time), `monochrome`.
 - **Base Arc Stroke Width**: 1.0 to 10.0.
 - **Origin Hub Radius**: 4 to 20.
+- **Scale Endpoints by Volume**: Toggle dynamic magnitude-based endpoint point sizing (area scales with total shipped inflow).
+- **Max Endpoint Radius**: 6 to 30px (upper bound for highest-volume destination endpoints).
+- **Min Endpoint Radius**: 1 to 10px (lower bound for baseline destination endpoints).
 - **Show Node & State Labels**: Toggle state and origin hub typography.
 
 ---

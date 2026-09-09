@@ -331,7 +331,7 @@
       ]
     },
     "deployed": true,
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=distribution_centers.name,distribution_centers.latitude,distribution_centers.longitude,users.state,order_items.total_sale_price,order_items.order_count,order_items.average_shipping_time&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22flow_arc_map%22%2C%22viewMode%22%3A%22curved_arcs%22%2C%22topRoutes%22%3A%2250%22%2C%22arcCurvature%22%3A%220.35%22%2C%22flowAnimation%22%3A%22pulse%22%2C%22colorTheme%22%3A%22cyber_dark%22%2C%22arcColorMode%22%3A%22by_origin%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showHubFilter%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=distribution_centers.name,distribution_centers.latitude,distribution_centers.longitude,users.state,order_items.total_sale_price,order_items.order_count,order_items.average_shipping_time&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22flow_arc_map%22%2C%22viewMode%22%3A%22curved_arcs%22%2C%22topRoutes%22%3A%2250%22%2C%22arcCurvature%22%3A%220.35%22%2C%22flowAnimation%22%3A%22pulse%22%2C%22colorTheme%22%3A%22cyber_dark%22%2C%22arcColorMode%22%3A%22by_origin%22%2C%22scaleEndpointRadius%22%3Atrue%2C%22maxEndpointRadius%22%3A14%2C%22minEndpointRadius%22%3A3%2C%22showExecutiveHUD%22%3Atrue%2C%22showHubFilter%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
   }
 ]

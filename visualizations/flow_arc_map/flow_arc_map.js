@@ -381,12 +381,33 @@
         section: "Style",
         order: 4
       },
+      scaleEndpointRadius: {
+        type: "boolean",
+        label: "Scale Endpoints by Volume",
+        default: true,
+        section: "Style",
+        order: 5
+      },
+      maxEndpointRadius: {
+        type: "number",
+        label: "Max Endpoint Radius (px)",
+        default: 14,
+        section: "Style",
+        order: 6
+      },
+      minEndpointRadius: {
+        type: "number",
+        label: "Min Endpoint Radius (px)",
+        default: 3,
+        section: "Style",
+        order: 7
+      },
       showStateLabels: {
         type: "boolean",
         label: "Show Node & State Labels",
         default: true,
         section: "Style",
-        order: 5
+        order: 8
       }
     },
 
@@ -1147,32 +1168,128 @@
           uniqueOrigins[pr.route.origin].totalOutflow += pr.route.volume;
         });
 
-        // Distinct destinations
+        // Distinct destinations with inbound telemetry
         var uniqueDests = {};
         projectedRoutes.forEach(function (pr) {
           if (!uniqueDests[pr.route.destination]) {
             uniqueDests[pr.route.destination] = {
               name: pr.route.destination,
               coords: pr.target,
-              totalInflow: 0
+              totalInflow: 0,
+              routesCount: 0,
+              feedingOrigins: {}
             };
           }
           uniqueDests[pr.route.destination].totalInflow += pr.route.volume;
+          uniqueDests[pr.route.destination].routesCount++;
+          uniqueDests[pr.route.destination].feedingOrigins[pr.route.origin] =
+            (uniqueDests[pr.route.destination].feedingOrigins[pr.route.origin] || 0) + pr.route.volume;
         });
 
-        // Draw Destination Dots
-        gNodes.selectAll("circle.dest-dot")
-          .data(Object.values(uniqueDests))
+        // Calculate Destination Inflows & Dynamic Radius Scale
+        var destList = Object.values(uniqueDests);
+        var destInflows = destList.map(function (d) { return d.totalInflow; });
+        var minDestInflow = d3.min(destInflows) || 0;
+        var maxDestInflow = d3.max(destInflows) || 1;
+
+        var scaleByMagnitude = config.scaleEndpointRadius !== false;
+        var minEndpointR = parseFloat(config.minEndpointRadius || 3);
+        var maxEndpointR = parseFloat(config.maxEndpointRadius || 14);
+
+        var destRadiusScale = d3.scaleSqrt()
+          .domain([Math.max(0, minDestInflow), maxDestInflow])
+          .range(scaleByMagnitude ? [minEndpointR, maxEndpointR] : [minEndpointR, minEndpointR]);
+
+        function getDestRadius(d) {
+          return Math.max(minEndpointR, destRadiusScale(d.totalInflow) || minEndpointR);
+        }
+
+        // Draw Destination Endpoints (Grouped with Outer Glow Halo + Core Circle + Interactivity)
+        var destGroups = gNodes.selectAll("g.dest-anchor")
+          .data(destList)
           .enter()
-          .append("circle")
-          .attr("class", "dest-dot")
-          .attr("cx", function (d) { return d.coords[0]; })
-          .attr("cy", function (d) { return d.coords[1]; })
-          .attr("r", 3.5)
+          .append("g")
+          .attr("class", "dest-anchor")
+          .attr("transform", function (d) { return "translate(" + d.coords[0] + "," + d.coords[1] + ")"; })
+          .style("cursor", "pointer");
+
+        // Destination Outer Halo (proportional to magnitude)
+        destGroups.append("circle")
+          .attr("class", "dest-halo")
+          .attr("r", function (d) { return getDestRadius(d) * 1.55; })
           .attr("fill", theme.destNode)
-          .attr("stroke", theme.bg)
-          .attr("stroke-width", 1)
-          .attr("opacity", 0.85);
+          .attr("opacity", function (d) {
+            var r = getDestRadius(d);
+            return r >= 6 ? 0.22 : 0.12;
+          })
+          .attr("filter", "url(#flow-glow)");
+
+        // Destination Core Circle (radius adjusted by shipped volume magnitude)
+        destGroups.append("circle")
+          .attr("class", "dest-dot")
+          .attr("r", function (d) { return getDestRadius(d); })
+          .attr("fill", theme.destNode)
+          .attr("stroke", "#ffffff")
+          .attr("stroke-width", function (d) {
+            var r = getDestRadius(d);
+            return r >= 7 ? 1.4 : 0.9;
+          })
+          .attr("opacity", 0.9)
+          .on("mouseover", function (e, d) {
+            var r = getDestRadius(d);
+            d3.select(this).attr("r", r * 1.35);
+
+            // Highlight all incoming corridors destined for this endpoint
+            gArcs.selectAll("path.flow-arc")
+              .attr("opacity", function (ad) {
+                return ad.route.destination === d.name ? 1 : 0.12;
+              })
+              .attr("stroke-width", function (ad) {
+                var w = strokeScale(ad.route.volume);
+                return ad.route.destination === d.name ? (w + 2.5) : w;
+              })
+              .attr("filter", function (ad) {
+                return ad.route.destination === d.name ? "url(#flow-glow)" : null;
+              });
+
+            // Find top feeding origin hub
+            var feedingHubNames = Object.keys(d.feedingOrigins);
+            feedingHubNames.sort(function (a, b) { return d.feedingOrigins[b] - d.feedingOrigins[a]; });
+            var topHub = feedingHubNames.length > 0 ? feedingHubNames[0] : "N/A";
+            var topHubVol = topHub !== "N/A" ? d.feedingOrigins[topHub] : 0;
+
+            var shareOfNet = totalNetworkVolume > 0 ? ((d.totalInflow / totalNetworkVolume) * 100).toFixed(1) : "0.0";
+
+            var html =
+              "<div style='display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px;'>" +
+              "  <span style='font-size:12px; font-weight:700; color:" + theme.destNode + ";'>" + d.name + "</span>" +
+              "  <span style='font-size:9.5px; text-transform:uppercase; background:rgba(244,63,94,0.18); color:" + theme.destNode + "; padding:2px 6px; border-radius:4px; font-weight:700;'>Destination</span>" +
+              "</div>" +
+              "<div style='border-top:1px solid " + theme.hudBorder + "; padding-top:6px; display:grid; grid-template-columns:1fr 1fr; gap:6px;'>" +
+              "  <div><span style='color:" + theme.hudSubtext + "; font-size:10px;'>TOTAL INFLOW:</span><br><strong style='color:" + theme.hudText + ";'>" + formatValue(d.totalInflow, valFmt) + "</strong></div>" +
+              "  <div><span style='color:" + theme.hudSubtext + "; font-size:10px;'>NETWORK SHARE:</span><br><strong style='color:" + theme.hudText + ";'>" + shareOfNet + "%</strong></div>" +
+              "  <div><span style='color:" + theme.hudSubtext + "; font-size:10px;'>FEEDING HUBS:</span><br><strong style='color:" + theme.originHub + ";'>" + feedingHubNames.length + " Hubs (" + d.routesCount + " routes)</strong></div>" +
+              "  <div><span style='color:" + theme.hudSubtext + "; font-size:10px;'>TOP FEEDER:</span><br><strong style='color:" + theme.particle + ";'>" + topHub + " (" + formatValue(topHubVol, valFmt) + ")</strong></div>" +
+              "</div>";
+
+            tooltip.style("visibility", "visible").html(html);
+          })
+          .on("mousemove", function (e) {
+            var m = d3.pointer(e, container);
+            tooltip.style("top", (m[1] + 12) + "px").style("left", (m[0] + 16) + "px");
+          })
+          .on("mouseout", function (e, d) {
+            var r = getDestRadius(d);
+            d3.select(this).attr("r", r);
+
+            // Reset flow arcs appearance
+            gArcs.selectAll("path.flow-arc")
+              .attr("opacity", 0.68)
+              .attr("stroke-width", function (ad) { return strokeScale(ad.route.volume); })
+              .attr("filter", null);
+
+            tooltip.style("visibility", "hidden");
+          });
 
         // Draw Origin Hubs (Concentric Ripple + Anchor Circle)
         var hubGroups = gNodes.selectAll("g.hub-anchor")
@@ -1227,6 +1344,22 @@
             .attr("font-size", "10px")
             .attr("font-weight", "600")
             .style("text-shadow", "0 1px 4px rgba(0,0,0,0.8)")
+            .style("pointer-events", "none")
+            .text(function (d) { return d.name; });
+
+          // Destination Endpoint Labels (Top 12 by volume or radius >= 7 to maintain clean map readability)
+          var topDests = destList.slice().sort(function (a, b) { return b.totalInflow - a.totalInflow; }).slice(0, 12);
+          var topDestNames = {};
+          topDests.forEach(function (d) { topDestNames[d.name] = true; });
+
+          destGroups.filter(function (d) { return topDestNames[d.name] || getDestRadius(d) >= 7; })
+            .append("text")
+            .attr("y", function (d) { return getDestRadius(d) + 11; })
+            .attr("text-anchor", "middle")
+            .attr("fill", theme.hudSubtext)
+            .attr("font-size", "9px")
+            .attr("font-weight", "600")
+            .style("text-shadow", "0 1px 3px rgba(0,0,0,0.9)")
             .style("pointer-events", "none")
             .text(function (d) { return d.name; });
         }
