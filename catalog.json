@@ -333,5 +333,33 @@
     "deployed": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=distribution_centers.name,distribution_centers.latitude,distribution_centers.longitude,users.state,order_items.total_sale_price,order_items.order_count,order_items.average_shipping_time&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22flow_arc_map%22%2C%22viewMode%22%3A%22curved_arcs%22%2C%22topRoutes%22%3A%2250%22%2C%22arcCurvature%22%3A%220.35%22%2C%22flowAnimation%22%3A%22pulse%22%2C%22colorTheme%22%3A%22cyber_dark%22%2C%22arcColorMode%22%3A%22by_origin%22%2C%22scaleEndpointRadius%22%3Atrue%2C%22maxEndpointRadius%22%3A14%2C%22minEndpointRadius%22%3A3%2C%22showExecutiveHUD%22%3Atrue%2C%22showHubFilter%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
     "instance_wide": true
+  },
+  {
+    "id": "telemetry_conversion_funnel",
+    "name": "Telemetry & Conversion Funnel",
+    "date_added": "2026-09-10",
+    "library": "D3.js v7",
+    "category": "Telemetry & Cohort Decay",
+    "description": "Interactive multi-mode conversion funnel, drop-off pipeline, and telemetry flow visualization for gaming FTUE progression, e-commerce checkout conversion, and product onboarding with continuous B\u00e9zier fluid stream ribbons, stepped trapezoids, waterfall drop-off deltas, executive KPI HUD, and Looker drill-down integration.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 to 2 Dimensions: Stage Dimension (e.g. order_items.status) + optional Segment/Channel (e.g. users.traffic_source) OR 2-8 measures",
+      "measures": "1 to 2 Measures: Throughput Volume (e.g. order_items.order_count) + optional Secondary Metric (e.g. order_items.total_sale_price)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "users.traffic_source",
+        "order_items.status",
+        "order_items.order_count",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.traffic_source,order_items.status,order_items.order_count,order_items.total_sale_price&sorts=order_items.order_count+desc&limit=500&vis=%7B%22type%22%3A%22telemetry_conversion_funnel%22%2C%22funnelLayout%22%3A%22curved_pipeline%22%2C%22metricMode%22%3A%22primary_only%22%2C%22pctBaseline%22%3A%22step_to_step%22%2C%22funnelOrientation%22%3A%22horizontal%22%2C%22showDropoffBadges%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22showStepValues%22%3Atrue%2C%22showStepLabels%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22cyber_teal%22%2C%22funnelGradient%22%3A%22smooth%22%2C%22curvatureIntensity%22%3A%22curved%22%2C%22stagePadding%22%3A16%2C%22minNeckWidth%22%3A28%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
+    "instance_wide": true
   }
 ]

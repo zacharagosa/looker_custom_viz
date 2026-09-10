@@ -1,0 +1,32 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.traffic_source",
+    "order_items.status",
+    "order_items.order_count",
+    "order_items.total_sale_price"
+  ],
+  "sorts": [
+    "order_items.order_count desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "telemetry_conversion_funnel",
+    "funnelLayout": "curved_pipeline",
+    "metricMode": "primary_only",
+    "pctBaseline": "step_to_step",
+    "funnelOrientation": "horizontal",
+    "showDropoffBadges": true,
+    "showExecutiveHUD": true,
+    "showStepValues": true,
+    "showStepLabels": true,
+    "showSearch": true,
+    "colorTheme": "cyber_teal",
+    "funnelGradient": "smooth",
+    "curvatureIntensity": "curved",
+    "stagePadding": 16,
+    "minNeckWidth": 28,
+    "valueFormat": "compact_num"
+  }
+}
