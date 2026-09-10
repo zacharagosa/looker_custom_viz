@@ -442,8 +442,12 @@
 
       this.clearErrors();
 
-      var dims = queryResponse.fields.dimension_like || [];
-      var meas = queryResponse.fields.measure_like || [];
+      var dims = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
+        ? queryResponse.fields.dimensions
+        : (queryResponse.fields.dimension_like || []);
+      var meas = (queryResponse.fields.measures && queryResponse.fields.measures.length > 0)
+        ? queryResponse.fields.measures
+        : (queryResponse.fields.measure_like || []);
 
       if (dims.length < 2) {
         this.addError({

@@ -1,5 +1,8 @@
 # Telemetry & Conversion Funnel Looker Custom Visualization
 
+![Telemetry & Conversion Funnel Looker Custom Visualization](screenshot.png)
+
+
 An executive-grade, high-performance telemetry pipeline and conversion funnel visualization built with **D3.js v7** for Looker. Specifically engineered for **Gaming Telemetry** (FTUE level progression, player drop-off, in-game economy sink funnels), **E-Commerce & Retail** (Checkout conversion, cart abandonment, multi-touch attribution channels), and **SaaS & Product Telemetry** (Onboarding activation, sign-up workflows, product feature adoption).
 
 ---

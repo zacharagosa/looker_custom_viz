@@ -1,5 +1,8 @@
 # Stephen Few Bullet Graph
 
+![Stephen Few Bullet Graph](screenshot.png)
+
+
 An implementation of Stephen Few's classic **Bullet Graph** specification for Google Cloud Looker, engineered with **D3.js v7**.
 
 Bullet graphs were designed by visualization pioneer Stephen Few as an information-dense, high-efficiency replacement for dashboard gauges and meters. This visualization displays actual metric performance against qualitative benchmark ranges (e.g. Poor, Satisfactory, Good, Stretch) and distinct target / quota markers, complete with dynamic variance badges.

@@ -1,5 +1,8 @@
 # Sankey Flow & Multi-Stage Allocation Diagram
 
+![Sankey Flow & Multi-Stage Allocation Diagram](screenshot.png)
+
+
 An executive-grade, multi-stage Sankey flow and budget/pipeline allocation visualization for Looker, engineered with D3.js. 
 
 Designed for **e-commerce conversion funnels**, **customer multi-touch journeys**, **financial cost center allocation & income statements**, **telecommunications network packet routing**, and **marketing campaign multi-channel attribution**.

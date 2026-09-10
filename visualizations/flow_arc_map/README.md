@@ -1,5 +1,8 @@
 # 🌐 Geospatial Flow & Route Arc Map
 
+![🌐 Geospatial Flow & Route Arc Map](screenshot.png)
+
+
 An interactive, multi-modal geospatial flow, supply chain route, and flight path visualization built with **D3.js v7** and **TopoJSON Client** for Looker. Designed to solve a persistent analytics challenge across logistics, retail fulfillment, telecommunications, airline routing, and financial clearing networks.
 
 ---

@@ -1,5 +1,8 @@
 # Player & Customer Retention Cohort Decay
 
+![Player & Customer Retention Cohort Decay](screenshot.png)
+
+
 An executive **Player & Customer Retention Cohort Decay** custom visualization for Google Cloud Looker, engineered with **D3.js v7**.
 
 Retention cohort decay analysis is the fundamental heartbeat metric for gaming studios (monitoring D1, D7, D14, and D30 player drop-off), SaaS platforms (tracking annual/monthly subscriber retention), and e-commerce brands (measuring repeat purchase velocity). Native Looker tables cannot render a triangular cohort retention matrix with dynamic Period 0 baseline indexing (100%), multi-cohort decay curves, and benchmark outperformance variance—requiring complex table calculations and rigid pivot structures.

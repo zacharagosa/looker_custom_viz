@@ -279,12 +279,12 @@ def main():
                 catalog = json.load(f)
             for item in catalog:
                 if item.get("id") == args.viz:
-                    item["looker_demo_url"] = query_info["demo_url"]
+                    item["screenshot"] = f"visualizations/{args.viz}/screenshot.png"
                     item["deployed"] = True
                     item["instance_wide"] = True
             with open(catalog_path, "w", encoding="utf-8") as f:
                 json.dump(catalog, f, indent=2)
-            print(f"[6/6] Updated {catalog_path} with demo URL and instance-wide flag.")
+            print(f"[6/6] Updated {catalog_path} with screenshot path and instance-wide flag.")
         except Exception as e:
             print(f"Notice updating catalog: {e}")
 

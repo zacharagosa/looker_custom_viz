@@ -1,5 +1,8 @@
 # Network Topology & Latency Flow Graph
 
+![Network Topology & Latency Flow Graph](screenshot.png)
+
+
 An executive **Network Topology & Latency Flow Graph** custom visualization for Google Cloud Looker, engineered with **D3.js v7**.
 
 Designed for **Telecommunications & 5G RAN** (cell tower topology, base station backhaul, RF link performance), **Cloud Infrastructure & SRE** (data center interconnects, edge PoP ingress/egress, microservice service mesh topologies), **Enterprise Networking** (packet flow routing, MPLS tunnels, bandwidth vs latency bottlenecks), and **Logistics/Supply Chain** (regional distribution hubs to fulfillment endpoints).

@@ -1,5 +1,8 @@
 # Sparkline Metric Matrix Table
 
+![Sparkline Metric Matrix Table](screenshot.png)
+
+
 An executive **Sparkline Metric Matrix Table** custom visualization for Google Cloud Looker, engineered with **D3.js v7**.
 
 Standard Looker tables struggle to display multi-period performance without spreading wide across dozens of monthly or quarterly columns. This visualization collapses temporal pivots into compact in-cell SVG trend sparklines, adds micro bullet bars showing proportional volume, and calculates period-over-period growth variance pills—all within an interactive, searchable scorecard grid.

@@ -1,5 +1,8 @@
 # Calendar Activity Heatmap
 
+![Calendar Activity Heatmap](screenshot.png)
+
+
 A custom Looker visualization built with D3.js v7 that renders an interactive, GitHub-style contribution grid across rolling calendar dates.
 
 ## Features

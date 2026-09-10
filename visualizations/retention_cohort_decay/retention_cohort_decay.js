@@ -401,8 +401,12 @@
         return;
       }
 
-      var dims = queryResponse.fields.dimension_like || [];
-      var meas = queryResponse.fields.measure_like || [];
+      var dims = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
+        ? queryResponse.fields.dimensions
+        : (queryResponse.fields.dimension_like || []);
+      var meas = (queryResponse.fields.measures && queryResponse.fields.measures.length > 0)
+        ? queryResponse.fields.measures
+        : (queryResponse.fields.measure_like || []);
       var pivots = queryResponse.pivots || [];
 
       if (dims.length === 0 && pivots.length === 0) {
@@ -432,8 +436,12 @@
 
     renderChart: function (d3, rawData, config, queryResponse) {
       var self = this;
-      var dims = queryResponse.fields.dimension_like || [];
-      var meas = queryResponse.fields.measure_like || [];
+      var dims = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
+        ? queryResponse.fields.dimensions
+        : (queryResponse.fields.dimension_like || []);
+      var meas = (queryResponse.fields.measures && queryResponse.fields.measures.length > 0)
+        ? queryResponse.fields.measures
+        : (queryResponse.fields.measure_like || []);
       var pivots = queryResponse.pivots || [];
 
       var themeKey = config.colorTheme || "indigo_violet";

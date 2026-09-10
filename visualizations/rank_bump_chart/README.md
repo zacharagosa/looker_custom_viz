@@ -1,5 +1,8 @@
 # Rank Bump & Trajectory Chart Looker Custom Visualization
 
+![Rank Bump & Trajectory Chart Looker Custom Visualization](screenshot.png)
+
+
 An executive multi-mode **Rank Bump & Trajectory Chart** built with **D3.js v7** for Looker. Designed for executive rank volatility analysis, market share shifts, competitive telemetry, customer segment ranking, and sports/gaming leaderboards over time.
 
 ---
@@ -63,7 +66,13 @@ The visualization supports two flexible data layouts:
 
 ---
 
-## Testing Live in Looker
+## Demo Query Configuration
 
-Run the preconfigured explore demo query:
-[Rank Bump Chart Live Demo](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price&pivots=order_items.created_month&f[order_items.created_date]=6+months&sorts=order_items.created_month+asc+0,order_items.total_sale_price+desc+0&limit=12&vis=%7B%22type%22%3A%22rank_bump_chart%22%2C%22viewMode%22%3A%22bump%22%2C%22colorPalette%22%3A%22corporate_modern%22%7D&origin=share-expanded&toggle=vis)
+Run with the preconfigured Explore query:
+- **Model**: `thelook`
+- **Explore**: `order_items`
+- **Fields**: `products.category`, `order_items.created_month`, `order_items.total_sale_price`
+- **Pivots**: `order_items.created_month`
+- **Filters**: `order_items.created_date`: `6 months`
+- **Sorts**: `order_items.created_month asc`, `order_items.total_sale_price desc`
+

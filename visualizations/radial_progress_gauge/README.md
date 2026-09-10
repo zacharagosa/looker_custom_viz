@@ -1,5 +1,8 @@
 # Radial KPI Progress Gauge
 
+![Radial KPI Progress Gauge](screenshot.png)
+
+
 A custom Looker visualization built with D3.js v7 providing multi-tier concentric progress rings inspired by Apple Watch fitness rings and cloud quota indicators.
 
 ## Features

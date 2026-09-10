@@ -1,5 +1,8 @@
 # Dumbbell Divergence Plot (Connected Dot Plot)
 
+![Dumbbell Divergence Plot (Connected Dot Plot)](screenshot.png)
+
+
 An executive **Dumbbell Divergence Plot** (also known as a **Connected Dot Plot** or **DNA Plot**) custom visualization for Google Cloud Looker, engineered with **D3.js v7**.
 
 Dumbbell plots are championed by data visualization leaders (Stephen Few, Edward Tufte, Financial Times, and Storytelling with Data) as the cleanest, most space-efficient alternative to clustered bar charts when comparing two continuous values across categories. Instead of cluttering dashboards with grouped bars, each category is presented as a sleek horizontal barbell showing baseline (Start/Point A) and outcome (End/Point B) dots connected by a directional variance bridge.

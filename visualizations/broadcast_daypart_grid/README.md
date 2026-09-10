@@ -1,5 +1,8 @@
 # Broadcast Programming Schedule & Daypart Performance Grid
 
+![Broadcast Programming Schedule & Daypart Performance Grid](screenshot.png)
+
+
 An executive **Broadcast Programming Schedule & Daypart Performance Grid** custom visualization for Google Cloud Looker, engineered with **D3.js v7**.
 
 In media & television broadcasting (Nielsen GRP/CPP ratings, linear TV programming grids, streaming concurrency), digital advertising exchanges (ad pacing, CPMs, impression delivery), e-commerce (hourly peak conversion windows, flash sales), and gaming telemetry (hourly player concurrency & live-ops events), performance revolves around the **7-day x 24-hour diurnal cycle** and standardized **Industry Dayparts** (Overnight, Early Morning, Daytime, Early Fringe, Prime Time, Late Night).

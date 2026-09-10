@@ -1,5 +1,8 @@
 # Interactive US Choropleth Map
 
+![Interactive US Choropleth Map](screenshot.png)
+
+
 An interactive, pure SVG **US State Choropleth Map** custom visualization for Google Cloud Looker, engineered with **D3.js v7** and **TopoJSON Client**.
 
 Unlike native maps that require Google Maps API keys or third-party mapping subscriptions, this visualization renders directly as responsive SVG using official US Census TopoJSON boundaries. It supports quantile, linear, and quantize color scaling, interactive state hover cards, postal abbreviation labels, and Looker drill-down links.
