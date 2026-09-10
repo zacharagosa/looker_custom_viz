@@ -438,6 +438,9 @@
     },
 
     create: function (element, config) {
+      this._element = element;
+      this._setupResizeObserver(element);
+
       element.innerHTML = "";
       this._container = document.createElement("div");
       this._container.className = "broadcast-daypart-container";
@@ -467,7 +470,85 @@
       this._selectedMeasureIndex = 0;
     },
 
+    _setupResizeObserver: function (element) {
+      var self = this;
+      if (this._resizeObserver) {
+        try { this._resizeObserver.disconnect(); } catch (e) {}
+        this._resizeObserver = null;
+      }
+      if (typeof ResizeObserver !== "undefined" && element) {
+        this._resizeObserver = new ResizeObserver(function () {
+          self._onResize();
+        });
+        this._resizeObserver.observe(element);
+      }
+      if (!this._windowResizeBound) {
+        this._windowResizeBound = true;
+        window.addEventListener("resize", function () {
+          self._onResize();
+        });
+      }
+    },
+
+    _onResize: function () {
+      var self = this;
+      if (!self._lastData || !self._lastQueryResponse) return;
+      var el = self._element || self._lastElement;
+      if (!el) return;
+
+      var curW = el.clientWidth || 0;
+      var curH = el.clientHeight || 0;
+      if (curW <= 10 || curH <= 10) return;
+
+      if (self._lastRenderW && self._lastRenderH) {
+        if (Math.abs(curW - self._lastRenderW) < 4 && Math.abs(curH - self._lastRenderH) < 4) {
+          return;
+        }
+      }
+
+      if (self._resizeTimer) {
+        clearTimeout(self._resizeTimer);
+      }
+      self._resizeTimer = setTimeout(function () {
+        if (self._lastData && self._lastQueryResponse) {
+          self.updateAsync(
+            self._lastData,
+            el,
+            self._lastConfig,
+            self._lastQueryResponse,
+            self._lastDetails,
+            function () {}
+          );
+        }
+      }, 50);
+    },
+
     updateAsync: function (data, element, config, queryResponse, details, done) {
+      this._element = element;
+      this._lastElement = element;
+      this._lastData = data;
+      this._lastConfig = config;
+      this._lastQueryResponse = queryResponse;
+      this._lastDetails = details;
+      this._lastRenderW = (element && element.clientWidth) || 0;
+      this._lastRenderH = (element && element.clientHeight) || 0;
+
+      if (!this._resizeObserver && element) {
+        this._setupResizeObserver(element);
+      }
+
+      if (!this._container || !element.contains(this._container)) {
+        element.innerHTML = "";
+        this._container = document.createElement("div");
+        this._container.className = "broadcast-daypart-container";
+        this._container.style.width = "100%";
+        this._container.style.height = "100%";
+        this._container.style.overflow = "auto";
+        this._container.style.boxSizing = "border-box";
+        this._container.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+        element.appendChild(this._container);
+      }
+
       this.clearErrors();
 
       if (!queryResponse || !queryResponse.fields) {
