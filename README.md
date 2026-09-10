@@ -23,6 +23,8 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Rank Bump & Trajectory Chart**](visualizations/rank_bump_chart/)<br>`rank_bump_chart` | Leaderboards & Grids | 1 entity dim + 1 pivot (or 2–12 meas) | [📸 View](assets/screenshots/rank_bump_chart.png) |
 | [**Geospatial Flow Arc Map**](visualizations/flow_arc_map/)<br>`flow_arc_map` | Geospatial Intelligence | 1–2 dims (Origin + Dest) + 1–3 meas | [📸 View](assets/screenshots/flow_arc_map.png) |
 | [**Telemetry & Conversion Funnel**](visualizations/telemetry_conversion_funnel/)<br>`telemetry_conversion_funnel` | Telemetry & Cohort Decay | 1–2 dims (Stage + Segment) + 1–2 meas | [📸 View](assets/screenshots/telemetry_conversion_funnel.png) |
+| [**Collapsible Hierarchical Tree Grid**](visualizations/hierarchical_tree_table/)<br>`hierarchical_tree_table` | Leaderboards & Grids | 2–6 dims (Hierarchy) + 1–4 meas | [📸 View](assets/screenshots/hierarchical_tree_table.png) |
+| [**Dual-Axis Multi-Layer Geo Map**](visualizations/multi_layer_geo_map/)<br>`multi_layer_geo_map` | Geospatial Intelligence | 1 State dim + 1–3 measures | [📸 View](assets/screenshots/multi_layer_geo_map.png) |
 
 ---
 
@@ -79,6 +81,14 @@ Concentric circular progress rings with goal attainment indicators and central m
 ### 13. Calendar Activity Heatmap
 53-week rolling GitHub-style calendar contribution grid with month/day labels and quantile intensity binning.
 ![Calendar Activity Heatmap](assets/screenshots/calendar_activity_heatmap.png)
+
+### 14. Collapsible Hierarchical Tree Grid
+Consolidates multi-level parent-child hierarchies into a single indented tree column with interactive branch expansion, dynamic subtotal rollups, in-cell share progress bars, and branch search.
+![Collapsible Hierarchical Tree Grid](assets/screenshots/hierarchical_tree_table.png)
+
+### 15. Dual-Axis Multi-Layer Geospatial Map
+Synchronized dual-axis geospatial intelligence with Layer 1 choropleth polygon fill (volume/revenue) and Layer 2 proportional centroid bubble pins (margin/orders), dual legends, and hex cartogram mode.
+![Dual-Axis Multi-Layer Geospatial Map](assets/screenshots/multi_layer_geo_map.png)
 
 ---
 

@@ -361,5 +361,61 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/telemetry_conversion_funnel/screenshot.png"
+  },
+  {
+    "id": "hierarchical_tree_table",
+    "name": "Collapsible Hierarchical Tree Grid",
+    "date_added": "2026-09-10",
+    "library": "Custom DOM & SVG",
+    "category": "Leaderboards & Grids",
+    "description": "Executive collapsible hierarchical tree grid solving Looker Cloud Blocker b/530833873 and go/prd-looker-table-viz-improvements. Consolidates nested multi-level hierarchies into a single indented column with interactive branch expansion, dynamic subtotal rollups, in-cell share progress bars, branch search, and Looker drill menus.",
+    "dependencies": [],
+    "fields_required": {
+      "dimensions": "2 to 6 Dimensions (Hierarchy Levels, e.g. Department > Category > Brand)",
+      "measures": "1 to 4 Numeric Measures (e.g. Sales, Orders, Profit)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.department",
+        "products.category",
+        "products.brand",
+        "order_items.total_sale_price",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/hierarchical_tree_table/screenshot.png"
+  },
+  {
+    "id": "multi_layer_geo_map",
+    "name": "Dual-Axis Multi-Layer Geospatial Map",
+    "date_added": "2026-09-10",
+    "library": "D3.js v7",
+    "category": "Geospatial Intelligence",
+    "description": "Enterprise dual-axis multi-layer geospatial visualization solving Looker Cloud Blocker b/243984441 and go/prd-looker-map-viz-improvements. Plots two independent measures simultaneously across geographic regions with Layer 1 choropleth polygon fill, Layer 2 proportional centroid bubble pins, dual legends, equal-area hex cartogram mode, executive KPI HUD, and Looker drill-down integration.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js",
+      "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Geographic Dimension (State Name, Postal Code, or FIPS)",
+      "measures": "1 to 3 Numeric Measures: Primary (Choropleth Fill), Secondary (Bubble Size), Tertiary"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "users.state",
+        "order_items.total_sale_price",
+        "order_items.total_gross_margin",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/multi_layer_geo_map/screenshot.png"
   }
 ]

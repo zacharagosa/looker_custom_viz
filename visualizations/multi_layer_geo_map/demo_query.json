@@ -1,0 +1,28 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.state",
+    "order_items.total_sale_price",
+    "order_items.total_gross_margin",
+    "order_items.order_count"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "multi_layer_geo_map",
+    "mapMode": "dual_layer",
+    "bubbleMetric": "measure2",
+    "showBubbleLabels": "always",
+    "showDualLegend": true,
+    "showExecutiveHUD": true,
+    "showSearch": true,
+    "valueFormat1": "compact_currency",
+    "valueFormat2": "compact_currency",
+    "colorTheme": "blue_amber",
+    "bubbleScale": 1.2,
+    "choroplethOpacity": 0.85
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.department",
+    "products.category",
+    "products.brand",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "hierarchical_tree_table",
+    "layoutMode": "collapsible_tree",
+    "defaultExpansion": "level1",
+    "showBars": true,
+    "showPercentShare": true,
+    "showSearch": true,
+    "showSummaryBar": true,
+    "valueFormat": "compact_currency",
+    "colorTheme": "slate",
+    "rowDensity": "normal"
+  }
+}
