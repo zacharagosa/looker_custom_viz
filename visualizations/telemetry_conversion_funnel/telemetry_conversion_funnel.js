@@ -838,23 +838,39 @@
       var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       var maxVal = d3.max(stages, function (d) { return d.value; }) || 1;
-      var minNeck = Math.max(10, Number(config.minNeckWidth) || 28);
+
+      // Parse dynamic style configurations safely
+      var padding = typeof config.stagePadding !== "undefined" && config.stagePadding !== null && config.stagePadding !== "" ? Number(config.stagePadding) : 16;
+      if (isNaN(padding)) padding = 16;
+      padding = Math.max(2, Math.min(70, padding));
+
+      var minNeck = typeof config.minNeckWidth !== "undefined" && config.minNeckWidth !== null && config.minNeckWidth !== "" ? Number(config.minNeckWidth) : 28;
+      if (isNaN(minNeck)) minNeck = 28;
+      minNeck = Math.max(8, Math.min(innerH * 0.85, minNeck));
+
+      var curvature = config.curvatureIntensity || "curved";
 
       if (isHorizontal) {
         var stepWidth = innerW / Math.max(1, n);
         var halfH = innerH / 2;
-        var rScale = d3.scaleLinear()
-          .domain([0, maxVal])
-          .range([minNeck / 2, halfH * 0.92]);
+        var maxRadius = halfH * 0.92;
+        var minRadius = Math.max(4, minNeck / 2);
+
+        // Gap between adjacent stage pillars is exactly 2 * padding
+        var pWidth = Math.max(16, stepWidth - padding * 2);
 
         // Calculate top and bottom Y coordinates for each stage
         var stageGeom = stages.map(function (st, i) {
           var cx = (i + 0.5) * stepWidth;
-          var r = rScale(st.value);
+          var valNorm = maxVal > 0 ? (st.value / maxVal) : 1;
+          // Non-linear power scaling ensures downstream stages taper gracefully towards minRadius
+          var r = minRadius + (maxRadius - minRadius) * Math.pow(valNorm, 1.2);
+          var leftX = cx - pWidth / 2;
+          var rightX = cx + pWidth / 2;
           return {
             x: cx,
-            leftX: i * stepWidth + 6,
-            rightX: (i + 1) * stepWidth - 6,
+            leftX: leftX,
+            rightX: rightX,
             topY: halfH - r,
             botY: halfH + r,
             radius: r,
@@ -863,7 +879,7 @@
           };
         });
 
-        // 1. Draw connecting Bézier transition surfaces between stages
+        // 1. Draw connecting transition surfaces between stages (responding to curvatureIntensity)
         var connectorsGroup = g.append("g").attr("class", "connectors");
         for (var c = 0; c < n - 1; c++) {
           var curr = stageGeom[c];
@@ -880,13 +896,55 @@
           connGrad.append("stop").attr("offset", "0%").attr("stop-color", colorA).attr("stop-opacity", 0.75);
           connGrad.append("stop").attr("offset", "100%").attr("stop-color", colorB).attr("stop-opacity", 0.75);
 
+          var dx = next.leftX - curr.rightX;
           var midX = (curr.rightX + next.leftX) / 2;
 
-          // Upper curve path & Lower curve path
-          var pathStr = "M " + curr.rightX + " " + curr.topY + " " +
-            "C " + midX + " " + curr.topY + ", " + midX + " " + next.topY + ", " + next.leftX + " " + next.topY + " " +
-            "L " + next.leftX + " " + next.botY + " " +
-            "C " + midX + " " + next.botY + ", " + midX + " " + curr.botY + ", " + curr.rightX + " " + curr.botY + " Z";
+          var pathStr = "";
+          var dropPathTop = "";
+
+          if (curvature === "linear") {
+            // Linear Sharp Edges: Geometric polygonal facet connector
+            pathStr = "M " + curr.rightX + " " + curr.topY + " " +
+              "L " + next.leftX + " " + next.topY + " " +
+              "L " + next.leftX + " " + next.botY + " " +
+              "L " + curr.rightX + " " + curr.botY + " Z";
+
+            if (next.radius < curr.radius) {
+              dropPathTop = "M " + curr.rightX + " " + curr.topY + " " +
+                "L " + next.leftX + " " + next.topY + " " +
+                "L " + next.leftX + " " + (halfH - curr.radius) + " Z";
+            }
+          } else if (curvature === "subtle") {
+            // Subtle Dynamic Arcs: Sleek shallow inflection arcs
+            var cp1x = curr.rightX + dx * 0.22;
+            var cp2x = next.leftX - dx * 0.22;
+
+            pathStr = "M " + curr.rightX + " " + curr.topY + " " +
+              "C " + cp1x + " " + curr.topY + ", " + cp2x + " " + next.topY + ", " + next.leftX + " " + next.topY + " " +
+              "L " + next.leftX + " " + next.botY + " " +
+              "C " + cp2x + " " + next.botY + ", " + cp1x + " " + curr.botY + ", " + curr.rightX + " " + curr.botY + " Z";
+
+            if (next.radius < curr.radius) {
+              dropPathTop = "M " + curr.rightX + " " + curr.topY + " " +
+                "C " + cp1x + " " + curr.topY + ", " + cp2x + " " + next.topY + ", " + next.leftX + " " + next.topY + " " +
+                "L " + next.leftX + " " + (halfH - curr.radius) + " Z";
+            }
+          } else {
+            // High Flow Bézier Curves: Deep fluid organic ribbon flow
+            var cp1x = curr.rightX + dx * 0.55;
+            var cp2x = next.leftX - dx * 0.45;
+
+            pathStr = "M " + curr.rightX + " " + curr.topY + " " +
+              "C " + cp1x + " " + curr.topY + ", " + cp2x + " " + next.topY + ", " + next.leftX + " " + next.topY + " " +
+              "L " + next.leftX + " " + next.botY + " " +
+              "C " + cp2x + " " + next.botY + ", " + cp1x + " " + curr.botY + ", " + curr.rightX + " " + curr.botY + " Z";
+
+            if (next.radius < curr.radius) {
+              dropPathTop = "M " + curr.rightX + " " + curr.topY + " " +
+                "C " + cp1x + " " + curr.topY + ", " + cp2x + " " + next.topY + ", " + next.leftX + " " + next.topY + " " +
+                "L " + next.leftX + " " + (halfH - curr.radius) + " Z";
+            }
+          }
 
           connectorsGroup.append("path")
             .attr("d", pathStr)
@@ -895,12 +953,7 @@
             .attr("class", "connector-ribbon");
 
           // Drop-off wedge representation (lost volume above/below the neck)
-          if (config.showDropoffBadges !== false && next.radius < curr.radius) {
-            var dropH = curr.radius - next.radius;
-            // Draw top drop-off wedge
-            var dropPathTop = "M " + curr.rightX + " " + curr.topY + " " +
-              "C " + midX + " " + curr.topY + ", " + midX + " " + next.topY + ", " + next.leftX + " " + next.topY + " " +
-              "L " + next.leftX + " " + (halfH - curr.radius) + " Z";
+          if (config.showDropoffBadges !== false && next.radius < curr.radius && dropPathTop) {
             connectorsGroup.append("path")
               .attr("d", dropPathTop)
               .attr("fill", "url(#dropoff-hatch)")
@@ -928,7 +981,7 @@
           }
         }
 
-        // 2. Draw Stage Pillar Blocks
+        // 2. Draw Stage Pillar Blocks (with curvature-aligned rounded corners)
         var pillarsGroup = g.append("g").attr("class", "stage-pillars");
         stageGeom.forEach(function (sg, idx) {
           var col = theme.stageColors[idx % theme.stageColors.length];
@@ -936,18 +989,19 @@
             .attr("class", "stage-node")
             .style("cursor", "pointer");
 
-          var pWidth = Math.max(12, stepWidth * 0.45);
-          var px = sg.x - pWidth / 2;
+          var px = sg.leftX;
           var py = sg.topY;
           var pHeight = Math.max(6, sg.botY - sg.topY);
 
-          // Pillar Rounded Column
+          // Pillar Column: rx responds directly to curvatureIntensity
+          var pillarRx = curvature === "linear" ? 0 : (curvature === "subtle" ? 4 : 8);
+
           stageG.append("rect")
             .attr("x", px)
             .attr("y", py)
             .attr("width", pWidth)
             .attr("height", pHeight)
-            .attr("rx", 6)
+            .attr("rx", pillarRx)
             .attr("fill", col)
             .attr("stroke", d3.rgb(col).brighter(0.5))
             .attr("stroke-width", 1.5)
@@ -1045,17 +1099,20 @@
       else {
         var stepHeight = innerH / Math.max(1, n);
         var halfW = innerW / 2;
-        var rScaleV = d3.scaleLinear()
-          .domain([0, maxVal])
-          .range([minNeck / 2, halfW * 0.9]);
+        var maxRadiusV = halfW * 0.9;
+        var minRadiusV = Math.max(4, minNeck / 2);
+
+        // Gap between vertical stages is 2 * padding
+        var pHeightV = Math.max(16, stepHeight - padding * 2);
 
         var stageGeomV = stages.map(function (st, i) {
           var cy = (i + 0.5) * stepHeight;
-          var r = rScaleV(st.value);
+          var valNormV = maxVal > 0 ? (st.value / maxVal) : 1;
+          var r = minRadiusV + (maxRadiusV - minRadiusV) * Math.pow(valNormV, 1.2);
           return {
             y: cy,
-            topY: i * stepHeight + 6,
-            botY: (i + 1) * stepHeight - 6,
+            topY: cy - pHeightV / 2,
+            botY: cy + pHeightV / 2,
             leftX: halfW - r,
             rightX: halfW + r,
             radius: r,
@@ -1064,10 +1121,11 @@
           };
         });
 
-        // Vertical connectors
+        // Vertical connectors (responding to curvatureIntensity)
         for (var cv = 0; cv < n - 1; cv++) {
           var cCurr = stageGeomV[cv];
           var cNext = stageGeomV[cv + 1];
+          var dy = cNext.topY - cCurr.botY;
           var cMidY = (cCurr.botY + cNext.topY) / 2;
 
           var vColorA = theme.stageColors[cv % theme.stageColors.length];
@@ -1081,10 +1139,27 @@
           vGrad.append("stop").attr("offset", "0%").attr("stop-color", vColorA).attr("stop-opacity", 0.75);
           vGrad.append("stop").attr("offset", "100%").attr("stop-color", vColorB).attr("stop-opacity", 0.75);
 
-          var vPath = "M " + cCurr.leftX + " " + cCurr.botY + " " +
-            "C " + cCurr.leftX + " " + cMidY + ", " + cNext.leftX + " " + cMidY + ", " + cNext.leftX + " " + cNext.topY + " " +
-            "L " + cNext.rightX + " " + cNext.topY + " " +
-            "C " + cNext.rightX + " " + cMidY + ", " + cCurr.rightX + " " + cMidY + ", " + cCurr.rightX + " " + cCurr.botY + " Z";
+          var vPath = "";
+          if (curvature === "linear") {
+            vPath = "M " + cCurr.leftX + " " + cCurr.botY + " " +
+              "L " + cNext.leftX + " " + cNext.topY + " " +
+              "L " + cNext.rightX + " " + cNext.topY + " " +
+              "L " + cCurr.rightX + " " + cCurr.botY + " Z";
+          } else if (curvature === "subtle") {
+            var cp1y = cCurr.botY + dy * 0.22;
+            var cp2y = cNext.topY - dy * 0.22;
+            vPath = "M " + cCurr.leftX + " " + cCurr.botY + " " +
+              "C " + cCurr.leftX + " " + cp1y + ", " + cNext.leftX + " " + cp2y + ", " + cNext.leftX + " " + cNext.topY + " " +
+              "L " + cNext.rightX + " " + cNext.topY + " " +
+              "C " + cNext.rightX + " " + cp2y + ", " + cCurr.rightX + " " + cp1y + ", " + cCurr.rightX + " " + cCurr.botY + " Z";
+          } else {
+            var cp1y = cCurr.botY + dy * 0.55;
+            var cp2y = cNext.topY - dy * 0.45;
+            vPath = "M " + cCurr.leftX + " " + cCurr.botY + " " +
+              "C " + cCurr.leftX + " " + cp1y + ", " + cNext.leftX + " " + cp2y + ", " + cNext.leftX + " " + cNext.topY + " " +
+              "L " + cNext.rightX + " " + cNext.topY + " " +
+              "C " + cNext.rightX + " " + cp2y + ", " + cCurr.rightX + " " + cp1y + ", " + cCurr.rightX + " " + cCurr.botY + " Z";
+          }
 
           g.append("path")
             .attr("d", vPath)
@@ -1113,13 +1188,14 @@
           }
         }
 
-        // Vertical Pillars
+        // Vertical Pillars (with curvature-aligned rx)
+        var pillarRxV = curvature === "linear" ? 0 : (curvature === "subtle" ? 4 : 8);
+
         stageGeomV.forEach(function (sg, idx) {
           var colV = theme.stageColors[idx % theme.stageColors.length];
           var stgGV = g.append("g").style("cursor", "pointer");
 
-          var pHeightV = Math.max(12, stepHeight * 0.5);
-          var pyV = sg.y - pHeightV / 2;
+          var pyV = sg.topY;
           var pxV = sg.leftX;
           var pWidthV = Math.max(6, sg.rightX - sg.leftX);
 
@@ -1128,7 +1204,7 @@
             .attr("y", pyV)
             .attr("width", pWidthV)
             .attr("height", pHeightV)
-            .attr("rx", 6)
+            .attr("rx", pillarRxV)
             .attr("fill", colV)
             .attr("stroke", d3.rgb(colV).brighter(0.5))
             .attr("stroke-width", 1.5);
@@ -1191,29 +1267,62 @@
       var stepH = innerH / Math.max(1, n);
       var halfW = innerW / 2;
       var maxVal = d3.max(stages, function (d) { return d.value; }) || 1;
-      var minWidth = Math.max(30, Number(config.minNeckWidth) || 35);
 
-      var wScale = d3.scaleLinear()
-        .domain([0, maxVal])
-        .range([minWidth, innerW * 0.95]);
+      var padding = typeof config.stagePadding !== "undefined" && config.stagePadding !== null && config.stagePadding !== "" ? Number(config.stagePadding) : 16;
+      if (isNaN(padding)) padding = 16;
+      padding = Math.max(2, Math.min(50, padding));
+
+      var minNeck = typeof config.minNeckWidth !== "undefined" && config.minNeckWidth !== null && config.minNeckWidth !== "" ? Number(config.minNeckWidth) : 28;
+      if (isNaN(minNeck)) minNeck = 28;
+      minNeck = Math.max(10, Math.min(innerW * 0.6, minNeck));
+
+      var curvature = config.curvatureIntensity || "curved";
+
+      var maxWidth = innerW * 0.95;
+      var minWidth = minNeck;
 
       stages.forEach(function (st, i) {
-        var topWidth = wScale(st.value);
-        var nextVal = i < n - 1 ? stages[i + 1].value : st.value * 0.8;
-        var botWidth = wScale(nextVal);
+        var valNorm0 = maxVal > 0 ? (st.value / maxVal) : 1;
+        var topWidth = minWidth + (maxWidth - minWidth) * Math.pow(valNorm0, 1.15);
 
-        var y0 = i * stepH;
-        var y1 = (i + 1) * stepH - (Number(config.stagePadding) || 8);
+        var nextVal = i < n - 1 ? stages[i + 1].value : st.value * 0.75;
+        var valNorm1 = maxVal > 0 ? (nextVal / maxVal) : 1;
+        var botWidth = minWidth + (maxWidth - minWidth) * Math.pow(valNorm1, 1.15);
+
+        // Gap between trapezoid steps is exactly padding
+        var y0 = i * stepH + padding / 2;
+        var y1 = (i + 1) * stepH - padding / 2;
 
         var x0_l = halfW - topWidth / 2;
         var x0_r = halfW + topWidth / 2;
         var x1_l = halfW - botWidth / 2;
         var x1_r = halfW + botWidth / 2;
 
-        var trapPath = "M " + x0_l + " " + y0 + " " +
-          "L " + x0_r + " " + y0 + " " +
-          "L " + x1_r + " " + y1 + " " +
-          "L " + x1_l + " " + y1 + " Z";
+        var trapPath = "";
+        if (curvature === "curved") {
+          // Curved outer contour
+          var midY = (y0 + y1) / 2;
+          var curveBump = 10;
+          trapPath = "M " + x0_l + " " + y0 + " " +
+            "L " + x0_r + " " + y0 + " " +
+            "Q " + (x0_r + (x1_r - x0_r) * 0.5 + curveBump) + " " + midY + ", " + x1_r + " " + y1 + " " +
+            "L " + x1_l + " " + y1 + " " +
+            "Q " + (x0_l + (x1_l - x0_l) * 0.5 - curveBump) + " " + midY + ", " + x0_l + " " + y0 + " Z";
+        } else if (curvature === "subtle") {
+          var midY = (y0 + y1) / 2;
+          var curveBump = 4;
+          trapPath = "M " + x0_l + " " + y0 + " " +
+            "L " + x0_r + " " + y0 + " " +
+            "Q " + (x0_r + (x1_r - x0_r) * 0.5 + curveBump) + " " + midY + ", " + x1_r + " " + y1 + " " +
+            "L " + x1_l + " " + y1 + " " +
+            "Q " + (x0_l + (x1_l - x0_l) * 0.5 - curveBump) + " " + midY + ", " + x0_l + " " + y0 + " Z";
+        } else {
+          // Linear Sharp Edges: Pure polygon trapezoid
+          trapPath = "M " + x0_l + " " + y0 + " " +
+            "L " + x0_r + " " + y0 + " " +
+            "L " + x1_r + " " + y1 + " " +
+            "L " + x1_l + " " + y1 + " Z";
+        }
 
         var col = theme.stageColors[i % theme.stageColors.length];
         var stageG = g.append("g").style("cursor", "pointer");
@@ -1294,10 +1403,22 @@
       var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       var maxVal = d3.max(stages, function (d) { return d.value; }) || 1;
 
+      var padding = typeof config.stagePadding !== "undefined" && config.stagePadding !== null && config.stagePadding !== "" ? Number(config.stagePadding) : 16;
+      if (isNaN(padding)) padding = 16;
+      padding = Math.max(2, Math.min(60, padding));
+
+      var minNeck = typeof config.minNeckWidth !== "undefined" && config.minNeckWidth !== null && config.minNeckWidth !== "" ? Number(config.minNeckWidth) : 28;
+      if (isNaN(minNeck)) minNeck = 28;
+
+      var curvature = config.curvatureIntensity || "curved";
+      var barRx = curvature === "linear" ? 0 : (curvature === "subtle" ? 4 : 8);
+
+      var paddingFraction = Math.max(0.08, Math.min(0.65, padding / 45));
+
       var xScale = d3.scaleBand()
         .domain(stages.map(function (d) { return d.name; }))
         .range([0, innerW])
-        .padding(0.3);
+        .padding(paddingFraction);
 
       var yScale = d3.scaleLinear()
         .domain([0, maxVal * 1.1])
@@ -1330,13 +1451,13 @@
 
         var barG = g.append("g").style("cursor", "pointer");
 
-        // Main Retained Volume Bar
+        // Main Retained Volume Bar (rx responds to curvature)
         barG.append("rect")
           .attr("x", bx)
           .attr("y", by)
           .attr("width", barW)
           .attr("height", Math.max(2, bH))
-          .attr("rx", 4)
+          .attr("rx", barRx)
           .attr("fill", col)
           .attr("stroke", d3.rgb(col).brighter(0.4));
 
@@ -1376,9 +1497,9 @@
           var nextBx = xScale(nextSt.name);
           var nextBy = yScale(nextSt.value);
 
-          // Red Churn Drop-off Connector Bar
+          // Red Churn Drop-off Connector Bar (width influenced by minNeckWidth)
           var dropH = Math.max(2, nextBy - by);
-          var dropW = barW * 0.45;
+          var dropW = Math.max(12, Math.min(barW * 0.7, minNeck * 0.8));
           var dropX = bx + barW + (nextBx - (bx + barW) - dropW) / 2;
 
           g.append("rect")
@@ -1386,7 +1507,7 @@
             .attr("y", by)
             .attr("width", dropW)
             .attr("height", dropH)
-            .attr("rx", 3)
+            .attr("rx", barRx)
             .attr("fill", theme.isDark ? "rgba(239, 68, 68, 0.4)" : "rgba(239, 68, 68, 0.2)")
             .attr("stroke", theme.dropoffStroke)
             .attr("stroke-width", 1);
@@ -1434,11 +1555,22 @@
         .domain(segList)
         .range(theme.stageColors);
 
+      var padding = typeof config.stagePadding !== "undefined" && config.stagePadding !== null && config.stagePadding !== "" ? Number(config.stagePadding) : 16;
+      if (isNaN(padding)) padding = 16;
+      padding = Math.max(2, Math.min(60, padding));
+
+      var minNeck = typeof config.minNeckWidth !== "undefined" && config.minNeckWidth !== null && config.minNeckWidth !== "" ? Number(config.minNeckWidth) : 28;
+      if (isNaN(minNeck)) minNeck = 28;
+
+      var curvature = config.curvatureIntensity || "curved";
+      var sliceRx = curvature === "linear" ? 0 : (curvature === "subtle" ? 3 : 6);
+
       var stepW = innerW / Math.max(1, n);
+      // Stage column width responds directly to stagePadding
+      var bWidth = Math.max(16, stepW - padding * 2);
 
       stages.forEach(function (st, sIdx) {
         var cx = (sIdx + 0.5) * stepW;
-        var bWidth = Math.max(16, stepW * 0.55);
         var bx = cx - bWidth / 2;
 
         var totalStVal = st.value || 1;
@@ -1461,6 +1593,7 @@
             .attr("y", segY)
             .attr("width", bWidth)
             .attr("height", Math.max(1, segH))
+            .attr("rx", sliceRx)
             .attr("fill", segColorScale(segKey))
             .attr("stroke", theme.bg)
             .attr("stroke-width", 0.5);
