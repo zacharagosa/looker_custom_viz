@@ -190,6 +190,7 @@
       funnelLayout: {
         type: "string",
         label: "Funnel Pipeline Layout",
+        display: "select",
         values: [
           { "Curved Stream Pipeline": "curved_pipeline" },
           { "Stepped Isometric Funnel": "stepped_funnel" },
@@ -203,6 +204,7 @@
       metricMode: {
         type: "string",
         label: "Metric Display Mode",
+        display: "select",
         values: [
           { "Primary Volume Only": "primary_only" },
           { "Primary Volume + Secondary Metric": "dual_metric" },
@@ -215,6 +217,7 @@
       pctBaseline: {
         type: "string",
         label: "Conversion % Reference",
+        display: "select",
         values: [
           { "Step-to-Step Conversion": "step_to_step" },
           { "Top of Funnel Overall": "top_of_funnel" },
@@ -227,6 +230,7 @@
       funnelOrientation: {
         type: "string",
         label: "Pipeline Orientation",
+        display: "select",
         values: [
           { "Horizontal Flow (Left to Right)": "horizontal" },
           { "Vertical Pipeline (Top to Bottom)": "vertical" }
@@ -273,6 +277,7 @@
       valueFormat: {
         type: "string",
         label: "Primary Value Formatting",
+        display: "select",
         values: [
           { "Compact Number (1.2M, 45K)": "compact_num" },
           { "Compact Currency ($1.2M)": "compact_currency" },
@@ -288,6 +293,7 @@
       colorTheme: {
         type: "string",
         label: "Color Palette & Theme",
+        display: "select",
         values: [
           { "Cyber Teal (Dark)": "cyber_teal" },
           { "Neon Violet (Dark)": "neon_violet" },
@@ -302,6 +308,7 @@
       funnelGradient: {
         type: "string",
         label: "Surface Styling",
+        display: "select",
         values: [
           { "Smooth Gradient Blend": "smooth" },
           { "Solid Color Stages": "solid" },
@@ -314,6 +321,7 @@
       curvatureIntensity: {
         type: "string",
         label: "Curvature & Neck Shaping",
+        display: "select",
         values: [
           { "High Flow Bézier Curves": "curved" },
           { "Subtle Dynamic Arcs": "subtle" },

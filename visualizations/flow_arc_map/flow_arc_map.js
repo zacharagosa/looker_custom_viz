@@ -257,6 +257,7 @@
       viewMode: {
         type: "string",
         label: "Map Flow Layout",
+        display: "select",
         values: [
           { "Bézier Flow Arcs": "curved_arcs" },
           { "Hub & Spoke Radial": "hub_spoke" },
@@ -270,6 +271,7 @@
       topRoutes: {
         type: "string",
         label: "Route Density Filter",
+        display: "select",
         values: [
           { "All Active Routes": "all" },
           { "Top 15 Primary Arterials": "15" },
@@ -284,6 +286,7 @@
       arcCurvature: {
         type: "string",
         label: "Arc Arch & Curvature",
+        display: "select",
         values: [
           { "Subtle (0.2)": "0.2" },
           { "Balanced (0.35)": "0.35" },
@@ -296,6 +299,7 @@
       flowAnimation: {
         type: "string",
         label: "Flow Pulse Animation",
+        display: "select",
         values: [
           { "Animated Pulse Particles": "pulse" },
           { "Subtle Glow Pulse": "glow" },
@@ -329,6 +333,7 @@
       valueFormat: {
         type: "string",
         label: "Volume Metric Format",
+        display: "select",
         values: [
           { "Compact Currency ($1.2M)": "compact_currency" },
           { "Standard Currency ($1,234,567.00)": "currency" },
@@ -344,6 +349,7 @@
       colorTheme: {
         type: "string",
         label: "Color Theme",
+        display: "select",
         values: [
           { "Cyber Dark (Neon Glow)": "cyber_dark" },
           { "Executive Slate": "executive_slate" },
@@ -357,6 +363,7 @@
       arcColorMode: {
         type: "string",
         label: "Arc Coloring Scheme",
+        display: "select",
         values: [
           { "Color by Origin Hub": "by_origin" },
           { "Color by Volume Intensity": "by_volume" },
