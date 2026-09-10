@@ -8,21 +8,21 @@ This repository is continuously maintained by an autonomous daily AI automation 
 
 ## 🎨 Visualization Catalog
 
-| ID | Name | Category | Engine | Required Fields | Status | Preview |
-| :--- | :--- | :--- | :--- | :--- | :---: | :--- |
-| [`radial_progress_gauge`](visualizations/radial_progress_gauge/) | **Radial KPI Progress Gauge** | Performance & Variance | D3.js v7 | 1–6 measures (or 1 dim + 1 meas) | 🟢 Ready | [View Screenshot](assets/screenshots/radial_progress_gauge.png) |
-| [`calendar_activity_heatmap`](visualizations/calendar_activity_heatmap/) | **Calendar Activity Heatmap** | Time Series & Schedules | D3.js v7 | 1 Date dim + 1 measure | 🟢 Ready | [View Screenshot](assets/screenshots/calendar_activity_heatmap.png) |
-| [`bullet_graph`](visualizations/bullet_graph/) | **Stephen Few Bullet Graph** | Performance & Variance | D3.js v7 | 1 dim + 1–3 measures | 🟢 Ready | [View Screenshot](assets/screenshots/bullet_graph.png) |
-| [`dumbbell_plot`](visualizations/dumbbell_plot/) | **Dumbbell Divergence Plot** | Performance & Variance | D3.js v7 | 1 dim + 1–2 measures (or 2 pivots) | 🟢 Ready | [View Screenshot](assets/screenshots/dumbbell_plot.png) |
-| [`choropleth_map`](visualizations/choropleth_map/) | **Interactive US Choropleth Map** | Geospatial Intelligence | D3.js v7 | 1 State dim + 1 measure | 🟢 Ready | [View Screenshot](assets/screenshots/choropleth_map.png) |
-| [`sparkline_matrix_table`](visualizations/sparkline_matrix_table/) | **Sparkline Metric Matrix Table** | Leaderboards & Grids | D3.js v7 | 1 dim + 1 pivot (or 2–6 measures) | 🟢 Ready | [View Screenshot](assets/screenshots/sparkline_matrix_table.png) |
-| [`retention_cohort_decay`](visualizations/retention_cohort_decay/) | **Player & Customer Retention Cohort Decay** | Telemetry & Cohort Decay | D3.js v7 | 1 Cohort dim + 1 Activity dim (or pivot) + 1 measure | 🟢 Ready | [View Screenshot](assets/screenshots/retention_cohort_decay.png) |
-| [`broadcast_daypart_grid`](visualizations/broadcast_daypart_grid/) | **Broadcast Programming Schedule & Daypart Performance Grid** | Time Series & Schedules | D3.js v7 | 2 dims (Day of Week + Hour of Day) [Optional 3rd Dim] + 1–2 measures (GRPs, Spend) | 🟢 Ready | [View Screenshot](assets/screenshots/broadcast_daypart_grid.png) |
-| [`network_topology_graph`](visualizations/network_topology_graph/) | **Network Topology & Latency Flow Graph** | Flow, Networks & Hierarchy | D3.js v7 | 1–2 dims (Source + Target) + 1–3 measures | 🟢 Ready | [View Screenshot](assets/screenshots/network_topology_graph.png) |
-| [`sankey_flow_diagram`](visualizations/sankey_flow_diagram/) | **Sankey Flow & Allocation Diagram** | Flow, Networks & Hierarchy | D3.js v7 | 2–8 sequential dims + 1–2 measures | 🟢 Ready | [View Screenshot](assets/screenshots/sankey_flow_diagram.png) |
-| [`rank_bump_chart`](visualizations/rank_bump_chart/) | **Rank Bump & Trajectory Chart** | Leaderboards & Grids | D3.js v7 | 1 entity dim + 1 pivot (or 2–12 measures) | 🟢 Ready | [View Screenshot](assets/screenshots/rank_bump_chart.png) |
-| [`flow_arc_map`](visualizations/flow_arc_map/) | **Geospatial Flow & Route Arc Map** | Geospatial Intelligence | D3.js v7 | 1–2 dims (Origin Hub + Destination) [optional coords] + 1–3 measures | 🟢 Ready | [View Screenshot](assets/screenshots/flow_arc_map.png) |
-| [`telemetry_conversion_funnel`](visualizations/telemetry_conversion_funnel/) | **Telemetry & Conversion Funnel** | Telemetry & Cohort Decay | D3.js v7 | 1–2 dims (Stage + optional Segment) [or 2–8 measures] + 1–2 measures | 🟢 Ready | [View Screenshot](assets/screenshots/telemetry_conversion_funnel.png) |
+| Visualization | Category | Required Data Shape | Preview |
+| :--- | :--- | :--- | :---: |
+| [**Radial KPI Progress Gauge**](visualizations/radial_progress_gauge/)<br>`radial_progress_gauge` | Performance & Variance | 1–6 measures (or 1 dim + 1 meas) | [📸 View](assets/screenshots/radial_progress_gauge.png) |
+| [**Calendar Activity Heatmap**](visualizations/calendar_activity_heatmap/)<br>`calendar_activity_heatmap` | Time Series & Schedules | 1 Date dim + 1 measure | [📸 View](assets/screenshots/calendar_activity_heatmap.png) |
+| [**Stephen Few Bullet Graph**](visualizations/bullet_graph/)<br>`bullet_graph` | Performance & Variance | 1 dim + 1–3 measures | [📸 View](assets/screenshots/bullet_graph.png) |
+| [**Dumbbell Divergence Plot**](visualizations/dumbbell_plot/)<br>`dumbbell_plot` | Performance & Variance | 1 dim + 1–2 measures (or 2 pivots) | [📸 View](assets/screenshots/dumbbell_plot.png) |
+| [**Interactive US Choropleth Map**](visualizations/choropleth_map/)<br>`choropleth_map` | Geospatial Intelligence | 1 State dim + 1 measure | [📸 View](assets/screenshots/choropleth_map.png) |
+| [**Sparkline Metric Matrix Table**](visualizations/sparkline_matrix_table/)<br>`sparkline_matrix_table` | Leaderboards & Grids | 1 dim + 1 pivot (or 2–6 measures) | [📸 View](assets/screenshots/sparkline_matrix_table.png) |
+| [**Player & Customer Retention Decay**](visualizations/retention_cohort_decay/)<br>`retention_cohort_decay` | Telemetry & Cohort Decay | 1 Cohort + 1 Activity dim + 1 meas | [📸 View](assets/screenshots/retention_cohort_decay.png) |
+| [**Broadcast Daypart Grid**](visualizations/broadcast_daypart_grid/)<br>`broadcast_daypart_grid` | Time Series & Schedules | 2 dims (Day + Hour) + 1–2 measures | [📸 View](assets/screenshots/broadcast_daypart_grid.png) |
+| [**Network Topology Flow Graph**](visualizations/network_topology_graph/)<br>`network_topology_graph` | Flow, Networks & Hierarchy | 1–2 dims (Source + Target) + 1–3 meas | [📸 View](assets/screenshots/network_topology_graph.png) |
+| [**Sankey Flow Diagram**](visualizations/sankey_flow_diagram/)<br>`sankey_flow_diagram` | Flow, Networks & Hierarchy | 2–8 sequential dims + 1–2 measures | [📸 View](assets/screenshots/sankey_flow_diagram.png) |
+| [**Rank Bump & Trajectory Chart**](visualizations/rank_bump_chart/)<br>`rank_bump_chart` | Leaderboards & Grids | 1 entity dim + 1 pivot (or 2–12 meas) | [📸 View](assets/screenshots/rank_bump_chart.png) |
+| [**Geospatial Flow Arc Map**](visualizations/flow_arc_map/)<br>`flow_arc_map` | Geospatial Intelligence | 1–2 dims (Origin + Dest) + 1–3 meas | [📸 View](assets/screenshots/flow_arc_map.png) |
+| [**Telemetry & Conversion Funnel**](visualizations/telemetry_conversion_funnel/)<br>`telemetry_conversion_funnel` | Telemetry & Cohort Decay | 1–2 dims (Stage + Segment) + 1–2 meas | [📸 View](assets/screenshots/telemetry_conversion_funnel.png) |
 
 ---
 
