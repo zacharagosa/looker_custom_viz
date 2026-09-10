@@ -481,6 +481,11 @@
           }
         });
 
+        // Validate selected segment against available segments
+        if (this._selectedSegment && this._selectedSegment !== "ALL" && segments.indexOf(this._selectedSegment) === -1) {
+          this._selectedSegment = "ALL";
+        }
+
         // Filter by selected segment
         var targetSeg = this._selectedSegment || "ALL";
         var aggStages = {};
@@ -489,22 +494,28 @@
         });
 
         Object.keys(segMap).forEach(function (segKey) {
-          if (targetSeg === "ALL" || targetSeg === segKey) {
-            var sData = segMap[segKey];
-            Object.keys(sData.stages).forEach(function (stKey) {
-              var stObj = sData.stages[stKey];
+          var sData = segMap[segKey];
+          if (!sData || !sData.stages) return;
+
+          var isIncluded = (targetSeg === "ALL" || targetSeg === segKey);
+
+          Object.keys(sData.stages).forEach(function (stKey) {
+            var stObj = sData.stages[stKey];
+            if (!stObj || !aggStages[stKey]) return;
+
+            if (isIncluded) {
               aggStages[stKey].value += stObj.value;
               aggStages[stKey].secondaryValue += stObj.secondaryValue;
               if (!aggStages[stKey].drillData) aggStages[stKey].drillData = stObj.drillData;
-            });
-          }
-          // Record segment contribution for segmented layout
-          Object.keys(sData.stages).forEach(function (stKey) {
-            var stObj = sData.stages[stKey];
+            }
+
+            // Record segment contribution for segmented layout
             if (!aggStages[stKey].segmentBreakdown[segKey]) {
               aggStages[stKey].segmentBreakdown[segKey] = 0;
             }
-            aggStages[stKey].segmentBreakdown[segKey] += stObj.value;
+            if (isIncluded) {
+              aggStages[stKey].segmentBreakdown[segKey] += stObj.value;
+            }
           });
         });
 
@@ -514,7 +525,10 @@
 
         // Natural sort by stage volume descending to reflect funnel flow
         stages.sort(function (a, b) {
-          return b.value - a.value;
+          if (b.value !== a.value) {
+            return b.value - a.value;
+          }
+          return (stageOrderMap[a.name] || 0) - (stageOrderMap[b.name] || 0);
         });
       }
       // Mode C: 1 Dimension (Stage) + 1-2 Measures
