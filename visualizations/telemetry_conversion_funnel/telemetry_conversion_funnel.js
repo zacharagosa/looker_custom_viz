@@ -349,10 +349,14 @@
 
     create: function (element, config) {
       element.innerHTML = "";
+      this._element = element;
+
       this._container = document.createElement("div");
       this._container.setAttribute("class", "conversion-funnel-root");
       this._container.style.width = "100%";
       this._container.style.height = "100%";
+      this._container.style.display = "flex";
+      this._container.style.flexDirection = "column";
       this._container.style.position = "relative";
       this._container.style.overflow = "hidden";
       this._container.style.boxSizing = "border-box";
@@ -361,10 +365,76 @@
 
       this._selectedSegment = "ALL";
       this._searchFilter = "";
+
+      this._setupResizeObserver(element);
+    },
+
+    _setupResizeObserver: function (element) {
+      var self = this;
+      if (this._resizeObserver) {
+        try { this._resizeObserver.disconnect(); } catch (e) {}
+        this._resizeObserver = null;
+      }
+      if (typeof ResizeObserver !== "undefined" && element) {
+        this._resizeObserver = new ResizeObserver(function () {
+          self._onResize();
+        });
+        this._resizeObserver.observe(element);
+      }
+      if (!this._windowResizeBound) {
+        this._windowResizeBound = true;
+        window.addEventListener("resize", function () {
+          self._onResize();
+        });
+      }
+    },
+
+    _onResize: function () {
+      var self = this;
+      if (!self._lastData || !self._lastQueryResponse || !self._container) return;
+
+      var el = self._element || self._lastElement;
+      var curW = self._container.clientWidth || (el ? el.clientWidth : 0);
+      var curH = self._container.clientHeight || (el ? el.clientHeight : 0);
+
+      // If hidden or collapsed to 0, do not re-render into zero space
+      if (curW <= 10 || curH <= 10) return;
+
+      // Check if dimensions changed meaningfully
+      if (self._lastRenderW && self._lastRenderH) {
+        if (Math.abs(curW - self._lastRenderW) < 4 && Math.abs(curH - self._lastRenderH) < 4) {
+          return;
+        }
+      }
+
+      if (self._resizeTimer) {
+        clearTimeout(self._resizeTimer);
+      }
+      self._resizeTimer = setTimeout(function () {
+        if (self._lastData && self._lastQueryResponse && self._container) {
+          ensureD3(function (d3) {
+            try {
+              self._render(d3, self._lastData, self._lastConfig, self._lastQueryResponse);
+            } catch (e) {
+              console.error("Funnel resize render error:", e);
+            }
+          });
+        }
+      }, 50);
     },
 
     updateAsync: function (data, element, config, queryResponse, details, onComplete) {
       this.clearErrors();
+
+      this._element = element;
+      this._lastElement = element;
+      this._lastData = data;
+      this._lastConfig = config;
+      this._lastQueryResponse = queryResponse;
+
+      if (!this._resizeObserver && element) {
+        this._setupResizeObserver(element);
+      }
 
       if (!data || data.length === 0) {
         this.addError({
@@ -612,6 +682,15 @@
       var container = this._container;
       container.innerHTML = ""; // Purge stale DOM
 
+      var el = this._element || this._lastElement;
+      var clientW = container.clientWidth || (el ? el.clientWidth : 800);
+      var clientH = container.clientHeight || (el ? el.clientHeight : 500);
+
+      this._lastRenderW = clientW;
+      this._lastRenderH = clientH;
+
+      var isCompactHeight = clientH < 340;
+
       var themeKey = config.colorTheme || "cyber_teal";
       var theme = THEMES[themeKey] || THEMES.cyber_teal;
       container.style.backgroundColor = theme.bg;
@@ -632,13 +711,14 @@
       topControls.style.flexWrap = "wrap";
       topControls.style.alignItems = "center";
       topControls.style.justifyContent = "space-between";
-      topControls.style.padding = "10px 16px";
-      topControls.style.gap = "10px";
+      topControls.style.padding = isCompactHeight ? "6px 12px" : "10px 16px";
+      topControls.style.gap = isCompactHeight ? "6px" : "10px";
       topControls.style.borderBottom = "1px solid " + theme.border;
       topControls.style.background = theme.hudBg;
       topControls.style.boxSizing = "border-box";
       topControls.style.backdropFilter = "blur(8px)";
       topControls.style.zIndex = "10";
+      topControls.style.flexShrink = "0";
       container.appendChild(topControls);
 
       // HUD Metrics Cards
@@ -646,7 +726,7 @@
         var hudGroup = document.createElement("div");
         hudGroup.style.display = "flex";
         hudGroup.style.alignItems = "center";
-        hudGroup.style.gap = "14px";
+        hudGroup.style.gap = isCompactHeight ? "8px" : "14px";
         hudGroup.style.flexWrap = "wrap";
 
         // Find biggest drop-off bottleneck
@@ -672,31 +752,31 @@
           var card = document.createElement("div");
           card.style.display = "flex";
           card.style.flexDirection = "column";
-          card.style.padding = "4px 10px";
+          card.style.padding = isCompactHeight ? "2px 8px" : "4px 10px";
           card.style.background = item.alert ? "rgba(239, 68, 68, 0.12)" : "rgba(255, 255, 255, 0.05)";
           card.style.border = "1px solid " + (item.alert ? "rgba(239, 68, 68, 0.4)" : theme.hudBorder);
           card.style.borderRadius = "6px";
 
           var lbl = document.createElement("span");
-          lbl.style.fontSize = "9.5px";
+          lbl.style.fontSize = isCompactHeight ? "8.5px" : "9.5px";
           lbl.style.fontWeight = "700";
           lbl.style.letterSpacing = "0.5px";
           lbl.style.color = item.alert ? "#f87171" : theme.hudSubtext;
           lbl.innerText = item.label;
 
           var val = document.createElement("span");
-          val.style.fontSize = "13.5px";
+          val.style.fontSize = isCompactHeight ? "11.5px" : "13.5px";
           val.style.fontWeight = "800";
           val.style.color = item.alert ? "#fca5a5" : theme.hudText;
           val.innerText = item.value;
 
           var sub = document.createElement("span");
-          sub.style.fontSize = "10px";
+          sub.style.fontSize = isCompactHeight ? "9px" : "10px";
           sub.style.color = theme.subtext;
           sub.style.whiteSpace = "nowrap";
           sub.style.overflow = "hidden";
           sub.style.textOverflow = "ellipsis";
-          sub.style.maxWidth = "160px";
+          sub.style.maxWidth = isCompactHeight ? "120px" : "160px";
           sub.innerText = item.sub;
 
           card.appendChild(lbl);
@@ -767,16 +847,18 @@
       topControls.appendChild(filterGroup);
 
       // 2. Viewport & Canvas Calculation
-      var topHeight = topControls.offsetHeight || 50;
-      var totalWidth = container.clientWidth || 800;
-      var totalHeight = Math.max(260, (container.clientHeight || 500) - topHeight);
-
       var chartWrapper = document.createElement("div");
+      chartWrapper.setAttribute("class", "funnel-chart-wrapper");
+      chartWrapper.style.flex = "1 1 0";
+      chartWrapper.style.minHeight = "0";
       chartWrapper.style.width = "100%";
-      chartWrapper.style.height = totalHeight + "px";
       chartWrapper.style.position = "relative";
       chartWrapper.style.overflow = "hidden";
       container.appendChild(chartWrapper);
+
+      var topHeight = topControls.offsetHeight || (isCompactHeight ? 40 : 50);
+      var totalWidth = chartWrapper.clientWidth || container.clientWidth || 800;
+      var totalHeight = chartWrapper.clientHeight || Math.max(140, clientH - topHeight);
 
       // Create Floating Tooltip
       var tooltip = document.createElement("div");
@@ -797,8 +879,9 @@
 
       var svg = d3.select(chartWrapper)
         .append("svg")
-        .attr("width", totalWidth)
-        .attr("height", totalHeight)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("viewBox", "0 0 " + totalWidth + " " + totalHeight)
         .style("display", "block");
 
       // Defs: Gradients and glow filters
@@ -844,10 +927,13 @@
       var orientation = config.funnelOrientation || "horizontal";
       var isHorizontal = orientation === "horizontal";
       var n = stages.length;
+      var isSmallH = height < 300;
 
-      var margin = isHorizontal ? { top: 40, right: 50, bottom: 65, left: 50 } : { top: 50, right: 60, bottom: 40, left: 60 };
-      var innerW = Math.max(100, width - margin.left - margin.right);
-      var innerH = Math.max(100, height - margin.top - margin.bottom);
+      var margin = isHorizontal
+        ? (isSmallH ? { top: 22, right: 35, bottom: 40, left: 35 } : { top: 40, right: 50, bottom: 65, left: 50 })
+        : (isSmallH ? { top: 25, right: 40, bottom: 25, left: 40 } : { top: 50, right: 60, bottom: 40, left: 60 });
+      var innerW = Math.max(60, width - margin.left - margin.right);
+      var innerH = Math.max(40, height - margin.top - margin.bottom);
 
       var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -856,11 +942,11 @@
       // Parse dynamic style configurations safely
       var padding = typeof config.stagePadding !== "undefined" && config.stagePadding !== null && config.stagePadding !== "" ? Number(config.stagePadding) : 16;
       if (isNaN(padding)) padding = 16;
-      padding = Math.max(2, Math.min(70, padding));
+      padding = Math.max(2, Math.min(isSmallH ? 24 : 70, padding));
 
       var minNeck = typeof config.minNeckWidth !== "undefined" && config.minNeckWidth !== null && config.minNeckWidth !== "" ? Number(config.minNeckWidth) : 28;
       if (isNaN(minNeck)) minNeck = 28;
-      minNeck = Math.max(8, Math.min(innerH * 0.85, minNeck));
+      minNeck = Math.max(6, Math.min(innerH * 0.75, minNeck));
 
       var curvature = config.curvatureIntensity || "curved";
 
@@ -868,7 +954,7 @@
         var stepWidth = innerW / Math.max(1, n);
         var halfH = innerH / 2;
         var maxRadius = halfH * 0.92;
-        var minRadius = Math.max(4, minNeck / 2);
+        var minRadius = Math.max(3, minNeck / 2);
 
         // Gap between adjacent stage pillars is exactly 2 * padding
         var pWidth = Math.max(16, stepWidth - padding * 2);
@@ -1051,39 +1137,42 @@
 
           stageG.append("text")
             .attr("x", sg.x)
-            .attr("y", sg.topY - 8)
+            .attr("y", Math.max(isSmallH ? -4 : -8, sg.topY - (isSmallH ? 5 : 8)))
             .attr("text-anchor", "middle")
             .attr("fill", theme.accent)
-            .attr("font-size", "11px")
+            .attr("font-size", isSmallH ? "9.5px" : "11px")
             .attr("font-weight", "700")
             .text(badgeText);
 
           // Bottom Stage Name & Sub-metric
           if (config.showStepLabels !== false) {
+            var labelY = innerH + (isSmallH ? 13 : 18);
             var labelG = stageG.append("g")
-              .attr("transform", "translate(" + sg.x + "," + (innerH + 18) + ")");
+              .attr("transform", "translate(" + sg.x + "," + labelY + ")");
 
             labelG.append("text")
               .attr("text-anchor", "middle")
               .attr("fill", theme.text)
-              .attr("font-size", "11.5px")
+              .attr("font-size", isSmallH ? "10px" : "11.5px")
               .attr("font-weight", "700")
               .text(sg.stage.name.length > 16 ? sg.stage.name.substring(0, 14) + "..." : sg.stage.name);
 
-            if (parsed.hasSecondaryMetric && config.metricMode === "dual_metric") {
-              labelG.append("text")
-                .attr("y", 15)
-                .attr("text-anchor", "middle")
-                .attr("fill", theme.subtext)
-                .attr("font-size", "10px")
-                .text(parsed.secondaryLabel + ": " + formatMetricValue(sg.stage.secondaryValue, "compact_currency"));
-            } else {
-              labelG.append("text")
-                .attr("y", 15)
-                .attr("text-anchor", "middle")
-                .attr("fill", theme.subtext)
-                .attr("font-size", "10px")
-                .text(sg.stage.dropoffVal > 0 ? "Lost: " + formatMetricValue(sg.stage.dropoffVal, config.valueFormat || "compact_num") : "Entry Stage");
+            if (!isSmallH || height > 220) {
+              if (parsed.hasSecondaryMetric && config.metricMode === "dual_metric") {
+                labelG.append("text")
+                  .attr("y", isSmallH ? 11 : 15)
+                  .attr("text-anchor", "middle")
+                  .attr("fill", theme.subtext)
+                  .attr("font-size", isSmallH ? "9px" : "10px")
+                  .text(parsed.secondaryLabel + ": " + formatMetricValue(sg.stage.secondaryValue, "compact_currency"));
+              } else {
+                labelG.append("text")
+                  .attr("y", isSmallH ? 11 : 15)
+                  .attr("text-anchor", "middle")
+                  .attr("fill", theme.subtext)
+                  .attr("font-size", isSmallH ? "9px" : "10px")
+                  .text(sg.stage.dropoffVal > 0 ? "Lost: " + formatMetricValue(sg.stage.dropoffVal, config.valueFormat || "compact_num") : "Entry Stage");
+              }
             }
           }
 
@@ -1273,9 +1362,12 @@
     _renderSteppedFunnel: function (d3, svg, defs, stages, width, height, theme, config, tooltip, parsed) {
       var self = this;
       var n = stages.length;
-      var margin = { top: 40, right: 60, bottom: 50, left: 60 };
-      var innerW = Math.max(100, width - margin.left - margin.right);
-      var innerH = Math.max(100, height - margin.top - margin.bottom);
+      var isSmallH = height < 300;
+      var margin = isSmallH
+        ? { top: 20, right: 35, bottom: 25, left: 35 }
+        : { top: 40, right: 60, bottom: 50, left: 60 };
+      var innerW = Math.max(60, width - margin.left - margin.right);
+      var innerH = Math.max(40, height - margin.top - margin.bottom);
 
       var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       var stepH = innerH / Math.max(1, n);
@@ -1410,9 +1502,12 @@
     _renderWaterfallDropoff: function (d3, svg, defs, stages, width, height, theme, config, tooltip, parsed) {
       var self = this;
       var n = stages.length;
-      var margin = { top: 40, right: 40, bottom: 65, left: 60 };
-      var innerW = Math.max(100, width - margin.left - margin.right);
-      var innerH = Math.max(100, height - margin.top - margin.bottom);
+      var isSmallH = height < 300;
+      var margin = isSmallH
+        ? { top: 20, right: 30, bottom: 40, left: 45 }
+        : { top: 40, right: 40, bottom: 65, left: 60 };
+      var innerW = Math.max(60, width - margin.left - margin.right);
+      var innerH = Math.max(40, height - margin.top - margin.bottom);
 
       var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       var maxVal = d3.max(stages, function (d) { return d.value; }) || 1;
@@ -1452,7 +1547,7 @@
           .attr("y", yScale(t) + 3)
           .attr("text-anchor", "end")
           .attr("fill", theme.subtext)
-          .attr("font-size", "10px")
+          .attr("font-size", isSmallH ? "9px" : "10px")
           .text(formatMetricValue(t, "compact_num"));
       });
 
@@ -1478,32 +1573,35 @@
         // Value text on bar
         barG.append("text")
           .attr("x", bx + barW / 2)
-          .attr("y", by - 6)
+          .attr("y", by - (isSmallH ? 4 : 6))
           .attr("text-anchor", "middle")
           .attr("fill", theme.text)
-          .attr("font-size", "11px")
+          .attr("font-size", isSmallH ? "10px" : "11px")
           .attr("font-weight", "700")
           .text(formatMetricValue(st.value, config.valueFormat || "compact_num"));
 
         // Stage label
+        var labelY = innerH + (isSmallH ? 12 : 18);
         barG.append("text")
           .attr("x", bx + barW / 2)
-          .attr("y", innerH + 18)
+          .attr("y", labelY)
           .attr("text-anchor", "middle")
           .attr("fill", theme.text)
-          .attr("font-size", "11px")
+          .attr("font-size", isSmallH ? "10px" : "11px")
           .attr("font-weight", "600")
           .text(st.name.length > 14 ? st.name.substring(0, 12) + "..." : st.name);
 
         // Conversion % under stage
-        barG.append("text")
-          .attr("x", bx + barW / 2)
-          .attr("y", innerH + 32)
-          .attr("text-anchor", "middle")
-          .attr("fill", theme.accent)
-          .attr("font-size", "10px")
-          .attr("font-weight", "700")
-          .text((st.topPct * 100).toFixed(1) + "% Top");
+        if (!isSmallH || height > 220) {
+          barG.append("text")
+            .attr("x", bx + barW / 2)
+            .attr("y", labelY + (isSmallH ? 11 : 14))
+            .attr("text-anchor", "middle")
+            .attr("fill", theme.accent)
+            .attr("font-size", isSmallH ? "9px" : "10px")
+            .attr("font-weight", "700")
+            .text((st.topPct * 100).toFixed(1) + "% Top");
+        }
 
         // Drop-off Bridge connecting to next bar
         if (idx < n - 1) {
@@ -1557,9 +1655,12 @@
     _renderSegmentedStacked: function (d3, svg, defs, stages, width, height, theme, config, tooltip, parsed) {
       var self = this;
       var n = stages.length;
-      var margin = { top: 40, right: 40, bottom: 60, left: 60 };
-      var innerW = Math.max(100, width - margin.left - margin.right);
-      var innerH = Math.max(100, height - margin.top - margin.bottom);
+      var isSmallH = height < 300;
+      var margin = isSmallH
+        ? { top: 20, right: 30, bottom: 38, left: 45 }
+        : { top: 40, right: 40, bottom: 60, left: 60 };
+      var innerW = Math.max(60, width - margin.left - margin.right);
+      var innerH = Math.max(40, height - margin.top - margin.bottom);
 
       var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       var maxVal = d3.max(stages, function (d) { return d.value; }) || 1;
@@ -1632,19 +1733,19 @@
         // Stage bottom label
         g.append("text")
           .attr("x", cx)
-          .attr("y", innerH + 18)
+          .attr("y", innerH + (isSmallH ? 13 : 18))
           .attr("text-anchor", "middle")
           .attr("fill", theme.text)
-          .attr("font-size", "11px")
+          .attr("font-size", isSmallH ? "10px" : "11px")
           .attr("font-weight", "600")
           .text(st.name.length > 14 ? st.name.substring(0, 12) + "..." : st.name);
 
         g.append("text")
           .attr("x", cx)
-          .attr("y", curY - 6)
+          .attr("y", curY - (isSmallH ? 4 : 6))
           .attr("text-anchor", "middle")
           .attr("fill", theme.accent)
-          .attr("font-size", "11px")
+          .attr("font-size", isSmallH ? "10px" : "11px")
           .attr("font-weight", "700")
           .text(formatMetricValue(st.value, config.valueFormat || "compact_num"));
       });
