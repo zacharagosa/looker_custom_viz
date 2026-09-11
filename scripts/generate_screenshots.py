@@ -21,7 +21,14 @@ os.makedirs(ASSETS_DIR, exist_ok=True)
 with open(CATALOG_PATH, "r", encoding="utf-8") as f:
     catalog = json.load(f)
 
-print(f"Loaded {len(catalog)} visualizations from catalog.")
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--viz", help="Specific viz ID to capture")
+args, _ = parser.parse_known_args()
+if args.viz:
+    catalog = [v for v in catalog if v["id"] == args.viz]
+
+print(f"Processing {len(catalog)} visualizations from catalog.")
 
 results = []
 

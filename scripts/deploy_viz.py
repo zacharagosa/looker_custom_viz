@@ -83,7 +83,7 @@ def register_instance_wide(viz_id, label, js_local_path, dependencies, profile="
     print(f"[4/6] Registering visualization '{viz_id}' instance-wide...")
     # Upload to public GCS bucket with no-cache to ensure immediate updates in Looker
     gcs_dest = f"gs://{GCS_BUCKET}/{viz_id}.js"
-    cmd = f'gcloud storage cp {js_local_path} {gcs_dest} --content-type=application/javascript --cache-control="no-cache, max-age=0"'
+    cmd = f'gcloud storage cp {js_local_path} {gcs_dest} --content-type=application/javascript --cache-control="no-cache, max-age=0" --account bq-automation-sa-aragosalooker@aragosalooker.iam.gserviceaccount.com'
     run_cmd(cmd)
     public_url = f"https://storage.googleapis.com/{GCS_BUCKET}/{viz_id}.js"
     print(f"  -> Uploaded JS bundle to public HTTPS URL: {public_url}")

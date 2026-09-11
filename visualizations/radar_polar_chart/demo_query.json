@@ -1,0 +1,32 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.total_sale_price",
+    "order_items.total_gross_margin",
+    "order_items.order_count",
+    "order_items.average_shipping_time"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "6",
+  "vis_config": {
+    "type": "radar_polar_chart",
+    "displayMode": "polygon",
+    "normalizationMode": "independent_max",
+    "maxEntities": "5",
+    "valueFormat": "compact_currency",
+    "showGridRings": true,
+    "showSpokeLabels": true,
+    "showLegend": true,
+    "showSearch": true,
+    "showExecutiveHUD": true,
+    "colorTheme": "google",
+    "webShape": "polygon",
+    "curveType": "linear",
+    "fillOpacity": 0.25,
+    "strokeWidth": 2.5
+  }
+}

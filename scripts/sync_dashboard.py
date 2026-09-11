@@ -77,7 +77,10 @@ VIZ_EMOJI_MAP = {
     "sankey_flow_diagram": "🌊",
     "rank_bump_chart": "🏆",
     "flow_arc_map": "🌐",
-    "telemetry_conversion_funnel": "⚡"
+    "telemetry_conversion_funnel": "⚡",
+    "hierarchical_tree_table": "🌲",
+    "multi_layer_geo_map": "📍",
+    "radar_polar_chart": "🕸️"
 }
 
 def get_headers(profile="default"):

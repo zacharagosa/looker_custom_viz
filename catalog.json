@@ -417,5 +417,34 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/multi_layer_geo_map/screenshot.png"
+  },
+  {
+    "id": "radar_polar_chart",
+    "name": "Multivariate Radar & Polar Balance Chart",
+    "date_added": "2026-09-11",
+    "library": "D3.js v7",
+    "category": "Performance & Variance",
+    "description": "Enterprise multivariate radar and polar balance chart solving Looker Cloud Blockers b/453718648, b/184359819, and go/agentrics-docs-spider-chart. Features 4 multi-modal rendering layouts (polygon web, rose coxcomb, radial lollipop bars, small multiples grid), independent spoke max and benchmark median normalization, client-side rollups for 5,000+ rows, 2 clean option tabs (Display and Style), interactive entity isolation, and Looker drill-downs.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Dimension (Entity name) or 2 Dimensions / Pivots",
+      "measures": "3 to 12 Numeric Measures (Spoke axes)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.total_sale_price",
+        "order_items.total_gross_margin",
+        "order_items.order_count",
+        "order_items.average_shipping_time"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/radar_polar_chart/screenshot.png"
   }
 ]

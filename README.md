@@ -25,6 +25,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Telemetry & Conversion Funnel**](visualizations/telemetry_conversion_funnel/)<br>`telemetry_conversion_funnel` | Telemetry & Cohort Decay | 1–2 dims (Stage + Segment) + 1–2 meas | [📸 View](assets/screenshots/telemetry_conversion_funnel.png) |
 | [**Collapsible Hierarchical Tree Grid**](visualizations/hierarchical_tree_table/)<br>`hierarchical_tree_table` | Leaderboards & Grids | 2–6 dims (Hierarchy) + 1–4 meas | [📸 View](assets/screenshots/hierarchical_tree_table.png) |
 | [**Dual-Axis Multi-Layer Geo Map**](visualizations/multi_layer_geo_map/)<br>`multi_layer_geo_map` | Geospatial Intelligence | 1 State dim + 1–3 measures | [📸 View](assets/screenshots/multi_layer_geo_map.png) |
+| [**Multivariate Radar & Polar Chart**](visualizations/radar_polar_chart/)<br>`radar_polar_chart` | Performance & Variance | 1 dim + 3–12 measures (or 2 dims / pivots) | [📸 View](assets/screenshots/radar_polar_chart.png) |
 
 ---
 
@@ -89,6 +90,10 @@ Consolidates multi-level parent-child hierarchies into a single indented tree co
 ### 15. Dual-Axis Multi-Layer Geospatial Map
 Synchronized dual-axis geospatial intelligence with Layer 1 choropleth polygon fill (volume/revenue) and Layer 2 proportional centroid bubble pins (margin/orders), dual legends, and hex cartogram mode.
 ![Dual-Axis Multi-Layer Geospatial Map](assets/screenshots/multi_layer_geo_map.png)
+
+### 16. Multivariate Radar & Polar Balance Chart
+Multivariate radar, polar spider web, Nightingale rose, and radial bar chart for balanced multidimensional evaluation, featuring scale normalization modes, Top-N ranking, interactive entity isolation pills, and executive KPI HUD.
+![Multivariate Radar & Polar Balance Chart](assets/screenshots/radar_polar_chart.png)
 
 ---
 
