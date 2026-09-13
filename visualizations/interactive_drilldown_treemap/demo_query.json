@@ -1,0 +1,33 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.department",
+    "products.category",
+    "products.brand",
+    "order_items.total_sale_price",
+    "order_items.total_gross_margin",
+    "order_items.order_count"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "interactive_drilldown_treemap",
+    "displayMode": "drilldown",
+    "tilingMethod": "squarify",
+    "colorMode": "branch",
+    "topNCount": "50",
+    "valueFormat": "compact_currency",
+    "showExecutiveHUD": true,
+    "showBreadcrumbs": true,
+    "showSearch": true,
+    "tilePadding": "2",
+    "colorTheme": "google",
+    "tileCornerRadius": "4",
+    "labelFontSize": "12",
+    "showSecondaryMetricInLabel": true,
+    "hoverEffect": "elevate"
+  }
+}

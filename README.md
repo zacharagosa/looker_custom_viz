@@ -26,6 +26,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Collapsible Hierarchical Tree Grid**](visualizations/hierarchical_tree_table/)<br>`hierarchical_tree_table` | Leaderboards & Grids | 2–6 dims (Hierarchy) + 1–4 meas | [📸 View](assets/screenshots/hierarchical_tree_table.png) |
 | [**Dual-Axis Multi-Layer Geo Map**](visualizations/multi_layer_geo_map/)<br>`multi_layer_geo_map` | Geospatial Intelligence | 1 State dim + 1–3 measures | [📸 View](assets/screenshots/multi_layer_geo_map.png) |
 | [**Multivariate Radar & Polar Chart**](visualizations/radar_polar_chart/)<br>`radar_polar_chart` | Performance & Variance | 1 dim + 3–12 measures (or 2 dims / pivots) | [📸 View](assets/screenshots/radar_polar_chart.png) |
+| [**Interactive Drilldown Treemap**](visualizations/interactive_drilldown_treemap/)<br>`interactive_drilldown_treemap` | Flow, Networks & Hierarchy | 1–6 dims (Hierarchy) + 1–2 measures | [📸 View](assets/screenshots/interactive_drilldown_treemap.png) |
 
 ---
 
@@ -94,6 +95,10 @@ Synchronized dual-axis geospatial intelligence with Layer 1 choropleth polygon f
 ### 16. Multivariate Radar & Polar Balance Chart
 Multivariate radar, polar spider web, Nightingale rose, and radial bar chart for balanced multidimensional evaluation, featuring scale normalization modes, Top-N ranking, interactive entity isolation pills, and executive KPI HUD.
 ![Multivariate Radar & Polar Balance Chart](assets/screenshots/radar_polar_chart.png)
+
+### 17. Interactive Hierarchical Drilldown Treemap
+Enterprise hierarchical drilldown treemap with smooth zoom animations, interactive breadcrumb navigation (`🏠 All Categories > Men > Jeans`), dual-metric color gradients (b/396197680), dynamic Top-N & Others tail bucketing (b/530822261), real-time search filtering, and executive KPI HUD.
+![Interactive Hierarchical Drilldown Treemap](assets/screenshots/interactive_drilldown_treemap.png)
 
 ---
 

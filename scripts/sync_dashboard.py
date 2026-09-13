@@ -80,7 +80,8 @@ VIZ_EMOJI_MAP = {
     "telemetry_conversion_funnel": "⚡",
     "hierarchical_tree_table": "🌲",
     "multi_layer_geo_map": "📍",
-    "radar_polar_chart": "🕸️"
+    "radar_polar_chart": "🕸️",
+    "interactive_drilldown_treemap": "🗂️"
 }
 
 def get_headers(profile="default"):

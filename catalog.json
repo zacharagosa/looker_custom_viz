@@ -446,5 +446,35 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/radar_polar_chart/screenshot.png"
+  },
+  {
+    "id": "interactive_drilldown_treemap",
+    "name": "Interactive Hierarchical Drilldown Treemap",
+    "date_added": "2026-09-13",
+    "library": "D3.js v7",
+    "category": "Flow, Networks & Hierarchy",
+    "description": "Enterprise hierarchical drilldown treemap solving Looker Cloud Blockers b/328594464 (native treemap), b/396197680 (secondary metric coloring), b/530822261 (Top-N + Others bucketing), and Woolworths b/325124429. Features 3 multi-modal rendering modes (Hierarchical Zoom & Breadcrumbs, Nested Multi-Tier Containers, Top-N + Others Bucketing), 3 tiling algorithms (Squarified golden ratio, Binary partition, Dice striping), dual-measure encoding (size by primary measure, continuous diverging/sequential color gradient by secondary measure), client-side tree rollups for 5,000+ rows, real-time search-as-you-type filter with glow focus, 2 clean option tabs (Display and Style), and Looker drill-down menu hooks.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 to 6 Dimensions (Hierarchical branches, e.g. Department > Category > Brand > SKU)",
+      "measures": "1 or 2 Measures: Primary (Tile Surface Area / Volume), Secondary (Color Gradient / Badge)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.department",
+        "products.category",
+        "products.brand",
+        "order_items.total_sale_price",
+        "order_items.total_gross_margin",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/interactive_drilldown_treemap/screenshot.png"
   }
 ]
