@@ -476,5 +476,76 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/interactive_drilldown_treemap/screenshot.png"
+  },
+  {
+    "id": "zayo_noc_executive_scorecard",
+    "name": "Zayo NOC Executive KPI Card",
+    "date_added": "2026-09-13",
+    "library": "Custom SVG + HTML5",
+    "category": "Telecom & Network Infrastructure",
+    "description": "Executive telecom NOC KPI scorecard with Zayo Orange/Slate/Crimson/Emerald accent themes, optical telemetry tags, status pills, and embedded D3 micro-sparklines.",
+    "dependencies": [],
+    "fields_required": {
+      "dimensions": "0 to 1 optional time dimension for sparkline",
+      "measures": "1 primary KPI measure"
+    },
+    "suggested_dataset": {
+      "model": "zayo_network_analytics",
+      "explore": "network_operations_and_anomalies",
+      "fields": [
+        "fiber_routes.total_route_miles"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true
+  },
+  {
+    "id": "zayo_predictive_maintenance_deck",
+    "name": "Zayo AutoML Predictive Maintenance & OTDR Span Diagnostics Deck",
+    "date_added": "2026-09-13",
+    "library": "Custom SVG + HTML5",
+    "category": "Telecom & Network Infrastructure",
+    "description": "Interactive AutoML fiber span failure predictor matrix featuring inline simulated OTDR distance-to-fault reflectometry traces, P1/P2/P3 dispatch filter tabs, search bar, and proactive SLA risk badges.",
+    "dependencies": [],
+    "fields_required": {
+      "dimensions": "span_id, span_name, risk_tier, failure_timeframe, primary_anomaly_trigger, anomaly_metric_value, recommended_action, dispatch_priority",
+      "measures": "predicted_failure_prob, sla_financial_risk_usd"
+    },
+    "suggested_dataset": {
+      "model": "zayo_network_analytics",
+      "explore": "predictive_maintenance_queue",
+      "fields": [
+        "predictive_maintenance_spans.span_name",
+        "predictive_maintenance_spans.predicted_failure_prob",
+        "predictive_maintenance_spans.sla_financial_risk_usd"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true
+  },
+  {
+    "id": "zayo_optical_spectrum_waterfall",
+    "name": "Zayo Optical Spectrum & SLA Root-Cause Analyzer",
+    "date_added": "2026-09-13",
+    "library": "D3.js v7",
+    "category": "Telecom & Network Infrastructure",
+    "description": "Multi-modal D3 telecom visualization supporting (1) ITU-T G.652.D optical attenuation time-series envelope with ARIMA_PLUS anomaly threshold lines and (2) dual-metric horizontal bar & lollipop root-cause SLA risk breakdown.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Date or Category dimension (plus optional pivot)",
+      "measures": "1 to 2 numeric measures"
+    },
+    "suggested_dataset": {
+      "model": "zayo_network_analytics",
+      "explore": "optical_telemetry_and_predictive_maintenance",
+      "fields": [
+        "optical_span_anomalies.timestamp_date",
+        "optical_span_anomalies.avg_attenuation_db_per_km"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true
   }
 ]

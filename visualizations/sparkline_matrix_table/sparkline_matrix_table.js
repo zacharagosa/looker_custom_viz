@@ -39,23 +39,41 @@
   }
 
   var THEMES = {
-    executive_slate: {
-      name: "Executive Slate",
+    zayo_corporate: {
+      name: "Zayo Corporate Orange",
       headerBg: "#f8fafc",
-      headerText: "#475569",
-      rowHover: "rgba(241, 245, 249, 0.7)",
+      headerText: "#334155",
+      rowHover: "rgba(255, 247, 237, 0.6)",
       border: "#e2e8f0",
       text: "#0f172a",
       subtext: "#64748b",
-      sparkline: "#1e40af",
-      sparklineArea: "#dbeafe",
-      barBg: "#e2e8f0",
-      barFill: "#3b82f6",
+      sparkline: "#f5831f",
+      sparklineArea: "#ffedd5",
+      barBg: "#f1f5f9",
+      barFill: "#ea580c",
       badgePosBg: "#dcfce7",
       badgePosText: "#15803d",
       badgeNegBg: "#fee2e2",
       badgeNegText: "#b91c1c",
-      heatmapRange: ["#f0fdf4", "#bbf7d0", "#4ade80", "#16a34a", "#14532d"]
+      heatmapRange: ["#fff7ed", "#fed7aa", "#fb923c", "#f5831f", "#c2410c"]
+    },
+    executive_slate: {
+      name: "Executive Slate (Zayo Orange)",
+      headerBg: "#f8fafc",
+      headerText: "#475569",
+      rowHover: "rgba(255, 247, 237, 0.6)",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      sparkline: "#f5831f",
+      sparklineArea: "#ffedd5",
+      barBg: "#e2e8f0",
+      barFill: "#ea580c",
+      badgePosBg: "#dcfce7",
+      badgePosText: "#15803d",
+      badgeNegBg: "#fee2e2",
+      badgeNegText: "#b91c1c",
+      heatmapRange: ["#fff7ed", "#fed7aa", "#fb923c", "#f5831f", "#c2410c"]
     },
     google_vibrant: {
       name: "Google Vibrant",
@@ -225,12 +243,13 @@
         label: "Color Theme",
         display: "select",
         values: [
-          { "Executive Slate": "executive_slate" },
+          { "Zayo Corporate Orange": "zayo_corporate" },
+          { "Executive Slate (Zayo Orange)": "executive_slate" },
           { "Google Vibrant": "google_vibrant" },
           { "Emerald Growth": "emerald_growth" },
           { "Midnight Cyber (Dark)": "midnight_cyber" }
         ],
-        default: "executive_slate",
+        default: "zayo_corporate",
         section: "Style",
         order: 1
       },

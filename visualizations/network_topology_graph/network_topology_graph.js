@@ -85,20 +85,43 @@
       buttonBg: "#1f2937",
       buttonHover: "#374151"
     },
-    google_blue: {
-      name: "Google Cloud Telecom",
+    zayo_corporate: {
+      name: "Zayo Corporate Orange (Light)",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f8fafc",
       border: "#e2e8f0",
       text: "#0f172a",
       subtext: "#64748b",
-      nodeFill: "#e0f2fe",
-      nodeStroke: "#0284c7",
-      nodeHighlight: "#2563eb",
+      nodeFill: "#fff7ed",
+      nodeStroke: "#f5831f",
+      nodeHighlight: "#ea580c",
       linkDefault: "#cbd5e1",
-      linkHighlight: "#0284c7",
-      pulseColor: "#0284c7",
+      linkHighlight: "#f5831f",
+      pulseColor: "#f5831f",
+      optimalLatency: "#10b981",
+      warningLatency: "#f59e0b",
+      criticalLatency: "#e11d48",
+      hudBg: "rgba(255, 255, 255, 0.96)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      buttonBg: "#fff7ed",
+      buttonHover: "#ffedd5"
+    },
+    google_blue: {
+      name: "Zayo Telecom Orange",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      nodeFill: "#fff7ed",
+      nodeStroke: "#f5831f",
+      nodeHighlight: "#ea580c",
+      linkDefault: "#cbd5e1",
+      linkHighlight: "#f5831f",
+      pulseColor: "#f5831f",
       optimalLatency: "#059669",
       warningLatency: "#d97706",
       criticalLatency: "#dc2626",
@@ -311,12 +334,13 @@
         order: 1,
         display: "select",
         values: [
-          { "Cyber NOC Dark": "cyber_dark" },
-          { "Google Cloud Telecom": "google_blue" },
+          { "Zayo Corporate Orange (Light)": "zayo_corporate" },
+          { "Zayo Telecom Orange": "google_blue" },
           { "Executive Slate": "slate" },
-          { "Emerald Mesh": "emerald" }
+          { "Emerald Mesh": "emerald" },
+          { "Cyber NOC Dark": "cyber_dark" }
         ],
-        default: "cyber_dark"
+        default: "zayo_corporate"
       },
       baseNodeRadius: {
         type: "number",
