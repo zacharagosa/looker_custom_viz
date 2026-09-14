@@ -126,12 +126,15 @@
     create: function (element, config) {
       element.innerHTML = "";
       element.style.fontFamily = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
-      element.style.height = "100%";
-      element.style.width = "100%";
+      // Looker already gives this element an explicit size inside its tile slot
+      // (e.g. 283x136 within a 303x156 parent, via 10px element margins). Forcing
+      // width/height to 100% resolves against the *parent*, so the card ends up
+      // 20px wider and taller than its slot: it paints offset to the right and its
+      // right/bottom borders are clipped by the tile. Never override the size here.
       element.style.boxSizing = "border-box";
-      element.style.padding = "2px";
+      element.style.padding = "0";
       element.style.overflow = "hidden";
-      element.style.background = "#ffffff";
+      element.style.background = "transparent";
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
@@ -273,6 +276,14 @@
 
       // Scale the card to the tile so the border always reaches the bottom edge and
       // the footer label is never pushed outside the rounded box.
+      // Some hosts (certain Explore / embed contexts) leave the element unsized; only
+      // in that case do we stretch it, and we subtract the element's own margins so
+      // the card never grows past its slot.
+      if (!element.clientHeight) {
+        var cs = window.getComputedStyle(element);
+        var mY = (parseFloat(cs.marginTop) || 0) + (parseFloat(cs.marginBottom) || 0);
+        element.style.height = mY ? "calc(100% - " + mY + "px)" : "100%";
+      }
       var elH = element.clientHeight || 0;
       var elW = element.clientWidth || 0;
       var tight = elH > 0 && elH < 118;
