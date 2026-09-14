@@ -133,16 +133,78 @@
         return;
       }
 
-      var fields = (queryResponse.fields.measure_like || []).concat(queryResponse.fields.dimension_like || []);
-      var measures = queryResponse.fields.measure_like || [];
-      var primaryField = measures.length > 0 ? measures[0] : fields[0];
-      var fieldName = primaryField ? primaryField.name : Object.keys(data[0])[0];
-      var fieldLabel = (primaryField && (primaryField.label_short || primaryField.label)) || "Network Metric";
+      // ZAYO_FIELD_RESOLVER_V2 — Looker's queryResponse.fields exposes `measures` /
+      // `dimensions` (NOT measure_like / dimension_like) in many API contexts, so we
+      // probe both and then hard-verify the chosen field actually holds a number.
+      var qf = queryResponse.fields || {};
+      var measures = qf.measures || qf.measure_like || [];
+      var dimensions = qf.dimensions || qf.dimension_like || [];
+      var tableCalcs = qf.table_calculations || [];
+      var candidates = [].concat(measures, tableCalcs, dimensions);
 
       var firstRow = data[0];
+
+      function isNumericCell(row, name) {
+        var c = row ? row[name] : null;
+        if (!c || c.value === null || c.value === undefined) return false;
+        return typeof c.value === "number" || (typeof c.value === "string" && c.value !== "" && !isNaN(Number(c.value)));
+      }
+
+      var primaryField = null;
+      for (var ci = 0; ci < candidates.length; ci++) {
+        var candName = candidates[ci].name;
+        if (candName && isNumericCell(firstRow, candName)) {
+          primaryField = candidates[ci];
+          break;
+        }
+      }
+
+      var fieldName = primaryField ? primaryField.name : null;
+
+      // Last resort: scan the raw row object for the first numeric cell. Never blindly
+      // take Object.keys(data[0])[0] — that is usually a date dimension and yields NaN.
+      if (!fieldName) {
+        var rowKeys = Object.keys(firstRow);
+        for (var ki = 0; ki < rowKeys.length; ki++) {
+          if (isNumericCell(firstRow, rowKeys[ki])) {
+            fieldName = rowKeys[ki];
+            break;
+          }
+        }
+        if (!fieldName) fieldName = rowKeys[0];
+      }
+
+      var fieldLabel = (primaryField && (primaryField.label_short || primaryField.label)) || "Network Metric";
+      if (!primaryField) {
+        for (var li = 0; li < candidates.length; li++) {
+          if (candidates[li].name === fieldName) {
+            fieldLabel = candidates[li].label_short || candidates[li].label || fieldLabel;
+            break;
+          }
+        }
+      }
+
+      // Collect the full numeric series across every returned row.
+      var seriesVals = [];
+      for (var i = 0; i < data.length; i++) {
+        var c = data[i][fieldName];
+        if (c && c.value !== null && c.value !== undefined && !isNaN(Number(c.value))) {
+          seriesVals.push(Number(c.value));
+        }
+      }
+
       var cell = firstRow[fieldName];
-      var rawVal = cell && cell.value !== undefined ? cell.value : null;
       var renderedVal = cell && cell.rendered ? cell.rendered : null;
+      var rawVal = cell && cell.value !== undefined ? cell.value : null;
+
+      // Multi-row queries on these tiles are weekly/daily trend series; the headline
+      // number should be the period total, not just the most recent bucket.
+      if (seriesVals.length > 1) {
+        rawVal = seriesVals.reduce(function (a, b) { return a + b; }, 0);
+        renderedVal = null;
+      } else if (seriesVals.length === 1) {
+        rawVal = seriesVals[0];
+      }
 
       var fmtType = config.value_format_type || "auto";
       if (fmtType === "auto") {
@@ -173,14 +235,7 @@
 
       var badgeText = config.badge_label || "ZAYO AI";
 
-      // Extract time-series sparkline values if multiple rows exist
-      var seriesVals = [];
-      for (var i = 0; i < data.length; i++) {
-        var c = data[i][fieldName];
-        if (c && typeof c.value === "number") {
-          seriesVals.push(c.value);
-        }
-      }
+      // Sparkline uses the series resolved above (Looker returns newest-first).
       if (seriesVals.length > 1) {
         seriesVals.reverse();
       }
