@@ -554,22 +554,21 @@
     "date_added": "2026-09-14",
     "library": "D3.js v7",
     "category": "Performance & Variance",
-    "description": "High-performance distribution and variance analyzer computing non-parametric Kernel Density Estimation (KDE), Epanechnikov smoothing, five-number summary, Tukey whiskers, and outlier scatter directly client-side across 5,000+ rows.",
+    "description": "High-performance distribution and variance analyzer computing non-parametric Kernel Density Estimation (KDE), Epanechnikov smoothing, five-number summary, Tukey whiskers, and outlier scatter directly client-side across 5,000+ raw observations, with robust axis zoom that keeps violin bodies readable on heavily skewed data.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js"
     ],
     "fields_required": {
-      "dimensions": "1 Category dimension (e.g. products.category) + optional 2nd dimension for subgroup/point id",
-      "measures": "1 Numeric measure or dimension (e.g. order_items.total_sale_price or order_items.sale_price)"
+      "dimensions": "1 Category dimension (e.g. products.category) + optional primary-key dimension to keep raw rows un-deduplicated (e.g. order_items.id)",
+      "measures": "1 Numeric measure or dimension of raw observations (e.g. order_items.sale_price)"
     },
     "suggested_dataset": {
       "model": "thelook",
       "explore": "order_items",
       "fields": [
         "products.category",
-        "products.brand",
-        "order_items.total_sale_price",
-        "order_items.order_count"
+        "order_items.id",
+        "order_items.sale_price"
       ]
     },
     "deployed": true,

@@ -50,6 +50,7 @@ Designed to address Looker Cloud Blockers **`b/249062272`** (visualizations pari
 | `displayMode` | Select | `Violin + Box Plot` | Layout mode: `violin_box`, `split_violin`, `box_jitter`, `density_silhouette` |
 | `bandwidthFactor` | Select | `Auto (Silverman)` | KDE smoothing bandwidth: `auto`, `smooth` (1.6x), `detailed` (0.7x), `fine` (0.4x) |
 | `scalingMode` | Select | `Shared Global` | Violin width scaling: `shared` (equal density) or `independent` (maximize lane width) |
+| `yAxisScope` | Select | `Robust Zoom` | Y-axis window: `robust` (zoom to Tukey fences, clip extremes), `p99` (1st–99th percentile), `full` (absolute min/max). Clipped values are flagged with ▲/▼ badges on their lane. |
 | `showOutliers` | Boolean | `true` | Toggle outlier scatter dots beyond Tukey whiskers |
 | `showSummaryStats`| Boolean | `true` | Show top executive KPI summary HUD banner |
 | `showSearch` | Boolean | `true` | Enable search-as-you-type filter input |

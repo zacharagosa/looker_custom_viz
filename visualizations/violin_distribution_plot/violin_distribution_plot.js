@@ -242,25 +242,36 @@
     return Math.abs(u) <= 1 ? 0.75 * (1 - u * u) : 0;
   }
 
-  function computeKDE(stats, numSteps) {
+  function computeKDE(stats, numSteps, clipRange) {
     if (!stats || stats.n === 0) return { points: [], maxDensity: 0 };
     var steps = numSteps || 60;
-    
-    // Evaluate over the category's actual data range with slight padding
+
+    // Evaluate between the Tukey fences (the statistical body of the distribution)
+    // rather than the absolute min/max. A lone extreme value would otherwise stretch
+    // the envelope into a hairline spike; those points are drawn as outlier dots.
+    // The range is then intersected with the visible axis window.
     var yStart = stats.whiskerLow;
     var yEnd = stats.whiskerHigh;
-    if (yStart >= yEnd) {
+    if (!(yEnd > yStart)) {
       yStart = stats.min;
       yEnd = stats.max;
     }
-    if (yStart === yEnd) {
-      yStart -= 1;
-      yEnd += 1;
+    if (!(yEnd > yStart)) {
+      yStart = stats.median - 1;
+      yEnd = stats.median + 1;
     }
     var span = yEnd - yStart;
-    var pad = Math.min(span * 0.12, stats.h * 1.2);
+    var pad = Math.min(span * 0.1, stats.h * 1.1);
     yStart = Math.max(stats.min, yStart - pad);
     yEnd = Math.min(stats.max, yEnd + pad);
+    if (clipRange) {
+      yStart = Math.max(yStart, clipRange[0]);
+      yEnd = Math.min(yEnd, clipRange[1]);
+    }
+    if (!(yEnd > yStart)) {
+      yStart = stats.median - 1;
+      yEnd = stats.median + 1;
+    }
 
     var stepSize = (yEnd - yStart) / (steps - 1);
     var densityCurve = [];
@@ -367,26 +378,39 @@
         section: "Display",
         order: 3
       },
+      yAxisScope: {
+        type: "string",
+        label: "Y-Axis Range",
+        default: "robust",
+        display: "select",
+        values: [
+          { "Robust Zoom (Clip Extreme Outliers, Maximize Shape)": "robust" },
+          { "Percentile Clip (1st–99th Percentile)": "p99" },
+          { "Full Range (Include All Extreme Values)": "full" }
+        ],
+        section: "Display",
+        order: 4
+      },
       showOutliers: {
         type: "boolean",
         label: "Show Outlier Points (>1.5x IQR)",
         default: true,
         section: "Display",
-        order: 4
+        order: 5
       },
       showSummaryStats: {
         type: "boolean",
         label: "Show Executive KPI Summary HUD",
         default: true,
         section: "Display",
-        order: 5
+        order: 6
       },
       showSearch: {
         type: "boolean",
         label: "Enable Category Search Bar",
         default: true,
         section: "Display",
-        order: 6
+        order: 7
       },
       valueFormat: {
         type: "string",
@@ -400,7 +424,7 @@
           { "Integer (0)": "integer" }
         ],
         section: "Display",
-        order: 7
+        order: 8
       },
 
       // ==========================================
@@ -560,15 +584,42 @@
       var catField = dimensions[0] ? dimensions[0].name : "Category";
       var catLabel = dimensions[0] ? (dimensions[0].label_short || dimensions[0].label) : "Category";
 
-      // Numeric value field: prefer first measure, otherwise second dimension
+      // Numeric value field resolution.
+      // Raw-observation queries usually carry a primary-key dimension (order_items.id)
+      // purely to defeat SQL de-duplication; blindly grabbing dimensions[1] would plot
+      // row IDs. Score every candidate on whether it actually holds numeric values,
+      // deprioritizing obvious identifier fields.
+      function isIdentifier(name) {
+        return /(^|[._])id$/i.test(name) || /(^|[._]).*_id$/i.test(name);
+      }
+      function numericCount(name) {
+        var hits = 0;
+        for (var i = 0; i < data.length; i++) {
+          var cell = data[i][name];
+          var v = cell ? cell.value : null;
+          if (v !== null && v !== undefined && v !== "" && !isNaN(Number(v))) hits++;
+          if (hits > 3) break;
+        }
+        return hits;
+      }
+
+      var candidates = [];
+      for (var m = 0; m < measures.length; m++) candidates.push(measures[m]);
+      // Skip dimensions[0] (the category lane) and push the rest, identifiers last
+      var dimCandidates = dimensions.slice(1);
+      dimCandidates.sort(function (a, b) {
+        return (isIdentifier(a.name) ? 1 : 0) - (isIdentifier(b.name) ? 1 : 0);
+      });
+      candidates = candidates.concat(dimCandidates);
+
       var valField = null;
       var valLabel = "Value";
-      if (measures.length > 0) {
-        valField = measures[0].name;
-        valLabel = measures[0].label_short || measures[0].label;
-      } else if (dimensions.length > 1) {
-        valField = dimensions[1].name;
-        valLabel = dimensions[1].label_short || dimensions[1].label;
+      for (var cd = 0; cd < candidates.length; cd++) {
+        if (numericCount(candidates[cd].name) > 0) {
+          valField = candidates[cd].name;
+          valLabel = candidates[cd].label_short || candidates[cd].label;
+          break;
+        }
       }
 
       if (!valField) {
@@ -582,6 +633,7 @@
       var displayMode = config.displayMode || "violin_box";
       var bandwidthFactor = config.bandwidthFactor || "auto";
       var scalingMode = config.scalingMode || "shared";
+      var yAxisScope = config.yAxisScope || "robust";
       var showOutliers = config.showOutliers !== false;
       var showSummaryStats = config.showSummaryStats !== false;
       var showSearch = config.showSearch !== false;
@@ -650,17 +702,60 @@
         return;
       }
 
-      // Add a small buffer to globalMin and globalMax
-      var rangeSpan = globalMax - globalMin;
-      if (rangeSpan === 0) rangeSpan = 1;
-      var yDomainMin = Math.max(0, globalMin - rangeSpan * 0.05);
-      if (globalMin < 0) yDomainMin = globalMin - rangeSpan * 0.05;
-      var yDomainMax = globalMax + rangeSpan * 0.05;
+      // --- Y DOMAIN SCOPE ---
+      // Heavily skewed business data (a handful of $1M whale transactions against
+      // a $50 median) collapses every violin into a flat needle when the axis is
+      // forced to the absolute max. Robust scoping zooms the axis to the bulk of
+      // the distribution and flags clipped extremes on each lane instead.
+      var sortedAll = allNumericValues.slice().sort(function (a, b) { return a - b; });
+      function quantileOf(p) {
+        if (sortedAll.length === 0) return 0;
+        var pos = (sortedAll.length - 1) * p;
+        var lo = Math.floor(pos);
+        var hi = Math.ceil(pos);
+        if (lo === hi) return sortedAll[lo];
+        return sortedAll[lo] + (sortedAll[hi] - sortedAll[lo]) * (pos - lo);
+      }
+
+      var scopeMin = globalMin;
+      var scopeMax = globalMax;
+
+      if (yAxisScope === "robust") {
+        // Widest Tukey whisker across categories, so every box and violin body fits
+        var whiskerTop = -Infinity;
+        var whiskerBottom = Infinity;
+        for (var w = 0; w < categoryStats.length; w++) {
+          var ws = categoryStats[w].stats;
+          if (ws.whiskerHigh > whiskerTop) whiskerTop = ws.whiskerHigh;
+          if (ws.whiskerLow < whiskerBottom) whiskerBottom = ws.whiskerLow;
+        }
+        if (isFinite(whiskerTop) && isFinite(whiskerBottom) && whiskerTop > whiskerBottom) {
+          // Allow a little headroom so near-threshold outliers stay visible
+          var wSpan = whiskerTop - whiskerBottom;
+          scopeMax = Math.min(globalMax, whiskerTop + wSpan * 0.18);
+          scopeMin = Math.max(globalMin, whiskerBottom - wSpan * 0.08);
+        }
+      } else if (yAxisScope === "p99") {
+        scopeMin = quantileOf(0.01);
+        scopeMax = quantileOf(0.99);
+      }
+
+      if (!(scopeMax > scopeMin)) {
+        scopeMin = globalMin;
+        scopeMax = globalMax;
+      }
+
+      var rangeSpan = scopeMax - scopeMin;
+      if (rangeSpan === 0) rangeSpan = Math.abs(scopeMax) || 1;
+      var yDomainMin = scopeMin - rangeSpan * 0.05;
+      if (globalMin >= 0 && yDomainMin < 0) yDomainMin = 0;
+      var yDomainMax = scopeMax + rangeSpan * 0.05;
       var yRange = [yDomainMin, yDomainMax];
+      var isClipped = yAxisScope !== "full" && (globalMax > yDomainMax || globalMin < yDomainMin);
 
       // Compute KDE for all categories locally
       for (var k = 0; k < categoryStats.length; k++) {
-        var kde = computeKDE(categoryStats[k].stats, 60);
+        var kde = computeKDE(categoryStats[k].stats, 60, yRange);
         categoryStats[k].kde = kde;
         if (kde.maxDensity > globalMaxDensity) {
           globalMaxDensity = kde.maxDensity;
@@ -789,7 +884,10 @@
           "<div><strong>Categories:</strong> <span style=\"color:" + theme.text + ";font-weight:600;\">" + filteredCategories.length + " / " + categories.length + "</span></div>" +
           "<div><strong>Global Median:</strong> <span style=\"color:" + theme.medianColor + ";font-weight:700;\">" + formatValue(globalStats.median, valueFormat) + "</span></div>" +
           "<div><strong>Global IQR:</strong> <span style=\"color:" + theme.text + ";font-weight:600;\">" + formatValue(globalStats.iqr, valueFormat) + "</span></div>" +
-          "<div><strong>Outliers:</strong> <span style=\"color:" + theme.outlierColor + ";font-weight:600;\">" + globalOutlierCount + " (" + outlierPct + ")</span></div>";
+          "<div><strong>Outliers:</strong> <span style=\"color:" + theme.outlierColor + ";font-weight:600;\">" + globalOutlierCount + " (" + outlierPct + ")</span></div>" +
+          (isClipped
+            ? "<div title=\"Extreme values beyond the zoomed axis are marked ▲/▼ on their lane. Switch Y-Axis Range to 'Full Range' to include them.\" style=\"background:" + theme.outlierColor + "1a;color:" + theme.outlierColor + ";border-radius:20px;padding:2px 9px;font-weight:700;\">🔍 Axis zoomed to " + formatValue(yDomainMax, valueFormat) + "</div>"
+            : "");
 
         headerEl.appendChild(hud);
       }
@@ -827,10 +925,12 @@
       var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      // Y Scale (Numeric observations)
+      // Y Scale (Numeric observations). Clamped so that a zoomed (robust) domain
+      // can never paint marks outside the plotting area.
       var yScale = d3.scaleLinear()
         .domain(yRange)
-        .range([height, 0]);
+        .range([height, 0])
+        .clamp(true);
 
       // X Scale (Categories band)
       var catNames = filteredCategories.map(function (d) { return d.category; });
@@ -1088,11 +1188,21 @@
         }
 
         // 3. JITTERED SCATTER POINTS (For box_jitter mode, or outlier points in other modes)
+        // Points outside the visible Y domain (robust zoom) are excluded and summarized
+        // as a chevron badge so the axis stays readable without hiding their existence.
+        function inDomain(v) { return v >= yDomainMin && v <= yDomainMax; }
+        var clippedAbove = 0;
+        var clippedBelow = 0;
+        for (var cp = 0; cp < stats.sorted.length; cp++) {
+          if (stats.sorted[cp] > yDomainMax) clippedAbove++;
+          else if (stats.sorted[cp] < yDomainMin) clippedBelow++;
+        }
+
         if (displayMode === "box_jitter") {
           // Render all sample points with pseudo-random jitter
           var jitterWidth = laneWidth * 0.45;
           lane.selectAll(".jitter-dot")
-            .data(stats.sorted)
+            .data(stats.sorted.filter(inDomain))
             .enter()
             .append("circle")
             .attr("class", "jitter-dot")
@@ -1112,7 +1222,7 @@
           // Render only extreme outliers beyond Tukey whiskers
           var outlierJitter = Math.min(16, boxWidth * 0.8);
           lane.selectAll(".outlier-dot")
-            .data(stats.outliers)
+            .data(stats.outliers.filter(inDomain))
             .enter()
             .append("circle")
             .attr("class", "outlier-dot")
@@ -1127,6 +1237,36 @@
             .attr("fill-opacity", 0.75)
             .attr("stroke", "#ffffff")
             .attr("stroke-width", 1);
+        }
+
+        // Clipped extremes badges (only appear when the axis is zoomed)
+        if (clippedAbove > 0) {
+          lane.append("text")
+            .attr("class", "clipped-badge")
+            .attr("x", center)
+            .attr("y", 27)
+            .attr("text-anchor", "middle")
+            .attr("fill", theme.outlierColor)
+            .attr("font-size", "9.5px")
+            .attr("font-weight", "700")
+            .text("▲ " + clippedAbove)
+            .append("title")
+            .text(clippedAbove + " value(s) above " + formatValue(yDomainMax, valueFormat) +
+              " clipped by the zoomed axis (category max " + formatValue(stats.max, valueFormat) + ")");
+        }
+        if (clippedBelow > 0) {
+          lane.append("text")
+            .attr("class", "clipped-badge")
+            .attr("x", center)
+            .attr("y", height - 5)
+            .attr("text-anchor", "middle")
+            .attr("fill", theme.outlierColor)
+            .attr("font-size", "9.5px")
+            .attr("font-weight", "700")
+            .text("▼ " + clippedBelow)
+            .append("title")
+            .text(clippedBelow + " value(s) below " + formatValue(yDomainMin, valueFormat) +
+              " clipped by the zoomed axis (category min " + formatValue(stats.min, valueFormat) + ")");
         }
 
         // Sample Size (N) Label at top of lane

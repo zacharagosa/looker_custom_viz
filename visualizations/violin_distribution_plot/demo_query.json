@@ -3,19 +3,23 @@
   "view": "order_items",
   "fields": [
     "products.category",
-    "products.brand",
-    "order_items.total_sale_price",
-    "order_items.order_count"
+    "order_items.id",
+    "order_items.sale_price"
   ],
+  "filters": {
+    "products.category": "Jeans,Sweaters,Outerwear & Coats,Accessories,Tops & Tees,Dresses,Swim,Suits",
+    "order_items.sale_price": "NOT NULL"
+  },
   "sorts": [
-    "order_items.total_sale_price desc"
+    "order_items.id asc"
   ],
-  "limit": "500",
+  "limit": "3000",
   "vis_config": {
     "type": "violin_distribution_plot",
     "displayMode": "violin_box",
     "bandwidthFactor": "auto",
     "scalingMode": "independent",
+    "yAxisScope": "robust",
     "showOutliers": true,
     "showSummaryStats": true,
     "showSearch": true,
