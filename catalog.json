@@ -547,5 +547,33 @@
     },
     "deployed": true,
     "instance_wide": true
+  },
+  {
+    "id": "violin_distribution_plot",
+    "name": "Violin & Box Plot Distribution Analyzer",
+    "date_added": "2026-09-14",
+    "library": "D3.js v7",
+    "category": "Performance & Variance",
+    "description": "High-performance distribution and variance analyzer computing non-parametric Kernel Density Estimation (KDE), Epanechnikov smoothing, five-number summary, Tukey whiskers, and outlier scatter directly client-side across 5,000+ rows.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Category dimension (e.g. products.category) + optional 2nd dimension for subgroup/point id",
+      "measures": "1 Numeric measure or dimension (e.g. order_items.total_sale_price or order_items.sale_price)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "products.brand",
+        "order_items.total_sale_price",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/violin_distribution_plot/screenshot.png"
   }
 ]

@@ -81,7 +81,8 @@ VIZ_EMOJI_MAP = {
     "hierarchical_tree_table": "🌲",
     "multi_layer_geo_map": "📍",
     "radar_polar_chart": "🕸️",
-    "interactive_drilldown_treemap": "🗂️"
+    "interactive_drilldown_treemap": "🗂️",
+    "violin_distribution_plot": "🎻"
 }
 
 def get_headers(profile="default"):
@@ -181,6 +182,11 @@ def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
     # Group visualizations by Category Tab according to predefined TAB_ORDER
     tabs_dict = {tab: [] for tab in TAB_ORDER}
     for item in catalog:
+        viz_id = item.get("id")
+        q_file = os.path.join(base_dir, "visualizations", viz_id, "demo_query.json")
+        if not os.path.exists(q_file):
+            print(f"  -> Skipping '{viz_id}' from showcase dashboard sync (no demo_query.json)")
+            continue
         cat = item.get("category", "Other")
         tab_name = CATEGORY_TAB_MAP.get(cat, "🎯 Performance & Variance")
         if tab_name not in tabs_dict:
