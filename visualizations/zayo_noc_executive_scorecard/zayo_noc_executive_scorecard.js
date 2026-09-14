@@ -83,6 +83,14 @@
         section: "Style",
         order: 1
       },
+      custom_title: {
+        type: "string",
+        label: "Card Title Override",
+        default: "",
+        placeholder: "e.g., SLA Exposure",
+        section: "Display",
+        order: 0
+      },
       value_format_type: {
         type: "string",
         label: "Value Format",
@@ -121,7 +129,8 @@
       element.style.height = "100%";
       element.style.width = "100%";
       element.style.boxSizing = "border-box";
-      element.style.padding = "4px";
+      element.style.padding = "2px";
+      element.style.overflow = "hidden";
       element.style.background = "#ffffff";
     },
 
@@ -194,6 +203,7 @@
           }
         }
       }
+      if (config.custom_title) fieldLabel = config.custom_title;
 
       // Collect the full numeric series across every returned row (nulls skipped).
       var seriesVals = [];
@@ -261,49 +271,85 @@
         seriesVals.reverse();
       }
 
+      // Scale the card to the tile so the border always reaches the bottom edge and
+      // the footer label is never pushed outside the rounded box.
+      var elH = element.clientHeight || 0;
+      var elW = element.clientWidth || 0;
+      var tight = elH > 0 && elH < 118;
+      var snug = elH > 0 && elH < 150;
+      var narrow = elW > 0 && elW < 290;
+
+      var padV = tight ? 7 : (snug ? 9 : 12);
+      var padH = tight ? 10 : (snug ? 12 : 14);
+      var labelFs = (tight ? 9.5 : (snug ? 10 : 11)) - (narrow ? 0.5 : 0);
+      var badgeFs = narrow ? 7.5 : (tight ? 8 : 9);
+      var badgePad = narrow ? "1px 4px" : "2px 6px";
+      var valueFs = tight ? 19 : (snug ? 22 : 26);
+      var subFs = tight ? 9.5 : (snug ? 10 : 11);
+      var footPad = tight ? 4 : 6;
+
       var sparkSvg = "";
       if (seriesVals.length > 2) {
         var minV = Math.min.apply(null, seriesVals);
         var maxV = Math.max.apply(null, seriesVals);
         var range = maxV - minV || 1;
-        var w = 110;
-        var h = 28;
+        var w = tight ? 76 : (snug ? 92 : 110);
+        var h = tight ? 20 : (snug ? 24 : 28);
         var pts = seriesVals.map(function (v, idx) {
           var x = (idx / (seriesVals.length - 1)) * w;
-          var y = h - 4 - ((v - minV) / range) * (h - 8);
+          var y = h - 3 - ((v - minV) / range) * (h - 6);
           return x.toFixed(1) + "," + y.toFixed(1);
         }).join(" ");
         var areaPts = "0," + h + " " + pts + " " + w + "," + h;
         sparkSvg =
-          '<svg width="' + w + '" height="' + h + '" style="overflow:visible;flex-shrink:0;">' +
+          '<svg width="' + w + '" height="' + h + '" style="display:block;flex-shrink:0;overflow:visible;">' +
           '<polygon points="' + areaPts + '" fill="' + palette.sparkFill + '" />' +
           '<polyline fill="none" stroke="' + palette.primary + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="' + pts + '" />' +
           '</svg>';
       }
 
       element.innerHTML =
-        '<div style="height:100%;width:100%;box-sizing:border-box;background:#ffffff;border:1px solid #e2e8f0;border-left:4px solid ' + palette.primary + ';border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 1px 2px rgba(15,23,42,0.04);">' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">' +
-            '<span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+        '<div style="height:100%;width:100%;box-sizing:border-box;background:#ffffff;border:1px solid #e2e8f0;border-left:4px solid ' + palette.primary + ';border-radius:10px;padding:' + padV + 'px ' + padH + 'px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,0.04);">' +
+          '<div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;">' +
+            '<span style="font-size:' + labelFs + 'px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;">' +
               fieldLabel +
             '</span>' +
-            '<span style="font-size:9px;font-weight:700;font-family:monospace;padding:2px 6px;border-radius:4px;background:' + palette.bgBadge + ';color:' + palette.textBadge + ';border:1px solid ' + palette.borderBadge + ';white-space:nowrap;">' +
+            '<span style="font-size:' + badgeFs + 'px;font-weight:700;font-family:monospace;padding:' + badgePad + ';border-radius:4px;background:' + palette.bgBadge + ';color:' + palette.textBadge + ';border:1px solid ' + palette.borderBadge + ';white-space:nowrap;flex-shrink:0;">' +
               badgeText +
             '</span>' +
           '</div>' +
-          '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:4px 0;">' +
-            '<div style="font-size:24px;font-weight:800;color:#0f172a;font-family:\'JetBrains Mono\',monospace;letter-spacing:-0.02em;line-height:1.1;">' +
+          '<div style="flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:10px;overflow:hidden;">' +
+            '<div style="font-size:' + valueFs + 'px;font-weight:800;color:#0f172a;font-family:\'JetBrains Mono\',monospace;letter-spacing:-0.02em;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;">' +
               displayVal +
             '</div>' +
             sparkSvg +
           '</div>' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f1f5f9;padding-top:6px;">' +
-            '<span style="font-size:11px;color:#64748b;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+          '<div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #f1f5f9;padding-top:' + footPad + 'px;min-width:0;">' +
+            '<span style="font-size:' + subFs + 'px;color:#64748b;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;">' +
               subtitle +
             '</span>' +
-            '<span style="width:7px;height:7px;border-radius:50%;background:' + palette.primary + ';display:inline-block;box-shadow:0 0 0 3px ' + palette.bgBadge + ';"></span>' +
+            '<span style="width:7px;height:7px;border-radius:50%;background:' + palette.primary + ';display:inline-block;flex-shrink:0;box-shadow:0 0 0 3px ' + palette.bgBadge + ';"></span>' +
           '</div>' +
         '</div>';
+
+      // The layout is height-dependent, so re-render when Looker resizes the tile
+      // (dashboard edit/resize, Explore accordions) — neither fires updateAsync.
+      this._last = { data: data, config: config, queryResponse: queryResponse };
+      this._lastH = elH;
+      if (!this._ro && typeof ResizeObserver !== "undefined") {
+        var self = this;
+        var timer = null;
+        this._ro = new ResizeObserver(function () {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(function () {
+            var L = self._last;
+            // Guard against a render -> resize -> render feedback loop.
+            if (!L || Math.abs((element.clientHeight || 0) - (self._lastH || 0)) < 4) return;
+            self.updateAsync(L.data, element, L.config, L.queryResponse, null, function () {});
+          }, 120);
+        });
+        this._ro.observe(element);
+      }
 
       done();
     }
