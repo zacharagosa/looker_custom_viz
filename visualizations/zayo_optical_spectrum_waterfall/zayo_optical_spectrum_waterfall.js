@@ -177,7 +177,22 @@
 
           var isCurr = m1Field && (m1Field.indexOf("usd") !== -1 || m1Field.indexOf("penalty") !== -1 || m1Field.indexOf("sla") !== -1);
 
-          var margin = { top: 14, right: 80, bottom: 26, left: 190 };
+          // Dynamically size the left margin to the longest corridor label so nothing is clipped.
+          // Approximate character width at 11px Inter semibold ~= 6.1px.
+          var CHAR_W = 6.1;
+          var longestLabelLen = d3.max(rows, function (r) { return r.label.length; }) || 10;
+          var idealLeft = Math.ceil(longestLabelLen * CHAR_W) + 18;
+          // Never let labels consume more than 42% of the tile width; truncate in that case.
+          var maxLeft = Math.floor(svgW * 0.42);
+          var leftMargin = Math.max(90, Math.min(idealLeft, maxLeft));
+          var maxLabelChars = Math.max(10, Math.floor((leftMargin - 18) / CHAR_W));
+
+          function truncLabel(s) {
+            if (s.length <= maxLabelChars) return s;
+            return s.slice(0, Math.max(3, maxLabelChars - 1)) + "…";
+          }
+
+          var margin = { top: 14, right: 92, bottom: 26, left: leftMargin };
           var innerW = Math.max(120, svgW - margin.left - margin.right);
           var innerH = Math.max(100, svgH - margin.top - margin.bottom);
 
@@ -203,9 +218,9 @@
               sel.selectAll("text").attr("fill", "#64748b").attr("font-size", "10px").attr("font-family", "monospace");
             });
 
-          // Left Labels
+          // Left Labels (truncated to fit, with full name on hover)
           g.append("g")
-            .call(d3.axisLeft(y).tickSize(0))
+            .call(d3.axisLeft(y).tickSize(0).tickFormat(truncLabel))
             .call(function (sel) {
               sel.select(".domain").remove();
               sel.selectAll("text")
@@ -214,6 +229,37 @@
                 .attr("font-weight", "600")
                 .attr("dx", "-8px");
             });
+
+          // Full-name tooltips on the truncated axis labels
+          g.selectAll(".tick text")
+            .append("title")
+            .text(function (d) { return d; });
+
+          var hasDrill = rows.some(function (r) { return r.links && r.links.length; });
+
+          if (hasDrill) {
+            // Surface a discoverable "drill" affordance in the header ribbon for live demos.
+            var legendBar = wrapper.querySelector("div > div:last-child");
+            if (legendBar) {
+              var hint = document.createElement("span");
+              hint.style.cssText =
+                "display:inline-flex;align-items:center;gap:4px;font-size:10px;font-family:monospace;" +
+                "font-weight:700;color:#c2410c;background:#fff7ed;border:1px solid #fed7aa;" +
+                "padding:2px 7px;border-radius:6px;white-space:nowrap;";
+              hint.textContent = "🔎 CLICK ANY BAR TO DRILL";
+              legendBar.appendChild(hint);
+            }
+          }
+
+          function barColor(i) {
+            return i === 0 ? "#e11d48" : (i === 1 ? "#f5831f" : "#fb923c");
+          }
+
+          function openDrill(event, d) {
+            if (d.links && d.links.length && typeof LookerCharts !== "undefined") {
+              LookerCharts.Utils.openDrillMenu({ links: d.links, event: event });
+            }
+          }
 
           // Zayo Orange Horizontal Bars
           g.selectAll(".zayo-bar")
@@ -226,25 +272,35 @@
             .attr("height", y.bandwidth())
             .attr("width", function (d) { return Math.max(4, x(d.v1)); })
             .attr("rx", 4)
-            .attr("fill", function (d, i) { return i === 0 ? "#e11d48" : (i === 1 ? "#f5831f" : "#fb923c"); })
-            .style("cursor", "pointer")
-            .on("click", function (event, d) {
-              if (d.links && d.links.length && typeof LookerCharts !== "undefined") {
-                LookerCharts.Utils.openDrillMenu({ links: d.links, event: event });
-              }
+            .attr("fill", function (d, i) { return barColor(i); })
+            .style("cursor", function (d) { return (d.links && d.links.length) ? "pointer" : "default"; })
+            .on("mouseenter", function () {
+              d3.select(this).attr("opacity", 0.78).attr("stroke", "#0f172a").attr("stroke-width", 1.5);
+            })
+            .on("mouseleave", function () {
+              d3.select(this).attr("opacity", 1).attr("stroke", "none");
+            })
+            .on("click", openDrill)
+            .append("title")
+            .text(function (d) {
+              return d.label + " — " + formatVal(d.v1, isCurr) +
+                ((d.links && d.links.length) ? "  (click to drill into detail)" : "");
             });
 
-          // Value Labels on Right of Bars
+          // Value Labels on Right of Bars (also clickable for drill)
           g.selectAll(".zayo-val-label")
             .data(rows)
             .enter()
             .append("text")
+            .attr("class", "zayo-val-label")
             .attr("x", function (d) { return x(d.v1) + 8; })
             .attr("y", function (d) { return y(d.label) + y.bandwidth() / 2 + 4; })
             .attr("fill", "#0f172a")
             .attr("font-family", "'JetBrains Mono', monospace")
             .attr("font-size", "11px")
             .attr("font-weight", "700")
+            .style("cursor", function (d) { return (d.links && d.links.length) ? "pointer" : "default"; })
+            .on("click", openDrill)
             .text(function (d) {
               var base = formatVal(d.v1, isCurr);
               if (d.v2 !== null && !isNaN(d.v2)) {

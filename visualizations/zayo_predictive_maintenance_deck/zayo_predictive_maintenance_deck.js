@@ -158,7 +158,20 @@
         var action = val(row, "recommended_action", "Dispatch OTDR splicer crew");
         var priority = val(row, "dispatch_priority", "P2 - High Priority");
         var slaRisk = Number(val(row, "sla_financial_risk_usd", val(row, "total_sla_risk_exposure", 0)));
-        var drillCell = cellObj(row, "predicted_failure_prob") || cellObj(row, "sla_financial_risk_usd");
+        // Prefer whichever cell actually carries Looker drill links (dimensions with
+        // drill_fields defined), falling back through the most useful fields.
+        var drillCell = null;
+        var drillPref = ["span_id", "risk_tier", "dispatch_priority", "route_name",
+                         "primary_anomaly_trigger", "predicted_failure_prob", "sla_financial_risk_usd"];
+        for (var dp = 0; dp < drillPref.length; dp++) {
+          var cand = cellObj(row, drillPref[dp]);
+          if (cand && cand.links && cand.links.length) { drillCell = cand; break; }
+        }
+        if (!drillCell) {
+          for (var rk in row) {
+            if (row[rk] && row[rk].links && row[rk].links.length) { drillCell = row[rk]; break; }
+          }
+        }
 
         return {
           spanId: String(spanId),
