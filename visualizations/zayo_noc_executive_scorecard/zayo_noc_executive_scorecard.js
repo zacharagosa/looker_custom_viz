@@ -144,16 +144,27 @@
 
       var firstRow = data[0];
 
-      function isNumericCell(row, name) {
-        var c = row ? row[name] : null;
-        if (!c || c.value === null || c.value === undefined) return false;
-        return typeof c.value === "number" || (typeof c.value === "string" && c.value !== "" && !isNaN(Number(c.value)));
+      function isNumeric(v) {
+        if (v === null || v === undefined || v === "") return false;
+        return typeof v === "number" || (typeof v === "string" && !isNaN(Number(v)));
+      }
+
+      // Count numeric cells for a field across EVERY row. Checking only row 0 is unsafe:
+      // a dashboard date filter routinely returns a leading partial period whose measure
+      // is null, which would otherwise disqualify the real measure.
+      function numericCount(name) {
+        var n = 0;
+        for (var r = 0; r < data.length; r++) {
+          var c = data[r][name];
+          if (c && isNumeric(c.value)) n++;
+        }
+        return n;
       }
 
       var primaryField = null;
       for (var ci = 0; ci < candidates.length; ci++) {
         var candName = candidates[ci].name;
-        if (candName && isNumericCell(firstRow, candName)) {
+        if (candName && numericCount(candName) > 0) {
           primaryField = candidates[ci];
           break;
         }
@@ -161,12 +172,12 @@
 
       var fieldName = primaryField ? primaryField.name : null;
 
-      // Last resort: scan the raw row object for the first numeric cell. Never blindly
+      // Last resort: scan the raw row keys for one that carries numbers. Never blindly
       // take Object.keys(data[0])[0] — that is usually a date dimension and yields NaN.
       if (!fieldName) {
         var rowKeys = Object.keys(firstRow);
         for (var ki = 0; ki < rowKeys.length; ki++) {
-          if (isNumericCell(firstRow, rowKeys[ki])) {
+          if (numericCount(rowKeys[ki]) > 0) {
             fieldName = rowKeys[ki];
             break;
           }
@@ -184,11 +195,11 @@
         }
       }
 
-      // Collect the full numeric series across every returned row.
+      // Collect the full numeric series across every returned row (nulls skipped).
       var seriesVals = [];
       for (var i = 0; i < data.length; i++) {
         var c = data[i][fieldName];
-        if (c && c.value !== null && c.value !== undefined && !isNaN(Number(c.value))) {
+        if (c && isNumeric(c.value)) {
           seriesVals.push(Number(c.value));
         }
       }
@@ -204,6 +215,16 @@
         renderedVal = null;
       } else if (seriesVals.length === 1) {
         rawVal = seriesVals[0];
+      }
+
+      // Resolution diagnostics go to the console only — never into the rendered tile.
+      if (rawVal === null || rawVal === undefined || isNaN(Number(rawVal))) {
+        try {
+          var names = [];
+          for (var di = 0; di < candidates.length; di++) names.push(candidates[di].name);
+          console.warn("[zayo_noc_executive_scorecard] could not resolve a numeric KPI field.",
+            { qfKeys: Object.keys(qf), candidates: names, picked: fieldName, row0: firstRow });
+        } catch (e) { /* no-op */ }
       }
 
       var fmtType = config.value_format_type || "auto";
