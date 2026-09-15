@@ -574,5 +574,33 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/violin_distribution_plot/screenshot.png"
+  },
+  {
+    "id": "dynamic_pivot_matrix",
+    "name": "Dynamic Pivot Matrix & Heatmap Grid",
+    "date_added": "2026-09-15",
+    "library": "D3.js v7",
+    "category": "Leaderboards & Grids",
+    "description": "Interactive multi-modal matrix table and pivot analytics visualization solving Looker Cloud Blockers b/500385324, b/496749649 (dynamic pivot header sorting), b/314734619 (pivot expand/collapse), and b/492843989 (enhanced totals formatting). Features 4 rendering modes (Micro-Bars, Heatmap Grid, PoP Growth Deltas, Compact KPI), client-side dynamic sorting by any pivot column or total, instant search filter, scalable pagination for 5,000+ rows, marginal rollups, 2 clean option tabs (Display & Style), and Looker drill menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 to 2 Dimensions (e.g. products.category, optional secondary grouping)",
+      "pivots": "1 Pivot Dimension (e.g. order_items.created_year) or multiple measures",
+      "measures": "1 to 4 Numeric Measures (e.g. order_items.total_sale_price)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.created_year",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/dynamic_pivot_matrix/screenshot.png"
   }
 ]

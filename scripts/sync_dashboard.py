@@ -82,7 +82,8 @@ VIZ_EMOJI_MAP = {
     "multi_layer_geo_map": "📍",
     "radar_polar_chart": "🕸️",
     "interactive_drilldown_treemap": "🗂️",
-    "violin_distribution_plot": "🎻"
+    "violin_distribution_plot": "🎻",
+    "dynamic_pivot_matrix": "🔢"
 }
 
 def get_headers(profile="default"):

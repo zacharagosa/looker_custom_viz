@@ -28,6 +28,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Multivariate Radar & Polar Chart**](visualizations/radar_polar_chart/)<br>`radar_polar_chart` | Performance & Variance | 1 dim + 3–12 measures (or 2 dims / pivots) | [📸 View](assets/screenshots/radar_polar_chart.png) |
 | [**Interactive Drilldown Treemap**](visualizations/interactive_drilldown_treemap/)<br>`interactive_drilldown_treemap` | Flow, Networks & Hierarchy | 1–6 dims (Hierarchy) + 1–2 measures | [📸 View](assets/screenshots/interactive_drilldown_treemap.png) |
 | [**Violin & Box Plot Distribution Analyzer**](visualizations/violin_distribution_plot/)<br>`violin_distribution_plot` | Performance & Variance | 1 dim + 1 meas (or 2 dims) | [📸 View](visualizations/violin_distribution_plot/README.md) |
+| [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](visualizations/dynamic_pivot_matrix/README.md) |
 
 ---
 
