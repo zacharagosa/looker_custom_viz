@@ -1,0 +1,33 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "order_items.created_month",
+    "products.category",
+    "order_items.total_sale_price"
+  ],
+  "filters": {
+    "order_items.created_date": "24 months"
+  },
+  "sorts": [
+    "order_items.created_month asc",
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "1500",
+  "vis_config": {
+    "type": "streamgraph_themeriver",
+    "baselineMode": "silhouette",
+    "curveInterpolation": "curveCatmullRom",
+    "sortOrder": "insideOut",
+    "topNStreams": 12,
+    "showCrosshair": true,
+    "showPeakBadges": true,
+    "showSearch": true,
+    "showExecutiveHUD": true,
+    "colorPalette": "google_modern",
+    "streamOpacity": "0.85",
+    "strokeWidth": "1",
+    "showStreamLabels": true,
+    "labelFontSize": "12"
+  }
+}

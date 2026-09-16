@@ -29,6 +29,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Interactive Drilldown Treemap**](visualizations/interactive_drilldown_treemap/)<br>`interactive_drilldown_treemap` | Flow, Networks & Hierarchy | 1–6 dims (Hierarchy) + 1–2 measures | [📸 View](assets/screenshots/interactive_drilldown_treemap.png) |
 | [**Violin & Box Plot Distribution Analyzer**](visualizations/violin_distribution_plot/)<br>`violin_distribution_plot` | Performance & Variance | 1 dim + 1 meas (or 2 dims) | [📸 View](visualizations/violin_distribution_plot/README.md) |
 | [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](visualizations/dynamic_pivot_matrix/README.md) |
+| [**Interactive Streamgraph & ThemeRiver**](visualizations/streamgraph_themeriver/)<br>`streamgraph_themeriver` | Time Series & Schedules | 1 Date dim + 1 Cat dim + 1 meas (or 2+ meas) | [📸 View](visualizations/streamgraph_themeriver/README.md) |
 
 ---
 
@@ -105,6 +106,10 @@ Enterprise hierarchical drilldown treemap with smooth zoom animations, interacti
 ### 18. Violin & Box Plot Distribution Analyzer
 High-performance statistical distribution analyzer computing non-parametric Kernel Density Estimation (KDE), Epanechnikov smoothing, five-number summary, Tukey whiskers, and outlier scatter directly client-side across 5,000+ rows (solving b/249062272 and b/4438305129355018240).
 ![Violin & Box Plot Distribution Analyzer](visualizations/violin_distribution_plot/screenshot.png)
+
+### 19. Interactive Streamgraph & ThemeRiver Volume Flow
+Multi-modal organic time-series streamgraph with ThemeRiver silhouette, Byron-Wattenberg organic wiggle, zero-pinned stacked area, 100% normalized proportional share ribbon, and joyplot ridge modes. Features vertical crosshair scrubbing HUD, instant keyword search, and peak anomaly surge highlights (solving b/340585545 and b/490547912).
+![Interactive Streamgraph & ThemeRiver Volume Flow](visualizations/streamgraph_themeriver/screenshot.png)
 
 ---
 

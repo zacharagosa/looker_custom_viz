@@ -602,5 +602,32 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/dynamic_pivot_matrix/screenshot.png"
+  },
+  {
+    "id": "streamgraph_themeriver",
+    "name": "Interactive Streamgraph & ThemeRiver Volume Flow",
+    "date_added": "2026-09-16",
+    "library": "D3.js v7",
+    "category": "Time Series & Schedules",
+    "description": "Multi-modal temporal streamgraph and ThemeRiver flow visualization solving Buganizer Cloud Blockers b/340585545, b/490547912, and YAQS 8624335012298227712. Features 5 baseline geometry modes (ThemeRiver Silhouette, Byron-Wattenberg Organic Wiggle, Stacked Area Zero Baseline, 100% Proportional Share Ribbon, and Joyplot Staggered Ridges), cubic spline curve smoothing, interactive vertical crosshair scrubber with real-time time-slice KPI HUD breakdown, instant category search filter, stream solo/isolation on click, 5,000+ row aggregation, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Date dimension (e.g. order_items.created_month) + 1 Category dimension (e.g. products.category), or 1 Date dim + 1 Pivot dim",
+      "measures": "1 Numeric measure (e.g. order_items.total_sale_price) or multiple measures"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "order_items.created_month",
+        "products.category",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/streamgraph_themeriver/screenshot.png"
   }
 ]
