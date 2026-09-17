@@ -1,0 +1,35 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "distribution_centers.name",
+    "users.state",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "filters": {
+    "users.country": "USA",
+    "order_items.created_date": "12 months"
+  },
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "1500",
+  "vis_config": {
+    "type": "bilateral_chord_diagram",
+    "vizMode": "chord",
+    "topN": "12",
+    "bundleOther": true,
+    "showSelfFlow": true,
+    "directedFlow": true,
+    "showExecutiveHUD": true,
+    "showSearch": true,
+    "metricFormat": "usd",
+    "colorPalette": "looker",
+    "arcThickness": 18,
+    "ribbonOpacity": 0.65,
+    "padAngle": 0.03,
+    "labelStyle": "radial",
+    "labelFontSize": 11
+  }
+}

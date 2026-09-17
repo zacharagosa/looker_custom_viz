@@ -629,5 +629,34 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/streamgraph_themeriver/screenshot.png"
+  },
+  {
+    "id": "bilateral_chord_diagram",
+    "name": "Bilateral Chord Diagram & Directed Flow Matrix",
+    "date_added": "2026-09-17",
+    "library": "D3.js v7",
+    "category": "Flow, Networks & Hierarchy",
+    "description": "Interactive bilateral chord diagram and relational flow matrix solving Buganizer Cloud Blockers b/314340020, b/213338627, b/184376439, and b/171817900. Built for supply chain fulfillment corridors, telecom network peering, customer migration / tier switching, and market basket affinities. Features 3 layout modes (Circular Directed Chord, Bilateral Flow Matrix Heatmap, and Bipartite Split Corridor), directional ribbon gradients, Executive Flow KPI HUD, real-time entity search filter, entity pinning, 5,000+ row client-side matrix aggregation with Top-N & Other bundling, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "2 Dimensions (Source entity & Target entity), or 1 Dimension + 1 Pivot dimension",
+      "measures": "1 Primary flow measure (e.g. order_items.total_sale_price), optional secondary measure"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "distribution_centers.name",
+        "users.state",
+        "order_items.total_sale_price",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?qid=B9aJjQ6j1E2c69tN7iE2nE&toggle=vis",
+    "screenshot": "visualizations/bilateral_chord_diagram/screenshot.png"
   }
 ]

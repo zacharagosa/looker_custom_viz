@@ -30,6 +30,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Violin & Box Plot Distribution Analyzer**](visualizations/violin_distribution_plot/)<br>`violin_distribution_plot` | Performance & Variance | 1 dim + 1 meas (or 2 dims) | [📸 View](visualizations/violin_distribution_plot/README.md) |
 | [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](visualizations/dynamic_pivot_matrix/README.md) |
 | [**Interactive Streamgraph & ThemeRiver**](visualizations/streamgraph_themeriver/)<br>`streamgraph_themeriver` | Time Series & Schedules | 1 Date dim + 1 Cat dim + 1 meas (or 2+ meas) | [📸 View](visualizations/streamgraph_themeriver/README.md) |
+| [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures (or pivoted) | [📸 View](visualizations/bilateral_chord_diagram/README.md) |
 
 ---
 
@@ -110,6 +111,10 @@ High-performance statistical distribution analyzer computing non-parametric Kern
 ### 19. Interactive Streamgraph & ThemeRiver Volume Flow
 Multi-modal organic time-series streamgraph with ThemeRiver silhouette, Byron-Wattenberg organic wiggle, zero-pinned stacked area, 100% normalized proportional share ribbon, and joyplot ridge modes. Features vertical crosshair scrubbing HUD, instant keyword search, and peak anomaly surge highlights (solving b/340585545 and b/490547912).
 ![Interactive Streamgraph & ThemeRiver Volume Flow](visualizations/streamgraph_themeriver/screenshot.png)
+
+### 20. Bilateral Chord Diagram & Directed Flow Matrix
+Interactive bilateral chord diagram and relational flow matrix with 3 layout modes (Circular Directed Chord, Bilateral Flow Matrix Heatmap, and Bipartite Split Corridor), directional ribbon gradients, Executive Flow KPI HUD, real-time entity search filter, entity pinning, 5,000+ row client-side matrix aggregation with Top-N & Other bundling, and native Looker drill-down menus (solving b/314340020, b/213338627, b/184376439, and b/171817900).
+![Bilateral Chord Diagram & Directed Flow Matrix](visualizations/bilateral_chord_diagram/screenshot.png)
 
 ---
 
