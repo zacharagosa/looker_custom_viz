@@ -658,5 +658,32 @@
     "instance_wide": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?qid=B9aJjQ6j1E2c69tN7iE2nE&toggle=vis",
     "screenshot": "visualizations/bilateral_chord_diagram/screenshot.png"
+  },
+  {
+    "id": "level_progression_balance_curve",
+    "name": "Level Progression & Balancing Curve",
+    "date_added": "2026-09-18",
+    "library": "D3.js v7",
+    "category": "Gaming & Telemetry",
+    "description": "Multi-modal gaming progression and difficulty balancing curve visualizer solving Buganizer Cloud Blockers b/341928091, b/490547912, and b/530822261. Tracks cumulative survivor volumes alongside marginal drop-off hazard rates, pinpoints difficulty choke-points and drop-off cliffs with automated anomaly detection, and models power-law decay curves with dual-axis telemetry overlays. Features 4 layout modes (Progression & Choke Points, Survival Decay Model, Milestone Step Waterfall, and Difficulty & Pacing Envelope), executive telemetry KPI HUD, instant level search filter, 5,000+ row client-side aggregation, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Dimension (Level, Milestone, or Progression Stage)",
+      "measures": "1 Primary survivor volume measure, optional 1 secondary telemetry pacing measure"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "order_items.status",
+        "order_items.order_count",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/level_progression_balance_curve/screenshot.png"
   }
 ]

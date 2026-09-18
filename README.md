@@ -31,6 +31,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](visualizations/dynamic_pivot_matrix/README.md) |
 | [**Interactive Streamgraph & ThemeRiver**](visualizations/streamgraph_themeriver/)<br>`streamgraph_themeriver` | Time Series & Schedules | 1 Date dim + 1 Cat dim + 1 meas (or 2+ meas) | [📸 View](visualizations/streamgraph_themeriver/README.md) |
 | [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures (or pivoted) | [📸 View](visualizations/bilateral_chord_diagram/README.md) |
+| [**Level Progression & Balancing Curve**](visualizations/level_progression_balance_curve/)<br>`level_progression_balance_curve` | Gaming & Telemetry | 1 dim (Level/Stage) + 1–2 measures (Survivors, Pacing) | [📸 View](assets/screenshots/level_progression_balance_curve.png) |
 
 ---
 
@@ -115,6 +116,10 @@ Multi-modal organic time-series streamgraph with ThemeRiver silhouette, Byron-Wa
 ### 20. Bilateral Chord Diagram & Directed Flow Matrix
 Interactive bilateral chord diagram and relational flow matrix with 3 layout modes (Circular Directed Chord, Bilateral Flow Matrix Heatmap, and Bipartite Split Corridor), directional ribbon gradients, Executive Flow KPI HUD, real-time entity search filter, entity pinning, 5,000+ row client-side matrix aggregation with Top-N & Other bundling, and native Looker drill-down menus (solving b/314340020, b/213338627, b/184376439, and b/171817900).
 ![Bilateral Chord Diagram & Directed Flow Matrix](visualizations/bilateral_chord_diagram/screenshot.png)
+
+### 21. Level Progression & Difficulty Balancing Curve
+Multi-modal game progression, difficulty pacing, and step-hazard attrition curve visualizer with 4 layout modes (Progression & Choke Points, Survival Decay Model, Milestone Step Waterfall, and Difficulty & Pacing Envelope), automated choke-point anomaly detection ($Z > 1.5\sigma$ or $2.0\sigma$), power-law baseline decay modeling, Executive Telemetry HUD, real-time stage search, and high-density 5,000+ row aggregation (solving b/341928091, b/490547912, and b/530822261).
+![Level Progression & Difficulty Balancing Curve](assets/screenshots/level_progression_balance_curve.png)
 
 ---
 

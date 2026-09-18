@@ -1,0 +1,27 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "order_items.status",
+    "order_items.order_count",
+    "order_items.total_sale_price"
+  ],
+  "sorts": [
+    "order_items.order_count desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "level_progression_balance_curve",
+    "curveLayout": "dual_axis_spikes",
+    "chokePointSensitivity": "medium",
+    "showExecutiveHUD": true,
+    "showChokePointBadges": true,
+    "showDataLabels": true,
+    "showSearch": true,
+    "colorTheme": "executive_slate",
+    "curveSmoothing": "catmull_rom",
+    "areaOpacity": "medium",
+    "valueFormat": "compact_num",
+    "highlightWorstChoke": true
+  }
+}

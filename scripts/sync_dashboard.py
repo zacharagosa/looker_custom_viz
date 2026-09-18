@@ -85,7 +85,8 @@ VIZ_EMOJI_MAP = {
     "violin_distribution_plot": "🎻",
     "dynamic_pivot_matrix": "🔢",
     "streamgraph_themeriver": "〰️",
-    "bilateral_chord_diagram": "🔄"
+    "bilateral_chord_diagram": "🔄",
+    "level_progression_balance_curve": "🕹️"
 }
 
 def get_headers(profile="default"):
