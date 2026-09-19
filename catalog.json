@@ -685,5 +685,35 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/level_progression_balance_curve/screenshot.png"
+  },
+  {
+    "id": "hexbin_density_map",
+    "name": "Geospatial Hexbin & Density Heatmap",
+    "date_added": "2026-09-19",
+    "library": "D3.js v7 & TopoJSON",
+    "category": "Geospatial Intelligence",
+    "description": "High-performance enterprise Geospatial Hexagonal Binning & Point Density Heatmap custom visualization built with D3.js v7 and TopoJSON. Resolves Buganizer Cloud Blockers b/418217123, b/537254276, b/556359527 (Hexbin Map, Density Heatmaps, Point Density Accumulation) and b/503077532, b/243984441 (Verizon M5 & Map PRD go/prd-looker-map-viz-improvements). Solves native Looker Map DOM lag and visual occlusion ('ink blob' / 'hairball' effect) across 5,000+ coordinates. Features 4 layout modes (Hexagonal Spatial Binning, Continuous Gaussian Density Heatmap, Spatial Bubble Clusters, and Equal-Area US State Cartogram), mathematical O(N) axial/cube coordinate tessellation, executive spatial KPI HUD, real-time live search filter, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js",
+      "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Latitude dimension & 1 Longitude dimension, or 1 Geographic State/Region dimension",
+      "measures": "1 Primary volume measure (e.g. Total Sales, Orders, Pings), optional 1 Secondary KPI"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "users.approx_latitude",
+        "users.approx_longitude",
+        "users.state",
+        "order_items.total_sale_price",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/hexbin_density_map/screenshot.png"
   }
 ]

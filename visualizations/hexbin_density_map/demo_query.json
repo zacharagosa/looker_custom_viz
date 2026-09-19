@@ -1,0 +1,33 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.approx_latitude",
+    "users.approx_longitude",
+    "users.state",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "filters": {
+    "users.country": "USA"
+  },
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "hexbin_density_map",
+    "layout_mode": "hexbin_density",
+    "aggregation_type": "sum",
+    "hex_radius": 20,
+    "proportional_hex_size": true,
+    "min_points_threshold": 1,
+    "show_hud": true,
+    "show_search": true,
+    "show_legend": true,
+    "color_palette": "plasma",
+    "basemap_theme": "light_clean",
+    "hex_opacity": 0.85,
+    "hex_stroke": "crisp_white"
+  }
+}

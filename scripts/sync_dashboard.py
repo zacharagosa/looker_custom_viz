@@ -86,7 +86,8 @@ VIZ_EMOJI_MAP = {
     "dynamic_pivot_matrix": "🔢",
     "streamgraph_themeriver": "〰️",
     "bilateral_chord_diagram": "🔄",
-    "level_progression_balance_curve": "🕹️"
+    "level_progression_balance_curve": "🕹️",
+    "hexbin_density_map": "⬢"
 }
 
 def get_headers(profile="default"):

@@ -32,6 +32,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Interactive Streamgraph & ThemeRiver**](visualizations/streamgraph_themeriver/)<br>`streamgraph_themeriver` | Time Series & Schedules | 1 Date dim + 1 Cat dim + 1 meas (or 2+ meas) | [📸 View](visualizations/streamgraph_themeriver/README.md) |
 | [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures (or pivoted) | [📸 View](visualizations/bilateral_chord_diagram/README.md) |
 | [**Level Progression & Balancing Curve**](visualizations/level_progression_balance_curve/)<br>`level_progression_balance_curve` | Gaming & Telemetry | 1 dim (Level/Stage) + 1–2 measures (Survivors, Pacing) | [📸 View](assets/screenshots/level_progression_balance_curve.png) |
+| [**Geospatial Hexbin & Density Heatmap**](visualizations/hexbin_density_map/)<br>`hexbin_density_map` | Geospatial Intelligence | 1–2 dims (Coords or State) + 1–2 measures | [📸 View](visualizations/hexbin_density_map/README.md) |
 
 ---
 
