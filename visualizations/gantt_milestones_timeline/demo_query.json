@@ -1,0 +1,39 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.status",
+    "order_items.created_date",
+    "order_items.shipped_date",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "filters": {
+    "order_items.created_date": "60 days",
+    "order_items.shipped_date": "NOT NULL"
+  },
+  "sorts": [
+    "order_items.created_date asc",
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "gantt_milestones_timeline",
+    "layout_mode": "gantt_progress",
+    "time_scale": "auto",
+    "group_by_swimlane": true,
+    "sort_order": "start_asc",
+    "show_milestones": true,
+    "show_executive_hud": true,
+    "show_search_bar": true,
+    "show_today_line": true,
+    "show_task_labels": true,
+    "color_palette": "google",
+    "heatmap_metric_mode": "gradient",
+    "bar_corner_radius": 4,
+    "bar_height": 24,
+    "show_gridlines": true,
+    "theme_mode": "light"
+  }
+}

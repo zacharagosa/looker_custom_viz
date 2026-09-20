@@ -715,5 +715,35 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/hexbin_density_map/screenshot.png"
+  },
+  {
+    "id": "gantt_milestones_timeline",
+    "name": "Executive Gantt & Milestones Schedule Timeline",
+    "date_added": "2026-09-20",
+    "library": "D3.js v7",
+    "category": "Time Series & Schedules",
+    "description": "High-density enterprise Executive Gantt & Milestones Schedule Timeline custom visualization built with D3.js v7. Directly resolves Buganizer Cloud Blocker b/449635128 (Timeline Visualization and Color Formatting based on Measure), Customer Requirement b/445748812 (Adani: Support conditional formatting in Timeline visualization), and YAQS go/yeng/1995018768622813184. Overcomes native Looker timeline limitations across 5,000+ schedule events. Features 4 layout modes (Gantt with Progress Fills %, Milestone Pin Roadmap, Categorical Swimlanes, and Measure Heatmap Gradient/Thresholds), sticky time axis headers, dynamic Today indicator, live search-as-you-type filter, executive KPI HUD (Total Tasks, Completion Rate %, In-Progress, Delayed, Avg Duration, Financial Scope), 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Task/Deliverable Name dimension, 1 Start Date dimension, optional 1 End Date dimension, optional 1 Swimlane/Status dimension",
+      "measures": "1 Primary numeric measure (Budget, Sales, Volume, or SLA risk score for heatmap coloring), optional 1 Progress/Volume measure"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.status",
+        "order_items.created_date",
+        "order_items.shipped_date",
+        "order_items.total_sale_price",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/gantt_milestones_timeline/screenshot.png"
   }
 ]

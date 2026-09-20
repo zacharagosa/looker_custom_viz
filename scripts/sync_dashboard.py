@@ -87,7 +87,8 @@ VIZ_EMOJI_MAP = {
     "streamgraph_themeriver": "〰️",
     "bilateral_chord_diagram": "🔄",
     "level_progression_balance_curve": "🕹️",
-    "hexbin_density_map": "⬢"
+    "hexbin_density_map": "⬢",
+    "gantt_milestones_timeline": "🗓️"
 }
 
 def get_headers(profile="default"):

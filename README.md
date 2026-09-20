@@ -122,6 +122,14 @@ Interactive bilateral chord diagram and relational flow matrix with 3 layout mod
 Multi-modal game progression, difficulty pacing, and step-hazard attrition curve visualizer with 4 layout modes (Progression & Choke Points, Survival Decay Model, Milestone Step Waterfall, and Difficulty & Pacing Envelope), automated choke-point anomaly detection ($Z > 1.5\sigma$ or $2.0\sigma$), power-law baseline decay modeling, Executive Telemetry HUD, real-time stage search, and high-density 5,000+ row aggregation (solving b/341928091, b/490547912, and b/530822261).
 ![Level Progression & Difficulty Balancing Curve](assets/screenshots/level_progression_balance_curve.png)
 
+### 22. Geospatial Hexbin & Density Heatmap
+Enterprise geospatial hexagonal tessellation and continuous Gaussian density heatmap custom visualization built with D3.js v7 and TopoJSON. Features 4 layout modes (Hexagonal Spatial Binning, Density Heatmaps, Spatial Bubble Clusters, and US State Cartograms), mathematical $O(N)$ axial/cube coordinate tessellation, executive spatial KPI HUD, and 5,000+ row coordinates without DOM lag (solving b/418217123, b/537254276, and b/556359527).
+![Geospatial Hexbin & Density Heatmap](visualizations/hexbin_density_map/screenshot.png)
+
+### 23. Executive Gantt & Milestones Schedule Timeline
+High-density enterprise Executive Gantt and milestone roadmap schedule with 4 layout modes (Gantt Progress Bars with internal fills %, Milestone Pin Roadmap, Categorical Swimlanes by phase/owner, and Measure Heatmap Gradient/Thresholds). Directly resolves Buganizer Cloud Blocker b/449635128 (Timeline Visualization and Color Formatting based on Measure), Customer Requirement b/445748812 (Adani: Support conditional formatting in Timeline visualization), and YAQS go/yeng/1995018768622813184. Features sticky time axis headers, dynamic Today indicator, live search-as-you-type filter, Executive KPI HUD, and native Looker drill-down menus across 5,000+ schedule events.
+![Executive Gantt & Milestones Schedule Timeline](visualizations/gantt_milestones_timeline/screenshot.png)
+
 ---
 
 ## 🚀 How to Use in Your Looker Instance
