@@ -130,6 +130,10 @@ Enterprise geospatial hexagonal tessellation and continuous Gaussian density hea
 High-density enterprise Executive Gantt and milestone roadmap schedule with 4 layout modes (Gantt Progress Bars with internal fills %, Milestone Pin Roadmap, Categorical Swimlanes by phase/owner, and Measure Heatmap Gradient/Thresholds). Directly resolves Buganizer Cloud Blocker b/449635128 (Timeline Visualization and Color Formatting based on Measure), Customer Requirement b/445748812 (Adani: Support conditional formatting in Timeline visualization), and YAQS go/yeng/1995018768622813184. Features sticky time axis headers, dynamic Today indicator, live search-as-you-type filter, Executive KPI HUD, and native Looker drill-down menus across 5,000+ schedule events.
 ![Executive Gantt & Milestones Schedule Timeline](visualizations/gantt_milestones_timeline/screenshot.png)
 
+### 24. Pareto 80/20 & ABC Stratification Analyzer
+Enterprise-grade Pareto 80/20 analysis and ABC inventory/defect stratification analyzer with 4 layout modes (Classic Pareto & 80/20 Cutoff with dual Y-axis and smooth ogive curve, ABC Stratification Matrix with tier cards, Lorenz Inequality Curve & Gini concentration index against the 45° equality line, and Cumulative Stepped Waterfall). Directly resolves Buganizer Cloud Blocker b/367544487 ("LookML to support more sophisticated measure out of the box - Pareto analysis") and customer requirements from Monzo Bank (b/425859046), Mango (b/530925562), Woolworth's (b/461541028), and Renault PSO Looker Performance Study. Features dynamic 80% reference cutoff lines, Executive KPI HUD, real-time live search filter, 2 clean option tabs (Display & Style), 5,000+ row client-side aggregation, and native Looker drill-down menus.
+![Pareto 80/20 & ABC Stratification Analyzer](visualizations/pareto_cumulative_analyzer/screenshot.png)
+
 ---
 
 ## 🚀 How to Use in Your Looker Instance

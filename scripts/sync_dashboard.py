@@ -88,7 +88,8 @@ VIZ_EMOJI_MAP = {
     "bilateral_chord_diagram": "🔄",
     "level_progression_balance_curve": "🕹️",
     "hexbin_density_map": "⬢",
-    "gantt_milestones_timeline": "🗓️"
+    "gantt_milestones_timeline": "🗓️",
+    "pareto_cumulative_analyzer": "📉"
 }
 
 def get_headers(profile="default"):
