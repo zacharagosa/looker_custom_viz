@@ -1,21 +1,21 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "void_weaver_analytics",
+  "view": "studio_release_roadmap",
   "fields": [
-    "products.category",
-    "order_items.status",
-    "order_items.created_date",
-    "order_items.shipped_date",
-    "order_items.total_sale_price",
-    "order_items.order_count"
+    "studio_release_roadmap.task_name",
+    "studio_release_roadmap.workstream",
+    "studio_release_roadmap.task_status",
+    "studio_release_roadmap.owner_lead",
+    "studio_release_roadmap.priority_tier",
+    "studio_release_roadmap.start_date",
+    "studio_release_roadmap.end_date",
+    "studio_release_roadmap.completion_pct",
+    "studio_release_roadmap.total_budget_allocated_usd",
+    "studio_release_roadmap.projected_revenue_lift_usd"
   ],
-  "filters": {
-    "order_items.created_date": "60 days",
-    "order_items.shipped_date": "NOT NULL"
-  },
   "sorts": [
-    "order_items.created_date asc",
-    "order_items.total_sale_price desc"
+    "studio_release_roadmap.workstream asc",
+    "studio_release_roadmap.start_date asc"
   ],
   "limit": "500",
   "vis_config": {
@@ -31,8 +31,8 @@
     "show_task_labels": true,
     "color_palette": "google",
     "heatmap_metric_mode": "gradient",
-    "bar_corner_radius": 4,
-    "bar_height": 24,
+    "bar_corner_radius": 5,
+    "bar_height": 22,
     "show_gridlines": true,
     "theme_mode": "light"
   }

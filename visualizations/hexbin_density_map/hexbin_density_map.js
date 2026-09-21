@@ -475,7 +475,7 @@
             self._lastHeight = newH;
             self._lastWidth = newW;
             if (self._lastData && self._lastConfig && self._lastQueryResponse) {
-              self.updateAsync(self._lastData, self._lastConfig, self._lastQueryResponse, null, function () {});
+              self.updateAsync(self._lastData, element, self._lastConfig, self._lastQueryResponse, null, function () {});
             }
           }
         });
@@ -483,11 +483,22 @@
       }
     },
 
-    updateAsync: function (data, config, queryResponse, details, done) {
+    updateAsync: function (data, element, config, queryResponse, details, done) {
       this.clearErrors();
 
+      // Defensive parameter normalization if called with 5 args
+      if (config && config.fields && (!queryResponse || !queryResponse.fields)) {
+        done = details;
+        details = queryResponse;
+        queryResponse = config;
+        config = element;
+      }
+      if (typeof done !== "function") {
+        done = function () {};
+      }
+
       this._lastData = data;
-      this._lastConfig = config;
+      this._lastConfig = config || {};
       this._lastQueryResponse = queryResponse;
 
       if (!data || data.length === 0) {
@@ -496,11 +507,17 @@
         return;
       }
 
+      if (!queryResponse || !queryResponse.fields) {
+        this.addError({ title: "Missing Query Metadata", message: "Awaiting valid Looker queryResponse.fields." });
+        done();
+        return;
+      }
+
       var self = this;
       ensureDependencies(function (d3, topojson) {
         fetchUSGeoJSON(topojson, function (usGeoJSON) {
           try {
-            self._renderMap(d3, usGeoJSON, data, config, queryResponse);
+            self._renderMap(d3, usGeoJSON, data, config || {}, queryResponse);
           } catch (err) {
             console.error("Hexbin Density Map render error:", err);
             self.addError({ title: "Render Error", message: err.message });
@@ -518,8 +535,8 @@
       var width = container.clientWidth || 800;
       var height = container.clientHeight || 500;
 
-      // Extract field descriptors
-      var fields = queryResponse.fields;
+      // Extract field descriptors safely
+      var fields = (queryResponse && queryResponse.fields) ? queryResponse.fields : {};
       var dims = (fields.dimensions && fields.dimensions.length > 0)
         ? fields.dimensions
         : (fields.dimension_like || []);
