@@ -731,15 +731,17 @@
       "measures": "1 Primary numeric measure (Budget, Sales, Volume, or SLA risk score for heatmap coloring), optional 1 Progress/Volume measure"
     },
     "suggested_dataset": {
-      "model": "thelook",
-      "explore": "order_items",
+      "model": "void_weaver_analytics",
+      "explore": "studio_release_roadmap",
       "fields": [
-        "products.category",
-        "order_items.status",
-        "order_items.created_date",
-        "order_items.shipped_date",
-        "order_items.total_sale_price",
-        "order_items.order_count"
+        "studio_release_roadmap.task_name",
+        "studio_release_roadmap.workstream",
+        "studio_release_roadmap.task_status",
+        "studio_release_roadmap.owner_lead",
+        "studio_release_roadmap.start_date",
+        "studio_release_roadmap.end_date",
+        "studio_release_roadmap.completion_pct",
+        "studio_release_roadmap.total_budget_allocated_usd"
       ]
     },
     "deployed": true,

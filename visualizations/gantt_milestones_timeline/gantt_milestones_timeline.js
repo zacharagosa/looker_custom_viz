@@ -654,7 +654,7 @@
 
       var dateSpan = Math.max(86400000 * 14, globalMaxDate - globalMinDate);
       var domainStart = new Date(globalMinDate - dateSpan * 0.04);
-      var domainEnd = new Date(globalMaxDate + dateSpan * 0.08);
+      var domainEnd = new Date(globalMaxDate + dateSpan * 0.18);
 
       var minMetric = metricValues.length ? d3.min(metricValues) : 0;
       var maxMetric = metricValues.length ? d3.max(metricValues) : 100;
