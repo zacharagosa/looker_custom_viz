@@ -89,7 +89,8 @@ VIZ_EMOJI_MAP = {
     "level_progression_balance_curve": "🕹️",
     "hexbin_density_map": "⬢",
     "gantt_milestones_timeline": "🗓️",
-    "pareto_cumulative_analyzer": "📉"
+    "pareto_cumulative_analyzer": "📉",
+    "matchmaking_mmr_distribution": "⚔️"
 }
 
 def get_headers(profile="default"):

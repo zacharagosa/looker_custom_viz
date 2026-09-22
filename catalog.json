@@ -775,5 +775,34 @@
     "instance_wide": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22pareto_cumulative_analyzer%22%2C%22layoutMode%22%3A%22classic_pareto%22%2C%22abcThresholdA%22%3A80%2C%22abcThresholdB%22%3A95%2C%22showKpiHud%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showThresholdLine%22%3Atrue%2C%22showDataLabels%22%3Afalse%2C%22maxItemsDisplay%22%3A35%2C%22curveInterpolation%22%3A%22monotone%22%2C%22colorTheme%22%3A%22modern_google%22%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/pareto_cumulative_analyzer/screenshot.png"
+  },
+  {
+    "id": "matchmaking_mmr_distribution",
+    "name": "Matchmaking Latency & MMR Distribution Analyzer",
+    "date_added": "2026-09-22",
+    "library": "D3.js v7",
+    "category": "Gaming & Telemetry",
+    "description": "Enterprise-grade Matchmaking Latency & Player Skill (MMR/Elo) Distribution Analyzer built with D3.js v7. Directly resolves Buganizer Cloud Blockers and Customer Requirements (b/341928091, b/490547912, b/530822261) for competitive multiplayer studios (Riot, EA, Epic, Blizzard, Ubisoft, Sony). Overcomes native Looker BI Cartesian limitations by modeling parametric Gaussian normal distribution bell curves (mean \u03bc, standard deviation \u03c3 bands, skewness), queue latency bathtub envelopes (dual-axis P50 median wait time line and P90-P99 risk bands vs player volume), competitive rank tier stratification (Bronze through Grandmaster with cumulative CDF share), and fairness win-rate parity matrices (skill delta vs win rate % against the 50% fair match corridor). Features an executive telemetry HUD, queue SLA breach warnings, real-time search & tier filtering, clean 2-tab options (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Skill Rating / MMR, Rating Bucket, Rank Tier, or Playlist dimension",
+      "measures": "1 Primary Player Volume / Match Count measure, optional Queue Wait Time / Latency measure, optional Win Rate % measure"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.order_count",
+        "order_items.average_shipping_time",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.order_count,order_items.average_shipping_time,order_items.total_sale_price&sorts=order_items.total_sale_price+asc&limit=500&vis=%7B%22type%22%3A%22matchmaking_mmr_distribution%22%2C%22layoutMode%22%3A%22gaussian_bell%22%2C%22showExecutiveHUD%22%3Atrue%2C%22latencySlaThreshold%22%3A120%2C%22showGaussianFit%22%3Atrue%2C%22showRankTiers%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22modern_slate%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showGridlines%22%3Atrue%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
+    "screenshot": "visualizations/matchmaking_mmr_distribution/screenshot.png"
   }
 ]

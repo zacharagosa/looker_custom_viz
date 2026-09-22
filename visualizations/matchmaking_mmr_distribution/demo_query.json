@@ -1,0 +1,27 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.order_count",
+    "order_items.average_shipping_time",
+    "order_items.total_sale_price"
+  ],
+  "sorts": [
+    "order_items.total_sale_price asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "matchmaking_mmr_distribution",
+    "layoutMode": "gaussian_bell",
+    "showExecutiveHUD": true,
+    "latencySlaThreshold": 120,
+    "showGaussianFit": true,
+    "showRankTiers": true,
+    "showSearch": true,
+    "colorTheme": "modern_slate",
+    "curveSmoothing": "monotone",
+    "showGridlines": true,
+    "valueFormat": "compact_num"
+  }
+}
