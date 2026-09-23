@@ -31,8 +31,11 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](visualizations/dynamic_pivot_matrix/README.md) |
 | [**Interactive Streamgraph & ThemeRiver**](visualizations/streamgraph_themeriver/)<br>`streamgraph_themeriver` | Time Series & Schedules | 1 Date dim + 1 Cat dim + 1 meas (or 2+ meas) | [📸 View](visualizations/streamgraph_themeriver/README.md) |
 | [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures (or pivoted) | [📸 View](visualizations/bilateral_chord_diagram/README.md) |
-| [**Level Progression & Balancing Curve**](visualizations/level_progression_balance_curve/)<br>`level_progression_balance_curve` | Gaming & Telemetry | 1 dim (Level/Stage) + 1–2 measures (Survivors, Pacing) | [📸 View](assets/screenshots/level_progression_balance_curve.png) |
 | [**Geospatial Hexbin & Density Heatmap**](visualizations/hexbin_density_map/)<br>`hexbin_density_map` | Geospatial Intelligence | 1–2 dims (Coords or State) + 1–2 measures | [📸 View](visualizations/hexbin_density_map/README.md) |
+| [**Executive Gantt & Milestones Schedule Timeline**](visualizations/gantt_milestones_timeline/)<br>`gantt_milestones_timeline` | Time Series & Schedules | 1 Task dim + 2 Date dims + 0–2 meas | [📸 View](visualizations/gantt_milestones_timeline/README.md) |
+| [**Pareto 80/20 & ABC Stratification Analyzer**](visualizations/pareto_cumulative_analyzer/)<br>`pareto_cumulative_analyzer` | Leaderboards & Grids | 1 Category dim + 1–2 measures | [📸 View](visualizations/pareto_cumulative_analyzer/README.md) |
+| [**Matchmaking Latency & MMR Distribution Analyzer**](visualizations/matchmaking_mmr_distribution/)<br>`matchmaking_mmr_distribution` | Telemetry & Cohort Decay | 1 Skill/Bucket dim + 1–3 measures | [📸 View](visualizations/matchmaking_mmr_distribution/README.md) |
+| [**Sunburst Multi-Level Partition Wheel**](visualizations/sunburst_partition_wheel/)<br>`sunburst_partition_wheel` | Flow, Networks & Hierarchy | 1–5 Hierarchical dims + 1–2 measures | [📸 View](visualizations/sunburst_partition_wheel/README.md) |
 
 ---
 

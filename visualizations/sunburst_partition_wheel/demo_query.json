@@ -1,0 +1,30 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.country",
+    "products.department",
+    "products.category",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "sunburst_partition_wheel",
+    "layoutMode": "sunburst_wheel",
+    "colorMode": "branch_palette",
+    "colorTheme": "modern_google",
+    "innerHoleRadius": 22,
+    "maxDepthDisplay": 5,
+    "topNThreshold": 12,
+    "valueMetricFormat": "compact_currency",
+    "showExecutiveHUD": true,
+    "showBreadcrumbTrail": true,
+    "showSearchFilter": true,
+    "showSliceLabels": true,
+    "enableZoomDrill": true
+  }
+}
