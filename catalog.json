@@ -834,5 +834,33 @@
     "instance_wide": true,
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.country,products.department,products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sunburst_partition_wheel%22%2C%22layoutMode%22%3A%22sunburst_wheel%22%2C%22colorMode%22%3A%22branch_palette%22%2C%22colorTheme%22%3A%22modern_google%22%2C%22innerHoleRadius%22%3A22%2C%22maxDepthDisplay%22%3A5%2C%22topNThreshold%22%3A12%2C%22valueMetricFormat%22%3A%22compact_currency%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showBreadcrumbTrail%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showSliceLabels%22%3Atrue%2C%22enableZoomDrill%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/sunburst_partition_wheel/screenshot.png"
+  },
+  {
+    "id": "ad_reach_frequency_curve",
+    "name": "Ad Reach & Frequency Response Curve",
+    "date_added": "2026-09-24",
+    "library": "D3.js v7",
+    "category": "Time Series & Schedules",
+    "description": "Enterprise-grade Ad Reach & Frequency Response Curve, Effective Frequency Corridor (3x\u20136x), and Marketing Saturation Analyzer built with D3.js v7. Directly resolves Buganizer Cloud Blockers and Customer Requirements (b/476341715, b/422654493, b/422655556, b/341928091) and answers Google Media Mix Modeling standards (Meridian MMM, go/rxf-dash, go/mmm-r&f-data). Overcomes native Looker BI Cartesian limitations by modeling non-linear diminishing return curves (Modified Beta-Binomial MBB and Hill Saturation S-curve), shaded Effective Frequency Corridors (3x\u20136x sweet spot vs Ad Blindness <3x and Ad Fatigue >6x), target reach threshold lines, and derivative marginal efficiency cliffs across 5,000+ campaign rows. Features an executive telemetry HUD, real-time channel & placement search filtering, clean 2-tab options (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Channel, Placement, Campaign, or Category dimension",
+      "measures": "1 Primary Volume measure (Impressions, Spots, Orders, Clicks), optional 1 Secondary Value measure (Spend, Sales, GRPs)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "products.category",
+        "order_items.order_count",
+        "order_items.total_sale_price"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/ad_reach_frequency_curve/screenshot.png",
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.order_count,order_items.total_sale_price&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22ad_reach_frequency_curve%22%2C%22layoutMode%22%3A%22reach_frequency_curve%22%2C%22showExecutiveHUD%22%3Atrue%2C%22targetReachGoal%22%3A70%2C%22effectiveFrequencyMin%22%3A3%2C%22effectiveFrequencyMax%22%3A6%2C%22modelFittingEngine%22%3A%22bimodal_mbb%22%2C%22showDiminishingReturnInflection%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showGridlines%22%3Atrue%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis"
   }
 ]

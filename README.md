@@ -36,6 +36,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Pareto 80/20 & ABC Stratification Analyzer**](visualizations/pareto_cumulative_analyzer/)<br>`pareto_cumulative_analyzer` | Leaderboards & Grids | 1 Category dim + 1–2 measures | [📸 View](visualizations/pareto_cumulative_analyzer/README.md) |
 | [**Matchmaking Latency & MMR Distribution Analyzer**](visualizations/matchmaking_mmr_distribution/)<br>`matchmaking_mmr_distribution` | Telemetry & Cohort Decay | 1 Skill/Bucket dim + 1–3 measures | [📸 View](visualizations/matchmaking_mmr_distribution/README.md) |
 | [**Sunburst Multi-Level Partition Wheel**](visualizations/sunburst_partition_wheel/)<br>`sunburst_partition_wheel` | Flow, Networks & Hierarchy | 1–5 Hierarchical dims + 1–2 measures | [📸 View](visualizations/sunburst_partition_wheel/README.md) |
+| [**Ad Reach & Frequency Response Curve**](visualizations/ad_reach_frequency_curve/)<br>`ad_reach_frequency_curve` | Time Series & Schedules | 1 Channel/Placement dim + 1–2 measures | [📸 View](visualizations/ad_reach_frequency_curve/README.md) |
 
 ---
 
@@ -140,6 +141,10 @@ Enterprise-grade Pareto 80/20 analysis and ABC inventory/defect stratification a
 ### 25. Matchmaking Latency & MMR Distribution Analyzer
 Enterprise-grade matchmaking latency and player skill (MMR/Elo) distribution analyzer built with D3.js v7 for competitive multiplayer game studios (Riot, EA, Epic, Blizzard, Ubisoft, Sony). Directly resolves Buganizer Cloud Blockers and Customer Requirements (**b/341928091**, **b/490547912**, **b/530822261**). Features 4 layout modes (Skill Bell Curve & Gaussian Fit, Queue Latency & Wait-Time Envelope, Competitive Rank Tier Stratification, and Fairness & Win-Rate Parity Matrix), dual-axis player volume vs queue wait-time envelope, customizable queue SLA threshold alerts, rank tier cutoffs (Bronze through Grandmaster with cumulative CDF), Executive Telemetry HUD, real-time search & tier filtering, clean 2-tab options (Display & Style), and native Looker drill-down menus across 5,000+ match records.
 ![Matchmaking Latency & MMR Distribution Analyzer](visualizations/matchmaking_mmr_distribution/screenshot.png)
+
+### 26. Ad Reach & Frequency Response Curve
+Enterprise-grade Ad Reach & Frequency Response Curve, Effective Frequency Corridor (3x–6x), and Marketing Saturation Analyzer built with D3.js v7. Directly resolves Buganizer Cloud Blockers and Customer Requirements (**b/476341715**, **b/422654493**, **b/422655556**, **b/341928091**) and answers Google Media Mix Modeling standards (Meridian MMM, go/rxf-dash, go/mmm-r&f-data). Features 4 layout modes (Reach Curve & Saturation Horizon, Effective Frequency Corridor & Wearout Histogram, Marginal Response & Diminishing Return Hill Curve, and Multi-Campaign / Channel Comparative Matrix), shaded Effective Frequency Corridors (3x–6x sweet spot vs Ad Blindness <3x and Ad Fatigue >6x), target reach threshold lines, derivative marginal efficiency cliffs, Executive Telemetry HUD, real-time channel & placement search filtering, clean 2-tab options (Display & Style), and native Looker drill-down menus across 5,000+ campaign rows.
+![Ad Reach & Frequency Response Curve](visualizations/ad_reach_frequency_curve/README.md)
 
 ---
 

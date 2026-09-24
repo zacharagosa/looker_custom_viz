@@ -1,0 +1,28 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.order_count",
+    "order_items.total_sale_price"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "ad_reach_frequency_curve",
+    "layoutMode": "reach_frequency_curve",
+    "showExecutiveHUD": true,
+    "targetReachGoal": 70,
+    "effectiveFrequencyMin": 3,
+    "effectiveFrequencyMax": 6,
+    "modelFittingEngine": "bimodal_mbb",
+    "showDiminishingReturnInflection": true,
+    "showSearch": true,
+    "colorTheme": "google_enterprise",
+    "curveSmoothing": "monotone",
+    "showGridlines": true,
+    "valueFormat": "compact_num"
+  }
+}

@@ -91,8 +91,10 @@ VIZ_EMOJI_MAP = {
     "gantt_milestones_timeline": "🗓️",
     "pareto_cumulative_analyzer": "📉",
     "matchmaking_mmr_distribution": "⚔️",
-    "sunburst_partition_wheel": "☀️"
+    "sunburst_partition_wheel": "☀️",
+    "ad_reach_frequency_curve": "🎯"
 }
+
 
 def get_headers(profile="default"):
     config_path = os.path.expanduser("~/.config/looker-cli/config.yaml")
