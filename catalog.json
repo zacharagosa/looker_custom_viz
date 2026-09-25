@@ -862,5 +862,34 @@
     "instance_wide": true,
     "screenshot": "visualizations/ad_reach_frequency_curve/screenshot.png",
     "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.order_count,order_items.total_sale_price&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22ad_reach_frequency_curve%22%2C%22layoutMode%22%3A%22reach_frequency_curve%22%2C%22showExecutiveHUD%22%3Atrue%2C%22targetReachGoal%22%3A70%2C%22effectiveFrequencyMin%22%3A3%2C%22effectiveFrequencyMax%22%3A6%2C%22modelFittingEngine%22%3A%22bimodal_mbb%22%2C%22showDiminishingReturnInflection%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showGridlines%22%3Atrue%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "world_choropleth_map",
+    "name": "Interactive World & Regional Choropleth Map",
+    "date_added": "2026-09-25",
+    "library": "D3.js v7 & TopoJSON",
+    "category": "Geospatial Intelligence",
+    "description": "Enterprise-grade Interactive World & Regional Choropleth Map and 3D Planetary Globe built with D3.js v7 and TopoJSON. Directly resolves Buganizer Cloud Blockers b/243984441, b/503077532, b/529195236, and PRD go/prd-looker-map-viz-improvements. Eliminates the requirement to upload custom TopoJSON files or configure complex LookML map_layers by providing a universal Country Code & Name Resolution Engine (English names, ISO-2, ISO-3, and numeric ISO). Features 4 projection modes (Natural Earth, 3D Rotating Interactive Globe, Mercator, and Equal-Earth), continent drilldowns (North America, Europe, Asia, South America, Africa, Oceania), dual-metric hybrid layering (Layer 1: Choropleth fill, Layer 2: Centroid bubble pin overlay), executive spatial KPI HUD, real-time country search bar with glowing polygon highlight, 5,000+ row client-side aggregation, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js",
+      "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Country/Region dimension (English name, ISO-2, ISO-3, or Numeric ISO)",
+      "measures": "1 Primary volume measure (e.g. Total Sales / Revenue), optional 1 Secondary KPI (e.g. Orders, Margin %)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "users.country",
+        "order_items.total_sale_price",
+        "order_items.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/world_choropleth_map/screenshot.png",
+    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.country,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22world_choropleth_map%22%2C%22layoutMode%22%3A%22natural_earth%22%2C%22continentFocus%22%3A%22all%22%2C%22showBubbleOverlay%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22colorScaleType%22%3A%22quantile%22%2C%22showGraticule%22%3Atrue%2C%22showCountryBorders%22%3Atrue%7D&origin=share-expanded&toggle=vis"
   }
 ]

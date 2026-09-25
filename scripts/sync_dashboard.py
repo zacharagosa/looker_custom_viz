@@ -92,7 +92,8 @@ VIZ_EMOJI_MAP = {
     "pareto_cumulative_analyzer": "📉",
     "matchmaking_mmr_distribution": "⚔️",
     "sunburst_partition_wheel": "☀️",
-    "ad_reach_frequency_curve": "🎯"
+    "ad_reach_frequency_curve": "🎯",
+    "world_choropleth_map": "🌍"
 }
 
 

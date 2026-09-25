@@ -37,6 +37,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Matchmaking Latency & MMR Distribution Analyzer**](visualizations/matchmaking_mmr_distribution/)<br>`matchmaking_mmr_distribution` | Telemetry & Cohort Decay | 1 Skill/Bucket dim + 1–3 measures | [📸 View](visualizations/matchmaking_mmr_distribution/README.md) |
 | [**Sunburst Multi-Level Partition Wheel**](visualizations/sunburst_partition_wheel/)<br>`sunburst_partition_wheel` | Flow, Networks & Hierarchy | 1–5 Hierarchical dims + 1–2 measures | [📸 View](visualizations/sunburst_partition_wheel/README.md) |
 | [**Ad Reach & Frequency Response Curve**](visualizations/ad_reach_frequency_curve/)<br>`ad_reach_frequency_curve` | Time Series & Schedules | 1 Channel/Placement dim + 1–2 measures | [📸 View](visualizations/ad_reach_frequency_curve/README.md) |
+| [**Interactive World & Regional Choropleth Map**](visualizations/world_choropleth_map/)<br>`world_choropleth_map` | Geospatial Intelligence | 1 Country/Region dim + 1–2 measures | [📸 View](visualizations/world_choropleth_map/README.md) |
 
 ---
 
