@@ -1,0 +1,25 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.total_sale_price",
+    "order_items.total_gross_margin",
+    "order_items.order_count"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "game_economy_faucet_sink",
+    "layoutMode": "sankey_faucet_sink",
+    "showExecutiveHUD": true,
+    "faucetSinkRatioAlert": 1.15,
+    "showNetVelocity": true,
+    "showSearch": true,
+    "colorTheme": "cyberpunk_neon",
+    "currencySymbol": "🪙",
+    "valueFormat": "compact_num"
+  }
+}

@@ -38,6 +38,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Sunburst Multi-Level Partition Wheel**](visualizations/sunburst_partition_wheel/)<br>`sunburst_partition_wheel` | Flow, Networks & Hierarchy | 1–5 Hierarchical dims + 1–2 measures | [📸 View](visualizations/sunburst_partition_wheel/README.md) |
 | [**Ad Reach & Frequency Response Curve**](visualizations/ad_reach_frequency_curve/)<br>`ad_reach_frequency_curve` | Time Series & Schedules | 1 Channel/Placement dim + 1–2 measures | [📸 View](visualizations/ad_reach_frequency_curve/README.md) |
 | [**Interactive World & Regional Choropleth Map**](visualizations/world_choropleth_map/)<br>`world_choropleth_map` | Geospatial Intelligence | 1 Country/Region dim + 1–2 measures | [📸 View](visualizations/world_choropleth_map/README.md) |
+| [**Game Economy Faucet & Sink Analyzer**](visualizations/game_economy_faucet_sink/)<br>`game_economy_faucet_sink` | Telemetry & Cohort Decay | 1 Stream/Category dim + 1–2 measures | [📸 View](visualizations/game_economy_faucet_sink/README.md) |
 
 ---
 

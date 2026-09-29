@@ -93,7 +93,8 @@ VIZ_EMOJI_MAP = {
     "matchmaking_mmr_distribution": "⚔️",
     "sunburst_partition_wheel": "☀️",
     "ad_reach_frequency_curve": "🎯",
-    "world_choropleth_map": "🌍"
+    "world_choropleth_map": "🌍",
+    "game_economy_faucet_sink": "🪙"
 }
 
 
