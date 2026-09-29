@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """
-Synchronize custom visualizations into the Looker Showcase Dashboard (ID: 164 / Slug: 7CQgKOwKT6t6wJrPuaypnh).
+Synchronize custom visualizations across TWO Looker Showcase Dashboards:
+  - Vol. 1: Core BI, Geospatial & Executive Grids (ID: 164 / Slug: 7CQgKOwKT6t6wJrPuaypnh)
+  - Vol. 2: Industry Verticals, Telemetry & Advanced Data Apps (ID: 179 / Slug: xFkJtj1jOEegmMpgWoxune)
+
 Organizes visualizations by Category tabs, with up to 5 visualizations per tab.
-Each visualization features a descriptive markdown banner card above its interactive chart tile.
+Includes a cross-navigation banner at the top of each dashboard to jump between Vol. 1 and Vol. 2,
+and a descriptive HTML banner card above every interactive visualization tile.
 """
 
 import os
@@ -12,57 +16,88 @@ import yaml
 import urllib.request
 import subprocess
 
-DASHBOARD_ID = "164"  # Slug: 7CQgKOwKT6t6wJrPuaypnh
+DASHBOARD_VOL1_ID = "164"  # Slug: 7CQgKOwKT6t6wJrPuaypnh
+DASHBOARD_VOL2_ID = "179"  # Slug: xFkJtj1jOEegmMpgWoxune
 LOOKER_HOST = "3417a175-fe20-4370-974f-2f2b535340ab.looker.app"
-# Limit dashboard to exactly 6 consolidated executive tabs (max 5 visualizations per tab)
 MAX_TABS = 6
 MAX_VIZ_PER_TAB = 5
 
-CATEGORY_TAB_MAP = {
-    # 1. Performance & Variance (KPI progress, targets, and divergence)
-    "Performance & Variance": "🎯 Performance & Variance",
-    "KPI & Performance": "🎯 Performance & Variance",
-    "KPI & Progress": "🎯 Performance & Variance",
-    "Comparison & Variance": "🎯 Performance & Variance",
-
-    # 2. Leaderboards & Grids (rankings, bump charts, and matrix tables)
-    "Leaderboards & Grids": "🏆 Leaderboards & Grids",
-    "Rank & Volatility": "🏆 Leaderboards & Grids",
-    "Advanced Tables & Grids": "🏆 Leaderboards & Grids",
-    "Tables & Grids": "🏆 Leaderboards & Grids",
-    "Tables": "🏆 Leaderboards & Grids",
-
-    # 3. Time Series & Schedules (daily activity, broadcast dayparts, calendars)
-    "Time Series & Schedules": "📅 Time Series & Schedules",
-    "Time Series & Activity": "📅 Time Series & Schedules",
-    "Media & Entertainment": "📅 Time Series & Schedules",
-    "Media": "📅 Time Series & Schedules",
-
-    # 4. Flow, Networks & Hierarchy (sankey flows, topology graphs, allocations)
-    "Flow, Networks & Hierarchy": "🌊 Flow, Networks & Hierarchy",
-    "Flow & Hierarchy": "🌊 Flow, Networks & Hierarchy",
-    "Telco & Networks": "🌊 Flow, Networks & Hierarchy",
-    "Telco": "🌊 Flow, Networks & Hierarchy",
-
-    # 5. Geospatial Intelligence (choropleths, regional maps, density)
-    "Geospatial Intelligence": "🗺️ Geospatial Intelligence",
-    "Geospatial & Maps": "🗺️ Geospatial Intelligence",
-    "Maps": "🗺️ Geospatial Intelligence",
-
-    # 6. Telemetry & Cohort Decay (retention decay, game balance, user curves)
-    "Telemetry & Cohort Decay": "🎮 Telemetry & Cohort Decay",
-    "Gaming & Telemetry": "🎮 Telemetry & Cohort Decay",
-    "Gaming": "🎮 Telemetry & Cohort Decay",
-}
-
-TAB_ORDER = [
+# Vol. 1: Core BI, Geospatial & Executive Grids
+VOL1_TABS = [
     "🎯 Performance & Variance",
     "🏆 Leaderboards & Grids",
-    "📅 Time Series & Schedules",
     "🌊 Flow, Networks & Hierarchy",
     "🗺️ Geospatial Intelligence",
-    "🎮 Telemetry & Cohort Decay"
+    "📅 Time Series & Schedules"
 ]
+
+# Vol. 2: Industry Verticals, Telemetry & Advanced Data Apps
+VOL2_TABS = [
+    "🎮 Gaming & Telemetry",
+    "🎬 Media, Broadcast & Ad-Ops",
+    "📡 Telecom, Cloud & SecOps",
+    "🔬 Statistical, ML & Forecasting",
+    "🛍️ Retail, Supply Chain & FinOps"
+]
+
+# Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
+VOL2_VIZ_MAP = {
+    "retention_cohort_decay": "🎮 Gaming & Telemetry",
+    "telemetry_conversion_funnel": "🎮 Gaming & Telemetry",
+    "level_progression_balance_curve": "🎮 Gaming & Telemetry",
+    "matchmaking_mmr_distribution": "🎮 Gaming & Telemetry",
+    "game_economy_faucet_sink": "🎮 Gaming & Telemetry",
+    "broadcast_daypart_grid": "🎬 Media, Broadcast & Ad-Ops",
+    "ad_reach_frequency_curve": "🎬 Media, Broadcast & Ad-Ops",
+    "network_topology_graph": "📡 Telecom, Cloud & SecOps",
+    "violin_distribution_plot": "🔬 Statistical, ML & Forecasting",
+    "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
+    "bilateral_chord_diagram": "🛍️ Retail, Supply Chain & FinOps"
+}
+
+CATEGORY_TAB_MAP = {
+    # Vol. 1 Categories
+    "Performance & Variance": ("vol1", "🎯 Performance & Variance"),
+    "KPI & Performance": ("vol1", "🎯 Performance & Variance"),
+    "KPI & Progress": ("vol1", "🎯 Performance & Variance"),
+    "Comparison & Variance": ("vol1", "🎯 Performance & Variance"),
+
+    "Leaderboards & Grids": ("vol1", "🏆 Leaderboards & Grids"),
+    "Rank & Volatility": ("vol1", "🏆 Leaderboards & Grids"),
+    "Advanced Tables & Grids": ("vol1", "🏆 Leaderboards & Grids"),
+    "Tables & Grids": ("vol1", "🏆 Leaderboards & Grids"),
+    "Tables": ("vol1", "🏆 Leaderboards & Grids"),
+
+    "Flow, Networks & Hierarchy": ("vol1", "🌊 Flow, Networks & Hierarchy"),
+    "Flow & Hierarchy": ("vol1", "🌊 Flow, Networks & Hierarchy"),
+
+    "Geospatial Intelligence": ("vol1", "🗺️ Geospatial Intelligence"),
+    "Geospatial & Maps": ("vol1", "🗺️ Geospatial Intelligence"),
+    "Maps": ("vol1", "🗺️ Geospatial Intelligence"),
+
+    "Time Series & Schedules": ("vol1", "📅 Time Series & Schedules"),
+    "Time Series & Activity": ("vol1", "📅 Time Series & Schedules"),
+
+    # Vol. 2 Categories
+    "Telemetry & Cohort Decay": ("vol2", "🎮 Gaming & Telemetry"),
+    "Gaming & Telemetry": ("vol2", "🎮 Gaming & Telemetry"),
+    "Gaming": ("vol2", "🎮 Gaming & Telemetry"),
+
+    "Media & Entertainment": ("vol2", "🎬 Media, Broadcast & Ad-Ops"),
+    "Media, Broadcast & Ad-Ops": ("vol2", "🎬 Media, Broadcast & Ad-Ops"),
+    "Media": ("vol2", "🎬 Media, Broadcast & Ad-Ops"),
+
+    "Telco & Networks": ("vol2", "📡 Telecom, Cloud & SecOps"),
+    "Telecom & Network Infrastructure": ("vol2", "📡 Telecom, Cloud & SecOps"),
+    "Telecom, Cloud & SecOps": ("vol2", "📡 Telecom, Cloud & SecOps"),
+    "Telco": ("vol2", "📡 Telecom, Cloud & SecOps"),
+
+    "Statistical, ML & Forecasting": ("vol2", "🔬 Statistical, ML & Forecasting"),
+    "Data Science & ML": ("vol2", "🔬 Statistical, ML & Forecasting"),
+
+    "Retail, Supply Chain & FinOps": ("vol2", "🛍️ Retail, Supply Chain & FinOps"),
+    "Financial & Pricing": ("vol2", "🛍️ Retail, Supply Chain & FinOps"),
+}
 
 VIZ_EMOJI_MAP = {
     "dumbbell_plot": "📊",
@@ -108,7 +143,6 @@ def get_headers(profile="default"):
     client_id = prof_conf.get("client_id")
     client_secret = prof_conf.get("client_secret")
 
-    # Refresh token if needed
     if client_id and client_secret:
         try:
             req = urllib.request.Request(f"https://{host}/api/4.0/user", headers={"Authorization": f"Bearer {token}"})
@@ -120,7 +154,6 @@ def get_headers(profile="default"):
             with urllib.request.urlopen(req) as resp:
                 data = json.load(resp)
                 token = data["access_token"]
-            # Save back to config
             for p in conf.get("profiles", {}).values():
                 p["access_token"] = token
             with open(config_path, "w", encoding="utf-8") as f:
@@ -131,17 +164,20 @@ def get_headers(profile="default"):
         "Content-Type": "application/json"
     }
 
+
 def api_call(host, headers, path, method="GET", body=None):
     url = f"https://{host}{path}"
     data = json.dumps(body).encode("utf-8") if body is not None else None
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
         with urllib.request.urlopen(req) as resp:
-            return json.load(resp)
+            raw = resp.read().decode("utf-8")
+            return json.loads(raw) if raw else {}
     except urllib.error.HTTPError as e:
         err_body = e.read().decode("utf-8")
         print(f"API Error {e.code} on {method} {path}: {err_body}", file=sys.stderr)
         raise
+
 
 def ensure_query_for_viz(viz_id, base_dir, profile="default"):
     q_file = os.path.join(base_dir, "visualizations", viz_id, "demo_query.json")
@@ -151,6 +187,37 @@ def ensure_query_for_viz(viz_id, base_dir, profile="default"):
     res = subprocess.run(cmd, shell=True, capture_output=True, text=True, check=True)
     q_data = json.loads(res.stdout)
     return str(q_data.get("id"))
+
+
+def build_volume_Switch_banner(vol_num, host):
+    vol1_url = f"https://{host}/dashboards/7CQgKOwKT6t6wJrPuaypnh"
+    vol2_url = f"https://{host}/dashboards/xFkJtj1jOEegmMpgWoxune"
+    if vol_num == 1:
+        title = "🎨 Looker Custom Visualizations Showcase — Vol. 1: Core BI, Geospatial & Executive Grids"
+        sub = "Explore executive KPI gauges, bullet graphs, sparkline matrices, hierarchical drilldown trees, and TopoJSON choropleth/hexbin maps."
+        btn_url = vol2_url
+        btn_label = "Switch to Showcase Vol. 2 (Industry Verticals, Gaming, Media, Telco & ML) &rarr;"
+    else:
+        title = "🚀 Looker Custom Visualizations Showcase — Vol. 2: Industry Verticals, Telemetry & Statistical ML"
+        sub = "Explore specialized domain visualizations for Gaming LiveOps, Broadcast & Media Ad-Ops, Telecom Networks, Statistical KDE/Violin, and Supply Chain."
+        btn_url = vol1_url
+        btn_label = "&larr; Switch to Showcase Vol. 1 (Core BI, Geospatial & Executive Grids)"
+
+    return (
+        f'<div style="padding: 10px 18px; background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%); '
+        f'border-radius: 8px; border: 1px solid #bfdbfe; display: flex; align-items: center; justify-content: space-between; '
+        f'font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;">'
+        f'  <div>'
+        f'    <div style="font-size: 14px; font-weight: 700; color: #1e3a8a;">{title}</div>'
+        f'    <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">{sub}</div>'
+        f'  </div>'
+        f'  <a href="{btn_url}" target="_blank" style="font-size: 12px; font-weight: 700; color: #ffffff; '
+        f'text-decoration: none; padding: 6px 14px; background: #2563eb; border-radius: 6px; white-space: nowrap;">'
+        f'    {btn_label}'
+        f'  </a>'
+        f'</div>'
+    )
+
 
 def build_banner_html(item, emoji):
     name = item.get("name", item.get("id"))
@@ -182,53 +249,20 @@ def build_banner_html(item, emoji):
         f'</div>'
     )
 
-def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
-    print(f"[*] Starting category-based sync on dashboard '{dashboard_id}' (max {MAX_VIZ_PER_TAB} viz/tab)...")
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    host, headers = get_headers(profile)
 
-    # 1. Load catalog
-    catalog_path = os.path.join(base_dir, "catalog.json")
-    with open(catalog_path, "r", encoding="utf-8") as f:
-        catalog = json.load(f)
-
-    # Group visualizations by Category Tab according to predefined TAB_ORDER
-    tabs_dict = {tab: [] for tab in TAB_ORDER}
-    for item in catalog:
-        viz_id = item.get("id")
-        q_file = os.path.join(base_dir, "visualizations", viz_id, "demo_query.json")
-        if not os.path.exists(q_file):
-            print(f"  -> Skipping '{viz_id}' from showcase dashboard sync (no demo_query.json)")
-            continue
-        cat = item.get("category", "Other")
-        tab_name = CATEGORY_TAB_MAP.get(cat, "🎯 Performance & Variance")
-        if tab_name not in tabs_dict:
-            tabs_dict[tab_name] = []
-        tabs_dict[tab_name].append(item)
-
-    # Filter out empty tabs while strictly preserving TAB_ORDER
-    tabs_dict = {k: v for k, v in tabs_dict.items() if len(v) > 0}
-
-    print(f"[*] Identified {len(tabs_dict)} consolidated category tabs (Limit <= {MAX_TABS} tabs):")
-    for t_name, items in tabs_dict.items():
-        v_ids = [it["id"] for it in items]
-        print(f"    - '{t_name}': {len(items)} viz ({', '.join(v_ids)})")
-
-    # 2. Fetch current dashboard state
+def sync_single_dashboard(dashboard_id, tabs_dict, vol_num, host, headers, base_dir, profile="default"):
     dash = api_call(host, headers, f"/api/4.0/dashboards/{dashboard_id}")
     slug = dash.get("slug", dashboard_id)
-    print(f"[*] Target Dashboard: '{dash.get('title')}' (Slug: {slug})")
+    print(f"\n[*] Syncing Volume {vol_num}: '{dash.get('title')}' (ID: {dashboard_id}, Slug: {slug})")
 
-    # Clean up all old dashboard elements
-    print("[*] Cleaning up old dashboard elements...")
+    # Clean up old elements
     for elem in dash.get("dashboard_elements", []):
         elem_id = elem["id"]
         try:
             api_call(host, headers, f"/api/4.0/dashboard_elements/{elem_id}", method="DELETE")
-        except Exception as e:
-            print(f"  -> Notice deleting element {elem_id}: {e}")
+        except Exception:
+            pass
 
-    # Clean up surplus layouts beyond primary
     dash = api_call(host, headers, f"/api/4.0/dashboards/{dashboard_id}")
     existing_layouts = dash.get("dashboard_layouts", [])
     primary_layout_id = str(existing_layouts[0]["id"]) if existing_layouts else None
@@ -236,14 +270,12 @@ def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
         lid = str(l["id"])
         try:
             api_call(host, headers, f"/api/4.0/dashboard_layouts/{lid}", method="DELETE")
-        except Exception as e:
-            print(f"  -> Notice deleting layout {lid}: {e}")
+        except Exception:
+            pass
 
-    # 3. Create tabs and layout components
-    tab_list = list(tabs_dict.items())
+    tab_list = [(k, v[:MAX_VIZ_PER_TAB]) for k, v in tabs_dict.items() if len(v) > 0]
     for tab_idx, (tab_label, viz_items) in enumerate(tab_list):
-        print(f"\n[{tab_idx+1}/{len(tab_list)}] Setting up tab: '{tab_label}' ({len(viz_items)} viz)...")
-
+        print(f"  [{tab_idx+1}/{len(tab_list)}] Tab '{tab_label}' ({len(viz_items)} viz)...")
         if tab_idx == 0 and primary_layout_id:
             layout_id = primary_layout_id
             api_call(host, headers, f"/api/4.0/dashboard_layouts/{layout_id}", method="PATCH", body={
@@ -253,7 +285,6 @@ def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
                 "type": "newspaper",
                 "active": True
             })
-            print(f"  -> Configured primary tab layout (ID: {layout_id})")
         else:
             l_obj = api_call(host, headers, "/api/4.0/dashboard_layouts", method="POST", body={
                 "dashboard_id": str(dashboard_id),
@@ -263,20 +294,29 @@ def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
                 "active": False
             })
             layout_id = str(l_obj["id"])
-            print(f"  -> Created tab layout (ID: {layout_id})")
 
-        # Now place up to 5 visualizations on this tab
+        # Add top volume switcher banner on row 0
+        nav_elem = api_call(host, headers, "/api/4.0/dashboard_elements", method="POST", body={
+            "dashboard_id": str(dashboard_id),
+            "dashboard_layout_id": layout_id,
+            "title": "Volume Navigation",
+            "title_hidden": True,
+            "type": "text",
+            "body_text": build_volume_Switch_banner(vol_num, host)
+        })
+        nav_id = str(nav_elem["id"])
+
+        elem_positions = [(nav_id, 0, 2)]
+
         for v_idx, item in enumerate(viz_items):
             viz_id = item["id"]
             viz_name = item["name"]
             emoji = VIZ_EMOJI_MAP.get(viz_id, "✨")
-            row_offset = v_idx * 15  # Banner at row, Vis at row + 3, next viz at row + 15
+            row_offset = 2 + v_idx * 15
 
-            print(f"   [{v_idx+1}/{len(viz_items)}] Adding '{viz_name}' ({viz_id}) to tab '{tab_label}' at row {row_offset}...")
-
+            print(f"     -> [{v_idx+1}/{len(viz_items)}] '{viz_name}' ({viz_id}) at row {row_offset}")
             query_id = ensure_query_for_viz(viz_id, base_dir, profile=profile)
 
-            # Create banner text element
             banner_elem = api_call(host, headers, "/api/4.0/dashboard_elements", method="POST", body={
                 "dashboard_id": str(dashboard_id),
                 "dashboard_layout_id": layout_id,
@@ -287,7 +327,6 @@ def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
             })
             banner_id = str(banner_elem["id"])
 
-            # Create visual element
             vis_elem = api_call(host, headers, "/api/4.0/dashboard_elements", method="POST", body={
                 "dashboard_id": str(dashboard_id),
                 "dashboard_layout_id": layout_id,
@@ -298,32 +337,72 @@ def sync_dashboard(dashboard_id=DASHBOARD_ID, profile="default"):
             })
             vis_id_elem = str(vis_elem["id"])
 
-            # Position components in this layout
-            layout_comps = api_call(host, headers, f"/api/4.0/dashboard_layouts/{layout_id}/dashboard_layout_components")
-            for comp in layout_comps:
-                cid = str(comp["id"])
-                eid = str(comp.get("dashboard_element_id"))
-                if eid == banner_id:
-                    api_call(host, headers, f"/api/4.0/dashboard_layout_components/{cid}", method="PATCH", body={
-                        "column": 0,
-                        "row": row_offset,
-                        "width": 24,
-                        "height": 3
-                    })
-                elif eid == vis_id_elem:
-                    api_call(host, headers, f"/api/4.0/dashboard_layout_components/{cid}", method="PATCH", body={
-                        "column": 0,
-                        "row": row_offset + 3,
-                        "width": 24,
-                        "height": 12
-                    })
+            elem_positions.append((banner_id, row_offset, 3))
+            elem_positions.append((vis_id_elem, row_offset + 3, 12))
 
-    dash_url = f"https://{host}/dashboards/{slug}"
-    print("\n" + "="*70)
-    print("CATEGORY DASHBOARD SYNC COMPLETE (UP TO 5 VIZ PER TAB)!")
-    print(f"Dashboard URL: {dash_url}")
-    print("="*70 + "\n")
-    return dash_url
+        layout_comps = api_call(host, headers, f"/api/4.0/dashboard_layouts/{layout_id}/dashboard_layout_components")
+        pos_map = {eid: (r, h) for (eid, r, h) in elem_positions}
+        for comp in layout_comps:
+            cid = str(comp["id"])
+            eid = str(comp.get("dashboard_element_id"))
+            if eid in pos_map:
+                r, h = pos_map[eid]
+                api_call(host, headers, f"/api/4.0/dashboard_layout_components/{cid}", method="PATCH", body={
+                    "column": 0,
+                    "row": r,
+                    "width": 24,
+                    "height": h
+                })
+
+    return f"https://{host}/dashboards/{slug}"
+
+
+def sync_dashboard(dashboard_id=DASHBOARD_VOL1_ID, profile="default"):
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    host, headers = get_headers(profile)
+
+    catalog_path = os.path.join(base_dir, "catalog.json")
+    with open(catalog_path, "r", encoding="utf-8") as f:
+        catalog = json.load(f)
+
+    vol1_dict = {t: [] for t in VOL1_TABS}
+    vol2_dict = {t: [] for t in VOL2_TABS}
+
+    for item in catalog:
+        viz_id = item.get("id")
+        q_file = os.path.join(base_dir, "visualizations", viz_id, "demo_query.json")
+        if not os.path.exists(q_file):
+            print(f"  -> Skipping '{viz_id}' from showcase dashboard sync (no demo_query.json)")
+            continue
+
+        # Check explicit Vol. 2 override first
+        if viz_id in VOL2_VIZ_MAP:
+            t_label = VOL2_VIZ_MAP[viz_id]
+            vol2_dict.setdefault(t_label, []).append(item)
+            continue
+
+        cat = item.get("category", "Performance & Variance")
+        vol_target, t_label = CATEGORY_TAB_MAP.get(cat, ("vol1", "🎯 Performance & Variance"))
+
+        if vol_target == "vol1":
+            # If Vol. 1 tab is already at 5 items, overflow gracefully to Vol. 2
+            if len(vol1_dict.get(t_label, [])) < MAX_VIZ_PER_TAB:
+                vol1_dict.setdefault(t_label, []).append(item)
+            else:
+                vol2_dict.setdefault("🔬 Statistical, ML & Forecasting", []).append(item)
+        else:
+            vol2_dict.setdefault(t_label, []).append(item)
+
+    url1 = sync_single_dashboard(DASHBOARD_VOL1_ID, vol1_dict, 1, host, headers, base_dir, profile=profile)
+    url2 = sync_single_dashboard(DASHBOARD_VOL2_ID, vol2_dict, 2, host, headers, base_dir, profile=profile)
+
+    print("\n" + "="*75)
+    print("DUAL SHOWCASE DASHBOARD SYNC COMPLETE!")
+    print(f"  - Showcase Vol. 1 (Core BI & Geospatial):      {url1}")
+    print(f"  - Showcase Vol. 2 (Industry & Advanced Apps):  {url2}")
+    print("="*75 + "\n")
+    return url1
+
 
 if __name__ == "__main__":
     sync_dashboard()
