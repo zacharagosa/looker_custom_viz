@@ -1,13 +1,13 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "void_weaver_analytics",
+  "view": "level_progression_telemetry",
   "fields": [
-    "order_items.status",
-    "order_items.order_count",
-    "order_items.total_sale_price"
+    "level_progression_telemetry.campaign_level",
+    "level_progression_telemetry.surviving_players",
+    "level_progression_telemetry.total_boss_wipes"
   ],
   "sorts": [
-    "order_items.order_count desc"
+    "level_progression_telemetry.campaign_level asc"
   ],
   "limit": "500",
   "vis_config": {

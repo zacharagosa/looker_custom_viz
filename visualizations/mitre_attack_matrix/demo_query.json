@@ -1,26 +1,31 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "palo_alto_networks_security",
+  "view": "cortex_security_incidents",
   "fields": [
-    "order_items.status",
-    "products.category",
-    "order_items.order_count",
-    "order_items.total_sale_price"
+    "cortex_security_incidents.mitre_tactic",
+    "cortex_security_incidents.mitre_technique",
+    "cortex_security_incidents.count",
+    "cortex_security_incidents.total_alerts",
+    "cortex_security_incidents.avg_mttr_minutes"
   ],
   "sorts": [
-    "order_items.order_count desc"
+    "cortex_security_incidents.count desc"
   ],
   "limit": "500",
   "vis_config": {
     "type": "mitre_attack_matrix",
-    "layoutMode": "tactic_matrix",
-    "showExecutiveHUD": true,
-    "severityAlertThreshold": 1000,
-    "showMitigationBadges": true,
-    "showSearch": true,
-    "colorTheme": "cyber_dark",
-    "cellColorMetric": "volume",
-    "showTechniqueCount": true,
-    "valueFormat": "compact_num"
+    "layoutMode": "tactic_board",
+    "targetMode": "p90",
+    "sortOrder": "tactic_canonical",
+    "topN": 12,
+    "groupOther": true,
+    "suppressZeros": true,
+    "hudMode": "full",
+    "dataLabels": "all",
+    "showSearchBar": true,
+    "colorPalette": "google_enterprise",
+    "polarity": "lower_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_number"
   }
 }

@@ -1,15 +1,15 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "zayo_network_analytics",
+  "view": "network_operations_and_anomalies",
   "fields": [
-    "distribution_centers.name",
-    "users.state",
-    "order_items.total_sale_price",
-    "order_items.average_shipping_time",
-    "order_items.order_count"
+    "fiber_routes.origin_city",
+    "fiber_routes.dest_city",
+    "route_traffic_anomalies.avg_bandwidth_utilization_gbps",
+    "route_traffic_anomalies.avg_utilization_pct",
+    "route_traffic_anomalies.total_anomalies_detected"
   ],
   "sorts": [
-    "order_items.total_sale_price desc"
+    "route_traffic_anomalies.avg_bandwidth_utilization_gbps desc"
   ],
   "limit": "500",
   "vis_config": {
@@ -23,8 +23,8 @@
     "showSearch": true,
     "showLabels": "always",
     "valueFormat": "bandwidth",
-    "baseNodeRadius": 13,
-    "linkDistance": 110,
-    "latencyThreshold": 3.8
+    "baseNodeRadius": 15,
+    "linkDistance": 125,
+    "latencyThreshold": 68.0
   }
 }

@@ -163,25 +163,29 @@ def create_demo_query(viz_id, base_dir=None, profile="default"):
     if base_dir:
         custom_query_file = os.path.join(base_dir, "visualizations", viz_id, "demo_query.json")
 
-    if custom_query_file and os.path.exists(custom_query_file):
-        print(f"  -> Using visualization-specific demo query from {custom_query_file}")
-        with open(custom_query_file, "r", encoding="utf-8") as f:
-            query_def = json.load(f)
-    else:
-        query_def = {
-            "model": "thelook",
-            "view": "order_items",
-            "fields": [
-                "products.category",
-                "order_items.total_sale_price"
-            ],
-            "limit": "6",
-            "vis_config": {
-                "type": viz_id,
-                "showCenterText": True,
-                "colorPalette": "google"
-            }
-        }
+    if not custom_query_file or not os.path.exists(custom_query_file):
+        raise RuntimeError(
+            f"Missing {custom_query_file}! Every visualization MUST provide a domain-authentic demo_query.json "
+            "that matches its specific industry/analytical use case."
+        )
+
+    print(f"  -> Using visualization-specific demo query from {custom_query_file}")
+    with open(custom_query_file, "r", encoding="utf-8") as f:
+        query_def = json.load(f)
+
+    # Guardrail against using generic apparel/order status fields for non-retail vertical visualizations
+    NON_RETAIL_VIZ_PREFIXES = (
+        "mitre_", "network_topology", "ad_reach", "broadcast_", "retention_cohort",
+        "telemetry_conversion", "level_progression", "matchmaking_mmr", "game_economy",
+        "gantt_"
+    )
+    if viz_id.startswith(NON_RETAIL_VIZ_PREFIXES) and query_def.get("model") == "thelook" and query_def.get("view") == "order_items":
+        raise RuntimeError(
+            f"Domain Data Policy Violation: '{viz_id}' cannot use generic e-commerce 'thelook::order_items' data. "
+            "Bind demo_query.json to a domain-matched explore (e.g., void_weaver_analytics, palo_alto_networks_security, "
+            "zayo_network_analytics, nokia_network_ops, tvun_media_analytics, wellverse_mba, saas_qbr)."
+        )
+
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tf:
         json.dump(query_def, tf)
         temp_path = tf.name
@@ -283,9 +287,11 @@ def main():
                     item["screenshot"] = f"visualizations/{args.viz}/screenshot.png"
                     item["deployed"] = True
                     item["instance_wide"] = True
+                    if query_info.get("demo_url"):
+                        item["looker_demo_url"] = query_info["demo_url"]
             with open(catalog_path, "w", encoding="utf-8") as f:
                 json.dump(catalog, f, indent=2)
-            print(f"[6/6] Updated {catalog_path} with screenshot path and instance-wide flag.")
+            print(f"[6/6] Updated {catalog_path} with screenshot path, demo URL, and instance-wide flag.")
         except Exception as e:
             print(f"Notice updating catalog: {e}")
 

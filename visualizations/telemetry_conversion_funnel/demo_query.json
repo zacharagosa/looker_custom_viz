@@ -1,14 +1,14 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "void_weaver_analytics",
+  "view": "player_onboarding_funnel",
   "fields": [
-    "users.traffic_source",
-    "order_items.status",
-    "order_items.order_count",
-    "order_items.total_sale_price"
+    "player_onboarding_funnel.acquisition_channel",
+    "player_onboarding_funnel.funnel_stage",
+    "player_onboarding_funnel.players_reached",
+    "player_onboarding_funnel.total_iap_revenue_usd"
   ],
   "sorts": [
-    "order_items.order_count desc"
+    "player_onboarding_funnel.funnel_stage asc"
   ],
   "limit": "500",
   "vis_config": {

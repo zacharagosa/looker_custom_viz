@@ -1,14 +1,14 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "void_weaver_analytics",
+  "view": "virtual_economy_flows",
   "fields": [
-    "products.category",
-    "order_items.total_sale_price",
-    "order_items.total_gross_margin",
-    "order_items.order_count"
+    "virtual_economy_flows.economy_activity",
+    "virtual_economy_flows.faucet_tokens_minted",
+    "virtual_economy_flows.sink_tokens_burned",
+    "virtual_economy_flows.transaction_count"
   ],
   "sorts": [
-    "order_items.total_sale_price desc"
+    "virtual_economy_flows.faucet_tokens_minted desc"
   ],
   "limit": "500",
   "vis_config": {

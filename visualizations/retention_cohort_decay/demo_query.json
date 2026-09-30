@@ -1,18 +1,14 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "void_weaver_analytics",
+  "view": "player_retention_curve",
   "fields": [
-    "users.created_month",
-    "order_items.created_month",
-    "order_items.order_count"
+    "player_retention_curve.cohort_week",
+    "player_retention_curve.retention_day",
+    "player_retention_curve.retained_players"
   ],
-  "filters": {
-    "users.created_date": "6 months",
-    "order_items.created_date": "6 months"
-  },
   "sorts": [
-    "users.created_month asc",
-    "order_items.created_month asc"
+    "player_retention_curve.cohort_week asc",
+    "player_retention_curve.retention_day asc"
   ],
   "limit": "500",
   "vis_config": {

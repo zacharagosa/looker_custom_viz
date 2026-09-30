@@ -1,14 +1,14 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "void_weaver_analytics",
+  "view": "matchmaking_mmr_telemetry",
   "fields": [
-    "products.category",
-    "order_items.order_count",
-    "order_items.average_shipping_time",
-    "order_items.total_sale_price"
+    "matchmaking_mmr_telemetry.mmr_bucket",
+    "matchmaking_mmr_telemetry.active_players",
+    "matchmaking_mmr_telemetry.avg_queue_wait_sec",
+    "matchmaking_mmr_telemetry.avg_win_rate_pct"
   ],
   "sorts": [
-    "order_items.total_sale_price asc"
+    "matchmaking_mmr_telemetry.mmr_bucket asc"
   ],
   "limit": "500",
   "vis_config": {
