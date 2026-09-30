@@ -50,6 +50,7 @@ VOL2_VIZ_MAP = {
     "broadcast_daypart_grid": "🎬 Media, Broadcast & Ad-Ops",
     "ad_reach_frequency_curve": "🎬 Media, Broadcast & Ad-Ops",
     "network_topology_graph": "📡 Telecom, Cloud & SecOps",
+    "mitre_attack_matrix": "📡 Telecom, Cloud & SecOps",
     "violin_distribution_plot": "🔬 Statistical, ML & Forecasting",
     "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
     "bilateral_chord_diagram": "🛍️ Retail, Supply Chain & FinOps"
@@ -129,7 +130,8 @@ VIZ_EMOJI_MAP = {
     "sunburst_partition_wheel": "☀️",
     "ad_reach_frequency_curve": "🎯",
     "world_choropleth_map": "🌍",
-    "game_economy_faucet_sink": "🪙"
+    "game_economy_faucet_sink": "🪙",
+    "mitre_attack_matrix": "🛡️"
 }
 
 
