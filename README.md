@@ -1,12 +1,25 @@
 # Looker Custom Visualizations
 
-A curated collection of modern, production-grade custom visualizations for Google Cloud Looker, built using leading data visualization libraries like **D3.js v7**, **Chart.js**, **Vega**, and **ApexCharts**.
+A curated collection of modern, production-grade custom visualizations for Google Cloud Looker, built using leading visualization libraries including **D3.js v7**, **TopoJSON**, and **Canvas**.
 
-This repository is continuously maintained by an autonomous daily AI automation that discovers unmet visualization needs from the Looker community, designs and codes novel visual components, and deploys them to Looker with automated demo queries and responsive container resizing (`ResizeObserver`).
+This repository is maintained with continuous daily automation that discovers unmet customer visualization needs from Buganizer Cloud Blockers and community forums, designs and codes novel visual paradigms, deploys them instance-wide to Looker, and synchronizes them across two live executive showcase dashboards.
+
+---
+
+## 📚 Documentation & Guides
+
+- 🖼️ [**Visual Gallery & Previews**](docs/gallery.md): Full visual showcase with high-resolution production screenshots for all 32+ custom visualizations.
+- 🚀 [**Installation & Integration Guide**](docs/installation.md): Quick-start instructions for instance-wide API deployment, LookML `manifest.lkml` setup, and Looker drill-down menus.
+- 🛠️ [**Automation, Tooling & Showcase Dashboards**](docs/automation.md): Details on CLI deployment scripts, dual-volume showcase dashboards, and autonomous daily generation.
 
 ---
 
 ## 🎨 Visualization Catalog
+
+All visualizations are built with a strict **2-tab option architecture (`Display` and `Style`)** to guarantee clean, uncrowded Looker Edit Viz modals, debounced `ResizeObserver` layout stability, and full Looker drill menu integration.
+
+### Volume 1: Core BI, Geospatial & Executive Grids
+Showcase Dashboard: [Live Looker Showcase Vol. 1](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/7CQgKOwKT6t6wJrPuaypnh) (ID: `164`)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
@@ -16,219 +29,56 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Dumbbell Divergence Plot**](visualizations/dumbbell_plot/)<br>`dumbbell_plot` | Performance & Variance | 1 dim + 1–2 measures (or 2 pivots) | [📸 View](assets/screenshots/dumbbell_plot.png) |
 | [**Interactive US Choropleth Map**](visualizations/choropleth_map/)<br>`choropleth_map` | Geospatial Intelligence | 1 State dim + 1 measure | [📸 View](assets/screenshots/choropleth_map.png) |
 | [**Sparkline Metric Matrix Table**](visualizations/sparkline_matrix_table/)<br>`sparkline_matrix_table` | Leaderboards & Grids | 1 dim + 1 pivot (or 2–6 measures) | [📸 View](assets/screenshots/sparkline_matrix_table.png) |
-| [**Player & Customer Retention Decay**](visualizations/retention_cohort_decay/)<br>`retention_cohort_decay` | Telemetry & Cohort Decay | 1 Cohort + 1 Activity dim + 1 meas | [📸 View](assets/screenshots/retention_cohort_decay.png) |
-| [**Broadcast Daypart Grid**](visualizations/broadcast_daypart_grid/)<br>`broadcast_daypart_grid` | Time Series & Schedules | 2 dims (Day + Hour) + 1–2 measures | [📸 View](assets/screenshots/broadcast_daypart_grid.png) |
-| [**Network Topology Flow Graph**](visualizations/network_topology_graph/)<br>`network_topology_graph` | Flow, Networks & Hierarchy | 1–2 dims (Source + Target) + 1–3 meas | [📸 View](assets/screenshots/network_topology_graph.png) |
-| [**Sankey Flow Diagram**](visualizations/sankey_flow_diagram/)<br>`sankey_flow_diagram` | Flow, Networks & Hierarchy | 2–8 sequential dims + 1–2 measures | [📸 View](assets/screenshots/sankey_flow_diagram.png) |
 | [**Rank Bump & Trajectory Chart**](visualizations/rank_bump_chart/)<br>`rank_bump_chart` | Leaderboards & Grids | 1 entity dim + 1 pivot (or 2–12 meas) | [📸 View](assets/screenshots/rank_bump_chart.png) |
-| [**Geospatial Flow Arc Map**](visualizations/flow_arc_map/)<br>`flow_arc_map` | Geospatial Intelligence | 1–2 dims (Origin + Dest) + 1–3 meas | [📸 View](assets/screenshots/flow_arc_map.png) |
-| [**Telemetry & Conversion Funnel**](visualizations/telemetry_conversion_funnel/)<br>`telemetry_conversion_funnel` | Telemetry & Cohort Decay | 1–2 dims (Stage + Segment) + 1–2 meas | [📸 View](assets/screenshots/telemetry_conversion_funnel.png) |
 | [**Collapsible Hierarchical Tree Grid**](visualizations/hierarchical_tree_table/)<br>`hierarchical_tree_table` | Leaderboards & Grids | 2–6 dims (Hierarchy) + 1–4 meas | [📸 View](assets/screenshots/hierarchical_tree_table.png) |
+| [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](assets/screenshots/dynamic_pivot_matrix.png) |
+| [**Sankey Flow Diagram**](visualizations/sankey_flow_diagram/)<br>`sankey_flow_diagram` | Flow, Networks & Hierarchy | 2–8 sequential dims + 1–2 measures | [📸 View](assets/screenshots/sankey_flow_diagram.png) |
+| [**Interactive Hierarchical Drilldown Treemap**](visualizations/interactive_drilldown_treemap/)<br>`interactive_drilldown_treemap` | Flow, Networks & Hierarchy | 1–6 dims (Hierarchy) + 1–2 measures | [📸 View](assets/screenshots/interactive_drilldown_treemap.png) |
+| [**Sunburst Multi-Level Partition Wheel**](visualizations/sunburst_partition_wheel/)<br>`sunburst_partition_wheel` | Flow, Networks & Hierarchy | 1–5 Hierarchical dims + 1–2 measures | [📸 View](assets/screenshots/sunburst_partition_wheel.png) |
+| [**Geospatial Flow Arc Map**](visualizations/flow_arc_map/)<br>`flow_arc_map` | Geospatial Intelligence | 1–2 dims (Origin + Dest) + 1–3 meas | [📸 View](assets/screenshots/flow_arc_map.png) |
 | [**Dual-Axis Multi-Layer Geo Map**](visualizations/multi_layer_geo_map/)<br>`multi_layer_geo_map` | Geospatial Intelligence | 1 State dim + 1–3 measures | [📸 View](assets/screenshots/multi_layer_geo_map.png) |
+| [**Geospatial Hexbin & Density Heatmap**](visualizations/hexbin_density_map/)<br>`hexbin_density_map` | Geospatial Intelligence | 1–2 dims (Coords or State) + 1–2 measures | [📸 View](assets/screenshots/hexbin_density_map.png) |
+| [**Interactive World & Regional Choropleth Map**](visualizations/world_choropleth_map/)<br>`world_choropleth_map` | Geospatial Intelligence | 1 Country/Region dim + 1–2 measures | [📸 View](assets/screenshots/world_choropleth_map.png) |
 | [**Multivariate Radar & Polar Chart**](visualizations/radar_polar_chart/)<br>`radar_polar_chart` | Performance & Variance | 1 dim + 3–12 measures (or 2 dims / pivots) | [📸 View](assets/screenshots/radar_polar_chart.png) |
-| [**Interactive Drilldown Treemap**](visualizations/interactive_drilldown_treemap/)<br>`interactive_drilldown_treemap` | Flow, Networks & Hierarchy | 1–6 dims (Hierarchy) + 1–2 measures | [📸 View](assets/screenshots/interactive_drilldown_treemap.png) |
-| [**Violin & Box Plot Distribution Analyzer**](visualizations/violin_distribution_plot/)<br>`violin_distribution_plot` | Performance & Variance | 1 dim + 1 meas (or 2 dims) | [📸 View](visualizations/violin_distribution_plot/README.md) |
-| [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](visualizations/dynamic_pivot_matrix/README.md) |
-| [**Interactive Streamgraph & ThemeRiver**](visualizations/streamgraph_themeriver/)<br>`streamgraph_themeriver` | Time Series & Schedules | 1 Date dim + 1 Cat dim + 1 meas (or 2+ meas) | [📸 View](visualizations/streamgraph_themeriver/README.md) |
-| [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures (or pivoted) | [📸 View](visualizations/bilateral_chord_diagram/README.md) |
-| [**Geospatial Hexbin & Density Heatmap**](visualizations/hexbin_density_map/)<br>`hexbin_density_map` | Geospatial Intelligence | 1–2 dims (Coords or State) + 1–2 measures | [📸 View](visualizations/hexbin_density_map/README.md) |
-| [**Executive Gantt & Milestones Schedule Timeline**](visualizations/gantt_milestones_timeline/)<br>`gantt_milestones_timeline` | Time Series & Schedules | 1 Task dim + 2 Date dims + 0–2 meas | [📸 View](visualizations/gantt_milestones_timeline/README.md) |
-| [**Pareto 80/20 & ABC Stratification Analyzer**](visualizations/pareto_cumulative_analyzer/)<br>`pareto_cumulative_analyzer` | Leaderboards & Grids | 1 Category dim + 1–2 measures | [📸 View](visualizations/pareto_cumulative_analyzer/README.md) |
-| [**Matchmaking Latency & MMR Distribution Analyzer**](visualizations/matchmaking_mmr_distribution/)<br>`matchmaking_mmr_distribution` | Telemetry & Cohort Decay | 1 Skill/Bucket dim + 1–3 measures | [📸 View](visualizations/matchmaking_mmr_distribution/README.md) |
-| [**Sunburst Multi-Level Partition Wheel**](visualizations/sunburst_partition_wheel/)<br>`sunburst_partition_wheel` | Flow, Networks & Hierarchy | 1–5 Hierarchical dims + 1–2 measures | [📸 View](visualizations/sunburst_partition_wheel/README.md) |
-| [**Ad Reach & Frequency Response Curve**](visualizations/ad_reach_frequency_curve/)<br>`ad_reach_frequency_curve` | Time Series & Schedules | 1 Channel/Placement dim + 1–2 measures | [📸 View](visualizations/ad_reach_frequency_curve/README.md) |
-| [**Interactive World & Regional Choropleth Map**](visualizations/world_choropleth_map/)<br>`world_choropleth_map` | Geospatial Intelligence | 1 Country/Region dim + 1–2 measures | [📸 View](visualizations/world_choropleth_map/README.md) |
-| [**Game Economy Faucet & Sink Analyzer**](visualizations/game_economy_faucet_sink/)<br>`game_economy_faucet_sink` | Telemetry & Cohort Decay | 1 Stream/Category dim + 1–2 measures | [📸 View](visualizations/game_economy_faucet_sink/README.md) |
-| [**MITRE ATT&CK Threat Matrix & SecOps Kill-Chain Heatmap**](visualizations/mitre_attack_matrix/)<br>`mitre_attack_matrix` | Telecom, Cloud & SecOps | 1–2 dims (Tactic + Technique) + 1–2 measures | [📸 View](visualizations/mitre_attack_matrix/README.md) |
-| [**Forecast & Confidence Cone (Fan Chart)**](visualizations/forecast_confidence_cone/)<br>`forecast_confidence_cone` | Statistical, ML & Forecasting | 1 Date dim + 1–3 measures (Forecast + Confidence Bounds) | [📸 View](visualizations/forecast_confidence_cone/README.md) |
+| [**Interactive Streamgraph & ThemeRiver**](visualizations/streamgraph_themeriver/)<br>`streamgraph_themeriver` | Time Series & Schedules | 1 Date dim + 1 Cat dim + 1 meas (or 2+ meas) | [📸 View](assets/screenshots/streamgraph_themeriver.png) |
+| [**Executive Gantt & Milestones Schedule Timeline**](visualizations/gantt_milestones_timeline/)<br>`gantt_milestones_timeline` | Time Series & Schedules | 1 Task dim + 2 Date dims + 0–2 meas | [📸 View](assets/screenshots/gantt_milestones_timeline.png) |
 
 ---
 
-## 📸 Visual Gallery
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps
+Showcase Dashboard: [Live Looker Showcase Vol. 2](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/xFkJtj1jOEegmMpgWoxune) (ID: `179`)
 
-### 1. Telemetry & Conversion Funnel
-Curved pipeline stages, drop-off step-to-step variance badges, multi-segment stacking, and executive summary HUD.
-![Telemetry & Conversion Funnel](assets/screenshots/telemetry_conversion_funnel.png)
-
-### 2. Geospatial Flow & Route Arc Map
-Origin-to-destination curved quadratic Bézier arcs over US TopoJSON geometry with animated particle pulses and hub selection.
-![Geospatial Flow & Route Arc Map](assets/screenshots/flow_arc_map.png)
-
-### 3. Network Topology & Latency Flow Graph
-Force-directed topological mesh with collision simulation, latency threshold bottleneck detection, and edge packet animation.
-![Network Topology & Latency Flow Graph](assets/screenshots/network_topology_graph.png)
-
-### 4. Sankey Flow & Multi-Stage Allocation Diagram
-Multi-stage flow ribbons with gradient color transitions, animated traffic particles, and hover flow path isolation.
-![Sankey Flow & Multi-Stage Allocation Diagram](assets/screenshots/sankey_flow_diagram.png)
-
-### 5. Rank Bump & Trajectory Chart
-Temporal rank trajectory bump chart tracking entity position volatility, top gainers/fallers, and rank badge indicators.
-![Rank Bump & Trajectory Chart](assets/screenshots/rank_bump_chart.png)
-
-### 6. Player & Customer Retention Cohort Decay Matrix
-Multi-cohort decay curves with benchmark average line synchronized above a triangular retention percentage heatmap.
-![Player & Customer Retention Cohort Decay](assets/screenshots/retention_cohort_decay.png)
-
-### 7. Broadcast Programming Schedule & Daypart Performance Grid
-Nielsen standard daypart broadcast grid with 24-hour heat mapping, marginal day/hour totals, and peak rating indicators.
-![Broadcast Programming Schedule & Daypart Performance Grid](assets/screenshots/broadcast_daypart_grid.png)
-
-### 8. Interactive US Choropleth Map
-Albers USA projected state-level choropleth map with quantile color breaks, gradient legend, and zoom controls.
-![Interactive US Choropleth Map](assets/screenshots/choropleth_map.png)
-
-### 9. Sparkline Metric Matrix Table
-Multi-metric scorecard featuring inline SVG sparklines, volume micro-bars, variance badges, and sticky summary totals.
-![Sparkline Metric Matrix Table](assets/screenshots/sparkline_matrix_table.png)
-
-### 10. Stephen Few Executive Bullet Graph
-Quantitative performance bars plotted against target markers and shaded qualitative performance tiers.
-![Stephen Few Executive Bullet Graph](assets/screenshots/bullet_graph.png)
-
-### 11. Dumbbell Divergence Plot (Connected Dot Plot)
-Dual-point comparison dumbbells illustrating period-over-period or actual vs target divergence with directional arrow indicators.
-![Dumbbell Divergence Plot](assets/screenshots/dumbbell_plot.png)
-
-### 12. Radial KPI Progress Gauge
-Concentric circular progress rings with goal attainment indicators and central metric readouts.
-![Radial KPI Progress Gauge](assets/screenshots/radial_progress_gauge.png)
-
-### 13. Calendar Activity Heatmap
-53-week rolling GitHub-style calendar contribution grid with month/day labels and quantile intensity binning.
-![Calendar Activity Heatmap](assets/screenshots/calendar_activity_heatmap.png)
-
-### 14. Collapsible Hierarchical Tree Grid
-Consolidates multi-level parent-child hierarchies into a single indented tree column with interactive branch expansion, dynamic subtotal rollups, in-cell share progress bars, and branch search.
-![Collapsible Hierarchical Tree Grid](assets/screenshots/hierarchical_tree_table.png)
-
-### 15. Dual-Axis Multi-Layer Geospatial Map
-Synchronized dual-axis geospatial intelligence with Layer 1 choropleth polygon fill (volume/revenue) and Layer 2 proportional centroid bubble pins (margin/orders), dual legends, and hex cartogram mode.
-![Dual-Axis Multi-Layer Geospatial Map](assets/screenshots/multi_layer_geo_map.png)
-
-### 16. Multivariate Radar & Polar Balance Chart
-Multivariate radar, polar spider web, Nightingale rose, and radial bar chart for balanced multidimensional evaluation, featuring scale normalization modes, Top-N ranking, interactive entity isolation pills, and executive KPI HUD.
-![Multivariate Radar & Polar Balance Chart](assets/screenshots/radar_polar_chart.png)
-
-### 17. Interactive Hierarchical Drilldown Treemap
-Enterprise hierarchical drilldown treemap with smooth zoom animations, interactive breadcrumb navigation (`🏠 All Categories > Men > Jeans`), dual-metric color gradients (b/396197680), dynamic Top-N & Others tail bucketing (b/530822261), real-time search filtering, and executive KPI HUD.
-![Interactive Hierarchical Drilldown Treemap](assets/screenshots/interactive_drilldown_treemap.png)
-
-### 18. Violin & Box Plot Distribution Analyzer
-High-performance statistical distribution analyzer computing non-parametric Kernel Density Estimation (KDE), Epanechnikov smoothing, five-number summary, Tukey whiskers, and outlier scatter directly client-side across 5,000+ rows (solving b/249062272 and b/4438305129355018240).
-![Violin & Box Plot Distribution Analyzer](visualizations/violin_distribution_plot/screenshot.png)
-
-### 19. Interactive Streamgraph & ThemeRiver Volume Flow
-Multi-modal organic time-series streamgraph with ThemeRiver silhouette, Byron-Wattenberg organic wiggle, zero-pinned stacked area, 100% normalized proportional share ribbon, and joyplot ridge modes. Features vertical crosshair scrubbing HUD, instant keyword search, and peak anomaly surge highlights (solving b/340585545 and b/490547912).
-![Interactive Streamgraph & ThemeRiver Volume Flow](visualizations/streamgraph_themeriver/screenshot.png)
-
-### 20. Bilateral Chord Diagram & Directed Flow Matrix
-Interactive bilateral chord diagram and relational flow matrix with 3 layout modes (Circular Directed Chord, Bilateral Flow Matrix Heatmap, and Bipartite Split Corridor), directional ribbon gradients, Executive Flow KPI HUD, real-time entity search filter, entity pinning, 5,000+ row client-side matrix aggregation with Top-N & Other bundling, and native Looker drill-down menus (solving b/314340020, b/213338627, b/184376439, and b/171817900).
-![Bilateral Chord Diagram & Directed Flow Matrix](visualizations/bilateral_chord_diagram/screenshot.png)
-
-### 21. Level Progression & Difficulty Balancing Curve
-Multi-modal game progression, difficulty pacing, and step-hazard attrition curve visualizer with 4 layout modes (Progression & Choke Points, Survival Decay Model, Milestone Step Waterfall, and Difficulty & Pacing Envelope), automated choke-point anomaly detection ($Z > 1.5\sigma$ or $2.0\sigma$), power-law baseline decay modeling, Executive Telemetry HUD, real-time stage search, and high-density 5,000+ row aggregation (solving b/341928091, b/490547912, and b/530822261).
-![Level Progression & Difficulty Balancing Curve](assets/screenshots/level_progression_balance_curve.png)
-
-### 22. Geospatial Hexbin & Density Heatmap
-Enterprise geospatial hexagonal tessellation and continuous Gaussian density heatmap custom visualization built with D3.js v7 and TopoJSON. Features 4 layout modes (Hexagonal Spatial Binning, Density Heatmaps, Spatial Bubble Clusters, and US State Cartograms), mathematical $O(N)$ axial/cube coordinate tessellation, executive spatial KPI HUD, and 5,000+ row coordinates without DOM lag (solving b/418217123, b/537254276, and b/556359527).
-![Geospatial Hexbin & Density Heatmap](visualizations/hexbin_density_map/screenshot.png)
-
-### 23. Executive Gantt & Milestones Schedule Timeline
-High-density enterprise Executive Gantt and milestone roadmap schedule with 4 layout modes (Gantt Progress Bars with internal fills %, Milestone Pin Roadmap, Categorical Swimlanes by phase/owner, and Measure Heatmap Gradient/Thresholds). Directly resolves Buganizer Cloud Blocker b/449635128 (Timeline Visualization and Color Formatting based on Measure), Customer Requirement b/445748812 (Adani: Support conditional formatting in Timeline visualization), and YAQS go/yeng/1995018768622813184. Features sticky time axis headers, dynamic Today indicator, live search-as-you-type filter, Executive KPI HUD, and native Looker drill-down menus across 5,000+ schedule events.
-![Executive Gantt & Milestones Schedule Timeline](visualizations/gantt_milestones_timeline/screenshot.png)
-
-### 24. Pareto 80/20 & ABC Stratification Analyzer
-Enterprise-grade Pareto 80/20 analysis and ABC inventory/defect stratification analyzer with 4 layout modes (Classic Pareto & 80/20 Cutoff with dual Y-axis and smooth ogive curve, ABC Stratification Matrix with tier cards, Lorenz Inequality Curve & Gini concentration index against the 45° equality line, and Cumulative Stepped Waterfall). Directly resolves Buganizer Cloud Blocker b/367544487 ("LookML to support more sophisticated measure out of the box - Pareto analysis") and customer requirements from Monzo Bank (b/425859046), Mango (b/530925562), Woolworth's (b/461541028), and Renault PSO Looker Performance Study. Features dynamic 80% reference cutoff lines, Executive KPI HUD, real-time live search filter, 2 clean option tabs (Display & Style), 5,000+ row client-side aggregation, and native Looker drill-down menus.
-![Pareto 80/20 & ABC Stratification Analyzer](visualizations/pareto_cumulative_analyzer/screenshot.png)
-
-### 25. Matchmaking Latency & MMR Distribution Analyzer
-Enterprise-grade matchmaking latency and player skill (MMR/Elo) distribution analyzer built with D3.js v7 for competitive multiplayer game studios (Riot, EA, Epic, Blizzard, Ubisoft, Sony). Directly resolves Buganizer Cloud Blockers and Customer Requirements (**b/341928091**, **b/490547912**, **b/530822261**). Features 4 layout modes (Skill Bell Curve & Gaussian Fit, Queue Latency & Wait-Time Envelope, Competitive Rank Tier Stratification, and Fairness & Win-Rate Parity Matrix), dual-axis player volume vs queue wait-time envelope, customizable queue SLA threshold alerts, rank tier cutoffs (Bronze through Grandmaster with cumulative CDF), Executive Telemetry HUD, real-time search & tier filtering, clean 2-tab options (Display & Style), and native Looker drill-down menus across 5,000+ match records.
-![Matchmaking Latency & MMR Distribution Analyzer](visualizations/matchmaking_mmr_distribution/screenshot.png)
-
-### 26. Ad Reach & Frequency Response Curve
-Enterprise-grade Ad Reach & Frequency Response Curve, Effective Frequency Corridor (3x–6x), and Marketing Saturation Analyzer built with D3.js v7. Directly resolves Buganizer Cloud Blockers and Customer Requirements (**b/476341715**, **b/422654493**, **b/422655556**, **b/341928091**) and answers Google Media Mix Modeling standards (Meridian MMM, go/rxf-dash, go/mmm-r&f-data). Features 4 layout modes (Reach Curve & Saturation Horizon, Effective Frequency Corridor & Wearout Histogram, Marginal Response & Diminishing Return Hill Curve, and Multi-Campaign / Channel Comparative Matrix), shaded Effective Frequency Corridors (3x–6x sweet spot vs Ad Blindness <3x and Ad Fatigue >6x), target reach threshold lines, derivative marginal efficiency cliffs, Executive Telemetry HUD, real-time channel & placement search filtering, clean 2-tab options (Display & Style), and native Looker drill-down menus across 5,000+ campaign rows.
-![Ad Reach & Frequency Response Curve](visualizations/ad_reach_frequency_curve/README.md)
+| Visualization | Category | Required Data Shape | Preview |
+| :--- | :--- | :--- | :---: |
+| [**Player & Customer Retention Decay**](visualizations/retention_cohort_decay/)<br>`retention_cohort_decay` | Telemetry & Cohort Decay | 1 Cohort + 1 Activity dim + 1 meas | [📸 View](assets/screenshots/retention_cohort_decay.png) |
+| [**Telemetry & Conversion Funnel**](visualizations/telemetry_conversion_funnel/)<br>`telemetry_conversion_funnel` | Telemetry & Cohort Decay | 1–2 dims (Stage + Segment) + 1–2 meas | [📸 View](assets/screenshots/telemetry_conversion_funnel.png) |
+| [**Level Progression Balancing Curve**](visualizations/level_progression_balance_curve/)<br>`level_progression_balance_curve` | Gaming & Telemetry | 1 Level dim + 1–2 measures | [📸 View](assets/screenshots/level_progression_balance_curve.png) |
+| [**Matchmaking Latency & MMR Distribution**](visualizations/matchmaking_mmr_distribution/)<br>`matchmaking_mmr_distribution` | Gaming & Telemetry | 1 Skill/Bucket dim + 1–3 measures | [📸 View](assets/screenshots/matchmaking_mmr_distribution.png) |
+| [**Game Economy Faucet & Sink Analyzer**](visualizations/game_economy_faucet_sink/)<br>`game_economy_faucet_sink` | Gaming & Telemetry | 1 Activity dim + 2 Flow measures | [📸 View](assets/screenshots/game_economy_faucet_sink.png) |
+| [**Broadcast Daypart Grid**](visualizations/broadcast_daypart_grid/)<br>`broadcast_daypart_grid` | Media & Entertainment | 2 dims (Day + Hour) + 1–2 measures | [📸 View](assets/screenshots/broadcast_daypart_grid.png) |
+| [**Ad Reach & Frequency Response Curve**](visualizations/ad_reach_frequency_curve/)<br>`ad_reach_frequency_curve` | Media & Entertainment | 1 Placement/Channel dim + 1–2 measures | [📸 View](assets/screenshots/ad_reach_frequency_curve.png) |
+| [**Network Topology Flow Graph**](visualizations/network_topology_graph/)<br>`network_topology_graph` | Telecom, Cloud & SecOps | 1–2 dims (Source + Target) + 1–3 meas | [📸 View](assets/screenshots/network_topology_graph.png) |
+| [**MITRE ATT&CK Threat Matrix & SecOps Heatmap**](visualizations/mitre_attack_matrix/)<br>`mitre_attack_matrix` | Telecom, Cloud & SecOps | 1–2 dims (Tactic + Technique) + 1–2 meas | [📸 View](assets/screenshots/mitre_attack_matrix.png) |
+| [**Violin & Box Plot Distribution Analyzer**](visualizations/violin_distribution_plot/)<br>`violin_distribution_plot` | Statistical, ML & Forecasting | 1 dim + 1 numeric value measure/dim | [📸 View](assets/screenshots/violin_distribution_plot.png) |
+| [**Forecast & Confidence Cone (Fan Chart)**](visualizations/forecast_confidence_cone/)<br>`forecast_confidence_cone` | Statistical, ML & Forecasting | 1 Date dim + 1–3 measures (Forecast + Bounds) | [📸 View](assets/screenshots/forecast_confidence_cone.png) |
+| [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures | [📸 View](assets/screenshots/bilateral_chord_diagram.png) |
+| [**Pareto 80/20 & ABC Stratification Analyzer**](visualizations/pareto_cumulative_analyzer/)<br>`pareto_cumulative_analyzer` | Leaderboards & Grids | 1 Category dim + 1–2 measures | [📸 View](assets/screenshots/pareto_cumulative_analyzer.png) |
 
 ---
 
-## 🚀 How to Use in Your Looker Instance
+## ⚡ Quick Start: Using in Looker
 
-You can include any visualization from this repository in your Looker project in one of two ways:
-
-### Option 1: Direct jsDelivr CDN Reference (Recommended)
-Add the visualization block to your project's `manifest.lkml`:
+Add any visualization to your LookML project `manifest.lkml` via CDN or deploy instance-wide:
 
 ```lookml
 project_name: "your_lookml_project"
 
 visualization: {
-  id: "telemetry_conversion_funnel"
-  label: "Telemetry & Conversion Funnel"
-  url: "https://cdn.jsdelivr.net/gh/zacharagosa/looker_custom_viz@main/visualizations/telemetry_conversion_funnel/telemetry_conversion_funnel.js"
+  id: "forecast_confidence_cone"
+  label: "Forecast & Confidence Cone (Fan Chart)"
+  url: "https://cdn.jsdelivr.net/gh/zacharagosa/looker_custom_viz@main/visualizations/forecast_confidence_cone/forecast_confidence_cone.js"
   dependencies: ["https://d3js.org/d3.v7.min.js"]
 }
 ```
 
-### Option 2: Upload Directly to Looker Project Files
-Copy the `.js` file from `visualizations/<viz_id>/<viz_id>.js` into your LookML project's `visualizations/` folder and reference it:
-
-```lookml
-visualization: {
-  id: "telemetry_conversion_funnel"
-  label: "Telemetry & Conversion Funnel"
-  file: "visualizations/telemetry_conversion_funnel.js"
-  dependencies: ["https://d3js.org/d3.v7.min.js"]
-}
-```
-
----
-
-## 🛠️ CLI Automation & Deployment Tooling
-
-This repository includes Python deployment and screenshot generation CLIs that use `looker-cli` to register, update, validate, and preview custom visualizations automatically:
-
-```bash
-# Deploy a visualization to the target Looker project:
-python3 scripts/deploy_viz.py --viz telemetry_conversion_funnel --project thelookevent --profile default
-
-# Generate / update all high-resolution screenshots:
-python3 scripts/generate_screenshots.py
-```
-
-### Script Workflow:
-1. Switches Looker API session to `dev` workspace mode.
-2. Checks and uploads `visualizations/<viz_id>.js` to the target LookML project.
-3. Automatically updates `manifest.lkml` with the custom visualization declaration and dependencies.
-4. Registers the visualization instance-wide via `POST /api/4.0/vis_manifest`.
-5. Updates `catalog.json` with metadata, required fields, and screenshot references.
-6. Automatically syncs the visualization to the consolidated **Showcase Dashboard**, organized by category into tabs (up to 5 viz per tab) with descriptive markdown cards!
-
----
-
-## 📊 Consolidated Showcase Dashboard
-
-All custom visualizations built by this repository can be consolidated on a single interactive Looker User-Defined Dashboard:
-
-### Dashboard Organization:
-- **6 Consolidated Executive Tabs**: Visualizations are grouped into 6 clean tabs (`🎯 Performance & Variance`, `🏆 Leaderboards & Grids`, `📅 Time Series & Schedules`, `🌊 Flow, Networks & Hierarchy`, `🗺️ Geospatial Intelligence`, `🎮 Telemetry & Cohort Decay`).
-- **Up to 5 Visualizations per Tab**: Each tab accommodates up to 5 custom visualizations with overflow protection.
-- **Descriptive Header Cards**: Every visualization tile features a top banner detailing the chart's purpose, category, and required dimension/measure shapes.
-
----
-
-## 🤖 Daily Automation Workflow
-
-The daily automation runs every morning via Jetski's Sidecar Runner:
-1. **Community Gap Research & Industry Ideation**: Checks Looker community forums, Google Cloud Community, GitHub, D3.js gallery, and Vega specs for unmet visual needs. Actively prioritizes:
-   - **Gaming & Telemetry**: Retention cohort decay curves, Level progression drop-off balancing, In-game economy/telemetry funnels, Matchmaking latency & MMR distributions.
-   - **Telco & Infrastructure**: Cell tower / network topology graphs, Bandwidth & packet flow sankey/chord diagrams, Subscriber churn risk scorecards, Hexbin coverage density grids.
-   - **Media & Entertainment**: Broadcast programming schedule / daypart heatmaps (Nielsen GRP/CPP grids), Ad spot reach & frequency curves, Viewer drop-off & stream retention decay curves.
-   - **Geospatial & Maps**: D3 TopoJSON/GeoJSON choropleth maps, Hexbin density grids, Origin-Destination connection arc maps.
-   - **Advanced Tables & Grids**: Pivot matrices with inline sparklines & micro-bars, Heatmap grid tables with quantile color scales, Collapsible financial P&L tree tables.
-2. **Concept Novelty Check**: Cross-references against `catalog.json` to ensure a completely new, unique visualization is built each day.
-3. **Engineering & Coding**: Generates a self-contained JavaScript bundle adhering to the Looker Custom Visualization API (`looker.plugins.visualizations.add`) with responsive `ResizeObserver` scaling.
-4. **Argolis Deployment**: Pushes the bundle to the user's Argolis Looker instance and updates instance-wide registration.
-5. **Dashboard Sync**: Adds the new visualization to the consolidated showcase dashboard under its corresponding category tab.
-6. **Screenshot & Asset Generation**: Captures high-resolution production previews using live query responses and headless browser automation.
-7. **Git Version Control**: Commits and pushes the new code, documentation, screenshots, and manifest snippets to GitHub.
+For complete instructions including instance-wide registration via Looker API, see the [**Installation Guide**](docs/installation.md).
