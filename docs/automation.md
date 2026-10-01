@@ -6,11 +6,10 @@ This document details the automated deployment pipelines, CLI tooling, and dual 
 
 ## 📊 Dual Showcase Dashboards
 
-All custom visualizations in this repository are automatically deployed and organized across two primary Looker showcase dashboards on `3417a175-fe20-4370-974f-2f2b535340ab.looker.app`:
+All custom visualizations in this repository are automatically deployed and organized across two primary Looker showcase dashboards:
 
 ### Volume 1: Core BI, Geospatial & Executive Grids
-- **Dashboard ID**: `164` (Slug: `7CQgKOwKT6t6wJrPuaypnh`)
-- **Live URL**: [Open Showcase Dashboard Vol. 1](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/7CQgKOwKT6t6wJrPuaypnh)
+- **Target Dashboard**: Executive Showcase Vol. 1 (Dashboard ID: `164`)
 - **Structure (5 Tabs, up to 5 viz per tab)**:
   1. `🎯 Performance & Variance`: `radial_progress_gauge`, `bullet_graph`, `dumbbell_plot`, `radar_polar_chart`
   2. `🏆 Leaderboards & Grids`: `sparkline_matrix_table`, `rank_bump_chart`, `hierarchical_tree_table`, `dynamic_pivot_matrix`
@@ -19,8 +18,7 @@ All custom visualizations in this repository are automatically deployed and orga
   5. `📅 Time Series & Schedules`: `calendar_activity_heatmap`, `streamgraph_themeriver`, `gantt_milestones_timeline`
 
 ### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps
-- **Dashboard ID**: `179` (Slug: `xFkJtj1jOEegmMpgWoxune`)
-- **Live URL**: [Open Showcase Dashboard Vol. 2](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/xFkJtj1jOEegmMpgWoxune)
+- **Target Dashboard**: Executive Showcase Vol. 2 (Dashboard ID: `179`)
 - **Structure (5 Tabs, up to 5 viz per tab)**:
   1. `🎮 Gaming & Telemetry`: `retention_cohort_decay`, `telemetry_conversion_funnel`, `level_progression_balance_curve`, `matchmaking_mmr_distribution`, `game_economy_faucet_sink`
   2. `🎬 Media, Broadcast & Ad-Ops`: `broadcast_daypart_grid`, `ad_reach_frequency_curve`

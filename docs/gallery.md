@@ -5,7 +5,6 @@ A comprehensive visual gallery of all production custom visualizations available
 ---
 
 ## 🎯 Volume 1: Core BI, Geospatial & Executive Grids
-Showcase Dashboard: [Live Looker Showcase Vol. 1](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/7CQgKOwKT6t6wJrPuaypnh) (ID: `164`)
 
 ### 1. Radial KPI Progress Gauge
 Concentric circular progress rings with goal attainment indicators, multi-tier layout modes, and central metric readouts.
@@ -86,7 +85,6 @@ High-density enterprise Executive Gantt and milestone roadmap schedule with prog
 ---
 
 ## 🔬 Volume 2: Industry Verticals, Telemetry & Advanced Data Apps
-Showcase Dashboard: [Live Looker Showcase Vol. 2](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/xFkJtj1jOEegmMpgWoxune) (ID: `179`)
 
 ### 20. Player & Customer Retention Cohort Decay Matrix
 Multi-cohort decay curves with benchmark average line synchronized above a triangular retention percentage heatmap.

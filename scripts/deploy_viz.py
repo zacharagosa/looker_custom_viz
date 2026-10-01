@@ -6,6 +6,7 @@ Deploy a custom Looker visualization to a Looker project and register it instanc
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -207,8 +208,8 @@ def create_demo_query(viz_id, base_dir=None, profile="default"):
                 demo_url = expanded_share_url
         elif share_url:
             demo_url = share_url + "?toggle=vis"
-        else:
-            demo_url = None
+        if demo_url:
+            demo_url = re.sub(r"^https?://[^/]+", "", demo_url)
 
         print(f"  -> Demo query created!")
         print(f"  -> Live Demo URL (vis open): {demo_url}")

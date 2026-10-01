@@ -19,7 +19,6 @@ This repository is maintained with continuous daily automation that discovers un
 All visualizations are built with a strict **2-tab option architecture (`Display` and `Style`)** to guarantee clean, uncrowded Looker Edit Viz modals, debounced `ResizeObserver` layout stability, and full Looker drill menu integration.
 
 ### Volume 1: Core BI, Geospatial & Executive Grids
-Showcase Dashboard: [Live Looker Showcase Vol. 1](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/7CQgKOwKT6t6wJrPuaypnh) (ID: `164`)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
@@ -46,7 +45,6 @@ Showcase Dashboard: [Live Looker Showcase Vol. 1](https://3417a175-fe20-4370-974
 ---
 
 ### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps
-Showcase Dashboard: [Live Looker Showcase Vol. 2](https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/dashboards/xFkJtj1jOEegmMpgWoxune) (ID: `179`)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |

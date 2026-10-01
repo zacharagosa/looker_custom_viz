@@ -54,7 +54,7 @@
     "screenshot": "visualizations/calendar_activity_heatmap/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-01",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=order_items.created_date,order_items.count&f[order_items.created_date]=365+days&sorts=order_items.created_date+asc&limit=400&vis=%7B%22type%22%3A%22calendar_activity_heatmap%22%2C%22colorPalette%22%3A%22github_green%22%2C%22cellSize%22%3A13%2C%22cellRadius%22%3A3%2C%22cellSpacing%22%3A3%2C%22showSummary%22%3Atrue%2C%22showMonthLabels%22%3Atrue%2C%22showDayLabels%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Daily+Target%22%2C%22anomalyThresholdPct%22%3A130%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=order_items.created_date,order_items.count&f[order_items.created_date]=365+days&sorts=order_items.created_date+asc&limit=400&vis=%7B%22type%22%3A%22calendar_activity_heatmap%22%2C%22colorPalette%22%3A%22github_green%22%2C%22cellSize%22%3A13%2C%22cellRadius%22%3A3%2C%22cellSpacing%22%3A3%2C%22showSummary%22%3Atrue%2C%22showMonthLabels%22%3Atrue%2C%22showDayLabels%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Daily+Target%22%2C%22anomalyThresholdPct%22%3A130%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "bullet_graph",
@@ -191,7 +191,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/retention_cohort_decay/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/void_weaver_analytics/player_retention_curve?qid=LKVEkOFks6EqS4jXDYxCsv&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/player_retention_curve?qid=LKVEkOFks6EqS4jXDYxCsv&toggle=vis"
   },
   {
     "id": "broadcast_daypart_grid",
@@ -250,7 +250,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/network_topology_graph/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/zayo_network_analytics/network_operations_and_anomalies?qid=5Y2hXdmtH6pDzBU81NsEOV&toggle=vis"
+    "looker_demo_url": "/explore/zayo_network_analytics/network_operations_and_anomalies?qid=5Y2hXdmtH6pDzBU81NsEOV&toggle=vis"
   },
   {
     "id": "sankey_flow_diagram",
@@ -368,7 +368,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/telemetry_conversion_funnel/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/void_weaver_analytics/player_onboarding_funnel?qid=z3NvHEXc8ycoEiKh8tpqNK&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/player_onboarding_funnel?qid=z3NvHEXc8ycoEiKh8tpqNK&toggle=vis"
   },
   {
     "id": "hierarchical_tree_table",
@@ -664,7 +664,7 @@
     },
     "deployed": true,
     "instance_wide": true,
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?qid=B9aJjQ6j1E2c69tN7iE2nE&toggle=vis",
+    "looker_demo_url": "/explore/thelook/order_items?qid=B9aJjQ6j1E2c69tN7iE2nE&toggle=vis",
     "screenshot": "visualizations/bilateral_chord_diagram/screenshot.png"
   },
   {
@@ -693,7 +693,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/level_progression_balance_curve/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/void_weaver_analytics/level_progression_telemetry?qid=pkPun1mBoytVWxNsCZH78u&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/level_progression_telemetry?qid=pkPun1mBoytVWxNsCZH78u&toggle=vis"
   },
   {
     "id": "hexbin_density_map",
@@ -756,7 +756,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/gantt_milestones_timeline/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/void_weaver_analytics/studio_release_roadmap?qid=zw4Fr88xYlcZSXUvjZ5ScR&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/studio_release_roadmap?qid=zw4Fr88xYlcZSXUvjZ5ScR&toggle=vis"
   },
   {
     "id": "pareto_cumulative_analyzer",
@@ -783,7 +783,7 @@
     },
     "deployed": true,
     "instance_wide": true,
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22pareto_cumulative_analyzer%22%2C%22layoutMode%22%3A%22classic_pareto%22%2C%22abcThresholdA%22%3A80%2C%22abcThresholdB%22%3A95%2C%22showKpiHud%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showThresholdLine%22%3Atrue%2C%22showDataLabels%22%3Afalse%2C%22maxItemsDisplay%22%3A35%2C%22curveInterpolation%22%3A%22monotone%22%2C%22colorTheme%22%3A%22modern_google%22%7D&origin=share-expanded&toggle=vis",
+    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22pareto_cumulative_analyzer%22%2C%22layoutMode%22%3A%22classic_pareto%22%2C%22abcThresholdA%22%3A80%2C%22abcThresholdB%22%3A95%2C%22showKpiHud%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showThresholdLine%22%3Atrue%2C%22showDataLabels%22%3Afalse%2C%22maxItemsDisplay%22%3A35%2C%22curveInterpolation%22%3A%22monotone%22%2C%22colorTheme%22%3A%22modern_google%22%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/pareto_cumulative_analyzer/screenshot.png"
   },
   {
@@ -812,7 +812,7 @@
     },
     "deployed": true,
     "instance_wide": true,
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/void_weaver_analytics/matchmaking_mmr_telemetry?qid=dp43ZEU5B0LgQ7GwnF7KAo&toggle=vis",
+    "looker_demo_url": "/explore/void_weaver_analytics/matchmaking_mmr_telemetry?qid=dp43ZEU5B0LgQ7GwnF7KAo&toggle=vis",
     "screenshot": "visualizations/matchmaking_mmr_distribution/screenshot.png"
   },
   {
@@ -842,7 +842,7 @@
     },
     "deployed": true,
     "instance_wide": true,
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.country,products.department,products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sunburst_partition_wheel%22%2C%22layoutMode%22%3A%22sunburst_wheel%22%2C%22colorMode%22%3A%22branch_palette%22%2C%22colorTheme%22%3A%22modern_google%22%2C%22innerHoleRadius%22%3A22%2C%22maxDepthDisplay%22%3A5%2C%22topNThreshold%22%3A12%2C%22valueMetricFormat%22%3A%22compact_currency%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showBreadcrumbTrail%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showSliceLabels%22%3Atrue%2C%22enableZoomDrill%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.country,products.department,products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sunburst_partition_wheel%22%2C%22layoutMode%22%3A%22sunburst_wheel%22%2C%22colorMode%22%3A%22branch_palette%22%2C%22colorTheme%22%3A%22modern_google%22%2C%22innerHoleRadius%22%3A22%2C%22maxDepthDisplay%22%3A5%2C%22topNThreshold%22%3A12%2C%22valueMetricFormat%22%3A%22compact_currency%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showBreadcrumbTrail%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showSliceLabels%22%3Atrue%2C%22enableZoomDrill%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/sunburst_partition_wheel/screenshot.png"
   },
   {
@@ -871,7 +871,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/ad_reach_frequency_curve/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/tvun_media_analytics/ad_spot_airings?qid=tS8WdJMQJIfLlNFGM3PkYU&toggle=vis"
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?qid=tS8WdJMQJIfLlNFGM3PkYU&toggle=vis"
   },
   {
     "id": "world_choropleth_map",
@@ -900,7 +900,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/world_choropleth_map/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/thelook/order_items?fields=users.country,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22world_choropleth_map%22%2C%22layoutMode%22%3A%22natural_earth%22%2C%22continentFocus%22%3A%22all%22%2C%22showBubbleOverlay%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22colorScaleType%22%3A%22quantile%22%2C%22showGraticule%22%3Atrue%2C%22showCountryBorders%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.country,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22world_choropleth_map%22%2C%22layoutMode%22%3A%22natural_earth%22%2C%22continentFocus%22%3A%22all%22%2C%22showBubbleOverlay%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22colorScaleType%22%3A%22quantile%22%2C%22showGraticule%22%3Atrue%2C%22showCountryBorders%22%3Atrue%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "game_economy_faucet_sink",
@@ -929,7 +929,7 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/game_economy_faucet_sink/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/void_weaver_analytics/virtual_economy_flows?qid=3YTn5LkuZ5CjcAXEcWtVRN&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/virtual_economy_flows?qid=3YTn5LkuZ5CjcAXEcWtVRN&toggle=vis"
   },
   {
     "id": "mitre_attack_matrix",
@@ -959,7 +959,7 @@
     "instance_wide": true,
     "options_upgraded": true,
     "screenshot": "visualizations/mitre_attack_matrix/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/palo_alto_networks_security/cortex_security_incidents?qid=xoKkPHTq12UNHbuUwF7sHc&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?qid=xoKkPHTq12UNHbuUwF7sHc&toggle=vis"
   },
   {
     "id": "forecast_confidence_cone",
@@ -991,6 +991,6 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-01",
     "screenshot": "visualizations/forecast_confidence_cone/screenshot.png",
-    "looker_demo_url": "https://3417a175-fe20-4370-974f-2f2b535340ab.looker.app/explore/void_weaver_analytics/daily_kpis_ai_forecast?fields=mart_daily_kpis_forecast.forecast_date,mart_daily_kpis_forecast.series_type,mart_daily_kpis_forecast.revenue_projected_usd,mart_daily_kpis_forecast.revenue_lower_bound_usd,mart_daily_kpis_forecast.revenue_upper_bound_usd&f[mart_daily_kpis_forecast.game_id]=VWE&sorts=mart_daily_kpis_forecast.forecast_date+asc&limit=150&vis=%7B%22type%22%3A%22forecast_confidence_cone%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22confidenceBandOpacity%22%3A22%2C%22showConeArea%22%3Atrue%2C%22showActualHistory%22%3Atrue%2C%22showPredictionIntervals%22%3Atrue%2C%22simulationScenarioPct%22%3A0%2C%22hudMode%22%3A%22scorecard%22%2C%22showLegend%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Q4+Run-Rate+Baseline%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/daily_kpis_ai_forecast?fields=mart_daily_kpis_forecast.forecast_date,mart_daily_kpis_forecast.series_type,mart_daily_kpis_forecast.revenue_projected_usd,mart_daily_kpis_forecast.revenue_lower_bound_usd,mart_daily_kpis_forecast.revenue_upper_bound_usd&f[mart_daily_kpis_forecast.game_id]=VWE&sorts=mart_daily_kpis_forecast.forecast_date+asc&limit=150&vis=%7B%22type%22%3A%22forecast_confidence_cone%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22confidenceBandOpacity%22%3A22%2C%22showConeArea%22%3Atrue%2C%22showActualHistory%22%3Atrue%2C%22showPredictionIntervals%22%3Atrue%2C%22simulationScenarioPct%22%3A0%2C%22hudMode%22%3A%22scorecard%22%2C%22showLegend%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Q4+Run-Rate+Baseline%22%7D&origin=share-expanded&toggle=vis"
   }
 ]
