@@ -40,6 +40,7 @@ This repository is continuously maintained by an autonomous daily AI automation 
 | [**Interactive World & Regional Choropleth Map**](visualizations/world_choropleth_map/)<br>`world_choropleth_map` | Geospatial Intelligence | 1 Country/Region dim + 1–2 measures | [📸 View](visualizations/world_choropleth_map/README.md) |
 | [**Game Economy Faucet & Sink Analyzer**](visualizations/game_economy_faucet_sink/)<br>`game_economy_faucet_sink` | Telemetry & Cohort Decay | 1 Stream/Category dim + 1–2 measures | [📸 View](visualizations/game_economy_faucet_sink/README.md) |
 | [**MITRE ATT&CK Threat Matrix & SecOps Kill-Chain Heatmap**](visualizations/mitre_attack_matrix/)<br>`mitre_attack_matrix` | Telecom, Cloud & SecOps | 1–2 dims (Tactic + Technique) + 1–2 measures | [📸 View](visualizations/mitre_attack_matrix/README.md) |
+| [**Forecast & Confidence Cone (Fan Chart)**](visualizations/forecast_confidence_cone/)<br>`forecast_confidence_cone` | Statistical, ML & Forecasting | 1 Date dim + 1–3 measures (Forecast + Confidence Bounds) | [📸 View](visualizations/forecast_confidence_cone/README.md) |
 
 ---
 

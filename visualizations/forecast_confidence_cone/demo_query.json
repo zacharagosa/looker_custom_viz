@@ -1,0 +1,35 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "daily_kpis_ai_forecast",
+  "fields": [
+    "mart_daily_kpis_forecast.forecast_date",
+    "mart_daily_kpis_forecast.series_type",
+    "mart_daily_kpis_forecast.revenue_projected_usd",
+    "mart_daily_kpis_forecast.revenue_lower_bound_usd",
+    "mart_daily_kpis_forecast.revenue_upper_bound_usd"
+  ],
+  "filters": {
+    "mart_daily_kpis_forecast.game_id": "VWE"
+  },
+  "sorts": [
+    "mart_daily_kpis_forecast.forecast_date asc"
+  ],
+  "limit": "150",
+  "vis_config": {
+    "type": "forecast_confidence_cone",
+    "colorPalette": "google_enterprise",
+    "confidenceBandOpacity": 22,
+    "showConeArea": true,
+    "showActualHistory": true,
+    "showPredictionIntervals": true,
+    "simulationScenarioPct": 0,
+    "hudMode": "scorecard",
+    "showLegend": true,
+    "showDataPoints": true,
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency",
+    "targetMode": "dataset_mean",
+    "referenceLineLabel": "Q4 Run-Rate Baseline"
+  }
+}

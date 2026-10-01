@@ -21,6 +21,14 @@
     "showSummary": true,
     "showMonthLabels": true,
     "showDayLabels": true,
-    "showLegend": true
+    "showLegend": true,
+    "hudMode": "scorecard",
+    "targetMode": "dataset_mean",
+    "referenceLineLabel": "Daily Target",
+    "anomalyThresholdPct": 130,
+    "showSearch": true,
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_number"
   }
 }
