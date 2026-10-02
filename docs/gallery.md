@@ -137,3 +137,7 @@ Interactive bilateral chord diagram and relational flow matrix with 3 layout mod
 ### 32. Pareto 80/20 & ABC Stratification Analyzer
 Enterprise-grade Pareto 80/20 analysis and ABC inventory/defect stratification analyzer featuring dual Y-axis ogive curve, ABC Stratification Matrix, Lorenz Inequality Curve & Gini index, and Cumulative Stepped Waterfall.
 ![Pareto 80/20 & ABC Stratification Analyzer](../assets/screenshots/pareto_cumulative_analyzer.png)
+
+### 33. Marimekko / Mosaic Market Matrix
+Two-dimensional market share Marimekko matrix with variable column widths and segment heights representing market concentration and categorical mix across broadcast television networks, streaming channels, and ad inventory.
+![Marimekko / Mosaic Market Matrix](../assets/screenshots/marimekko_market_matrix.png)

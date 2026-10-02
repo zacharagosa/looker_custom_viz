@@ -61,6 +61,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Forecast & Confidence Cone (Fan Chart)**](visualizations/forecast_confidence_cone/)<br>`forecast_confidence_cone` | Statistical, ML & Forecasting | 1 Date dim + 1–3 measures (Forecast + Bounds) | [📸 View](assets/screenshots/forecast_confidence_cone.png) |
 | [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures | [📸 View](assets/screenshots/bilateral_chord_diagram.png) |
 | [**Pareto 80/20 & ABC Stratification Analyzer**](visualizations/pareto_cumulative_analyzer/)<br>`pareto_cumulative_analyzer` | Leaderboards & Grids | 1 Category dim + 1–2 measures | [📸 View](assets/screenshots/pareto_cumulative_analyzer.png) |
+| [**Marimekko / Mosaic Market Matrix**](visualizations/marimekko_market_matrix/)<br>`marimekko_market_matrix` | Media, Broadcast & Ad-Ops | 2 dims (Network + Genre) + 1–2 measures | [📸 View](assets/screenshots/marimekko_market_matrix.png) |
 
 ---
 

@@ -133,7 +133,8 @@ VIZ_EMOJI_MAP = {
     "world_choropleth_map": "🌍",
     "game_economy_faucet_sink": "🪙",
     "mitre_attack_matrix": "🛡️",
-    "forecast_confidence_cone": "🔮"
+    "forecast_confidence_cone": "🔮",
+    "marimekko_market_matrix": "🧱"
 }
 
 

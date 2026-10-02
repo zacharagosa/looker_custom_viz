@@ -1,0 +1,28 @@
+{
+  "model": "tvun_media_analytics",
+  "view": "ad_spot_airings",
+  "fields": [
+    "broadcast_programming.network",
+    "broadcast_programming.genre",
+    "ad_spot_airings.total_spend_mxn",
+    "ad_spot_airings.total_airing_spots"
+  ],
+  "sorts": [
+    "ad_spot_airings.total_spend_mxn desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "marimekko_market_matrix",
+    "layoutMode": "marimekko",
+    "colorPalette": "google_enterprise",
+    "hudMode": "scorecard",
+    "showValueLabels": "all",
+    "showLegend": true,
+    "showSearch": true,
+    "targetMode": "dataset_mean",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency",
+    "referenceLineLabel": "Target Run-Rate"
+  }
+}
