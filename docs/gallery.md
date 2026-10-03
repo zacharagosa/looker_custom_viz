@@ -141,3 +141,7 @@ Enterprise-grade Pareto 80/20 analysis and ABC inventory/defect stratification a
 ### 33. Marimekko / Mosaic Market Matrix
 Two-dimensional market share Marimekko matrix with variable column widths and segment heights representing market concentration and categorical mix across broadcast television networks, streaming channels, and ad inventory.
 ![Marimekko / Mosaic Market Matrix](../assets/screenshots/marimekko_market_matrix.png)
+
+### 34. ROC / PR & Confusion Matrix Classifier Evaluator
+Interactive machine learning classifier evaluation suite rendering multi-modal ROC and Precision-Recall curves with dynamic decision threshold slider, live 2x2 Confusion Matrix (TP, FP, TN, FN), and financial opportunity cost models across binary classification models.
+![ROC / PR & Confusion Matrix Classifier Evaluator](../assets/screenshots/roc_curve_evaluator.png)

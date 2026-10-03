@@ -111,7 +111,10 @@
     },
     "deployed": true,
     "instance_wide": true,
-    "screenshot": "visualizations/dumbbell_plot/screenshot.png"
+    "screenshot": "visualizations/dumbbell_plot/screenshot.png",
+    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_gross_margin,order_items.total_sale_price&sorts=order_items.total_sale_price+desc&limit=10&vis=%7B%22type%22%3A%22dumbbell_plot%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22bridgeColorMode%22%3A%22directional%22%2C%22showDirectionArrows%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22badgeMetric%22%3A%22both%22%2C%22showPointLabels%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22pointRadius%22%3A8%2C%22bridgeThickness%22%3A3%2C%22rowHeight%22%3A54%2C%22sortBy%22%3A%22none%22%2C%22showLegend%22%3Atrue%2C%22showGridLines%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-03"
   },
   {
     "id": "choropleth_map",
@@ -1026,5 +1029,42 @@
     "last_upgraded": "2026-10-02",
     "screenshot": "visualizations/marimekko_market_matrix/screenshot.png",
     "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,ad_spot_airings.total_spend_mxn,ad_spot_airings.total_airing_spots&sorts=ad_spot_airings.total_spend_mxn+desc&limit=50&vis=%7B%22type%22%3A%22marimekko_market_matrix%22%2C%22layoutMode%22%3A%22marimekko%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22referenceLineLabel%22%3A%22Target+Run-Rate%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "roc_curve_evaluator",
+    "name": "ROC / PR & Confusion Matrix Classifier Evaluator",
+    "date_added": "2026-10-03",
+    "library": "D3.js v7",
+    "category": "Statistical, ML & Forecasting",
+    "description": "Interactive machine learning classifier evaluation suite rendering multi-modal ROC and Precision-Recall curves with dynamic decision threshold slider, live 2x2 Confusion Matrix (TP, FP, TN, FN), and financial opportunity cost models across binary classification models.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Decision Threshold dimension (or 0 if threshold is a measure)",
+      "measures": "FPR, Recall/TPR, Precision, F1, Accuracy, TP, FP, TN, FN"
+    },
+    "suggested_dataset": {
+      "model": "retail_banking",
+      "explore": "roc_curve",
+      "fields": [
+        "roc_curve.threshold",
+        "roc_curve.false_positive_rate",
+        "roc_curve.recall",
+        "roc_curve.precision",
+        "roc_curve.threshold_f1",
+        "roc_curve.threshold_accuracy",
+        "roc_curve.true_positives",
+        "roc_curve.false_positives",
+        "roc_curve.true_negatives",
+        "roc_curve.false_negatives"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-03",
+    "screenshot": "visualizations/roc_curve_evaluator/screenshot.png",
+    "looker_demo_url": "/explore/retail_banking/roc_curve?fields=roc_curve.threshold,roc_curve.false_positive_rate,roc_curve.recall,roc_curve.precision,roc_curve.threshold_f1,roc_curve.threshold_accuracy,roc_curve.true_positives,roc_curve.false_positives,roc_curve.true_negatives,roc_curve.false_negatives&sorts=roc_curve.threshold+asc&limit=100&vis=%7B%22type%22%3A%22roc_curve_evaluator%22%2C%22curveType%22%3A%22dual_view%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConfusionMatrix%22%3Atrue%2C%22optimalMarker%22%3A%22youden_j%22%2C%22initialThreshold%22%3A0.5%2C%22enableAreaFill%22%3Atrue%2C%22showGridLines%22%3Atrue%2C%22showAUCScore%22%3Atrue%2C%22showCostModel%22%3Atrue%2C%22costPerFP%22%3A15%2C%22costPerFN%22%3A350%7D&origin=share-expanded&toggle=vis"
   }
 ]

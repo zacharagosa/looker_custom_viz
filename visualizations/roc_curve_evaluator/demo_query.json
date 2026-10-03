@@ -1,0 +1,35 @@
+{
+  "model": "retail_banking",
+  "view": "roc_curve",
+  "fields": [
+    "roc_curve.threshold",
+    "roc_curve.false_positive_rate",
+    "roc_curve.recall",
+    "roc_curve.precision",
+    "roc_curve.threshold_f1",
+    "roc_curve.threshold_accuracy",
+    "roc_curve.true_positives",
+    "roc_curve.false_positives",
+    "roc_curve.true_negatives",
+    "roc_curve.false_negatives"
+  ],
+  "sorts": [
+    "roc_curve.threshold asc"
+  ],
+  "limit": "100",
+  "vis_config": {
+    "type": "roc_curve_evaluator",
+    "curveType": "dual_view",
+    "colorTheme": "google_enterprise",
+    "hudMode": "scorecard",
+    "showConfusionMatrix": true,
+    "optimalMarker": "youden_j",
+    "initialThreshold": 0.5,
+    "enableAreaFill": true,
+    "showGridLines": true,
+    "showAUCScore": true,
+    "showCostModel": true,
+    "costPerFP": 15,
+    "costPerFN": 350
+  }
+}

@@ -62,6 +62,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Bilateral Chord & Directed Flow Matrix**](visualizations/bilateral_chord_diagram/)<br>`bilateral_chord_diagram` | Flow, Networks & Hierarchy | 2 dims (Source + Target) + 1–2 measures | [📸 View](assets/screenshots/bilateral_chord_diagram.png) |
 | [**Pareto 80/20 & ABC Stratification Analyzer**](visualizations/pareto_cumulative_analyzer/)<br>`pareto_cumulative_analyzer` | Leaderboards & Grids | 1 Category dim + 1–2 measures | [📸 View](assets/screenshots/pareto_cumulative_analyzer.png) |
 | [**Marimekko / Mosaic Market Matrix**](visualizations/marimekko_market_matrix/)<br>`marimekko_market_matrix` | Media, Broadcast & Ad-Ops | 2 dims (Network + Genre) + 1–2 measures | [📸 View](assets/screenshots/marimekko_market_matrix.png) |
+| [**ROC / PR & Confusion Matrix Classifier Evaluator**](visualizations/roc_curve_evaluator/)<br>`roc_curve_evaluator` | Statistical, ML & Forecasting | 1 Threshold dim + 4–9 classification measures | [📸 View](assets/screenshots/roc_curve_evaluator.png) |
 
 ---
 

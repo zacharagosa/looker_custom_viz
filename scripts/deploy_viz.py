@@ -103,10 +103,6 @@ def register_instance_wide(viz_id, label, js_local_path, dependencies, profile="
     # Verify and refresh token if needed
     if client_id and client_secret:
         try:
-            req = urllib.request.Request(f"https://{host}/api/4.0/user", headers={"Authorization": f"Bearer {token}"})
-            with urllib.request.urlopen(req) as resp:
-                pass
-        except Exception:
             login_url = f"https://{host}/api/4.0/login?client_id={client_id}&client_secret={client_secret}"
             req = urllib.request.Request(login_url, method="POST")
             with urllib.request.urlopen(req) as resp:
@@ -114,13 +110,15 @@ def register_instance_wide(viz_id, label, js_local_path, dependencies, profile="
                 token = data["access_token"]
                 expires_in = data.get("expires_in", 3600)
             import datetime
-            exp_dt = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=expires_in + 86400)
+            exp_dt = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=86400 * 30)
             exp_str = exp_dt.strftime("%Y-%m-%d %H:%M:%S +0000")
             for p in conf.get("profiles", {}).values():
                 p["access_token"] = token
                 p["expiration"] = exp_str
             with open(config_path, "w", encoding="utf-8") as f:
                 yaml.dump(conf, f)
+        except Exception as e:
+            print(f"  -> Notice refreshing token: {e}")
 
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
