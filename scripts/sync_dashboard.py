@@ -51,6 +51,7 @@ VOL2_VIZ_MAP = {
     "ad_reach_frequency_curve": "🎬 Media, Broadcast & Ad-Ops",
     "network_topology_graph": "📡 Telecom, Cloud & SecOps",
     "mitre_attack_matrix": "📡 Telecom, Cloud & SecOps",
+    "cell_tower_polar_coverage": "📡 Telecom, Cloud & SecOps",
     "violin_distribution_plot": "🔬 Statistical, ML & Forecasting",
     "forecast_confidence_cone": "🔬 Statistical, ML & Forecasting",
     "roc_curve_evaluator": "🔬 Statistical, ML & Forecasting",
@@ -136,7 +137,8 @@ VIZ_EMOJI_MAP = {
     "mitre_attack_matrix": "🛡️",
     "forecast_confidence_cone": "🔮",
     "marimekko_market_matrix": "🧱",
-    "roc_curve_evaluator": "📈"
+    "roc_curve_evaluator": "📈",
+    "cell_tower_polar_coverage": "📡"
 }
 
 

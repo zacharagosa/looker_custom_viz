@@ -1,0 +1,27 @@
+{
+  "model": "nokia_network_ops",
+  "view": "network_operations",
+  "fields": [
+    "cell_towers.site_name",
+    "cell_towers.market",
+    "cell_towers.equipment_vendor",
+    "network_kpi_telemetry.avg_throughput_mbps",
+    "network_kpi_telemetry.avg_latency_ms",
+    "network_kpi_telemetry.avg_packet_loss_pct"
+  ],
+  "filters": {
+    "cell_towers.operational_status": "Active"
+  },
+  "sorts": [
+    "network_kpi_telemetry.avg_throughput_mbps desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "cell_tower_polar_coverage",
+    "polarMode": "omni_radar",
+    "colorTheme": "nokia_cyan",
+    "hudMode": "scorecard",
+    "showLegend": true,
+    "beamSweepAnimation": true
+  }
+}

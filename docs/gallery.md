@@ -145,3 +145,7 @@ Two-dimensional market share Marimekko matrix with variable column widths and se
 ### 34. ROC / PR & Confusion Matrix Classifier Evaluator
 Interactive machine learning classifier evaluation suite rendering multi-modal ROC and Precision-Recall curves with dynamic decision threshold slider, live 2x2 Confusion Matrix (TP, FP, TN, FN), and financial opportunity cost models across binary classification models.
 ![ROC / PR & Confusion Matrix Classifier Evaluator](../assets/screenshots/roc_curve_evaluator.png)
+
+### 35. Cell Tower Sector Azimuth & RF Polar Map
+Interactive 360° cellular radio frequency (RF) polar coverage map and antenna azimuth radiation pattern analyzer for 5G RAN operations, featuring multi-sector beam lobes, constellation scatter pins, concentric SLA benchmark rings, and Nokia AirScale telemetry.
+![Cell Tower Sector Azimuth & RF Polar Map](../assets/screenshots/cell_tower_polar_coverage.png)

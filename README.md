@@ -63,6 +63,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Pareto 80/20 & ABC Stratification Analyzer**](visualizations/pareto_cumulative_analyzer/)<br>`pareto_cumulative_analyzer` | Leaderboards & Grids | 1 Category dim + 1–2 measures | [📸 View](assets/screenshots/pareto_cumulative_analyzer.png) |
 | [**Marimekko / Mosaic Market Matrix**](visualizations/marimekko_market_matrix/)<br>`marimekko_market_matrix` | Media, Broadcast & Ad-Ops | 2 dims (Network + Genre) + 1–2 measures | [📸 View](assets/screenshots/marimekko_market_matrix.png) |
 | [**ROC / PR & Confusion Matrix Classifier Evaluator**](visualizations/roc_curve_evaluator/)<br>`roc_curve_evaluator` | Statistical, ML & Forecasting | 1 Threshold dim + 4–9 classification measures | [📸 View](assets/screenshots/roc_curve_evaluator.png) |
+| [**Cell Tower Sector Azimuth & RF Polar Map**](visualizations/cell_tower_polar_coverage/)<br>`cell_tower_polar_coverage` | Telecom, Cloud & SecOps | 1 Site dim + 1–2 measures (Throughput + Latency) | [📸 View](assets/screenshots/cell_tower_polar_coverage.png) |
 
 ---
 

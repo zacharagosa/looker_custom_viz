@@ -2,12 +2,15 @@
  * Interactive US Choropleth Map - Looker Custom Visualization
  * Built with D3.js v7 & TopoJSON Client
  *
- * Multi-Modal Geospatial Analytics Visualization:
- * - Map Modes: Choropleth filled polygons, Proportional Bubble Pins, or Hybrid overlay
- * - Expanded Row Limit Support: Client-side high-density aggregation across 5,000+ rows
- * - Interactive Pan & Zoom with floating navigation controls
- * - Executive color themes and automated dark/light mode adaptation
- * - Glassmorphism tooltip with ranks, percentages, record volume, and drill-down links
+ * Upgraded Flexibility Edition:
+ * - Multi-Modal Geospatial Analytics: Choropleth filled polygons, Proportional Bubble Pins, or Hybrid
+ * - Dynamic Field-Role Mapping (Display tab): 1-based index or name overrides for State dimension and Measures
+ * - Reference Benchmarks, Targets & Anomaly Alerts (Display tab): Mean, Median, P75/P90, Fixed Goal, or Secondary Measure
+ * - Sorting, Top-N Bucketing & Null Suppression (Display tab): Metric Desc/Asc, Alphabetical, Top-N with Other rollup
+ * - Executive Scorecard HUD & Search Filter (Display tab): Full Scorecard, Compact Strip, or Hidden; Search bar
+ * - Enterprise Brand Palettes & Metric Polarity (Style tab): Google Enterprise, Executive Slate, Modern Slate,
+ *   Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, Thermal Heat, and Custom Hex Overrides
+ * - Debounced ResizeObserver (<4px guard), proper container bounds, Looker drill-down menu support
  */
 
 (function () {
@@ -142,7 +145,7 @@
 
   var THEMES = {
     google_blue: {
-      name: "Google Blue",
+      name: "Google Enterprise",
       range: ["#e8f0fe", "#aecbfa", "#669df6", "#1a73e8", "#174ea6"],
       bg: "#ffffff",
       text: "#202124",
@@ -150,10 +153,59 @@
       border: "#ffffff",
       hoverStroke: "#1a73e8",
       bubbleStroke: "#1a73e8",
-      bubbleFill: "rgba(26, 115, 232, 0.75)"
+      bubbleFill: "rgba(26, 115, 232, 0.75)",
+      cardBg: "#f8f9fa",
+      cardBorder: "#dadce0",
+      positive: "#34a853",
+      negative: "#ea4335"
     },
-    emerald_forest: {
-      name: "Emerald Forest",
+    executive_slate: {
+      name: "Executive Slate (Classic Few)",
+      range: ["#f1f5f9", "#cbd5e1", "#94a3b8", "#475569", "#0f172a"],
+      bg: "#ffffff",
+      text: "#0f172a",
+      subtext: "#64748b",
+      border: "#ffffff",
+      hoverStroke: "#0f172a",
+      bubbleStroke: "#1e293b",
+      bubbleFill: "rgba(15, 23, 42, 0.75)",
+      cardBg: "#f8fafc",
+      cardBorder: "#e2e8f0",
+      positive: "#10b981",
+      negative: "#ef4444"
+    },
+    modern_slate: {
+      name: "Modern Slate",
+      range: ["#e2e8f0", "#94a3b8", "#64748b", "#334155", "#0f172a"],
+      bg: "#ffffff",
+      text: "#0f172a",
+      subtext: "#64748b",
+      border: "#ffffff",
+      hoverStroke: "#2563eb",
+      bubbleStroke: "#2563eb",
+      bubbleFill: "rgba(37, 99, 235, 0.75)",
+      cardBg: "#f8fafc",
+      cardBorder: "#e2e8f0",
+      positive: "#10b981",
+      negative: "#f43f5e"
+    },
+    cyberpunk_dark: {
+      name: "Cyberpunk Dark (Midnight)",
+      range: ["#1e293b", "#0369a1", "#0284c7", "#38bdf8", "#7dd3fc"],
+      bg: "#0f172a",
+      text: "#f8fafc",
+      subtext: "#94a3b8",
+      border: "#0f172a",
+      hoverStroke: "#38bdf8",
+      bubbleStroke: "#38bdf8",
+      bubbleFill: "rgba(56, 189, 248, 0.75)",
+      cardBg: "#1e293b",
+      cardBorder: "#334155",
+      positive: "#10b981",
+      negative: "#f43f5e"
+    },
+    emerald_finops: {
+      name: "Emerald FinOps",
       range: ["#e6f4ea", "#a8dab5", "#5bb974", "#1e8e3e", "#0d652d"],
       bg: "#ffffff",
       text: "#064e3b",
@@ -161,7 +213,41 @@
       border: "#ffffff",
       hoverStroke: "#059669",
       bubbleStroke: "#059669",
-      bubbleFill: "rgba(5, 150, 105, 0.75)"
+      bubbleFill: "rgba(5, 150, 105, 0.75)",
+      cardBg: "#f0fdf4",
+      cardBorder: "#a7f3d0",
+      positive: "#059669",
+      negative: "#dc2626"
+    },
+    sunset_media: {
+      name: "Sunset Media",
+      range: ["#ffedd5", "#fed7aa", "#fb923c", "#ea580c", "#9a3412"],
+      bg: "#ffffff",
+      text: "#431407",
+      subtext: "#9a3412",
+      border: "#ffffff",
+      hoverStroke: "#c2410c",
+      bubbleStroke: "#ea580c",
+      bubbleFill: "rgba(234, 88, 12, 0.75)",
+      cardBg: "#fffbeb",
+      cardBorder: "#fde68a",
+      positive: "#059669",
+      negative: "#dc2626"
+    },
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
+      range: ["#eff6ff", "#bfdbfe", "#60a5fa", "#2563eb", "#1e3a8a"],
+      bg: "#ffffff",
+      text: "#0f172a",
+      subtext: "#64748b",
+      border: "#ffffff",
+      hoverStroke: "#2563eb",
+      bubbleStroke: "#1e3a8a",
+      bubbleFill: "rgba(30, 58, 138, 0.75)",
+      cardBg: "#f8fafc",
+      cardBorder: "#e2e8f0",
+      positive: "#006B40",
+      negative: "#B42318"
     },
     thermal_heat: {
       name: "Thermal Heat",
@@ -172,72 +258,120 @@
       border: "#ffffff",
       hoverStroke: "#ea580c",
       bubbleStroke: "#c2410c",
-      bubbleFill: "rgba(234, 88, 12, 0.75)"
-    },
-    midnight_cyber: {
-      name: "Midnight Cyber (Dark)",
-      range: ["#1e293b", "#0369a1", "#0284c7", "#38bdf8", "#7dd3fc"],
-      bg: "#0f172a",
-      text: "#f8fafc",
-      subtext: "#94a3b8",
-      border: "#0f172a",
-      hoverStroke: "#38bdf8",
-      bubbleStroke: "#38bdf8",
-      bubbleFill: "rgba(56, 189, 248, 0.75)"
-    },
-    sunset_amber: {
-      name: "Sunset Amber",
-      range: ["#ffedd5", "#fed7aa", "#fb923c", "#ea580c", "#9a3412"],
-      bg: "#ffffff",
-      text: "#431407",
-      subtext: "#9a3412",
-      border: "#ffffff",
-      hoverStroke: "#c2410c",
-      bubbleStroke: "#ea580c",
-      bubbleFill: "rgba(234, 88, 12, 0.75)"
-    },
-    cool_purple: {
-      name: "Cool Purple",
-      range: ["#f3e8ff", "#d8b4fe", "#a855f7", "#7e22ce", "#581c87"],
-      bg: "#ffffff",
-      text: "#3b0764",
-      subtext: "#6b21a8",
-      border: "#ffffff",
-      hoverStroke: "#9333ea",
-      bubbleStroke: "#9333ea",
-      bubbleFill: "rgba(147, 51, 234, 0.75)"
+      bubbleFill: "rgba(234, 88, 12, 0.75)",
+      cardBg: "#fff7ed",
+      cardBorder: "#fed7aa",
+      positive: "#10b981",
+      negative: "#b91c1c"
     }
   };
 
-  function formatValue(val, fmt) {
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || list.length === 0) return null;
+    if (overrideVal) {
+      var trimmed = String(overrideVal).trim();
+      var idx = parseInt(trimmed, 10);
+      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+        return list[idx - 1];
+      }
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === trimmed || list[i].label === trimmed || list[i].label_short === trimmed) {
+          return list[i];
+        }
+      }
+    }
+    return list[defaultIdx] || list[0];
+  }
+
+  function formatValue(val, fmt, lookerRendered) {
     if (val === null || val === undefined || isNaN(val)) return "-";
+    if (fmt === "auto" && lookerRendered) return lookerRendered;
     var abs = Math.abs(val);
     var sign = val < 0 ? "-" : "";
+
     switch (fmt) {
       case "compact_currency":
-        if (abs >= 1e9) return sign + "$" + (abs / 1e9).toFixed(1) + "B";
-        if (abs >= 1e6) return sign + "$" + (abs / 1e6).toFixed(1) + "M";
+        if (abs >= 1e9) return sign + "$" + (abs / 1e9).toFixed(2) + "B";
+        if (abs >= 1e6) return sign + "$" + (abs / 1e6).toFixed(2) + "M";
         if (abs >= 1e3) return sign + "$" + (abs / 1e3).toFixed(1) + "K";
         return sign + "$" + abs.toFixed(abs % 1 === 0 ? 0 : 2);
       case "full_currency":
         return sign + "$" + abs.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
       case "compact_number":
-        if (abs >= 1e9) return sign + (abs / 1e9).toFixed(1) + "B";
-        if (abs >= 1e6) return sign + (abs / 1e6).toFixed(1) + "M";
+        if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
+        if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
         if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
-        return sign + abs.toFixed(abs % 1 === 0 ? 0 : 2);
+        return sign + (abs >= 10 ? Math.round(abs).toLocaleString() : abs.toFixed(1));
       case "percent":
-        return (val * 100).toFixed(1) + "%";
+      case "percentage":
+        return (val * (abs <= 1.0 ? 100 : 1)).toFixed(1) + "%";
+      case "decimal_2":
+        return sign + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      case "raw":
+        return String(val);
+      case "auto":
       case "full_number":
       default:
+        if (lookerRendered) return lookerRendered;
         return sign + abs.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
     }
+  }
+
+  function formatDelta(delta, deltaPct, fmt) {
+    var deltaSign = delta > 0 ? "+" : delta < 0 ? "-" : "";
+    var formattedVal = formatValue(Math.abs(delta), fmt);
+    var pctSign = deltaPct > 0 ? "+" : deltaPct < 0 ? "-" : "";
+    var pctStr = pctSign + (Math.abs(deltaPct) * 100).toFixed(1) + "%";
+    return deltaSign + formattedVal + " (" + pctStr + ")";
+  }
+
+  function makeHudCard(label, valStr, subStr, subColor, theme, themeKey, isDark) {
+    var card = document.createElement("div");
+    card.style.flex = "1 1 0";
+    card.style.minWidth = "120px";
+    card.style.padding = "8px 12px";
+    card.style.borderRadius = "8px";
+    card.style.backgroundColor = isDark ? "rgba(30, 41, 59, 0.85)" : "#ffffff";
+    card.style.border = "1px solid " + (isDark ? "#334155" : "#e2e8f0");
+    card.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
+    card.style.display = "flex";
+    card.style.flexDirection = "column";
+    card.style.gap = "2px";
+
+    var lbl = document.createElement("div");
+    lbl.style.fontSize = "10.5px";
+    lbl.style.fontWeight = "600";
+    lbl.style.textTransform = "uppercase";
+    lbl.style.letterSpacing = "0.04em";
+    lbl.style.color = theme.subtext;
+    lbl.textContent = label;
+    card.appendChild(lbl);
+
+    var val = document.createElement("div");
+    val.style.fontSize = "17px";
+    val.style.fontWeight = "700";
+    val.style.color = theme.text;
+    val.textContent = valStr;
+    card.appendChild(val);
+
+    if (subStr) {
+      var sub = document.createElement("div");
+      sub.style.fontSize = "11px";
+      sub.style.fontWeight = "600";
+      sub.style.color = subColor || theme.subtext;
+      sub.textContent = subStr;
+      card.appendChild(sub);
+    }
+    return card;
   }
 
   var visObject = {
     id: "choropleth_map",
     label: "Interactive US Choropleth Map",
     options: {
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly 2 tabs rule)
+      // ==========================================
       mapMode: {
         type: "string",
         label: "Map Display Mode",
@@ -251,9 +385,119 @@
         section: "Display",
         order: 1
       },
+      stateFieldOverride: {
+        type: "string",
+        label: "State Dimension Index or Name (1 = Col 1)",
+        default: "1",
+        section: "Display",
+        order: 2
+      },
+      measureFieldOverride: {
+        type: "string",
+        label: "Primary Metric Measure Index or Name (1 = Col 1)",
+        default: "1",
+        section: "Display",
+        order: 3
+      },
+      secondaryMeasureOverride: {
+        type: "string",
+        label: "Secondary / Target Measure Index or Name (2 = Col 2)",
+        default: "2",
+        section: "Display",
+        order: 4
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Target / Benchmark Calculation Mode",
+        display: "select",
+        values: [
+          { "None (No Target Benchmark)": "none" },
+          { "Secondary Measure Column": "second_measure" },
+          { "Multiplier of Baseline (e.g. 115%)": "multiplier" },
+          { "Fixed Static Target Value": "fixed" },
+          { "Dataset Mean (Average of Territories)": "dataset_mean" },
+          { "Dataset Median (Median of Territories)": "dataset_median" },
+          { "Top Percentile P75 Target": "percentile_p75" },
+          { "Top Percentile P90 Target": "percentile_p90" }
+        ],
+        default: "dataset_mean",
+        section: "Display",
+        order: 5
+      },
+      targetMultiplier: {
+        type: "number",
+        label: "Target Multiplier (when Mode is Multiplier)",
+        default: 1.15,
+        section: "Display",
+        order: 6
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Target Value (when Mode is Fixed, 0 = Auto)",
+        default: 0,
+        section: "Display",
+        order: 7
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Benchmark / Target Label",
+        default: "National Benchmark",
+        section: "Display",
+        order: 8
+      },
+      showReferenceLine: {
+        type: "boolean",
+        label: "Show Benchmark Target in HUD & Tooltips",
+        default: true,
+        section: "Display",
+        order: 9
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Variance Anomaly Alert Threshold (%)",
+        default: 30,
+        section: "Display",
+        order: 10
+      },
+      sortBy: {
+        type: "string",
+        label: "Sort Territories By",
+        display: "select",
+        values: [
+          { "Default (Looker Query Order)": "none" },
+          { "Metric Value Descending": "metric_desc" },
+          { "Metric Value Ascending": "metric_asc" },
+          { "State Name (Alphabetical A-Z)": "state_asc" },
+          { "Variance vs Target Descending": "variance_desc" }
+        ],
+        default: "metric_desc",
+        section: "Display",
+        order: 11
+      },
+      topNLimit: {
+        type: "number",
+        label: "Top-N Territories Limit (0 = All, Max 50)",
+        default: 0,
+        section: "Display",
+        order: 12
+      },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Group Remaining into Other Rollup Summary",
+        default: false,
+        section: "Display",
+        order: 13
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Territories",
+        default: false,
+        section: "Display",
+        order: 14
+      },
       aggregationType: {
         type: "string",
-        label: "High-Density Aggregation",
+        label: "High-Density Client-Side Aggregation",
         display: "select",
         values: [
           { "Sum (Aggregate Total Value)": "sum" },
@@ -263,59 +507,158 @@
         ],
         default: "sum",
         section: "Display",
-        order: 2
+        order: 15
       },
-      showLabels: {
+      hudMode: {
+        type: "string",
+        label: "Executive Scorecard HUD Mode",
+        display: "select",
+        values: [
+          { "Full Scorecard HUD (Top Band)": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "none" }
+        ],
+        default: "scorecard",
+        section: "Display",
+        order: 16
+      },
+      labelDensity: {
+        type: "string",
+        label: "State Postal Code Labels",
+        display: "select",
+        values: [
+          { "All States": "all" },
+          { "Top / Bottom 5 Peaks Only": "peaks" },
+          { "None / Hidden": "none" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 17
+      },
+      customTitle: {
+        type: "string",
+        label: "Custom Map Title Override",
+        default: "",
+        section: "Display",
+        order: 18
+      },
+      customSubtitle: {
+        type: "string",
+        label: "Custom Subtitle / Description Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      showSearch: {
         type: "boolean",
-        label: "Show State Postal Code Labels",
+        label: "Show Interactive State Search Bar",
         default: true,
         section: "Display",
-        order: 3
+        order: 20
       },
       showLegend: {
         type: "boolean",
         label: "Show Gradient Legend Bar",
         default: true,
         section: "Display",
-        order: 4
+        order: 21
       },
       enableZoom: {
         type: "boolean",
         label: "Enable Pan & Zoom Navigation",
         default: true,
         section: "Display",
+        order: 22
+      },
+
+      // ==========================================
+      // SECTION 2: STYLE (Strictly 2 tabs rule)
+      // ==========================================
+      colorTheme: {
+        type: "string",
+        label: "Brand Palette Preset",
+        display: "select",
+        values: [
+          { "Google Enterprise": "google_blue" },
+          { "Executive Slate (Classic Few)": "executive_slate" },
+          { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Dark (Midnight)": "cyberpunk_dark" },
+          { "Emerald FinOps": "emerald_finops" },
+          { "Sunset Media": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Thermal Heat": "thermal_heat" },
+          { "Custom Hex Override": "custom" }
+        ],
+        default: "google_blue",
+        section: "Style",
+        order: 1
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Scale High / Primary Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Positive / Goal Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Negative / Alert Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity (Goal Direction)",
+        display: "select",
+        values: [
+          { "Higher is Better (Revenue, Output, Conversion)": "higher_better" },
+          { "Lower is Better (Latency, Churn, Cost, Defect)": "lower_better" }
+        ],
+        default: "higher_better",
+        section: "Style",
         order: 5
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & Font Scaling",
+        display: "select",
+        values: [
+          { "Compact (Dense Tiles)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (Executive Boardroom)": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 6
       },
       valueFormat: {
         type: "string",
         label: "Metric Display Format",
         display: "select",
         values: [
+          { "Auto (Looker Formatted)": "auto" },
           { "Compact Currency ($1.2M / $45K)": "compact_currency" },
           { "Full Currency ($1,240,000)": "full_currency" },
           { "Compact Number (1.2M / 45K)": "compact_number" },
           { "Full Number (1,240,000)": "full_number" },
-          { "Percentage (12.4%)": "percent" }
+          { "Percentage (12.4%)": "percent" },
+          { "Decimal (2 Decimal Places)": "decimal_2" },
+          { "Raw (Unformatted)": "raw" }
         ],
         default: "compact_currency",
-        section: "Display",
-        order: 6
-      },
-      colorTheme: {
-        type: "string",
-        label: "Color Theme",
-        display: "select",
-        values: [
-          { "Google Blue": "google_blue" },
-          { "Emerald Forest": "emerald_forest" },
-          { "Thermal Heat": "thermal_heat" },
-          { "Midnight Cyber (Dark)": "midnight_cyber" },
-          { "Sunset Amber": "sunset_amber" },
-          { "Cool Purple": "cool_purple" }
-        ],
-        default: "google_blue",
         section: "Style",
-        order: 1
+        order: 7
       },
       colorScaleMode: {
         type: "string",
@@ -328,7 +671,7 @@
         ],
         default: "quantile",
         section: "Style",
-        order: 2
+        order: 8
       },
       nullColor: {
         type: "string",
@@ -336,7 +679,7 @@
         display: "color",
         default: "#f1f5f9",
         section: "Style",
-        order: 3
+        order: 9
       },
       highlightColor: {
         type: "string",
@@ -344,12 +687,16 @@
         display: "color",
         default: "#f59e0b",
         section: "Style",
-        order: 4
+        order: 10
       }
     },
 
     create: function (element, config) {
       element.innerHTML = "";
+      element.style.boxSizing = "border-box";
+      element.style.padding = "0";
+      element.style.overflow = "hidden";
+
       var container = document.createElement("div");
       container.className = "looker-choropleth-container";
       container.style.width = "100%";
@@ -358,9 +705,7 @@
       container.style.overflow = "hidden";
       container.style.display = "flex";
       container.style.flexDirection = "column";
-      container.style.alignItems = "center";
-      container.style.justifyContent = "center";
-      container.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+      container.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
       element.appendChild(container);
 
       var tooltip = document.createElement("div");
@@ -368,7 +713,7 @@
       tooltip.style.position = "fixed";
       tooltip.style.display = "none";
       tooltip.style.pointerEvents = "none";
-      tooltip.style.zIndex = "9999";
+      tooltip.style.zIndex = "99999";
       tooltip.style.padding = "10px 14px";
       tooltip.style.borderRadius = "8px";
       tooltip.style.fontSize = "12px";
@@ -376,8 +721,11 @@
       tooltip.style.boxShadow = "0 10px 25px -5px rgba(0, 0, 0, 0.25)";
       tooltip.style.backdropFilter = "blur(8px)";
       document.body.appendChild(tooltip);
+
+      this._container = container;
       this._tooltip = tooltip;
       this._element = element;
+      this._searchTerm = "";
       this._setupResizeObserver(element);
     },
 
@@ -508,27 +856,62 @@
     },
 
     _render: function (d3, geoData, data, element, config, queryResponse) {
+      var self = this;
       var container = element.querySelector(".looker-choropleth-container");
       if (!container) return;
       container.innerHTML = "";
 
       var themeKey = config.colorTheme || "google_blue";
       var theme = THEMES[themeKey] || THEMES.google_blue;
+      var isDark = themeKey === "cyberpunk_dark";
+
+      if (themeKey === "custom" && config.customPrimaryColor) {
+        theme = {
+          name: "Custom Hex Override",
+          range: ["#f1f5f9", "#cbd5e1", config.customPrimaryColor, config.customPrimaryColor, "#0f172a"],
+          bg: "#ffffff",
+          text: "#0f172a",
+          subtext: "#64748b",
+          border: "#ffffff",
+          hoverStroke: config.customPrimaryColor,
+          bubbleStroke: config.customPrimaryColor,
+          bubbleFill: config.customPrimaryColor,
+          cardBg: "#f8fafc",
+          cardBorder: "#e2e8f0",
+          positive: config.customPositiveColor || "#10b981",
+          negative: config.customNegativeColor || "#ef4444"
+        };
+      }
+
       container.style.backgroundColor = theme.bg;
       container.style.color = theme.text;
 
+      // Font scale adjustments
+      var fontScale = config.fontScale || "standard";
+      var baseFontSize = fontScale === "compact" ? 11 : fontScale === "large" ? 14 : 12;
+      container.style.fontSize = baseFontSize + "px";
+
       var mapMode = config.mapMode || "choropleth";
       var aggType = config.aggregationType || "sum";
+      var polarity = config.metricPolarity || "higher_better";
+      var fmt = config.valueFormat || "compact_currency";
+
       var fields = queryResponse.fields;
-      var dimField = fields.dimensions[0];
-      var measField = fields.measures[0];
-      var metricLabel = measField.label_short || measField.label || measField.name;
+      var dims = fields.dimensions || [];
+      var meas = fields.measures || [];
+
+      var dimField = resolveField(dims, config.stateFieldOverride, 0);
+      var measField = resolveField(meas, config.measureFieldOverride, 0);
+      var secMeasField = meas.length > 1 ? resolveField(meas, config.secondaryMeasureOverride, 1) : null;
+
+      var metricLabel = measField ? (measField.label_short || measField.label || measField.name) : "Metric";
       var totalRawRows = data.length;
 
-      // Client-Side High-Density Aggregation across expanded row limits (5,000+ rows)
+      // 1. High-Density Client-Side Aggregation
       var dataByCode = {};
       var totalSumAll = 0;
       var totalCountAll = 0;
+      var allRowMeasures = [];
 
       data.forEach(function (row) {
         var rawDim = row[dimField.name] ? (row[dimField.name].value || row[dimField.name].rendered) : null;
@@ -537,7 +920,13 @@
 
         var cellMeas = row[measField.name];
         var val = cellMeas && cellMeas.value !== null && !isNaN(cellMeas.value) ? Number(cellMeas.value) : 0;
+        var rendered = cellMeas ? cellMeas.rendered : null;
         var links = (cellMeas && cellMeas.links) || (row[dimField.name] && row[dimField.name].links) || [];
+
+        var secVal = 0;
+        if (secMeasField && row[secMeasField.name] && row[secMeasField.name].value !== null) {
+          secVal = Number(row[secMeasField.name].value) || 0;
+        }
 
         if (!dataByCode[code]) {
           dataByCode[code] = {
@@ -548,22 +937,25 @@
             min: Infinity,
             max: -Infinity,
             rawValues: [],
+            secSum: 0,
+            rendered: rendered,
             links: links
           };
         }
 
         dataByCode[code].sum += val;
+        dataByCode[code].secSum += secVal;
         dataByCode[code].count += 1;
         if (val < dataByCode[code].min) dataByCode[code].min = val;
         if (val > dataByCode[code].max) dataByCode[code].max = val;
         dataByCode[code].rawValues.push(val);
         totalSumAll += val;
         totalCountAll += 1;
+        allRowMeasures.push(val);
       });
 
-      // Compute display values per state based on aggregationType
-      var values = [];
-      var counts = [];
+      // 2. Compute display values per state based on aggregationType
+      var entries = [];
       Object.keys(dataByCode).forEach(function (code) {
         var d = dataByCode[code];
         var computedVal = 0;
@@ -582,51 +974,256 @@
             computedVal = d.sum;
             break;
         }
+
+        if (config.suppressZeroNull && (!computedVal || computedVal === 0)) {
+          delete dataByCode[code];
+          return;
+        }
+
         d.value = computedVal;
-        values.push(computedVal);
-        counts.push(d.count);
+        entries.push(d);
       });
 
-      // National rankings
-      var sortedEntries = Object.values(dataByCode).sort(function (a, b) { return b.value - a.value; });
-      var activeTotal = d3.sum(sortedEntries, function (d) { return d.value; });
-      sortedEntries.forEach(function (item, rankIdx) {
+      if (entries.length === 0) {
+        container.innerHTML = "<div style=\"padding:40px;text-align:center;color:" + theme.subtext + ";\">All territories suppressed by zero/null filter.</div>";
+        return;
+      }
+
+      // 3. Compute Benchmark Target
+      var targetMode = config.targetCalculationMode || "dataset_mean";
+      var meanVal = d3.mean(entries, function (d) { return d.value; }) || 0;
+      var medianVal = d3.median(entries, function (d) { return d.value; }) || 0;
+      var p75Val = d3.quantile(entries.map(function(d){ return d.value; }).sort(d3.ascending), 0.75) || 0;
+      var p90Val = d3.quantile(entries.map(function(d){ return d.value; }).sort(d3.ascending), 0.90) || 0;
+
+      entries.forEach(function (d) {
+        var tgt = 0;
+        switch (targetMode) {
+          case "second_measure":
+            tgt = d.secSum > 0 ? (aggType === "avg" ? d.secSum / d.count : d.secSum) : meanVal;
+            break;
+          case "multiplier":
+            tgt = d.value * (Number(config.targetMultiplier) || 1.15);
+            break;
+          case "fixed":
+            tgt = Number(config.fixedTargetValue) || meanVal;
+            break;
+          case "dataset_median":
+            tgt = medianVal;
+            break;
+          case "percentile_p75":
+            tgt = p75Val;
+            break;
+          case "percentile_p90":
+            tgt = p90Val;
+            break;
+          case "dataset_mean":
+            tgt = meanVal;
+            break;
+          case "none":
+          default:
+            tgt = null;
+            break;
+        }
+
+        d.target = tgt;
+        if (tgt !== null && tgt !== undefined) {
+          d.delta = d.value - tgt;
+          d.deltaPct = tgt !== 0 ? (d.delta / tgt) : 0;
+          d.isAnomaly = Math.abs(d.deltaPct * 100) >= (Number(config.anomalyThresholdPct) || 30);
+          d.isFavorable = polarity === "higher_better" ? (d.delta >= 0) : (d.delta <= 0);
+        } else {
+          d.delta = null;
+          d.deltaPct = null;
+          d.isAnomaly = false;
+          d.isFavorable = true;
+        }
+      });
+
+      // 4. Sorting & Top-N Bucketing
+      var sortBy = config.sortBy || "metric_desc";
+      if (sortBy === "metric_desc") {
+        entries.sort(function (a, b) { return b.value - a.value; });
+      } else if (sortBy === "metric_asc") {
+        entries.sort(function (a, b) { return a.value - b.value; });
+      } else if (sortBy === "state_asc") {
+        entries.sort(function (a, b) { return a.stateName.localeCompare(b.stateName); });
+      } else if (sortBy === "variance_desc") {
+        entries.sort(function (a, b) { return (b.deltaPct || 0) - (a.deltaPct || 0); });
+      }
+
+      var topN = Number(config.topNLimit) || 0;
+      var activeTotal = d3.sum(entries, function (d) { return d.value; });
+      var topState = entries[0];
+
+      entries.forEach(function (item, rankIdx) {
         item.rank = rankIdx + 1;
         item.pctOfTotal = activeTotal > 0 ? (item.value / activeTotal) * 100 : 0;
       });
 
-      // High-Density Data Header Chip (for expanded row limits)
-      if (totalRawRows > 50) {
-        var densityChip = document.createElement("div");
-        densityChip.className = "looker-density-chip";
-        densityChip.style.position = "absolute";
-        densityChip.style.top = "14px";
-        densityChip.style.left = "16px";
-        densityChip.style.zIndex = "10";
-        densityChip.style.display = "flex";
-        densityChip.style.alignItems = "center";
-        densityChip.style.gap = "8px";
-        densityChip.style.padding = "5px 12px";
-        densityChip.style.borderRadius = "20px";
-        densityChip.style.fontSize = "11px";
-        densityChip.style.fontWeight = "600";
-        densityChip.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
-        densityChip.style.border = "1px solid " + (themeKey === "midnight_cyber" ? "#334155" : "#e2e8f0");
-        densityChip.style.backgroundColor = themeKey === "midnight_cyber" ? "rgba(30, 41, 59, 0.9)" : "rgba(255, 255, 255, 0.92)";
-        densityChip.style.color = theme.text;
-        densityChip.innerHTML = "⚡ <span>High-Density Dataset: <strong>" + totalRawRows.toLocaleString() + "</strong> rows aggregated into <strong>" + Object.keys(dataByCode).length + "</strong> territories (" + aggType.toUpperCase() + ")</span>";
-        container.appendChild(densityChip);
+      if (topN > 0 && topN < entries.length) {
+        var topEntries = entries.slice(0, topN);
+        var remaining = entries.slice(topN);
+        if (config.enableOtherRollup && remaining.length > 0) {
+          var otherSum = d3.sum(remaining, function (d) { return d.value; });
+          var otherCount = d3.sum(remaining, function (d) { return d.count; });
+          var otherEntry = {
+            code: "OTHER",
+            stateName: "Other (" + remaining.length + " States)",
+            value: otherSum,
+            count: otherCount,
+            rank: topN + 1,
+            pctOfTotal: activeTotal > 0 ? (otherSum / activeTotal) * 100 : 0,
+            target: meanVal,
+            delta: otherSum - meanVal,
+            deltaPct: meanVal ? (otherSum - meanVal) / meanVal : 0,
+            isAnomaly: false,
+            isFavorable: true,
+            rawValues: [],
+            links: []
+          };
+          topEntries.push(otherEntry);
+        }
+        // Update dataByCode to only include filtered set for mapping
+        var filteredCodeMap = {};
+        topEntries.forEach(function (e) {
+          if (e.code !== "OTHER") filteredCodeMap[e.code] = e;
+        });
+        dataByCode = filteredCodeMap;
       }
 
-      // Color Scale Setup
+      // 5. Header Bar (Custom Title & Search Filter)
+      var showSearch = config.showSearch !== false;
+      var customTitle = (config.customTitle || "").trim();
+      var customSubtitle = (config.customSubtitle || "").trim();
+
+      if (customTitle || showSearch) {
+        var headerBar = document.createElement("div");
+        headerBar.style.display = "flex";
+        headerBar.style.alignItems = "center";
+        headerBar.style.justifyContent = "space-between";
+        headerBar.style.padding = "10px 16px 6px 16px";
+        headerBar.style.borderBottom = "1px solid " + (isDark ? "#334155" : "#e2e8f0");
+        headerBar.style.gap = "12px";
+        headerBar.style.flexShrink = "0";
+
+        var titleBlock = document.createElement("div");
+        titleBlock.style.display = "flex";
+        titleBlock.style.flexDirection = "column";
+
+        if (customTitle) {
+          var hTitle = document.createElement("div");
+          hTitle.style.fontSize = (baseFontSize + 3) + "px";
+          hTitle.style.fontWeight = "700";
+          hTitle.style.color = theme.text;
+          hTitle.textContent = customTitle;
+          titleBlock.appendChild(hTitle);
+        }
+
+        if (customSubtitle) {
+          var hSub = document.createElement("div");
+          hSub.style.fontSize = (baseFontSize - 1) + "px";
+          hSub.style.color = theme.subtext;
+          hSub.textContent = customSubtitle;
+          titleBlock.appendChild(hSub);
+        }
+        headerBar.appendChild(titleBlock);
+
+        if (showSearch) {
+          var searchWrapper = document.createElement("div");
+          searchWrapper.style.display = "flex";
+          searchWrapper.style.alignItems = "center";
+          searchWrapper.style.gap = "6px";
+          searchWrapper.style.backgroundColor = isDark ? "#1e293b" : "#f1f5f9";
+          searchWrapper.style.border = "1px solid " + (isDark ? "#334155" : "#cbd5e1");
+          searchWrapper.style.borderRadius = "20px";
+          searchWrapper.style.padding = "4px 10px";
+
+          var searchIcon = document.createElement("span");
+          searchIcon.innerHTML = "&#128269;";
+          searchIcon.style.fontSize = "11px";
+          searchWrapper.appendChild(searchIcon);
+
+          var searchInput = document.createElement("input");
+          searchInput.type = "text";
+          searchInput.placeholder = "Find state...";
+          searchInput.value = self._searchTerm || "";
+          searchInput.style.border = "none";
+          searchInput.style.background = "transparent";
+          searchInput.style.outline = "none";
+          searchInput.style.fontSize = "11px";
+          searchInput.style.color = theme.text;
+          searchInput.style.width = "100px";
+
+          searchInput.addEventListener("input", function (e) {
+            self._searchTerm = e.target.value.toLowerCase().trim();
+            self._highlightSearch();
+          });
+          searchWrapper.appendChild(searchInput);
+          headerBar.appendChild(searchWrapper);
+        }
+        container.appendChild(headerBar);
+      }
+
+      // 6. Executive Scorecard HUD (Top Band)
+      var hudMode = config.hudMode || "scorecard";
+      if (hudMode !== "none") {
+        var hudBand = document.createElement("div");
+        hudBand.style.display = "flex";
+        hudBand.style.alignItems = "stretch";
+        hudBand.style.gap = "10px";
+        hudBand.style.padding = "8px 16px";
+        hudBand.style.borderBottom = "1px solid " + (isDark ? "#334155" : "#e2e8f0");
+        hudBand.style.backgroundColor = isDark ? "#0f172a" : "#f8fafc";
+        hudBand.style.flexShrink = "0";
+
+        var aggName = aggType === "sum" ? "Total" : aggType === "avg" ? "Avg" : aggType.toUpperCase();
+        var totalStr = formatValue(activeTotal, fmt);
+        var meanStr = formatValue(meanVal, fmt);
+        var targetStr = targetMode !== "none" ? formatValue(meanVal, fmt) : null;
+
+        var hud1 = makeHudCard("Territories", Object.keys(dataByCode).length + " States", totalRawRows > 50 ? (totalRawRows.toLocaleString() + " rows aggregated") : null, null, theme, themeKey, isDark);
+        var hud2 = makeHudCard(aggName + " " + metricLabel, totalStr, "National Total", null, theme, themeKey, isDark);
+        var hud3 = makeHudCard("Mean per State", meanStr, "P50 Median: " + formatValue(medianVal, fmt), null, theme, themeKey, isDark);
+
+        var topStateSub = topState ? (topState.pctOfTotal.toFixed(1) + "% of National") : null;
+        var hud4 = makeHudCard("Top Territory", topState ? (topState.code + " (" + formatValue(topState.value, fmt) + ")") : "-", topStateSub, theme.positive, theme, themeKey, isDark);
+
+        hudBand.appendChild(hud1);
+        hudBand.appendChild(hud2);
+        hudBand.appendChild(hud3);
+        hudBand.appendChild(hud4);
+
+        if (targetMode !== "none" && config.showReferenceLine) {
+          var targetLabel = config.referenceLineLabel || "Benchmark Target";
+          var varianceAll = meanVal - (targetMode === "fixed" ? Number(config.fixedTargetValue) || meanVal : meanVal);
+          var varPctAll = meanVal ? (varianceAll / meanVal) : 0;
+          var hud5 = makeHudCard(targetLabel, targetStr, formatDelta(varianceAll, varPctAll, fmt), (varPctAll >= 0 ? theme.positive : theme.negative), theme, themeKey, isDark);
+          hudBand.appendChild(hud5);
+        }
+
+        container.appendChild(hudBand);
+      }
+
+      // 7. Setup Canvas / SVG Area
+      var mapWrapper = document.createElement("div");
+      mapWrapper.className = "looker-choropleth-map-wrapper";
+      mapWrapper.style.flex = "1 1 0";
+      mapWrapper.style.minHeight = "0";
+      mapWrapper.style.position = "relative";
+      mapWrapper.style.overflow = "hidden";
+      mapWrapper.style.width = "100%";
+      container.appendChild(mapWrapper);
+
+      var scaleValues = Object.keys(dataByCode).map(function (k) { return dataByCode[k].value; });
       var scaleMode = config.colorScaleMode || "quantile";
       var colorScale;
       var colors = theme.range;
 
-      if (values.length > 0) {
+      if (scaleValues.length > 0) {
         if (scaleMode === "linear") {
-          var minVal = d3.min(values) || 0;
-          var maxVal = d3.max(values) || 100;
+          var minVal = d3.min(scaleValues) || 0;
+          var maxVal = d3.max(scaleValues) || 100;
           colorScale = d3.scaleLinear()
             .domain(d3.range(colors.length).map(function (i) {
               return minVal + (i / (colors.length - 1)) * (maxVal - minVal);
@@ -635,27 +1232,26 @@
             .clamp(true);
         } else if (scaleMode === "quantize") {
           colorScale = d3.scaleQuantize()
-            .domain([d3.min(values) || 0, d3.max(values) || 100])
+            .domain([d3.min(scaleValues) || 0, d3.max(scaleValues) || 100])
             .range(colors);
         } else {
           colorScale = d3.scaleQuantile()
-            .domain(values)
+            .domain(scaleValues)
             .range(colors);
         }
       } else {
         colorScale = function () { return config.nullColor || "#f1f5f9"; };
       }
 
-      // Proportional Bubble Radius Scale (for bubble_pins and both_hybrid modes)
-      var maxValForBubble = d3.max(values) || 1;
+      var maxValForBubble = d3.max(scaleValues) || 1;
       var radiusScale = d3.scaleSqrt()
         .domain([0, maxValForBubble])
-        .range([5, 28]);
+        .range([5, 26]);
 
       var mapWidth = 960;
-      var mapHeight = 600;
+      var mapHeight = 580;
 
-      var svg = d3.select(container)
+      var svg = d3.select(mapWrapper)
         .append("svg")
         .attr("width", "100%")
         .attr("height", "100%")
@@ -663,17 +1259,15 @@
         .attr("preserveAspectRatio", "xMidYMid meet")
         .style("display", "block");
 
-      // Projection & Path Generator
       var projection = d3.geoAlbersUsa()
-        .scale(1250)
+        .scale(1200)
         .translate([mapWidth / 2, mapHeight / 2]);
 
       var pathGenerator = d3.geoPath().projection(projection);
 
-      // Root zoomable container
       var rootZoomG = svg.append("g").attr("class", "zoom-root-group");
 
-      // Zoom & Pan Behavior
+      // Zoom navigation
       if (config.enableZoom !== false) {
         var zoom = d3.zoom()
           .scaleExtent([0.85, 8])
@@ -683,7 +1277,6 @@
 
         svg.call(zoom);
 
-        // Zoom Navigation Controls (Top Right)
         var zoomControls = document.createElement("div");
         zoomControls.className = "looker-zoom-controls";
         zoomControls.style.position = "absolute";
@@ -693,8 +1286,8 @@
         zoomControls.style.display = "flex";
         zoomControls.style.flexDirection = "column";
         zoomControls.style.gap = "4px";
-        zoomControls.style.background = themeKey === "midnight_cyber" ? "rgba(30, 41, 59, 0.9)" : "rgba(255, 255, 255, 0.95)";
-        zoomControls.style.border = "1px solid " + (themeKey === "midnight_cyber" ? "#334155" : "#cbd5e1");
+        zoomControls.style.background = isDark ? "rgba(30, 41, 59, 0.9)" : "rgba(255, 255, 255, 0.95)";
+        zoomControls.style.border = "1px solid " + (isDark ? "#334155" : "#cbd5e1");
         zoomControls.style.borderRadius = "8px";
         zoomControls.style.padding = "4px";
         zoomControls.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
@@ -716,7 +1309,7 @@
           btn.style.alignItems = "center";
           btn.style.justifyContent = "center";
           btn.addEventListener("mouseenter", function () {
-            btn.style.backgroundColor = themeKey === "midnight_cyber" ? "#475569" : "#f1f5f9";
+            btn.style.backgroundColor = isDark ? "#475569" : "#f1f5f9";
           });
           btn.addEventListener("mouseleave", function () {
             btn.style.backgroundColor = "transparent";
@@ -734,10 +1327,9 @@
         zoomControls.appendChild(createBtn("&#x21ba;", "Reset View", function () {
           svg.transition().duration(250).call(zoom.transform, d3.zoomIdentity);
         }));
-        container.appendChild(zoomControls);
+        mapWrapper.appendChild(zoomControls);
       }
 
-      // Map group inside zoomable root
       var mapGroup = rootZoomG.append("g").attr("class", "states-group");
       var bubblesGroup = rootZoomG.append("g").attr("class", "bubbles-group");
       var labelsGroup = rootZoomG.append("g").attr("class", "labels-group").style("pointer-events", "none");
@@ -746,77 +1338,58 @@
       var highlightColor = config.highlightColor || "#f59e0b";
       var nullColor = config.nullColor || "#f1f5f9";
 
-      // Render State Polygons
-      var states = mapGroup.selectAll("path.state")
-        .data(geoData.features)
-        .enter()
-        .append("path")
-        .attr("class", "state")
-        .attr("d", pathGenerator)
-        .attr("fill", function (d) {
-          var code = FIPS_TO_CODE[String(d.id)];
-          var info = code ? dataByCode[code] : null;
-
-          // In bubble_pins mode, keep polygon neutral to let pins stand out
-          if (mapMode === "bubble_pins") {
-            return themeKey === "midnight_cyber" ? "#1e293b" : "#f8fafc";
-          }
-          // In choropleth and both_hybrid modes, fill with metric color scale
-          if (info) {
-            return colorScale(info.value);
-          }
-          return nullColor;
-        })
-        .attr("stroke", function () {
-          return mapMode === "bubble_pins"
-            ? (themeKey === "midnight_cyber" ? "#334155" : "#cbd5e1")
-            : theme.border;
-        })
-        .attr("stroke-width", mapMode === "bubble_pins" ? 1.0 : 1.2)
-        .style("cursor", "pointer")
-        .style("transition", "fill 0.2s ease, stroke 0.2s ease");
-
-      // Shared Tooltip Presenter
       function showStateTooltip(d, code, info) {
         if (!tooltip) return;
         var stateName = (code && STATE_LOOKUP[code]) ? STATE_LOOKUP[code].name : (d.properties && d.properties.name) || "Unknown State";
-        var fmt = config.valueFormat || "compact_currency";
-        var valStr = info ? formatValue(info.value, fmt) : "No Data";
-        var sumStr = info ? formatValue(info.sum, fmt) : "-";
-        var avgStr = info ? formatValue(info.count > 0 ? info.sum / info.count : 0, fmt) : "-";
-        var rankStr = info ? ("#" + info.rank + " of " + sortedEntries.length) : "Unranked";
+        var valStr = info ? formatValue(info.value, fmt, info.rendered) : "No Data";
+        var rankStr = info ? ("#" + info.rank + " of " + Object.keys(dataByCode).length) : "Unranked";
         var pctStr = info ? (info.pctOfTotal.toFixed(1) + "% of National Total") : "-";
-        var countStr = info ? info.count.toLocaleString() : "0";
 
-        var aggLabel = aggType.toUpperCase();
-        if (aggType === "sum") aggLabel = "Total Sum";
-        if (aggType === "avg") aggLabel = "Average per Record";
-        if (aggType === "count") aggLabel = "Record Frequency";
-        if (aggType === "max") aggLabel = "Peak Record";
+        var targetRowHtml = "";
+        if (info && info.target !== null && info.target !== undefined) {
+          var tgtFormatted = formatValue(info.target, fmt);
+          var varFormatted = formatDelta(info.delta, info.deltaPct, fmt);
+          var varColor = info.isFavorable ? theme.positive : theme.negative;
+          targetRowHtml = "" +
+            "<div style=\"font-size:11.5px;margin-top:4px;display:flex;justify-content:space-between;color:" + theme.subtext + ";\">" +
+            "  <span>Target (" + (config.referenceLineLabel || "Goal") + "):</span>" +
+            "  <span style=\"font-weight:600;color:" + theme.text + ";\">" + tgtFormatted + "</span>" +
+            "</div>" +
+            "<div style=\"font-size:11.5px;margin-top:2px;display:flex;justify-content:space-between;color:" + theme.subtext + ";\">" +
+            "  <span>Variance:</span>" +
+            "  <span style=\"font-weight:700;color:" + varColor + ";\">" + varFormatted + "</span>" +
+            "</div>";
+        }
+
+        var anomalyBadgeHtml = "";
+        if (info && info.isAnomaly) {
+          anomalyBadgeHtml = "<div style=\"margin-top:4px;padding:2px 6px;border-radius:4px;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;font-size:10.5px;font-weight:700;\">&#9888; Anomaly: Variance exceeds " + (config.anomalyThresholdPct || 30) + "% threshold</div>";
+        }
 
         tooltip.innerHTML = "" +
           "<div style=\"font-size:13px;font-weight:700;color:" + theme.text + ";margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;gap:8px;\">" +
           "  <span>" + stateName + " (" + (code || "--") + ")</span>" +
-          (info ? "<span style=\"font-size:10.5px;padding:2px 7px;background:#e0f2fe;color:#0369a1;border-radius:10px;font-weight:600;\">" + rankStr + "</span>" : "") +
+          (info ? "<span style=\"font-size:10.5px;padding:2px 7px;background:" + (isDark ? "#334155" : "#e0f2fe") + ";color:" + (isDark ? "#38bdf8" : "#0369a1") + ";border-radius:10px;font-weight:600;\">" + rankStr + "</span>" : "") +
           "</div>" +
-          "<div style=\"margin-top:4px;font-size:12px;color:" + theme.subtext + ";\">" +
-          "  <span>" + metricLabel + " (" + aggLabel + "): </span>" +
-          "  <span style=\"font-weight:700;color:" + (themeKey === "midnight_cyber" ? "#38bdf8" : "#1e40af") + ";font-size:13px;\">" + valStr + "</span>" +
+          "<div style=\"margin-top:4px;font-size:12px;color:" + theme.subtext + ";display:flex;justify-content:space-between;gap:8px;\">" +
+          "  <span>" + metricLabel + " (" + aggType.toUpperCase() + "): </span>" +
+          "  <span style=\"font-weight:700;color:" + (isDark ? "#38bdf8" : "#1e40af") + ";font-size:13px;\">" + valStr + "</span>" +
           "</div>" +
           (info ? "<div style=\"font-size:11px;color:" + theme.subtext + ";margin-top:3px;\">" + pctStr + "</div>" : "") +
-          (info && info.count > 1 ? "<div style=\"font-size:11px;color:" + theme.subtext + ";margin-top:2px;border-top:1px dashed #e2e8f0;padding-top:3px;\">Records Aggregated: <strong>" + countStr + "</strong> | Sum: " + sumStr + " | Avg: " + avgStr + "</div>" : "") +
-          (info && info.links && info.links.length > 0 ? "<div style=\"margin-top:6px;font-size:10px;color:#2563eb;font-weight:600;\">Click state to explore drill-down &rarr;</div>" : "");
+          targetRowHtml +
+          anomalyBadgeHtml +
+          (info && info.links && info.links.length > 0 ? "<div style=\"margin-top:6px;font-size:10.5px;color:#2563eb;font-weight:600;\">Click territory to explore drill-down &rarr;</div>" : "");
 
-        tooltip.style.backgroundColor = themeKey === "midnight_cyber" ? "rgba(15, 23, 42, 0.96)" : "rgba(255, 255, 255, 0.97)";
-        tooltip.style.border = "1px solid " + (themeKey === "midnight_cyber" ? "#334155" : "#e2e8f0");
+        tooltip.style.backgroundColor = isDark ? "rgba(15, 23, 42, 0.96)" : "rgba(255, 255, 255, 0.97)";
+        tooltip.style.border = "1px solid " + (isDark ? "#334155" : "#e2e8f0");
         tooltip.style.display = "block";
         tooltip.style.opacity = "1";
       }
 
       function moveTooltip(event) {
         if (!tooltip) return;
-        var ttW = tooltip.offsetWidth || 220;
-        var ttH = tooltip.offsetHeight || 120;
+        var ttW = tooltip.offsetWidth || 230;
+        var ttH = tooltip.offsetHeight || 130;
         var left = event.clientX + 14;
         var top = event.clientY - 15;
         if (left + ttW > window.innerWidth - 10) left = event.clientX - ttW - 14;
@@ -829,7 +1402,35 @@
         if (tooltip) tooltip.style.display = "none";
       }
 
-      // State Hover interactions
+      // Render State Polygons
+      var states = mapGroup.selectAll("path.state")
+        .data(geoData.features)
+        .enter()
+        .append("path")
+        .attr("class", "state")
+        .attr("d", pathGenerator)
+        .attr("data-fips", function (d) { return String(d.id); })
+        .attr("fill", function (d) {
+          var code = FIPS_TO_CODE[String(d.id)];
+          var info = code ? dataByCode[code] : null;
+
+          if (mapMode === "bubble_pins") {
+            return isDark ? "#1e293b" : "#f8fafc";
+          }
+          if (info) {
+            return colorScale(info.value);
+          }
+          return nullColor;
+        })
+        .attr("stroke", function () {
+          return mapMode === "bubble_pins"
+            ? (isDark ? "#334155" : "#cbd5e1")
+            : theme.border;
+        })
+        .attr("stroke-width", mapMode === "bubble_pins" ? 1.0 : 1.2)
+        .style("cursor", "pointer")
+        .style("transition", "fill 0.2s ease, stroke 0.2s ease");
+
       states.on("mouseenter", function (event, d) {
         var code = FIPS_TO_CODE[String(d.id)];
         var info = code ? dataByCode[code] : null;
@@ -846,7 +1447,7 @@
 
       states.on("mouseleave", function (event, d) {
         d3.select(this)
-          .attr("stroke", mapMode === "bubble_pins" ? (themeKey === "midnight_cyber" ? "#334155" : "#cbd5e1") : theme.border)
+          .attr("stroke", mapMode === "bubble_pins" ? (isDark ? "#334155" : "#cbd5e1") : theme.border)
           .attr("stroke-width", mapMode === "bubble_pins" ? 1.0 : 1.2);
         hideTooltip();
       });
@@ -862,7 +1463,7 @@
         }
       });
 
-      // Render Proportional Bubble Pins (for bubble_pins and both_hybrid modes)
+      // Render Bubble Pins (if bubble_pins or both_hybrid mode)
       if (mapMode === "bubble_pins" || mapMode === "both_hybrid") {
         geoData.features.forEach(function (d) {
           var code = FIPS_TO_CODE[String(d.id)];
@@ -874,10 +1475,10 @@
           var r = radiusScale(info.value);
           var bubbleG = bubblesGroup.append("g")
             .attr("class", "bubble-node")
+            .attr("data-fips", String(d.id))
             .attr("transform", "translate(" + centroid[0] + "," + centroid[1] + ")")
             .style("cursor", "pointer");
 
-          // Pulsing halo for top 3 states
           if (info.rank <= 3) {
             bubbleG.append("circle")
               .attr("r", r + 4)
@@ -890,8 +1491,8 @@
 
           var bubbleCircle = bubbleG.append("circle")
             .attr("r", r)
-            .attr("fill", mapMode === "both_hybrid" ? "rgba(255, 255, 255, 0.85)" : theme.bubbleFill)
-            .attr("stroke", mapMode === "both_hybrid" ? (themeKey === "midnight_cyber" ? "#38bdf8" : "#1e40af") : theme.bubbleStroke)
+            .attr("fill", mapMode === "both_hybrid" ? "rgba(255, 255, 255, 0.88)" : theme.bubbleFill)
+            .attr("stroke", mapMode === "both_hybrid" ? (isDark ? "#38bdf8" : "#1e40af") : theme.bubbleStroke)
             .attr("stroke-width", 2.0)
             .style("transition", "transform 0.15s ease, fill 0.15s ease");
 
@@ -917,120 +1518,106 @@
       }
 
       // State Postal Code Labels
-      if (config.showLabels !== false) {
+      var labelDensity = config.labelDensity || "all";
+      if (labelDensity !== "none") {
         geoData.features.forEach(function (d) {
           var code = FIPS_TO_CODE[String(d.id)];
           if (!code) return;
+          var info = dataByCode[code];
+
+          // Filter by density mode
+          if (labelDensity === "peaks" && info) {
+            if (info.rank > 5 && info.rank <= (Object.keys(dataByCode).length - 5)) return;
+          }
+
           var centroid = pathGenerator.centroid(d);
           if (!centroid || isNaN(centroid[0]) || isNaN(centroid[1])) return;
 
-          var x = centroid[0];
-          var y = centroid[1];
-          var info = dataByCode[code];
-          var hasValue = !!info;
-
-          // In bubble mode, nudge label below the circle if bubble is large
-          var yOffset = 3;
-          if ((mapMode === "bubble_pins" || mapMode === "both_hybrid") && info) {
-            var r = radiusScale(info.value);
-            if (r > 12) yOffset = 4;
+          var textColor = "#0f172a";
+          if (mapMode === "choropleth" || mapMode === "both_hybrid") {
+            if (info) {
+              var hex = colorScale(info.value);
+              textColor = d3.hsl(hex).l < 0.55 ? "#ffffff" : "#0f172a";
+            }
           }
+          if (isDark && mapMode === "bubble_pins") textColor = "#f8fafc";
 
           labelsGroup.append("text")
-            .attr("x", x)
-            .attr("y", y + yOffset)
+            .attr("x", centroid[0])
+            .attr("y", centroid[1] + 3.5)
             .attr("text-anchor", "middle")
             .attr("font-size", "10px")
             .attr("font-weight", "700")
-            .attr("fill", function () {
-              if (mapMode === "bubble_pins") {
-                return themeKey === "midnight_cyber" ? "#ffffff" : "#0f172a";
-              }
-              if (!hasValue) return theme.subtext;
-              return themeKey === "midnight_cyber" ? "#ffffff" : "#0f172a";
-            })
-            .attr("opacity", hasValue ? 0.9 : 0.4)
+            .attr("fill", textColor)
             .text(code);
         });
       }
 
-      // Legend Bar (Fixed on overlay SVG)
-      if (config.showLegend !== false && values.length > 0) {
-        var legendWidth = 260;
-        var legendHeight = 12;
-        var legendX = mapWidth - legendWidth - 30;
-        var legendY = mapHeight - 45;
+      // Gradient Legend Bar (Bottom Left)
+      if (config.showLegend !== false && colors && colors.length > 0) {
+        var legendWrapper = document.createElement("div");
+        legendWrapper.className = "looker-legend-bar";
+        legendWrapper.style.position = "absolute";
+        legendWrapper.style.bottom = "14px";
+        legendWrapper.style.left = "16px";
+        legendWrapper.style.zIndex = "10";
+        legendWrapper.style.display = "flex";
+        legendWrapper.style.flexDirection = "column";
+        legendWrapper.style.gap = "4px";
+        legendWrapper.style.background = isDark ? "rgba(30, 41, 59, 0.9)" : "rgba(255, 255, 255, 0.95)";
+        legendWrapper.style.border = "1px solid " + (isDark ? "#334155" : "#cbd5e1");
+        legendWrapper.style.borderRadius = "8px";
+        legendWrapper.style.padding = "8px 12px";
+        legendWrapper.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
 
-        var legendG = svg.append("g")
-          .attr("class", "map-legend")
-          .attr("transform", "translate(" + legendX + "," + legendY + ")");
+        var legTitle = document.createElement("div");
+        legTitle.style.fontSize = "10px";
+        legTitle.style.fontWeight = "700";
+        legTitle.style.color = theme.text;
+        legTitle.textContent = metricLabel + " (" + scaleMode.toUpperCase() + ")";
+        legendWrapper.appendChild(legTitle);
 
-        var legendGradId = "map-legend-grad";
-        var legendGrad = svg.append("defs").append("linearGradient")
-          .attr("id", legendGradId)
-          .attr("x1", "0%")
-          .attr("y1", "0%")
-          .attr("x2", "100%")
-          .attr("y2", "0%");
-
-        colors.forEach(function (col, idx) {
-          legendGrad.append("stop")
-            .attr("offset", (idx / (colors.length - 1)) * 100 + "%")
-            .attr("stop-color", col);
+        var legBar = document.createElement("div");
+        legBar.style.display = "flex";
+        legBar.style.width = "160px";
+        legBar.style.height = "10px";
+        legBar.style.borderRadius = "4px";
+        legBar.style.overflow = "hidden";
+        colors.forEach(function (c) {
+          var swatch = document.createElement("div");
+          swatch.style.flex = "1";
+          swatch.style.backgroundColor = c;
+          legBar.appendChild(swatch);
         });
+        legendWrapper.appendChild(legBar);
 
-        legendG.append("rect")
-          .attr("width", legendWidth)
-          .attr("height", legendHeight)
-          .attr("rx", 6)
-          .attr("fill", "url(#" + legendGradId + ")")
-          .attr("stroke", theme.subtext)
-          .attr("stroke-width", 0.5);
+        var legLabels = document.createElement("div");
+        legLabels.style.display = "flex";
+        legLabels.style.justifyContent = "space-between";
+        legLabels.style.fontSize = "9.5px";
+        legLabels.style.color = theme.subtext;
+        var minScaleVal = d3.min(scaleValues) || 0;
+        var maxScaleVal = d3.max(scaleValues) || 0;
+        legLabels.innerHTML = "<span>" + formatValue(minScaleVal, fmt) + "</span><span>" + formatValue(maxScaleVal, fmt) + "</span>";
+        legendWrapper.appendChild(legLabels);
 
-        var minVal = d3.min(values) || 0;
-        var maxVal = d3.max(values) || 100;
-        var midVal = (minVal + maxVal) / 2;
-        var fmt = config.valueFormat || "compact_currency";
-
-        legendG.append("text")
-          .attr("x", 0)
-          .attr("y", legendHeight + 14)
-          .attr("text-anchor", "start")
-          .attr("font-size", "10.5px")
-          .attr("font-weight", "600")
-          .attr("fill", theme.subtext)
-          .text(formatValue(minVal, fmt));
-
-        legendG.append("text")
-          .attr("x", legendWidth / 2)
-          .attr("y", legendHeight + 14)
-          .attr("text-anchor", "middle")
-          .attr("font-size", "10px")
-          .attr("font-weight", "500")
-          .attr("fill", theme.subtext)
-          .text(formatValue(midVal, fmt));
-
-        legendG.append("text")
-          .attr("x", legendWidth)
-          .attr("y", legendHeight + 14)
-          .attr("text-anchor", "end")
-          .attr("font-size", "10.5px")
-          .attr("font-weight", "600")
-          .attr("fill", theme.subtext)
-          .text(formatValue(maxVal, fmt));
-
-        var legendTitle = metricLabel;
-        if (aggType !== "sum") legendTitle += " (" + aggType.toUpperCase() + ")";
-        if (mapMode === "bubble_pins") legendTitle += " [Proportional Pins]";
-
-        legendG.append("text")
-          .attr("x", 0)
-          .attr("y", -6)
-          .attr("font-size", "11px")
-          .attr("font-weight", "700")
-          .attr("fill", theme.text)
-          .text(legendTitle);
+        mapWrapper.appendChild(legendWrapper);
       }
+
+      this._highlightSearch = function () {
+        var query = self._searchTerm;
+        states.each(function (d) {
+          var code = FIPS_TO_CODE[String(d.id)];
+          var info = code ? dataByCode[code] : null;
+          var stateName = (code && STATE_LOOKUP[code]) ? STATE_LOOKUP[code].name.toLowerCase() : "";
+          var match = !query || (code && code.toLowerCase().indexOf(query) !== -1) || (stateName.indexOf(query) !== -1);
+
+          d3.select(this)
+            .attr("opacity", match ? 1.0 : 0.2)
+            .attr("stroke-width", match && query ? 2.5 : (mapMode === "bubble_pins" ? 1.0 : 1.2))
+            .attr("stroke", match && query ? highlightColor : (mapMode === "bubble_pins" ? (isDark ? "#334155" : "#cbd5e1") : theme.border));
+        });
+      };
     }
   };
 
