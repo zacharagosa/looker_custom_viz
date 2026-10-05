@@ -1,0 +1,34 @@
+{
+  "model": "thelook",
+  "view": "inventory_snapshot",
+  "fields": [
+    "inventory_snapshot.snapshot_date",
+    "distribution_centers.name",
+    "inventory_snapshot.total_in_stock",
+    "inventory_snapshot.stock_coverage_ratio",
+    "inventory_snapshot.eoh_cost_total"
+  ],
+  "filters": {
+    "inventory_snapshot.snapshot_date": "30 days",
+    "distribution_centers.name": "Memphis TN"
+  },
+  "sorts": [
+    "inventory_snapshot.snapshot_date asc"
+  ],
+  "limit": "35",
+  "vis_config": {
+    "type": "inventory_stockout_sawtooth",
+    "layoutMode": "sawtooth_cycles",
+    "colorTheme": "google_enterprise",
+    "hudMode": "scorecard",
+    "targetCalculationMode": "dataset_mean",
+    "referenceLineLabel": "Reorder Point (ROP)",
+    "safetyStockPct": 25,
+    "reorderPointPct": 50,
+    "showSafetyZone": true,
+    "showReorderLine": true,
+    "showReplenishmentPoints": true,
+    "showSearch": true,
+    "valueFormat": "compact_number"
+  }
+}

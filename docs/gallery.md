@@ -149,3 +149,8 @@ Interactive machine learning classifier evaluation suite rendering multi-modal R
 ### 35. Cell Tower Sector Azimuth & RF Polar Map
 Interactive 360° cellular radio frequency (RF) polar coverage map and antenna azimuth radiation pattern analyzer for 5G RAN operations, featuring multi-sector beam lobes, constellation scatter pins, concentric SLA benchmark rings, and Nokia AirScale telemetry.
 ![Cell Tower Sector Azimuth & RF Polar Map](../assets/screenshots/cell_tower_polar_coverage.png)
+
+### 36. Inventory Stockout Velocity & Reorder Sawtooth Chart
+Cyclical inventory depletion sawtooth curves and replenishment jump visualizer for retail and medical-surgical supply chains, featuring configurable Safety Stock floor zones, Reorder Point (ROP) benchmark thresholds, daily consumption velocity slope modeling, forward days-of-supply runways, and automated stockout breach hazard alerts.
+![Inventory Stockout Velocity & Reorder Sawtooth Chart](../assets/screenshots/inventory_stockout_sawtooth.png)
+

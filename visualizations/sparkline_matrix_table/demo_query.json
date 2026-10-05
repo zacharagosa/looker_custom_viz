@@ -19,11 +19,16 @@
   "limit": "12",
   "vis_config": {
     "type": "sparkline_matrix_table",
-    "colorTheme": "executive_slate",
+    "tableMode": "sparkline_matrix",
+    "colorTheme": "google_enterprise",
+    "hudMode": "scorecard",
+    "targetCalculationMode": "dataset_mean",
+    "referenceLineLabel": "Monthly Run-Rate Benchmark",
     "showSparklines": true,
     "showMicroBars": true,
     "showVarianceBadge": true,
     "showSearch": true,
-    "valueFormat": "compact_currency"
+    "valueFormat": "compact_currency",
+    "sortBy": "metric_desc"
   }
 }

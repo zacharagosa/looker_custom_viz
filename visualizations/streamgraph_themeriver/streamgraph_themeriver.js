@@ -53,6 +53,10 @@
 
   // Modern Looker & Enterprise Palettes
   var PALETTES = {
+    wellverse: {
+      name: "Wellverse",
+      colors: ["#143359", "#00AF68", "#2E7CF6", "#FFB500", "#7C5CFC", "#14B8A6", "#E5484D", "#94A3B8", "#1E467A", "#5FD3A0", "#8FB8F9", "#FFD166"]
+    },
     google_modern: {
       name: "Google Modern Spectrum",
       colors: ["#4285F4", "#34A853", "#FBBC04", "#EA4335", "#9334E6", "#00ACC1", "#FF7043", "#5C6BC0", "#00897B", "#D81B60", "#7CB342", "#8E24AA", "#039BE5", "#F4511E", "#3949AB"]
@@ -191,7 +195,8 @@
           { "Pacific Ocean Breeze": "ocean_breeze" },
           { "Sunset Aurora Ebb": "sunset_aurora" },
           { "Nordic Emerald & Moss": "emerald_forest" },
-          { "Cyberpunk Glow": "cyber_neon" }
+          { "Cyberpunk Glow": "cyber_neon" },
+          { "Wellverse": "wellverse" }
         ],
         default: "google_modern",
         section: "Style",

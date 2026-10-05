@@ -39,6 +39,23 @@
 (function () {
   // Theme Palettes
   var COLOR_THEMES = {
+    wellverse: {
+      name: "Wellverse",
+      // Tile labels are always white, so light tints are swapped for deeper Wellverse tones
+      colors: ["#143359", "#00AF68", "#2E7CF6", "#1E467A", "#7C5CFC", "#14B8A6", "#E5484D", "#FFB500", "#64748B", "#008C52", "#1D5FC4", "#0F766E"],
+      bg: "#ffffff",
+      text: "#0F172A",
+      subtext: "#64748B",
+      border: "#E2E8F0",
+      hudBg: "#F8FAFC",
+      tileBorder: "#ffffff",
+      breadcrumbBg: "#F8FAFC",
+      breadcrumbActive: "#143359",
+      searchBg: "#ffffff",
+      searchBorder: "#E2E8F0",
+      diverging: ["#E5484D", "#FFB500", "#00AF68"],
+      sequential: ["#EEF2F7", "#CDEFDD", "#7FD8AE", "#00AF68", "#143359"]
+    },
     google: {
       name: "Looker / Google Modern",
       colors: ["#4285F4", "#34A853", "#FBBC04", "#EA4335", "#9334E6", "#00ACC1", "#FF7043", "#5C6BC0", "#00897B", "#D81B60"],
@@ -277,7 +294,8 @@
           { "Executive Slate & Indigo": "executive_slate" },
           { "Emerald & Mint": "emerald_mint" },
           { "Sunset Ember": "sunset_ember" },
-          { "Cyberpunk Dark": "cyber_neon" }
+          { "Cyberpunk Dark": "cyber_neon" },
+          { "Wellverse": "wellverse" }
         ],
         section: "Style",
         order: 1

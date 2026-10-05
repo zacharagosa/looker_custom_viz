@@ -42,6 +42,25 @@
   }
 
   var PALETTES = {
+    wellverse: {
+      name: "Wellverse",
+      colors: ["#143359", "#00AF68", "#2E7CF6", "#FFB500", "#7C5CFC", "#14B8A6", "#E5484D", "#94A3B8", "#1E467A", "#5FD3A0", "#8FB8F9", "#FFD166"],
+      bg: "#ffffff",
+      cardBg: "#F8FAFC",
+      text: "#0F172A",
+      subtext: "#64748B",
+      border: "#E2E8F0",
+      grid: "#EEF2F7",
+      nodeFill: "#ffffff",
+      hudBg: "rgba(255, 255, 255, 0.96)",
+      glowColor: "rgba(20, 51, 89, 0.35)",
+      posBadgeBg: "#E6F7EF",
+      posBadgeText: "#006B40",
+      negBadgeBg: "#FDECEC",
+      negBadgeText: "#B42318",
+      neutralBadgeBg: "#EEF2F7",
+      neutralBadgeText: "#64748B"
+    },
     corporate_modern: {
       name: "Corporate Modern (Executive)",
       colors: ["#2563eb", "#0284c7", "#0d9488", "#10b981", "#8b5cf6", "#f59e0b", "#f43f5e", "#6366f1", "#ec4899", "#14b8a6", "#84cc16", "#e11d48"],
@@ -310,7 +329,8 @@
           { "Cyber Dark (NOC / Telemetry)": "cyber_dark" },
           { "Sunset Ember & Coral": "sunset_ember" },
           { "Emerald & Forest Wealth": "emerald_wealth" },
-          { "Monochromatic Slate & Steel": "monochromatic_steel" }
+          { "Monochromatic Slate & Steel": "monochromatic_steel" },
+          { "Wellverse": "wellverse" }
         ],
         default: "corporate_modern"
       },

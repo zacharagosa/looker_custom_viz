@@ -43,6 +43,20 @@
   }
 
   var PALETTES = {
+    wellverse: {
+      name: "Wellverse",
+      colors: ["#143359", "#00AF68", "#2E7CF6", "#FFB500", "#7C5CFC", "#14B8A6", "#E5484D", "#94A3B8", "#1E467A", "#5FD3A0", "#8FB8F9", "#FFD166"],
+      bg: "#ffffff",
+      cardBg: "#F8FAFC",
+      text: "#0F172A",
+      subtext: "#64748B",
+      border: "#E2E8F0",
+      linkDefault: "#CBD5E1",
+      linkHover: "#143359",
+      hudBg: "rgba(255, 255, 255, 0.94)",
+      nodeStroke: "#ffffff",
+      pulseColor: "#00AF68"
+    },
     corporate_blue: {
       name: "Google & Corporate Blue",
       colors: ["#1a73e8", "#12b5cb", "#e52592", "#f9ab00", "#1e8e3e", "#9334e6", "#e8710a", "#188038", "#4285f4", "#ea4335"],
@@ -297,7 +311,8 @@
           { "Vibrant Modern Neon": "vibrant_modern" },
           { "Emerald Forest & Teal": "emerald_teal" },
           { "Warm Amber & Sunset": "warm_amber" },
-          { "Dark Cyber NOC": "dark_cyber" }
+          { "Dark Cyber NOC": "dark_cyber" },
+          { "Wellverse": "wellverse" }
         ],
         default: "corporate_blue"
       },

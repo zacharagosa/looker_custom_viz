@@ -51,6 +51,30 @@
   }
 
   var THEMES = {
+    wellverse: {
+      name: "Wellverse",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#F8FAFC",
+      border: "#E2E8F0",
+      text: "#0F172A",
+      subtext: "#64748B",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#E2E8F0",
+      hudText: "#143359",
+      hudSubtext: "#64748B",
+      classA: "#143359",
+      classAGradient: ["#143359", "#1E467A"],
+      classB: "#00AF68",
+      classBGradient: ["#00AF68", "#5FD3A0"],
+      classC: "#94A3B8",
+      classCGradient: ["#94A3B8", "#CBD5E1"],
+      curveColor: "#FFB500",
+      thresholdColor: "#E5484D",
+      gridColor: "#EEF2F7",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#143359"
+    },
     modern_google: {
       name: "Modern Google",
       isDark: false,
@@ -309,7 +333,8 @@
           { "Emerald Teal (Green/Mint)": "emerald_teal" },
           { "Sunset Amber (Orange/Amber)": "sunset_amber" },
           { "Neon Cyber (Dark Mode)": "neon_cyber" },
-          { "Monochrome Slate (Neutral)": "monochrome_slate" }
+          { "Monochrome Slate (Neutral)": "monochrome_slate" },
+          { "Wellverse": "wellverse" }
         ],
         section: "Style",
         order: 1
