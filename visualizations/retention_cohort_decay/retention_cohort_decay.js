@@ -61,8 +61,29 @@
       benchmarkCurve: "#00f0ff",
       benchmarkRowBg: "rgba(0, 240, 255, 0.08)",
       benchmarkRowText: "#38bdf8",
+      positive: "#10b981",
+      negative: "#f43f5e",
       curveColors: ["#ff007f", "#00f0ff", "#a855f7", "#3b82f6", "#10b981", "#f59e0b", "#ec4899", "#06b6d4"],
       heatmapScale: ["#111827", "#1e1b4b", "#312e81", "#4338ca", "#6366f1", "#818cf8", "#00f0ff"]
+    },
+    google_enterprise: {
+      name: "Google Enterprise",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8f9fa",
+      border: "#dadce0",
+      headerBg: "#f1f3f4",
+      headerText: "#3c4043",
+      text: "#202124",
+      subtext: "#5f6368",
+      grid: "#e8eaed",
+      benchmarkCurve: "#1a73e8",
+      benchmarkRowBg: "#e8f0fe",
+      benchmarkRowText: "#1a73e8",
+      positive: "#34a853",
+      negative: "#ea4335",
+      curveColors: ["#1a73e8", "#34a853", "#fbbc04", "#ea4335", "#12b5cb", "#e37400", "#9334e6", "#4285f4"],
+      heatmapScale: ["#ffffff", "#e8f0fe", "#aecbfa", "#669df6", "#4285f4", "#1a73e8", "#174ea6"]
     },
     indigo_violet: {
       name: "Executive Indigo",
@@ -78,8 +99,29 @@
       benchmarkCurve: "#1e1b4b",
       benchmarkRowBg: "#eef2ff",
       benchmarkRowText: "#3730a3",
+      positive: "#10b981",
+      negative: "#ef4444",
       curveColors: ["#4f46e5", "#7c3aed", "#2563eb", "#0284c7", "#059669", "#d97706", "#dc2626", "#475569"],
       heatmapScale: ["#ffffff", "#eef2ff", "#c7d2fe", "#818cf8", "#4f46e5", "#3730a3", "#1e1b4b"]
+    },
+    modern_slate: {
+      name: "Modern Slate",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      headerBg: "#f1f5f9",
+      headerText: "#334155",
+      text: "#0f172a",
+      subtext: "#64748b",
+      grid: "#e2e8f0",
+      benchmarkCurve: "#0f172a",
+      benchmarkRowBg: "#f1f5f9",
+      benchmarkRowText: "#1e293b",
+      positive: "#10b981",
+      negative: "#ef4444",
+      curveColors: ["#3b82f6", "#64748b", "#0284c7", "#10b981", "#8b5cf6", "#f59e0b", "#ef4444", "#0f172a"],
+      heatmapScale: ["#ffffff", "#f1f5f9", "#cbd5e1", "#94a3b8", "#64748b", "#334155", "#0f172a"]
     },
     emerald_teal: {
       name: "Emerald Growth",
@@ -95,11 +137,13 @@
       benchmarkCurve: "#064e3b",
       benchmarkRowBg: "#d1fae5",
       benchmarkRowText: "#065f46",
+      positive: "#059669",
+      negative: "#dc2626",
       curveColors: ["#059669", "#0d9488", "#10b981", "#0284c7", "#6366f1", "#84cc16", "#eab308", "#14b8a6"],
       heatmapScale: ["#ffffff", "#ecfdf5", "#a7f3d0", "#34d399", "#10b981", "#059669", "#064e3b"]
     },
-    heat_flame: {
-      name: "Thermal Flame",
+    sunset_media: {
+      name: "Sunset Media",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#fffbeb",
@@ -112,27 +156,48 @@
       benchmarkCurve: "#7c2d12",
       benchmarkRowBg: "#ffedd5",
       benchmarkRowText: "#9a3412",
+      positive: "#059669",
+      negative: "#dc2626",
       curveColors: ["#ea580c", "#dc2626", "#b91c1c", "#d97706", "#ca8a04", "#c026d3", "#e11d48", "#f97316"],
       heatmapScale: ["#ffffff", "#fef3c7", "#fde68a", "#fca5a5", "#f87171", "#ef4444", "#991b1b"]
     },
-    slate_neutral: {
-      name: "Minimal Slate",
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f8fafc",
       border: "#e2e8f0",
-      headerBg: "#f1f5f9",
-      headerText: "#334155",
-      text: "#0f172a",
+      headerBg: "#eef2f7",
+      headerText: "#143359",
+      text: "#143359",
       subtext: "#64748b",
       grid: "#e2e8f0",
-      benchmarkCurve: "#0f172a",
-      benchmarkRowBg: "#f1f5f9",
-      benchmarkRowText: "#1e293b",
-      curveColors: ["#3b82f6", "#64748b", "#0284c7", "#10b981", "#8b5cf6", "#f59e0b", "#ef4444", "#0f172a"],
-      heatmapScale: ["#ffffff", "#f1f5f9", "#cbd5e1", "#94a3b8", "#64748b", "#334155", "#0f172a"]
+      benchmarkCurve: "#0284c7",
+      benchmarkRowBg: "#e0f2fe",
+      benchmarkRowText: "#0369a1",
+      positive: "#006B40",
+      negative: "#B42318",
+      curveColors: ["#0284c7", "#006B40", "#2563eb", "#d97706", "#7c3aed", "#0891b2", "#dc2626", "#143359"],
+      heatmapScale: ["#ffffff", "#eff6ff", "#bfdbfe", "#60a5fa", "#2563eb", "#1d4ed8", "#1e3a8a"]
     }
   };
+
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || list.length === 0) return null;
+    if (overrideVal) {
+      var trimmed = String(overrideVal).trim();
+      var idx = parseInt(trimmed, 10);
+      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+        return list[idx - 1];
+      }
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === trimmed || list[i].label === trimmed || list[i].label_short === trimmed) {
+          return list[i];
+        }
+      }
+    }
+    return list[defaultIdx] || list[0];
+  }
 
   function parseMonthOffset(activityStr, cohortStr) {
     if (!activityStr || !cohortStr) return null;
@@ -154,23 +219,49 @@
     return yDiff2 * 12 + mDiff2;
   }
 
-  function formatValue(val, formatType) {
+  function formatValue(val, formatType, lookerRendered) {
     if (val === null || val === undefined || isNaN(val)) return "-";
-    if (formatType === "percent") {
-      return (val).toFixed(1) + "%";
+    if (formatType === "auto" && lookerRendered) return lookerRendered;
+    var abs = Math.abs(val);
+    var sign = val < 0 ? "-" : "";
+
+    switch (formatType) {
+      case "percentage":
+      case "percent":
+        return sign + abs.toFixed(1) + "%";
+      case "compact_number":
+        if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
+        if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
+        if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+        return sign + (abs >= 10 ? Math.round(abs).toLocaleString() : abs.toFixed(1));
+      case "compact_currency":
+        if (abs >= 1e9) return sign + "$" + (abs / 1e9).toFixed(2) + "B";
+        if (abs >= 1e6) return sign + "$" + (abs / 1e6).toFixed(2) + "M";
+        if (abs >= 1e3) return sign + "$" + (abs / 1e3).toFixed(1) + "K";
+        return sign + "$" + abs.toFixed(abs % 1 === 0 ? 0 : 2);
+      case "decimal_2":
+        return sign + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      case "raw":
+        return String(val);
+      case "auto":
+      default:
+        if (lookerRendered) return lookerRendered;
+        if (abs >= 1e6) return sign + (abs / 1e6).toFixed(1) + "M";
+        if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+        return sign + (abs >= 10 ? Math.round(abs).toLocaleString() : abs.toFixed(1));
     }
-    if (val >= 1e6) return (val / 1e6).toFixed(1) + "M";
-    if (val >= 1e3) return (val / 1e3).toFixed(1) + "K";
-    return val.toLocaleString(undefined, { maximumFractionDigits: 1 });
   }
 
   var visObject = {
     id: "retention_cohort_decay",
     label: "Player & Customer Retention Cohort Decay",
     options: {
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       viewMode: {
         type: "string",
-        label: "View Mode",
+        label: "Retention View Mode",
         display: "select",
         values: [
           { "Triangular Heatmap Matrix": "heatmap" },
@@ -181,6 +272,34 @@
         default: "split_view",
         section: "Display",
         order: 1
+      },
+      cohortDimOverride: {
+        type: "string",
+        label: "Cohort Dimension Index/Name (1 = Col 1, e.g. Signup Month)",
+        default: "1",
+        section: "Display",
+        order: 2
+      },
+      periodDimOverride: {
+        type: "string",
+        label: "Period Dimension Index/Name (2 = Col 2, e.g. Activity Month / Day)",
+        default: "2",
+        section: "Display",
+        order: 3
+      },
+      measureOverride: {
+        type: "string",
+        label: "Primary Metric Measure Index/Name (1 = Measure 1, e.g. Retained Users)",
+        default: "1",
+        section: "Display",
+        order: 4
+      },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target Benchmark Measure Index/Name (Optional)",
+        default: "",
+        section: "Display",
+        order: 5
       },
       valueDisplay: {
         type: "string",
@@ -193,7 +312,7 @@
         ],
         default: "retention_pct",
         section: "Display",
-        order: 2
+        order: 6
       },
       periodZeroHandling: {
         type: "string",
@@ -206,56 +325,184 @@
         ],
         default: "index_100",
         section: "Display",
-        order: 3
+        order: 7
       },
-      showBenchmark: {
-        type: "boolean",
-        label: "Show Benchmark Row & Average Curve",
-        default: true,
-        section: "Display",
-        order: 4
-      },
-      showLabels: {
-        type: "boolean",
-        label: "Show Cell & Point Value Labels",
-        default: true,
-        section: "Display",
-        order: 5
-      },
-      showSearch: {
-        type: "boolean",
-        label: "Show Cohort Quick-Search Filter",
-        default: true,
-        section: "Display",
-        order: 6
-      },
-      cohortOrder: {
+      targetCalculationMode: {
         type: "string",
-        label: "Cohort Sort Order",
+        label: "Target / Benchmark Calculation Mode",
+        display: "select",
+        values: [
+          { "Dataset Mean (Weighted Average Retention)": "dataset_mean" },
+          { "Dataset Median": "dataset_median" },
+          { "Fixed Benchmark % Target": "fixed" },
+          { "Top Percentile P75 Target": "percentile_p75" },
+          { "Top Percentile P90 Target": "percentile_p90" },
+          { "Target Measure Column": "measure_column" }
+        ],
+        default: "dataset_mean",
+        section: "Display",
+        order: 8
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Benchmark Target % (when Fixed Mode, 0 = Auto)",
+        default: 0,
+        section: "Display",
+        order: 9
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Reference Line & Benchmark Label",
+        default: "Benchmark Average",
+        section: "Display",
+        order: 10
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Drop-Off Anomaly Alert Threshold (%)",
+        default: 20,
+        section: "Display",
+        order: 11
+      },
+      sortBy: {
+        type: "string",
+        label: "Cohort Sorting Order",
         display: "select",
         values: [
           { "Chronological (Oldest to Newest)": "asc" },
           { "Reverse Chronological (Newest to Oldest)": "desc" },
-          { "Cohort Size (Largest First)": "size_desc" }
+          { "Cohort Size (Largest First)": "size_desc" },
+          { "Retention Variance (Highest Outperformance)": "variance_desc" }
         ],
         default: "asc",
         section: "Display",
-        order: 7
+        order: 12
       },
-      colorTheme: {
+      topNLimit: {
+        type: "number",
+        label: "Top-N Cohorts Display Limit (0 = All)",
+        default: 0,
+        section: "Display",
+        order: 13
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Data Cells",
+        default: true,
+        section: "Display",
+        order: 14
+      },
+      hudMode: {
         type: "string",
-        label: "Color Theme",
+        label: "Executive Scorecard HUD Mode",
         display: "select",
         values: [
-          { "Cyberpunk Neon (Dark Mode)": "cyberpunk_neon" },
+          { "Full Scorecard HUD (Top Band)": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "hidden" }
+        ],
+        default: "scorecard",
+        section: "Display",
+        order: 15
+      },
+      showValueLabels: {
+        type: "string",
+        label: "Cell & Point Value Labels",
+        display: "select",
+        values: [
+          { "Show All Labels": "all" },
+          { "Peaks / Outliers Only": "peaks_only" },
+          { "Hidden": "hidden" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 16
+      },
+      showBenchmark: {
+        type: "boolean",
+        label: "Show Benchmark Row & Curve Overlay",
+        default: true,
+        section: "Display",
+        order: 17
+      },
+      showSearch: {
+        type: "boolean",
+        label: "Show Interactive Cohort Search Bar",
+        default: true,
+        section: "Display",
+        order: 18
+      },
+      customTitleOverride: {
+        type: "string",
+        label: "Custom Title Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      customSubtitleOverride: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 20
+      },
+
+      // ==========================================
+      // SECTION 2: STYLE (Strictly minimized tab)
+      // ==========================================
+      colorTheme: {
+        type: "string",
+        label: "Brand Palette Preset",
+        display: "select",
+        values: [
+          { "Google Enterprise": "google_enterprise" },
           { "Executive Indigo": "indigo_violet" },
+          { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Neon (Dark Mode)": "cyberpunk_neon" },
           { "Emerald Growth": "emerald_teal" },
-          { "Thermal Flame": "heat_flame" },
-          { "Minimal Slate": "slate_neutral" }
+          { "Sunset Media": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Custom Hex Override": "custom_override" }
         ],
         default: "indigo_violet",
         section: "Style",
         order: 1
+      },
+      customPrimaryHex: {
+        type: "string",
+        label: "Custom Primary Brand Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveHex: {
+        type: "string",
+        label: "Custom Positive / Retained Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeHex: {
+        type: "string",
+        label: "Custom Churn / Deficit Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity",
+        display: "select",
+        values: [
+          { "Higher is Better (Retention Rate, Retained Users)": "higher_is_better" },
+          { "Lower is Better (Churn Rate, Drop-Off Count)": "lower_is_better" }
+        ],
+        default: "higher_is_better",
+        section: "Style",
+        order: 5
       },
       curveSmoothing: {
         type: "string",
@@ -268,17 +515,45 @@
         ],
         default: "catmull_rom",
         section: "Style",
-        order: 2
+        order: 6
       },
       cellRadius: {
         type: "number",
         label: "Heatmap Cell Border Radius (px)",
         default: 4,
         section: "Style",
-        order: 3
+        order: 7
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography Font Scale",
+        display: "select",
+        values: [
+          { "Compact (High Density Dashboard)": "compact" },
+          { "Standard (Default)": "standard" },
+          { "Large Presentation (Executive Wallboard)": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 8
+      },
+      valueFormat: {
+        type: "string",
+        label: "Value Formatting Style",
+        display: "select",
+        values: [
+          { "Auto (Looker / Contextual)": "auto" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Compact Number (1.2M, 450K)": "compact_number" },
+          { "Compact Currency ($1.2M, $450K)": "compact_currency" },
+          { "Decimal (1,234.56)": "decimal_2" },
+          { "Raw Unformatted": "raw" }
+        ],
+        default: "auto",
+        section: "Style",
+        order: 9
       }
     },
-
     create: function (element, config) {
       this._element = element;
       this._setupResizeObserver(element);
@@ -456,10 +731,16 @@
       var cellRadius = config.cellRadius !== undefined ? config.cellRadius : 4;
       var smoothingMode = config.curveSmoothing || "catmull_rom";
 
-      // 1. Process Data & Compute Cohort Matrix
-      var cohortDim = dims[0] ? dims[0].name : null;
-      var activityDim = dims[1] ? dims[1].name : null;
-      var measureName = meas[0] ? meas[0].name : null;
+      // 1. Process Data & Compute Cohort Matrix with Field Overrides
+      var cohortDimObj = resolveField(dims, config.cohortDimOverride, 0);
+      var activityDimObj = (dims.length > 1) ? resolveField(dims, config.periodDimOverride, 1) : null;
+      var measureObj = resolveField(meas, config.measureOverride, 0);
+      var targetMeasureObj = config.targetMeasureOverride ? resolveField(meas, config.targetMeasureOverride, 1) : null;
+
+      var cohortDim = cohortDimObj ? cohortDimObj.name : null;
+      var activityDim = activityDimObj ? activityDimObj.name : null;
+      var measureName = measureObj ? measureObj.name : null;
+      var targetMeasureName = targetMeasureObj ? targetMeasureObj.name : null;
 
       // Map of cohorts: { [cohortKey]: { cohort: string, baseCount: number, periods: { [periodIdx]: count } } }
       var cohortsMap = {};
@@ -476,6 +757,9 @@
             var cellObj = row[measureName] ? row[measureName][piv.key] : null;
             if (cellObj && cellObj.value !== null && cellObj.value !== undefined) {
               var val = Number(cellObj.value);
+              if (config.suppressZeroNull && (val === 0 || isNaN(val))) {
+                return;
+              }
               cohortsMap[cKey].periods[pIdx] = val;
               if (pIdx > maxPeriodIndex) maxPeriodIndex = pIdx;
             }
@@ -483,23 +767,24 @@
         });
       } else if (activityDim && measureName) {
         // Case B: Unpivoted data (Cohort Dim, Activity Period Dim, Measure)
-        // Group by cohort and determine period index
         rawData.forEach(function (row) {
           var cKey = row[cohortDim] ? String(row[cohortDim].value) : "Unknown";
           var aVal = row[activityDim] ? String(row[activityDim].value) : null;
           var mVal = row[measureName] ? Number(row[measureName].value) : 0;
+
+          if (config.suppressZeroNull && (mVal === 0 || isNaN(mVal))) {
+            return;
+          }
 
           if (!cohortsMap[cKey]) {
             cohortsMap[cKey] = { cohort: cKey, periods: {}, rawRow: row };
           }
 
           var pOffset = null;
-          // Try numeric check first (e.g. 0, 1, 2 or D0, D1)
           var cleanNum = String(aVal).replace(/[^0-9]/g, "");
           if (cleanNum !== "" && !isNaN(cleanNum) && !String(aVal).includes("-")) {
             pOffset = parseInt(cleanNum, 10);
           } else {
-            // Try date month difference
             pOffset = parseMonthOffset(aVal, cKey);
           }
 
@@ -520,6 +805,9 @@
           meas.forEach(function (m, mIdx) {
             var val = row[m.name] ? Number(row[m.name].value) : null;
             if (val !== null) {
+              if (config.suppressZeroNull && (val === 0 || isNaN(val))) {
+                return;
+              }
               cohortsMap[cKey].periods[mIdx] = val;
               if (mIdx > maxPeriodIndex) maxPeriodIndex = mIdx;
             }
@@ -532,7 +820,6 @@
         var cObj = cohortsMap[k];
         var baseVal = cObj.periods[0] !== undefined ? cObj.periods[0] : 0;
         if (baseVal === 0) {
-          // If period 0 is empty, take first available period as base
           var firstAvailable = Object.keys(cObj.periods).sort(function (a, b) { return a - b; })[0];
           baseVal = firstAvailable !== undefined ? cObj.periods[firstAvailable] : 1;
         }
@@ -568,40 +855,68 @@
       }
 
       // Sort cohorts
-      if (cohortOrder === "asc") {
+      var sortMode = config.sortBy || config.cohortOrder || "asc";
+      if (sortMode === "asc") {
         cohortList.sort(function (a, b) { return a.cohort.localeCompare(b.cohort); });
-      } else if (cohortOrder === "desc") {
+      } else if (sortMode === "desc") {
         cohortList.sort(function (a, b) { return b.cohort.localeCompare(a.cohort); });
-      } else if (cohortOrder === "size_desc") {
+      } else if (sortMode === "size_desc") {
         cohortList.sort(function (a, b) { return b.baseCount - a.baseCount; });
+      } else if (sortMode === "variance_desc") {
+        cohortList.sort(function (a, b) {
+          var rateA = a.rates[maxPeriodIndex] || 0;
+          var rateB = b.rates[maxPeriodIndex] || 0;
+          return rateB - rateA;
+        });
       }
 
-      // 3. Compute Benchmark Averages for each period
+      // Top-N Cohorts Limiter
+      var topN = Number(config.topNLimit) || 0;
+      if (topN > 0 && cohortList.length > topN) {
+        cohortList = cohortList.slice(0, topN);
+      }
+
+      // 3. Compute Benchmark Rates according to targetCalculationMode
       var benchmarkRates = {};
       var benchmarkCounts = {};
       var startPeriod = periodZeroHandling === "hide_zero" ? 1 : 0;
+      var targetMode = config.targetCalculationMode || "dataset_mean";
+      var fixedTarget = Number(config.fixedTargetValue) || 0;
 
       for (var p = startPeriod; p <= maxPeriodIndex; p++) {
         var totalRetained = 0;
         var totalBase = 0;
-        var rateSum = 0;
-        var validCount = 0;
+        var validRates = [];
 
         cohortList.forEach(function (c) {
-          if (c.rates[p] !== null) {
+          if (c.rates[p] !== null && c.rates[p] !== undefined) {
             totalRetained += (c.rawCounts[p] || 0);
             totalBase += c.baseCount;
-            rateSum += c.rates[p];
-            validCount++;
+            validRates.push(c.rates[p]);
           }
         });
 
-        if (validCount > 0) {
-          // Weighted average retention
-          benchmarkRates[p] = totalBase > 0 ? (totalRetained / totalBase) * 100 : (rateSum / validCount);
-          benchmarkCounts[p] = totalRetained;
-        } else {
+        benchmarkCounts[p] = totalRetained;
+
+        if (validRates.length === 0) {
           benchmarkRates[p] = null;
+        } else if (targetMode === "fixed" && fixedTarget > 0) {
+          benchmarkRates[p] = fixedTarget;
+        } else if (targetMode === "dataset_median") {
+          validRates.sort(function (a, b) { return a - b; });
+          var mid = Math.floor(validRates.length / 2);
+          benchmarkRates[p] = validRates.length % 2 !== 0 ? validRates[mid] : (validRates[mid - 1] + validRates[mid]) / 2;
+        } else if (targetMode === "percentile_p75") {
+          validRates.sort(function (a, b) { return a - b; });
+          var idxP75 = Math.min(Math.floor(validRates.length * 0.75), validRates.length - 1);
+          benchmarkRates[p] = validRates[idxP75];
+        } else if (targetMode === "percentile_p90") {
+          validRates.sort(function (a, b) { return a - b; });
+          var idxP90 = Math.min(Math.floor(validRates.length * 0.90), validRates.length - 1);
+          benchmarkRates[p] = validRates[idxP90];
+        } else {
+          // Default: dataset_mean (weighted average)
+          benchmarkRates[p] = totalBase > 0 ? (totalRetained / totalBase) * 100 : d3.mean(validRates);
         }
       }
 
@@ -611,7 +926,27 @@
       this.container.style.color = theme.text;
       this.container.style.padding = "16px";
 
-      // Top Control Bar
+      // Typography scaling map
+      var fontScale = config.fontScale || "standard";
+      var fSizes = {
+        compact: { title: "13px", subtitle: "11px", hudNum: "13px", hudLbl: "9px", cell: "11px" },
+        standard: { title: "15px", subtitle: "12px", hudNum: "15px", hudLbl: "10px", cell: "12px" },
+        large: { title: "18px", subtitle: "13px", hudNum: "18px", hudLbl: "11px", cell: "13px" }
+      }[fontScale] || { title: "15px", subtitle: "12px", hudNum: "15px", hudLbl: "10px", cell: "12px" };
+
+      // Top Control Bar / Executive HUD
+      var hudMode = config.hudMode || "scorecard";
+      var totalBaseAll = cohortList.reduce(function (sum, c) { return sum + c.baseCount; }, 0);
+      var avgD1 = benchmarkRates[1] !== null && benchmarkRates[1] !== undefined ? benchmarkRates[1].toFixed(1) + "%" : "N/A";
+      var avgFinal = benchmarkRates[maxPeriodIndex] !== null && benchmarkRates[maxPeriodIndex] !== undefined ? benchmarkRates[maxPeriodIndex].toFixed(1) + "%" : "N/A";
+
+      // Drop-off anomaly check
+      var d1Val = benchmarkRates[1] || 100;
+      var dFinalVal = benchmarkRates[maxPeriodIndex] || 0;
+      var decayDrop = d1Val - dFinalVal;
+      var anomalyThreshold = Number(config.anomalyThresholdPct) || 20;
+      var isAnomaly = decayDrop > (100 - anomalyThreshold);
+
       var controlBar = document.createElement("div");
       controlBar.style.display = "flex";
       controlBar.style.alignItems = "center";
@@ -621,6 +956,10 @@
       controlBar.style.marginBottom = "16px";
       controlBar.style.paddingBottom = "12px";
       controlBar.style.borderBottom = "1px solid " + theme.border;
+
+      if (hudMode === "hidden") {
+        controlBar.style.display = showSearch ? "flex" : "none";
+      }
 
       // Title & KPI summary
       var titleContainer = document.createElement("div");
@@ -638,16 +977,74 @@
       titleBadge.style.background = theme.isDark ? "#1e293b" : "#e0e7ff";
       titleBadge.style.color = theme.isDark ? "#38bdf8" : "#4338ca";
 
-      var statsLabel = document.createElement("span");
-      statsLabel.style.fontSize = "13px";
-      statsLabel.style.color = theme.subtext;
-      var avgD1 = benchmarkRates[1] !== null && benchmarkRates[1] !== undefined ? benchmarkRates[1].toFixed(1) + "%" : "N/A";
-      var avgD30 = benchmarkRates[maxPeriodIndex] !== null && benchmarkRates[maxPeriodIndex] !== undefined ? benchmarkRates[maxPeriodIndex].toFixed(1) + "%" : "N/A";
-      statsLabel.innerHTML = "<strong>" + cohortList.length + "</strong> Cohorts &bull; Period 1 Avg: <strong>" + avgD1 + "</strong> &bull; Final Avg: <strong>" + avgD30 + "</strong>";
+      var defaultTitle = (cohortDimObj ? cohortDimObj.label_short || cohortDimObj.label : "Cohort") + " Lifecycle Decay Matrix";
+      var mainTitleText = config.customTitleOverride || defaultTitle;
+      var mainTitleEl = document.createElement("span");
+      mainTitleEl.style.fontSize = fSizes.title;
+      mainTitleEl.style.fontWeight = "700";
+      mainTitleEl.style.color = theme.text;
+      mainTitleEl.textContent = mainTitleText;
 
       titleContainer.appendChild(titleBadge);
-      titleContainer.appendChild(statsLabel);
-      controlBar.appendChild(titleContainer);
+      titleContainer.appendChild(mainTitleEl);
+
+      // Scorecard stats box
+      var statsBox = document.createElement("div");
+      statsBox.style.display = "flex";
+      statsBox.style.alignItems = "center";
+      statsBox.style.gap = "10px";
+      statsBox.style.flexWrap = "wrap";
+
+      function createHudCard(label, val, alertColor) {
+        var card = document.createElement("div");
+        card.style.background = theme.cardBg;
+        card.style.border = "1px solid " + theme.border;
+        card.style.borderRadius = "6px";
+        card.style.padding = hudMode === "compact_strip" ? "4px 8px" : "6px 12px";
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+
+        var lbl = document.createElement("span");
+        lbl.style.fontSize = fSizes.hudLbl;
+        lbl.style.textTransform = "uppercase";
+        lbl.style.letterSpacing = "0.05em";
+        lbl.style.color = theme.subtext;
+        lbl.textContent = label;
+
+        var v = document.createElement("span");
+        v.style.fontSize = fSizes.hudNum;
+        v.style.fontWeight = "700";
+        v.style.color = alertColor || theme.text;
+        v.textContent = val;
+
+        card.appendChild(lbl);
+        card.appendChild(v);
+        return card;
+      }
+
+      if (hudMode === "scorecard" || hudMode === "compact_strip") {
+        statsBox.appendChild(createHudCard("Cohorts", String(cohortList.length)));
+        statsBox.appendChild(createHudCard("Total Base Users", formatValue(totalBaseAll, config.valueFormat || "compact_number")));
+        statsBox.appendChild(createHudCard("Period 1 Benchmark", avgD1, theme.positive));
+        statsBox.appendChild(createHudCard("Final Period Avg", avgFinal, isAnomaly ? theme.negative : theme.text));
+      }
+
+      var leftBox = document.createElement("div");
+      leftBox.style.display = "flex";
+      leftBox.style.flexDirection = "column";
+      leftBox.style.gap = "6px";
+      leftBox.appendChild(titleContainer);
+      if (config.customSubtitleOverride) {
+        var subEl = document.createElement("div");
+        subEl.style.fontSize = fSizes.subtitle;
+        subEl.style.color = theme.subtext;
+        subEl.textContent = config.customSubtitleOverride;
+        leftBox.appendChild(subEl);
+      }
+      controlBar.appendChild(leftBox);
+      if (statsBox.children.length > 0) {
+        controlBar.appendChild(statsBox);
+      }
 
       // Search bar
       if (showSearch) {
@@ -666,14 +1063,14 @@
 
         var searchInput = document.createElement("input");
         searchInput.type = "text";
-        searchInput.placeholder = "Filter cohorts (e.g. 2026-04)...";
+        searchInput.placeholder = "Filter cohorts...";
         searchInput.value = this.searchTerm;
         searchInput.style.border = "none";
         searchInput.style.outline = "none";
         searchInput.style.background = "transparent";
         searchInput.style.color = theme.text;
         searchInput.style.fontSize = "12px";
-        searchInput.style.width = "180px";
+        searchInput.style.width = "160px";
 
         searchInput.addEventListener("input", function (e) {
           self.searchTerm = e.target.value;
@@ -778,7 +1175,7 @@
         matrixTitle.appendChild(displayBadge);
         matrixCard.appendChild(matrixTitle);
 
-        this.renderHeatmapTable(d3, matrixCard, cohortList, benchmarkRates, startPeriod, maxPeriodIndex, theme, valueDisplay, showBenchmark, cellRadius, showLabels);
+        this.renderHeatmapTable(d3, matrixCard, cohortList, benchmarkRates, startPeriod, maxPeriodIndex, theme, valueDisplay, showBenchmark, cellRadius, showLabels, config);
         contentArea.appendChild(matrixCard);
       }
     },
@@ -968,7 +1365,7 @@
       }
     },
 
-    renderHeatmapTable: function (d3, container, cohortList, benchmarkRates, startPeriod, maxPeriodIndex, theme, valueDisplay, showBenchmark, cellRadius, showLabels) {
+    renderHeatmapTable: function (d3, container, cohortList, benchmarkRates, startPeriod, maxPeriodIndex, theme, valueDisplay, showBenchmark, cellRadius, showLabels, config) {
       var self = this;
       var table = document.createElement("table");
       table.style.width = "100%";
@@ -1066,7 +1463,7 @@
 
             var displayText = "-";
             if (valueDisplay === "raw_count") {
-              displayText = formatValue(count, "compact");
+              displayText = formatValue(count, (config && config.valueFormat) || "compact_number");
             } else if (valueDisplay === "delta_benchmark") {
               var bench = benchmarkRates[p] || 0;
               var delta = rate - bench;
@@ -1078,7 +1475,15 @@
               if (rate === 100 && p === 0) displayText = "100%";
             }
 
-            tdCell.textContent = showLabels ? displayText : "";
+            var labelMode = (config && config.showValueLabels) || (showLabels ? "all" : "hidden");
+            if (labelMode === "hidden") {
+              tdCell.textContent = "";
+            } else if (labelMode === "peaks_only") {
+              var isPeakOrTrough = (rate >= 80 || rate <= 15);
+              tdCell.textContent = isPeakOrTrough ? displayText : "";
+            } else {
+              tdCell.textContent = displayText;
+            }
 
             // Tooltip events
             (function (dataPoint, cohortObj) {

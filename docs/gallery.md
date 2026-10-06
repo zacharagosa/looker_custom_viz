@@ -154,3 +154,7 @@ Interactive 360° cellular radio frequency (RF) polar coverage map and antenna a
 Cyclical inventory depletion sawtooth curves and replenishment jump visualizer for retail and medical-surgical supply chains, featuring configurable Safety Stock floor zones, Reorder Point (ROP) benchmark thresholds, daily consumption velocity slope modeling, forward days-of-supply runways, and automated stockout breach hazard alerts.
 ![Inventory Stockout Velocity & Reorder Sawtooth Chart](../assets/screenshots/inventory_stockout_sawtooth.png)
 
+### 37. Multi-Touch Marketing Attribution & Path Analyzer
+Enterprise-grade multi-touch marketing attribution suite and cross-channel conversion path visualizer for media and ad-ops analytics, comparing 5 algorithmic models (First-Touch, Last-Touch, Linear, Time-Decay half-life, and Markov Chain / Shapley game theory) alongside multi-hop touchpoint Sankey flows and ROAS efficiency frontier scatter.
+![Multi-Touch Marketing Attribution & Path Analyzer](../assets/screenshots/multi_touch_attribution_pathway.png)
+

@@ -65,6 +65,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**ROC / PR & Confusion Matrix Classifier Evaluator**](visualizations/roc_curve_evaluator/)<br>`roc_curve_evaluator` | Statistical, ML & Forecasting | 1 Threshold dim + 4–9 classification measures | [📸 View](assets/screenshots/roc_curve_evaluator.png) |
 | [**Cell Tower Sector Azimuth & RF Polar Map**](visualizations/cell_tower_polar_coverage/)<br>`cell_tower_polar_coverage` | Telecom, Cloud & SecOps | 1 Site dim + 1–2 measures (Throughput + Latency) | [📸 View](assets/screenshots/cell_tower_polar_coverage.png) |
 | [**Inventory Stockout Velocity & Reorder Sawtooth Chart**](visualizations/inventory_stockout_sawtooth/)<br>`inventory_stockout_sawtooth` | Retail, Supply Chain & FinOps | 1 Date dim + 0–1 Facility dim + 1–3 measures | [📸 View](assets/screenshots/inventory_stockout_sawtooth.png) |
+| [**Multi-Touch Attribution & Path Analyzer**](visualizations/multi_touch_attribution_pathway/)<br>`multi_touch_attribution_pathway` | Media, Broadcast & Ad-Ops | 1 Channel dim + 0–1 Sub-Channel + 1–2 measures | [📸 View](assets/screenshots/multi_touch_attribution_pathway.png) |
 
 ---
 

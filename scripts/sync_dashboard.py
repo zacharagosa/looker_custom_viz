@@ -49,6 +49,7 @@ VOL2_VIZ_MAP = {
     "game_economy_faucet_sink": "🎮 Gaming & Telemetry",
     "broadcast_daypart_grid": "🎬 Media, Broadcast & Ad-Ops",
     "ad_reach_frequency_curve": "🎬 Media, Broadcast & Ad-Ops",
+    "multi_touch_attribution_pathway": "🎬 Media, Broadcast & Ad-Ops",
     "network_topology_graph": "📡 Telecom, Cloud & SecOps",
     "mitre_attack_matrix": "📡 Telecom, Cloud & SecOps",
     "cell_tower_polar_coverage": "📡 Telecom, Cloud & SecOps",
@@ -140,8 +141,10 @@ VIZ_EMOJI_MAP = {
     "marimekko_market_matrix": "🧱",
     "roc_curve_evaluator": "📈",
     "cell_tower_polar_coverage": "📡",
-    "inventory_stockout_sawtooth": "📦"
+    "inventory_stockout_sawtooth": "📦",
+    "multi_touch_attribution_pathway": "🎬"
 }
+
 
 
 def get_headers(profile="default"):

@@ -70,19 +70,38 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Dual Synchronized Split View` | `split_view`, `heatmap`, `decay_curves`, `churn_waterfall` |
+| `cohortDimOverride` | String | `1` | Primary Cohort Dimension index (1 = Col 1) or field name override |
+| `periodDimOverride` | String | `2` | Activity Period Dimension index (2 = Col 2) or field name override |
+| `measureOverride` | String | `1` | Primary Metric Measure index (1 = Measure 1) or field name override |
+| `targetMeasureOverride` | String | `""` | Optional Target/Benchmark Measure index or field name override |
 | `valueDisplay` | Select | `Retention Rate (%)` | `retention_pct`, `raw_count`, `delta_benchmark` |
 | `periodZeroHandling` | Select | `Index Period 0 to 100%` | `index_100`, `hide_zero`, `as_is` |
-| `showBenchmark` | Boolean | `true` | Display Benchmark Average row and dashed curve |
-| `showLabels` | Boolean | `true` | Show cell and point numeric values |
-| `showSearch` | Boolean | `true` | Enable top cohort quick-search filter input |
-| `cohortOrder` | Select | `Chronological (Oldest first)` | `asc`, `desc`, `size_desc` |
+| `targetCalculationMode` | Select | `Dataset Mean` | Benchmark calculation: `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90`, `measure_column` |
+| `fixedTargetValue` | Number | `0` | Fixed Benchmark Target % (when Fixed mode selected) |
+| `referenceLineLabel` | String | `Benchmark Average` | Reference benchmark line and matrix row label |
+| `anomalyThresholdPct` | Number | `20` | Drop-off anomaly alert threshold (%) |
+| `sortBy` | Select | `Chronological (Oldest first)` | Cohort sorting: `asc`, `desc`, `size_desc`, `variance_desc` |
+| `topNLimit` | Number | `0` | Top-N cohorts display limit (0 = all) |
+| `suppressZeroNull` | Boolean | `true` | Suppress zero or null data cells from rendering |
+| `hudMode` | Select | `Full Scorecard HUD` | Executive KPI HUD: `scorecard`, `compact_strip`, `hidden` |
+| `showValueLabels` | Select | `Show All Labels` | Label density: `all`, `peaks_only`, `hidden` |
+| `showBenchmark` | Boolean | `true` | Display Benchmark Average row and dashed curve overlay |
+| `showSearch` | Boolean | `true` | Enable top cohort interactive quick-search filter input |
+| `customTitleOverride` | String | `""` | Executive scorecard title override |
+| `customSubtitleOverride` | String | `""` | Executive scorecard subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `colorTheme` | Select | `Executive Indigo` | `indigo_violet`, `cyberpunk_neon`, `emerald_teal`, `heat_flame`, `slate_neutral` |
-| `curveSmoothing` | Select | `Smooth Catmull-Rom` | `catmull_rom`, `monotone`, `linear` |
+| `colorTheme` | Select | `Executive Indigo` | Palette preset: `google_enterprise`, `indigo_violet`, `modern_slate`, `cyberpunk_neon`, `emerald_teal`, `sunset_media`, `wellverse_healthcare`, `custom_override` |
+| `customPrimaryHex` | Color | `""` | Custom primary brand color override |
+| `customPositiveHex` | Color | `""` | Custom positive / retained status color override |
+| `customNegativeHex` | Color | `""` | Custom churn / deficit status color override |
+| `metricPolarity` | Select | `Higher is Better` | Polarity: `higher_is_better` vs `lower_is_better` |
+| `curveSmoothing` | Select | `Smooth Catmull-Rom` | Curve interpolation: `catmull_rom`, `monotone`, `linear` |
 | `cellRadius` | Number | `4` | Heatmap cell border radius in pixels |
+| `fontScale` | Select | `Standard` | Typography scale: `compact`, `standard`, `large` |
+| `valueFormat` | Select | `Auto` | Formatting style: `auto`, `percentage`, `compact_number`, `compact_currency`, `decimal_2`, `raw` |
 
 ---
 
@@ -96,3 +115,4 @@ visualization: {
   dependencies: ["https://d3js.org/d3.v7.min.js"]
 }
 ```
+

@@ -203,7 +203,9 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/retention_cohort_decay/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/player_retention_curve?qid=LKVEkOFks6EqS4jXDYxCsv&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/player_retention_curve?fields=player_retention_curve.cohort_week,player_retention_curve.retention_day,player_retention_curve.retained_players&sorts=player_retention_curve.cohort_week+asc,player_retention_curve.retention_day+asc&limit=500&vis=%7B%22type%22%3A%22retention_cohort_decay%22%2C%22viewMode%22%3A%22split_view%22%2C%22valueDisplay%22%3A%22retention_pct%22%2C%22periodZeroHandling%22%3A%22index_100%22%2C%22showBenchmark%22%3Atrue%2C%22showLabels%22%3Atrue%2C%22colorTheme%22%3A%22indigo_violet%22%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-06"
   },
   {
     "id": "broadcast_daypart_grid",
@@ -1137,5 +1139,38 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-05",
     "looker_demo_url": "/explore/thelook/inventory_snapshot?fields=inventory_snapshot.snapshot_date,distribution_centers.name,inventory_snapshot.total_in_stock,inventory_snapshot.stock_coverage_ratio,inventory_snapshot.eoh_cost_total&f[inventory_snapshot.snapshot_date]=30+days&f[distribution_centers.name]=Memphis+TN&sorts=inventory_snapshot.snapshot_date+asc&limit=35&vis=%7B%22type%22%3A%22inventory_stockout_sawtooth%22%2C%22layoutMode%22%3A%22sawtooth_cycles%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Reorder+Point+%28ROP%29%22%2C%22safetyStockPct%22%3A25%2C%22reorderPointPct%22%3A50%2C%22showSafetyZone%22%3Atrue%2C%22showReorderLine%22%3Atrue%2C%22showReplenishmentPoints%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "multi_touch_attribution_pathway",
+    "name": "Multi-Touch Attribution & Path Analyzer",
+    "date_added": "2026-10-06",
+    "library": "D3.js v7",
+    "category": "Media, Broadcast & Ad-Ops",
+    "description": "Executive multi-touch marketing attribution and media exposure pathway analyzer comparing 5 algorithmic credit models (First-Touch, Last-Touch, Linear, Time-Decay, Markov/Shapley), multi-hop touchpoint transition flows, and campaign ROAS efficiency matrices.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Primary Channel/Network dimension (broadcast_programming.network) + Optional Sub-Channel/Daypart (ad_spot_airings.daypart)",
+      "measures": "1 Spend measure (ad_spot_airings.total_spend_mxn) + Optional Conversions/GRPs measure (nielsen_ratings_markets.total_grps)"
+    },
+    "suggested_dataset": {
+      "model": "tvun_media_analytics",
+      "explore": "ad_spot_airings",
+      "fields": [
+        "broadcast_programming.network",
+        "broadcast_programming.genre",
+        "ad_spot_airings.daypart",
+        "ad_spot_airings.total_spend_mxn",
+        "nielsen_ratings_markets.total_grps",
+        "ad_spot_airings.total_airing_spots"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-06",
+    "screenshot": "visualizations/multi_touch_attribution_pathway/screenshot.png",
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,ad_spot_airings.daypart,ad_spot_airings.total_spend_mxn,nielsen_ratings_markets.total_grps,ad_spot_airings.total_airing_spots&sorts=ad_spot_airings.total_spend_mxn+desc&limit=500&vis=%7B%22type%22%3A%22multi_touch_attribution_pathway%22%2C%22layoutMode%22%3A%22attribution_comparison%22%2C%22colorPalette%22%3A%22sunset_media%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Target+ROAS+%2F+GRP+Benchmark%22%2C%22showValueLabels%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
   }
 ]
