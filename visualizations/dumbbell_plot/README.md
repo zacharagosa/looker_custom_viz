@@ -10,7 +10,7 @@ Dumbbell plots are championed by data visualization leaders (Stephen Few, Edward
 
 ## 📸 Key Features
 
-- **Dynamic Field-Role Mapping (`Display`)**: Remap primary dimension, baseline measure Point A, and comparison measure Point B by 1-based column index or field name without modifying Looker Explore field ordering.
+- **Dynamic Field-Role Mapping (`Display`)**: Remap primary dimension, baseline measure Point A, and comparison measure Point B from dropdowns dynamically populated with the query's actual fields without modifying Looker Explore field ordering.
 - **Configurable Target & Benchmark Modes (`Display`)**:
   - `second_measure`: Direct Point B comparison from query.
   - `multiplier`: Percentage multiplier of Baseline Point A (e.g. 115%).
@@ -49,9 +49,9 @@ Dumbbell plots are championed by data visualization leaders (Stephen Few, Edward
 ## ⚙️ Configuration Options (Strictly 2 Sections)
 
 ### Section: `Display`
-- `dimFieldOverride`: Category Dimension Index or Name (1 = Col 1)
-- `measureFieldAOverride`: Point A Baseline Measure Index or Name (1 = Col 1)
-- `measureFieldBOverride`: Point B Comparison Measure Index or Name (2 = Col 2)
+- `dimFieldOverride`: Category Dimension (dropdown)
+- `measureFieldAOverride`: Point A Baseline Measure (dropdown)
+- `measureFieldBOverride`: Point B Comparison Measure (dropdown)
 - `targetCalculationMode`: Comparison Target Calculation Mode (`second_measure`, `multiplier`, `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`)
 - `targetMultiplier`: Target Multiplier when Mode is Multiplier (default: `1.15`)
 - `fixedTargetValue`: Fixed Static Target Value (0 = Auto)

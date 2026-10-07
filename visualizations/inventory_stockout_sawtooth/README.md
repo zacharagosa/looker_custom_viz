@@ -15,7 +15,7 @@ Resolves Buganizer Cloud Blockers (`b/449635128`, `b/503077532`) and retail/hosp
   - `Consumption Velocity & Days-of-Supply Runway`: Daily burn-rate / consumption velocity bars ($v = \Delta \text{units} / \Delta t$) alongside forward supply runway health indicators.
   - `Replenishment Batch & Lead-Time Variance`: Evaluates order receipt batch volumes against Par targets, highlighting receipt shortfalls and supply surpluses.
   - `Par Capacity & Inventory Target Divergence`: Divergence waterfall comparing current on-hand levels against maximum capacity par benchmarks.
-- **Dynamic Field-Role Mapping**: Map Date, Facility/Location/SKU, Inventory On-Hand Units, Coverage Ratio / Days of Supply, and Inventory Cost Valuation via 1-based indices or field names directly from Edit Viz.
+- **Dynamic Field-Role Mapping**: Map Date, Facility/Location/SKU, Inventory On-Hand Units, Coverage Ratio / Days of Supply, and Inventory Cost Valuation via dropdowns automatically populated with the dimensions and measures in the live query directly from Edit Viz.
 - **Configurable Safety Stock & Reorder Benchmarks**: Define Safety Stock floors and Reorder Points (ROP) dynamically using `Peak Observed Inventory`, `Dataset Mean`, `Dataset Median`, `Percentile P90`, or `Fixed Static Target Value`.
 - **Replenishment Receipt & Stockout Hazard Nodes**: Highlights order receipt events with green jump markers and flags stockout hazard breaches (inventory dipping below safety stock or hitting zero) with red alert rings.
 - **Executive Scorecard HUD**: Integrated top executive scorecard featuring 5 KPI cards (`Current On-Hand Units`, `Inventory Valuation`, `Stock Coverage Days`, `Reorder Point (ROP)`, and `Stockout Breaches`) or a `Compact Metric Strip`.
@@ -53,11 +53,11 @@ Supports standard inventory snapshot and stock telemetry queries:
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `layoutMode` | Select | `Inventory Sawtooth Depletion Cycles` | Visual layout mode (`sawtooth_cycles`, `stockout_velocity`, `replenishment_variance`, `inventory_par_divergence`) |
-| `dateFieldOverride` | String | `1` | 1-based index or field name for date dimension |
-| `entityFieldOverride` | String | `2` | 1-based index or field name for facility/SKU dimension |
-| `inventoryMeasureOverride` | String | `1` | 1-based index or field name for primary inventory units measure |
-| `coverageMeasureOverride` | String | `2` | 1-based index or field name for coverage ratio / days of supply measure |
-| `costMeasureOverride` | String | `3` | 1-based index or field name for inventory valuation measure |
+| `dateFieldOverride` | Select | `Auto` | Dropdown of query fields for date dimension |
+| `entityFieldOverride` | Select | `Auto` | Dropdown of query fields for facility/SKU dimension |
+| `inventoryMeasureOverride` | Select | `Auto` | Dropdown of query fields for primary inventory units measure |
+| `coverageMeasureOverride` | Select | `Auto` | Dropdown of query fields for coverage ratio / days of supply measure |
+| `costMeasureOverride` | Select | `Auto` | Dropdown of query fields for inventory valuation measure |
 | `safetyStockPct` | Number | `25` | Safety Stock floor percentage relative to Par target |
 | `reorderPointPct` | Number | `50` | Reorder Point (ROP) threshold percentage relative to Par target |
 | `targetCalculationMode` | Select | `Dataset Mean On-Hand` | Target calculation mode (`peak_observed`, `dataset_mean`, `dataset_median`, `percentile_p90`, `fixed`) |

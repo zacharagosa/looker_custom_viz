@@ -14,7 +14,7 @@ Standard Looker tables struggle to display multi-period performance without spre
   - `Sparkline Matrix` (Default): In-cell SVG trend sparklines + volume micro bullet bars + period growth percentage delta pills.
   - `Heatmap Matrix`: Dense color-intensity heatmap matrix across pivot periods or metrics with contrast-adjusted text values.
   - `Compact Scorecard`: Executive KPI scorecard with performance status badges (`Top Performer`, `On Target`, `SLA Breach`), share-of-volume bars, and ranks.
-- **Dynamic Field-Role Mapping**: Re-map Primary Group Dimension, Pivot Period Dimension, Primary Measure, and Secondary Comparison Measure via 1-based indices (`1`, `2`) or field names directly from the Edit Viz modal without altering LookML query column order.
+- **Dynamic Field-Role Mapping**: Re-map Primary Group Dimension, Pivot Period Dimension, Primary Measure, and Secondary Comparison Measure via dropdowns automatically populated with the dimensions and measures in the live query, directly from the Edit Viz modal without altering LookML query column order.
 - **Configurable Benchmark Targets & Reference Lines**: Calculate targets dynamically via `Dataset Mean`, `Dataset Median`, `Top Percentile P75/P90`, `Multiplier of Baseline (e.g. 115%)`, `Fixed Static Target Value`, or `Secondary Measure Column`. Computes row-level variance, attainment %, and highlights variance anomalies breaching SLA thresholds.
 - **Executive Scorecard HUD**: Integrated top executive scorecard featuring 5 high-density cards (`Total Volume`, `Average Run-Rate`, `Benchmark Target`, `Top Contributor`, and `Variance Alerts`) or a `Compact Metric Strip`.
 - **Flexible Sorting, Top-N Bucketing & Null Suppression**: Sort by `Metric Total Descending`, `Metric Total Ascending`, `Item Name (A-Z)`, or `Variance vs Target`. Group remaining rows into an automatic `'Other (N items)'` rollup summary with summed totals and averaged trend points.
@@ -61,10 +61,10 @@ Supports two distinct query structures:
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `tableMode` | Select | `Sparkline Matrix` | Display mode (`sparkline_matrix`, `heatmap_grid`, `compact_scorecard`) |
-| `dimFieldOverride` | String | `1` | 1-based index or field name for primary grouping dimension |
-| `pivotFieldOverride` | String | `1` | 1-based index or field name for pivot period dimension |
-| `measureFieldOverride` | String | `1` | 1-based index or field name for primary metric measure |
-| `secondaryMeasureOverride` | String | `2` | 1-based index or field name for secondary / target measure |
+| `dimFieldOverride` | Select | `Auto` | Dropdown of query fields for primary grouping dimension |
+| `pivotFieldOverride` | Select | `Auto` | Dropdown of query fields for pivot period dimension |
+| `measureFieldOverride` | Select | `Auto` | Dropdown of query fields for primary metric measure |
+| `secondaryMeasureOverride` | Select | `Auto` | Dropdown of query fields for secondary / target measure |
 | `targetCalculationMode` | Select | `Dataset Mean` | Target benchmark mode (`none`, `second_measure`, `multiplier`, `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`) |
 | `targetMultiplier` | Number | `1.15` | Multiplier when calculation mode is set to multiplier |
 | `fixedTargetValue` | Number | `0` | Static benchmark target value |

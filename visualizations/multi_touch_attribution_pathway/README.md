@@ -22,7 +22,7 @@ This visualization provides a multi-modal attribution suite designed specificall
   - `Touchpoint Transition Flow (Sankey Ribbons)`: Dynamic multi-hop flow diagram connecting ad spend touchpoints (Left) to conversion outcomes and broadcast programming dayparts (Right).
   - `Campaign ROAS & Efficiency Matrix`: Scatter matrix plotting Ad Spend ($) against Attributed Conversions/GRPs, with interactive circle radiuses, channel hover cards, and a prominent Target ROAS slope benchmark line.
 - **Dynamic Field-Role Mapping**:
-  - Re-map which query columns drive Channel, Sub-Channel/Daypart, Spend, and Conversions using 1-based index or column name overrides.
+  - Re-map which query columns drive Channel, Sub-Channel/Daypart, Spend, and Conversions using dropdowns automatically populated with the dimensions and measures in the live query.
 - **Executive Scorecard HUD**:
   - Top scorecard band featuring Total Ad Spend, Total Attributed Conversions/GRPs, Top Spender, and Maximum Attribution Model Variance delta (with automated alert badges).
 - **Domain-Authentic Media & Broadcast Data**:
@@ -55,10 +55,10 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `layoutMode` | Select | `Multi-Model Attribution Comparison` | `attribution_comparison`, `touchpoint_sankey`, `campaign_efficiency_matrix` |
-| `touchpointDimOverride` | String | `1` | Primary Channel Dimension index (1 = Col 1) or field name override |
-| `stageDimOverride` | String | `2` | Sub-Channel/Daypart Dimension index (2 = Col 2) or field name override |
-| `spendMeasureOverride` | String | `1` | Spend Measure index (1 = Measure 1) or field name override |
-| `conversionMeasureOverride` | String | `2` | Conversions/GRPs Measure index (2 = Measure 2) or field name override |
+| `touchpointDimOverride` | Select | `Auto` | Primary Channel Dimension index (1 = Col 1) or field name override |
+| `stageDimOverride` | Select | `Auto` | Sub-Channel/Daypart Dimension index (2 = Col 2) or field name override |
+| `spendMeasureOverride` | Select | `Auto` | Spend Measure index (1 = Measure 1) or field name override |
+| `conversionMeasureOverride` | Select | `Auto` | Conversions/GRPs Measure index (2 = Measure 2) or field name override |
 | `targetMode` | Select | `Dataset Mean` | Benchmark calculation: `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90` |
 | `fixedTargetValue` | Number | `0` | Fixed benchmark target ratio (when Fixed mode selected) |
 | `referenceLineLabel` | String | `Benchmark Target` | Reference line and scorecard benchmark label |
@@ -70,8 +70,8 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `showValueLabels` | Select | `Show All Labels` | Label density: `all`, `peaks_only`, `hidden` |
 | `showLegend` | Boolean | `true` | Display attribution model and channel color legend |
 | `showSearch` | Boolean | `true` | Enable interactive quick-search filter bar |
-| `customTitleOverride` | String | `""` | Executive scorecard title override |
-| `customSubtitleOverride` | String | `""` | Executive scorecard subtitle override |
+| `customTitleOverride` | Select | `Auto / None` | Executive scorecard title override |
+| `customSubtitleOverride` | Select | `Auto / None` | Executive scorecard subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |

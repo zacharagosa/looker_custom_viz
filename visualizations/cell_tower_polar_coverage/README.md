@@ -14,7 +14,7 @@ Specifically designed for Telecommunications, 5G RAN Network Operations (Nokia A
   - `Omni 360° Radar Sectors (Radiation Lobes)`: Smooth directional antenna radiation lobes radiating from the center outward, showing beamwidth spread, sector orientations (Sector Alpha 0° North, Beta 120° SE, Gamma 240° SW), and signal reach.
   - `Polar Constellation & Scatter Pins`: Coordinate mapping where angle $\theta$ represents azimuth compass bearing (0°–360°) and radius $r$ represents throughput / transmission distance, with secondary metric sizing and peak site halos.
   - `Azimuth Sector Heat Grid`: 12 Compass sectors $\times 4$ concentric radial distance tiers (48 polar bins) for high-density spatial RF signal distribution.
-- **Dynamic Field-Role Mapping (`Display`)**: Remap site dimension, azimuth angle dimension, primary RF metric, and secondary latency/load metric by 1-based column index or field name without modifying Looker Explore column ordering.
+- **Dynamic Field-Role Mapping (`Display`)**: Remap site dimension, azimuth angle dimension, primary RF metric, and secondary latency/load metric from dropdowns dynamically populated with the query's actual fields without modifying Looker Explore column ordering.
 - **5G SLA Benchmark Rings & Anomaly Alerts (`Display`)**:
   - Concentric dashed SLA benchmark ring rendered at customizable targets (`fixed` e.g. 500 Mbps, `dataset_mean`, `percentile_p75`, `percentile_p90`, or `second_measure`).
   - Automated anomaly alerts when a sector's variance drops below SLA goal beyond the threshold percentage.
@@ -51,7 +51,7 @@ Specifically designed for Telecommunications, 5G RAN Network Operations (Nokia A
 
 ### Section: `Display`
 - `polarMode`: Polar Visual Paradigm Mode (`omni_radar`, `polar_scatter`, `azimuth_heatmap`)
-- `siteFieldOverride`: Site Dimension Index or Name (1 = Col 1)
+- `siteFieldOverride`: Site Dimension (dropdown)
 - `sectorAngleOverride`: Azimuth Angle / Bearing Dimension (or Auto Compass)
 - `primaryMeasureOverride`: Primary RF Measure (1 = Col 1)
 - `secondaryMeasureOverride`: Secondary Measure (2 = Col 2)

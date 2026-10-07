@@ -155,38 +155,48 @@
         order: 1
       },
       dimFieldOverride: {
-        type: 'string',
-        label: 'Date Dimension Index or Name (1 = Col 1)',
-        default: '1',
-        section: 'Display',
+        type: "string",
+        label: "Date Dimension",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
         order: 2
       },
       seriesDimOverride: {
-        type: 'string',
-        label: 'Series / Partition Dimension (Optional)',
-        default: '2',
-        section: 'Display',
+        type: "string",
+        label: "Series / Partition Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
         order: 3
       },
       measureFieldOverride: {
-        type: 'string',
-        label: 'Metric / Forecast Measure (1 = Measure 1)',
-        default: '1',
-        section: 'Display',
+        type: "string",
+        label: "Metric / Forecast Measure",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
         order: 4
       },
       lowerBoundOverride: {
-        type: 'string',
-        label: 'Lower Bound Measure (Optional, e.g. Col 2)',
-        default: '2',
-        section: 'Display',
+        type: "string",
+        label: "Lower Bound Measure (Optional, e.g. Col 2)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
         order: 5
       },
       upperBoundOverride: {
-        type: 'string',
-        label: 'Upper Bound Measure (Optional, e.g. Col 3)',
-        default: '3',
-        section: 'Display',
+        type: "string",
+        label: "Upper Bound Measure (Optional, e.g. Col 3)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
         order: 6
       },
       simulationScenarioPct: {
@@ -359,6 +369,71 @@
       }
     },
 
+    // ------------------------------------------------------------------
+    // Dynamic Field-Role Dropdowns
+    // Populates every field-role selector from the live query's actual
+    // dimensions & measures (via Looker's `registerOptions` trigger) so users
+    // pick columns by name instead of typing 1-based column indexes.
+    // ------------------------------------------------------------------
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        dimFieldOverride: { role: "dimension", defaultIdx: 0 },
+        seriesDimOverride: { role: "dimension", defaultIdx: 1 },
+        measureFieldOverride: { role: "measure", defaultIdx: 0 },
+        lowerBoundOverride: { role: "measure", defaultIdx: 1 },
+        upperBoundOverride: { role: "measure", defaultIdx: 2 }
+      };
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : (spec.role === "any" ? dims.concat(meas) : dims);
+        var autoField = spec.defaultIdx >= 0 ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto \u2192 " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].type = "string";
+        newOptions[key].display = "select";
+        newOptions[key].values = values;
+        newOptions[key].default = "";
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        console.warn("registerOptions unavailable in this host:", e);
+      }
+    },
+
     create: function (element, config) {
       element.innerHTML = '';
       element.style.fontFamily =
@@ -455,6 +530,7 @@
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
+      this._registerDynamicFieldOptions(queryResponse);
       this.clearErrors();
 
       this._element = element;

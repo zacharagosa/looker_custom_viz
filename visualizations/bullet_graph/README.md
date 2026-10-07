@@ -12,7 +12,7 @@ Bullet graphs were designed by visualization pioneer Stephen Few as an informati
 
 - **Multi-Category Executive Layout**: Displays clean, comparative bullet graphs across all categories in your dataset.
 - **Horizontal & Vertical Orientation**: Toggle between standard horizontal rows or columnar vertical cards.
-- **Dynamic Field-Role Mapping**: Custom 1-based index or field name overrides for Dimension, Actual Measure, Target Measure, and Baseline Measure without re-ordering Looker Explore queries.
+- **Dynamic Field-Role Mapping**: Dynamic field dropdowns (populated from the live query) for Dimension, Actual Measure, Target Measure, and Baseline Measure without re-ordering Looker Explore queries.
 - **7 Target & Quota Calculation Modes**:
   - `Measure Column (From Query)`
   - `Percentage Multiplier of Actual (e.g. 115%)`
@@ -58,10 +58,10 @@ Bullet graphs were designed by visualization pioneer Stephen Few as an informati
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `orientation` | Select | `Horizontal` | Horizontal row layout or Vertical columnar layout |
-| `dimFieldOverride` | String | `1` | 1-based column index or field name for Category Dimension |
-| `measureFieldOverride` | String | `1` | 1-based column index or field name for Actual Performance Measure |
-| `targetMeasureOverride` | String | `2` | Optional 1-based column index or field name for Target Measure |
-| `baselineMeasureOverride` | String | `3` | Optional 1-based column index or field name for Baseline Measure |
+| `dimFieldOverride` | Select | `Auto` | Dropdown of query fields for Category Dimension |
+| `measureFieldOverride` | Select | `Auto` | Dropdown of query fields for Actual Performance Measure |
+| `targetMeasureOverride` | Select | `Auto` | Optional dropdown of query fields for Target Measure |
+| `baselineMeasureOverride` | Select | `Auto` | Optional dropdown of query fields for Baseline Measure |
 | `targetCalculationMode` | Select | `second_measure` | Target source (Measure Column, Multiplier, Fixed, Mean, Median, P75, P90) |
 | `targetMultiplier` | Number | `1.15` | Multiplier when source is Multiplier |
 | `fixedTargetValue` | Number | `0` | Target value when source is Fixed |
@@ -75,7 +75,7 @@ Bullet graphs were designed by visualization pioneer Stephen Few as an informati
 | `suppressZeroNull` | Boolean | `false` | Filter out categories with zero or null actuals |
 | `hudMode` | Select | `scorecard` | Executive Scorecard HUD (Full Scorecard, Compact Strip, Hidden) |
 | `showValueLabels` | Select | `all` | Show readouts for All categories, Peaks Only, or Hidden |
-| `customTitleOverride` | String | `""` | Override scorecard header title |
+| `customTitleOverride` | Select | `Auto / None` | Override scorecard header title |
 | `showSearch` | Boolean | `true` | Show real-time category search bar |
 | `showTargetMarker` | Boolean | `true` | Show target quota line |
 | `showVarianceBadge` | Boolean | `true` | Show attainment % / variance delta badge |

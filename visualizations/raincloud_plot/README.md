@@ -24,7 +24,7 @@ The **Raincloud Plot** (Allen et al., 2019) overcomes all of these flaws by clea
   - `Cloud + Boxplot Only`: High-density executive distribution mode suppressing individual dots for 10,000+ observation datasets.
   - `Jittered Beeswarm Strip with Mean/IQR Overlay`: High-visibility point strip focusing on individual observations with mean and IQR crossbars.
 - **Dynamic Field-Role Mapping**:
-  - Re-map query columns driving Category, Observation ID, Metric Measure, and Point Size via 1-based index or column name overrides without reordering Looker Explores.
+  - Re-map query columns driving Category, Observation ID, Metric Measure, and Point Size via dropdowns dynamically populated from the query's dimensions and measures without reordering Looker Explores.
 - **KDE Smoothing Bandwidth Selection**:
   - Choose between `Silverman Rule-of-Thumb` (balanced), `Scott Rule`, `Smooth` (wide bandwidth), or `Fine` (high detail) kernel density smoothing.
 - **Robust Tukey Fences & Axis Zoom**:
@@ -62,10 +62,10 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Horizontal Raincloud` | `horizontal_split`, `vertical_columns`, `cloud_boxplot`, `rain_strip` |
-| `categoryDimOverride` | String | `1` | 1-based index or field name override for Category Dimension |
-| `observationDimOverride` | String | `2` | 1-based index or field name override for Observation ID Dimension |
-| `metricMeasureOverride` | String | `1` | 1-based index or field name override for Continuous Metric Measure |
-| `sizeMeasureOverride` | String | `""` | 1-based index or field name override for Point Size Measure |
+| `categoryDimOverride` | Select | `Auto` | Dropdown of query fields for Category Dimension |
+| `observationDimOverride` | Select | `Auto` | Dropdown of query fields for Observation ID Dimension |
+| `metricMeasureOverride` | Select | `Auto` | Dropdown of query fields for Continuous Metric Measure |
+| `sizeMeasureOverride` | Select | `Auto / None` | Dropdown of query fields for Point Size Measure |
 | `targetCalculationMode` | Select | `Dataset Mean` | `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90`, `measure_column` |
 | `fixedTargetValue` | Number | `0` | Fixed benchmark target value when mode is Fixed |
 | `referenceLineLabel` | String | `Benchmark Target` | Label for benchmark reference line |
@@ -81,8 +81,8 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `hudMode` | Select | `Full Scorecard` | `scorecard`, `compact_strip`, `hidden` |
 | `showValueLabels` | Select | `Show All` | `all`, `median_only`, `hidden` |
 | `showSearch` | Boolean | `true` | Show interactive category search bar |
-| `customTitleOverride` | String | `""` | Custom chart title override |
-| `customSubtitleOverride` | String | `""` | Custom chart subtitle override |
+| `customTitleOverride` | Select | `Auto / None` | Custom chart title override |
+| `customSubtitleOverride` | Select | `Auto / None` | Custom chart subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |

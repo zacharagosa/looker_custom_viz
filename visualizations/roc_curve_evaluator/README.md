@@ -50,16 +50,16 @@ Evaluates binary classification models output by **BigQuery ML** (`ML.ROC_CURVE`
 
 ### Section: `Display`
 - `curveType`: Evaluation View Mode (`dual_view`, `roc`, `pr`, `threshold_metrics`)
-- `thresholdFieldOverride`: Decision Threshold Field Index or Name
-- `fprFieldOverride`: False Positive Rate Field Index or Name
-- `recallFieldOverride`: Recall / TPR Field Index or Name
-- `precisionFieldOverride`: Precision Field Index or Name
-- `f1FieldOverride`: F1 Score Field Index or Name
-- `accuracyFieldOverride`: Accuracy Field Index or Name
-- `tpFieldOverride`: True Positives Count Field Index or Name
-- `fpFieldOverride`: False Positives Count Field Index or Name
-- `tnFieldOverride`: True Negatives Count Field Index or Name
-- `fnFieldOverride`: False Negatives Count Field Index or Name
+- `thresholdFieldOverride`: Decision Threshold Field
+- `fprFieldOverride`: False Positive Rate Field
+- `recallFieldOverride`: Recall / TPR Field
+- `precisionFieldOverride`: Precision Field
+- `f1FieldOverride`: F1 Score Field
+- `accuracyFieldOverride`: Accuracy Field
+- `tpFieldOverride`: True Positives Count Field
+- `fpFieldOverride`: False Positives Count Field
+- `tnFieldOverride`: True Negatives Count Field
+- `fnFieldOverride`: False Negatives Count Field
 - `optimalMarker`: Optimal Operating Point Recommendation (`youden_j`, `max_f1`, `none`)
 - `initialThreshold`: Initial Decision Threshold (default: `0.50`)
 - `showConfusionMatrix`: Show Live 2x2 Confusion Matrix Card (default: `true`)

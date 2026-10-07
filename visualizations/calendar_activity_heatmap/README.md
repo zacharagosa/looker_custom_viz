@@ -5,7 +5,7 @@
 A custom Looker visualization built with D3.js v7 that renders an interactive, GitHub-style contribution and daily activity grid across rolling calendar dates.
 
 Upgraded with **Multi-Modal Enterprise Flexibility**:
-- **Dynamic Field-Role Mapping (`Display`)**: Remap Date dimension, primary measure, and optional target/goal measure by 1-based index or field name.
+- **Dynamic Field-Role Mapping (`Display`)**: Remap Date dimension, primary measure, and optional target/goal measure from dropdowns dynamically populated with the query's actual fields.
 - **Configurable Reference Lines & Targets (`Display`)**: Select between Dataset Mean, Dataset Median, Percentiles (P75/P90), Fixed Value, or dedicated Measure Column, with custom baseline label and anomaly spike threshold detection.
 - **Executive KPI Scorecard HUD (`Display`)**: Top metric strip highlighting total volume, active days, goal attainment percentage, and all-time peak day.
 - **Interactive Search & Hotspot Highlighting (`Display`)**: Filter dates dynamically via search bar; automatically pins peak volume days.

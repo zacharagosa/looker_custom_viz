@@ -21,7 +21,7 @@ This custom visualization delivers a multi-mode, high-density analytics suite ca
   - `Broadcast Dayparts (Nielsen Scorecards)`: Automatically aggregates the 168 hours into standardized industry daypart blocks (Overnight, Early Morning, Daytime, Early Fringe, Prime Time, Late Night), reporting Total Volume, % Share of Total, Hourly Run-Rate Velocity, Peak Day & Hour, and Weekend vs Weekday Indexing.
   - `24-Hour Diurnal Spline Curves`: Multi-line D3 chart plotting each day of the week as an interactive curve over the 24-hour cycle against shaded Daypart zones, benchmark reference target line, and an overall weekly baseline curve.
 - **Dynamic Field-Role Mapping**:
-  - Re-map query columns driving Day of Week, Hour of Day, Slicing Category, Primary Metric, and Benchmark Target via 1-based index or column name overrides without reordering Looker Explores.
+  - Re-map query columns driving Day of Week, Hour of Day, Slicing Category, Primary Metric, and Benchmark Target via dropdowns dynamically populated from the query's dimensions and measures without reordering Looker Explores.
 - **Configurable Reference Lines & Benchmark Targets**:
   - Benchmark target mode supporting `Dataset Mean`, `Dataset Median`, `Fixed Value`, `Percentile P75/P90`, or `Measure Column`.
   - Reference line overlay on diurnal curves with custom benchmark label and variance indicators (±%) across daypart cards.
@@ -69,11 +69,11 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Dual Split View` | `split_view`, `hourly_grid`, `daypart_blocks`, `diurnal_curves` |
-| `dayDimOverride` | String | `1` | 1-based index or field name override for Day Dimension |
-| `hourDimOverride` | String | `2` | 1-based index or field name override for Hour Dimension |
-| `sliceDimOverride` | String | `""` | 1-based index or field name override for Slicing Category Dimension |
-| `primaryMeasureOverride` | String | `1` | 1-based index or field name override for Primary Metric |
-| `targetMeasureOverride` | String | `""` | 1-based index or field name override for Benchmark Target Measure |
+| `dayDimOverride` | Select | `Auto` | Dropdown of query fields for Day Dimension |
+| `hourDimOverride` | Select | `Auto` | Dropdown of query fields for Hour Dimension |
+| `sliceDimOverride` | Select | `Auto / None` | Dropdown of query fields for Slicing Category Dimension |
+| `primaryMeasureOverride` | Select | `Auto` | Dropdown of query fields for Primary Metric |
+| `targetMeasureOverride` | Select | `Auto / None` | Dropdown of query fields for Benchmark Target Measure |
 | `startOfWeek` | Select | `Monday` | `monday`, `sunday` |
 | `daypartPreset` | Select | `Broadcast / Nielsen Standard` | `nielsen`, `retail`, `shifts` |
 | `targetCalculationMode` | Select | `Dataset Mean` | `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90`, `measure_column` |
@@ -89,8 +89,8 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `showValueLabels` | Select | `Show All Cell Values` | `all`, `peaks_only`, `hidden` |
 | `showMarginals` | Boolean | `true` | Display top hourly bars and right daily totals |
 | `showSearch` | Boolean | `true` | Enable top toolbar with dimension slicer & metric switch |
-| `customTitleOverride` | String | `""` | Custom chart title override |
-| `customSubtitleOverride` | String | `""` | Custom chart subtitle override |
+| `customTitleOverride` | Select | `Auto / None` | Custom chart title override |
+| `customSubtitleOverride` | Select | `Auto / None` | Custom chart subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |

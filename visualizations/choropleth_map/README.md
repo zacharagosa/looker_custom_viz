@@ -14,7 +14,7 @@ Unlike native maps that require Google Maps API keys or third-party mapping subs
   - `Choropleth Filled Polygons`: Classic continuous/quantile polygon shading.
   - `Proportional Bubble Pins`: Proportional circles scaled at state centroids using `d3.scaleSqrt()`, ideal for transaction frequency and volume pins.
   - `Hybrid Overlay`: Dual-layer visualization combining choropleth polygon fills with proportional bubble pin overlays.
-- **Dynamic Field-Role Mapping (`Display`)**: Remap state dimension, primary metric measure, and secondary/comparison measure by 1-based column index or field name without modifying Looker Explore column ordering.
+- **Dynamic Field-Role Mapping (`Display`)**: Remap state dimension, primary metric measure, and secondary/comparison measure from dropdowns dynamically populated with the query's actual fields without modifying Looker Explore column ordering.
 - **Configurable Reference Benchmarks & Targets (`Display`)**:
   - `none`: Standard absolute map without target benchmarking.
   - `second_measure`: Direct comparison against secondary query measure.
@@ -56,9 +56,9 @@ Unlike native maps that require Google Maps API keys or third-party mapping subs
 
 ### Section: `Display`
 - `mapMode`: Map Display Mode (`choropleth`, `bubble_pins`, `both_hybrid`)
-- `stateFieldOverride`: State Dimension Index or Name (1 = Col 1)
-- `measureFieldOverride`: Primary Metric Measure Index or Name (1 = Col 1)
-- `secondaryMeasureOverride`: Secondary / Target Measure Index or Name (2 = Col 2)
+- `stateFieldOverride`: State Dimension (dropdown)
+- `measureFieldOverride`: Primary Metric Measure (dropdown)
+- `secondaryMeasureOverride`: Secondary / Target Measure (dropdown)
 - `targetCalculationMode`: Target / Benchmark Mode (`none`, `second_measure`, `multiplier`, `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`)
 - `targetMultiplier`: Target Multiplier when Mode is Multiplier (default: `1.15`)
 - `fixedTargetValue`: Fixed Benchmark Target Value (0 = Auto)

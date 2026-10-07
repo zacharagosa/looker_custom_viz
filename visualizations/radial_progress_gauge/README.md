@@ -10,7 +10,7 @@ This visualization features complete multi-modal layout flexibility strictly org
 
 ### 🎯 Display Controls
 - **Multi-Modal Gauge Layouts**: Concentric Rings (Apple Fitness multi-tier), Single Hero Ring with Sub-Gauges, Radial Dial Speedometer, and Small Multiples Grid.
-- **Dynamic Field-Role Mapping**: Remap primary dimension, primary measure, and target measure using 1-based index numbers (e.g. `1`, `2`) or exact field names without modifying Looker Explore column orders.
+- **Dynamic Field-Role Mapping**: Remap primary dimension, primary measure, and target measure using dropdowns automatically populated with the dimensions and measures in the live query, without modifying Looker Explore column orders.
 - **Configurable Goals & Thresholds**:
   - `Measure Column`: Use a secondary measure directly from the query.
   - `Fixed Static Target`: Set a manual numeric target.

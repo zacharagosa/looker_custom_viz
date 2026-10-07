@@ -25,7 +25,8 @@
     "instance_wide": true,
     "screenshot": "visualizations/radial_progress_gauge/screenshot.png",
     "options_upgraded": true,
-    "last_upgraded": "2026-09-30"
+    "last_upgraded": "2026-09-30",
+    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price&limit=6&vis=%7B%22type%22%3A%22radial_progress_gauge%22%2C%22showCenterText%22%3Atrue%2C%22colorPalette%22%3A%22google%22%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "calendar_activity_heatmap",
@@ -976,7 +977,7 @@
     "instance_wide": true,
     "options_upgraded": true,
     "screenshot": "visualizations/mitre_attack_matrix/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?qid=xoKkPHTq12UNHbuUwF7sHc&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.mitre_technique,cortex_security_incidents.count,cortex_security_incidents.total_alerts,cortex_security_incidents.avg_mttr_minutes&sorts=cortex_security_incidents.count+desc&limit=500&vis=%7B%22type%22%3A%22mitre_attack_matrix%22%2C%22layoutMode%22%3A%22tactic_board%22%2C%22targetMode%22%3A%22p90%22%2C%22sortOrder%22%3A%22tactic_canonical%22%2C%22topN%22%3A12%2C%22groupOther%22%3Atrue%2C%22suppressZeros%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabels%22%3A%22all%22%2C%22showSearchBar%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22polarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "forecast_confidence_cone",

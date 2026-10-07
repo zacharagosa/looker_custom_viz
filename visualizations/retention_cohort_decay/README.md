@@ -70,10 +70,10 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Dual Synchronized Split View` | `split_view`, `heatmap`, `decay_curves`, `churn_waterfall` |
-| `cohortDimOverride` | String | `1` | Primary Cohort Dimension index (1 = Col 1) or field name override |
-| `periodDimOverride` | String | `2` | Activity Period Dimension index (2 = Col 2) or field name override |
-| `measureOverride` | String | `1` | Primary Metric Measure index (1 = Measure 1) or field name override |
-| `targetMeasureOverride` | String | `""` | Optional Target/Benchmark Measure index or field name override |
+| `cohortDimOverride` | Select | `Auto` | Primary Cohort Dimension index (1 = Col 1) or field name override |
+| `periodDimOverride` | Select | `Auto` | Activity Period Dimension index (2 = Col 2) or field name override |
+| `measureOverride` | Select | `Auto` | Primary Metric Measure index (1 = Measure 1) or field name override |
+| `targetMeasureOverride` | Select | `Auto / None` | Optional Target/Benchmark Measure index or field name override |
 | `valueDisplay` | Select | `Retention Rate (%)` | `retention_pct`, `raw_count`, `delta_benchmark` |
 | `periodZeroHandling` | Select | `Index Period 0 to 100%` | `index_100`, `hide_zero`, `as_is` |
 | `targetCalculationMode` | Select | `Dataset Mean` | Benchmark calculation: `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90`, `measure_column` |
@@ -87,8 +87,8 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `showValueLabels` | Select | `Show All Labels` | Label density: `all`, `peaks_only`, `hidden` |
 | `showBenchmark` | Boolean | `true` | Display Benchmark Average row and dashed curve overlay |
 | `showSearch` | Boolean | `true` | Enable top cohort interactive quick-search filter input |
-| `customTitleOverride` | String | `""` | Executive scorecard title override |
-| `customSubtitleOverride` | String | `""` | Executive scorecard subtitle override |
+| `customTitleOverride` | Select | `Auto / None` | Executive scorecard title override |
+| `customSubtitleOverride` | Select | `Auto / None` | Executive scorecard subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |
