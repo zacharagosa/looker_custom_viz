@@ -8,17 +8,14 @@
  *
  * Multi-Mode Functional Capabilities:
  * - View Modes:
- *     1. "hourly_grid": Full 7-Day x 24-Hour Schedule Matrix Heatmap with daypart boundary markers,
- *        top hourly distribution curve/bars, and right daily volume rollups.
- *     2. "daypart_blocks": Standard Broadcast Daypart Aggregation (Overnight, Early Morning, Daytime,
- *        Early Fringe, Prime Time, Late Night) with share-of-voice scorecards and weekday/weekend indexing.
- *     3. "diurnal_curves": 24-Hour Diurnal Spline Curves plotting each day of the week with daypart
- *        background bands and weekly baseline curve.
- *     4. "split_view": Dual Synchronized View (Top 7x24 Heatmap Matrix + Bottom Broadcast Daypart Scorecards
+ *     1. "split_view": Dual Synchronized View (Top 7x24 Heatmap Matrix + Bottom Broadcast Daypart Scorecards
  *        & Diurnal Curves with live cross-highlighting).
- * - High-Density Scalability:
- *     Handles 5,000+ rows with client-side indexing, slicing dimension selector (e.g. Category/Channel),
- *     and instant sub-10ms rollups.
+ *     2. "hourly_grid": Full 7-Day x 24-Hour Schedule Matrix Heatmap with daypart boundary markers,
+ *        top hourly distribution curve/bars, and right daily volume rollups.
+ *     3. "daypart_blocks": Standard Broadcast Daypart Aggregation (Overnight, Early Morning, Daytime,
+ *        Early Fringe, Prime Time, Late Night) with share-of-voice scorecards and weekday/weekend indexing.
+ *     4. "diurnal_curves": 24-Hour Diurnal Spline Curves plotting each day of the week with daypart
+ *        background bands and weekly baseline curve.
  * - Options Organization:
  *     Strictly limited to 2 clean sections ("Display" and "Style") to prevent Edit Modal crowding.
  */
@@ -85,22 +82,7 @@
       peakBadgeText: "#854d0e",
       scale: ["#eff6ff", "#bfdbfe", "#60a5fa", "#2563eb", "#1d4ed8", "#1e1b4b", "#f59e0b"]
     },
-    netflix_crimson: {
-      name: "Streaming Crimson (Charcoal / Red)",
-      isDark: false,
-      bg: "#ffffff",
-      cardBg: "#fafafa",
-      border: "#e5e5e5",
-      text: "#171717",
-      subtext: "#737373",
-      grid: "#e5e5e5",
-      emptyCell: "#f5f5f5",
-      dividerColor: "#a3a3a3",
-      peakBadgeBg: "#fee2e2",
-      peakBadgeText: "#991b1b",
-      scale: ["#fff1f2", "#fecdd3", "#fda4af", "#fb7185", "#e11d48", "#9f1239", "#4c0519"]
-    },
-    google_blue: {
+    google_enterprise: {
       name: "Google Enterprise Blue",
       isDark: false,
       bg: "#ffffff",
@@ -115,8 +97,53 @@
       peakBadgeText: "#92400e",
       scale: ["#f0fdf4", "#dcfce7", "#86efac", "#38bdf8", "#0284c7", "#1d4ed8", "#0f172a"]
     },
-    emerald_ratings: {
-      name: "Emerald Ratings Green",
+    indigo_violet: {
+      name: "Executive Indigo",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      grid: "#e2e8f0",
+      emptyCell: "#f1f5f9",
+      dividerColor: "#a5b4fc",
+      peakBadgeBg: "#ede9fe",
+      peakBadgeText: "#5b21b6",
+      scale: ["#eef2ff", "#c7d2fe", "#818cf8", "#6366f1", "#4f46e5", "#3730a3", "#1e1b4b"]
+    },
+    modern_slate: {
+      name: "Modern Slate",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      grid: "#e2e8f0",
+      emptyCell: "#f1f5f9",
+      dividerColor: "#94a3b8",
+      peakBadgeBg: "#e2e8f0",
+      peakBadgeText: "#0f172a",
+      scale: ["#f8fafc", "#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b", "#334155", "#0f172a"]
+    },
+    cyberpunk_neon: {
+      name: "Cyberpunk Dark",
+      isDark: true,
+      bg: "#0b0f19",
+      cardBg: "#111827",
+      border: "#1f2937",
+      text: "#f8fafc",
+      subtext: "#94a3b8",
+      grid: "#1e293b",
+      emptyCell: "#111827",
+      dividerColor: "#475569",
+      peakBadgeBg: "rgba(245, 158, 11, 0.2)",
+      peakBadgeText: "#fbbf24",
+      scale: ["#111827", "#1e1b4b", "#312e81", "#4f46e5", "#818cf8", "#c084fc", "#00f0ff"]
+    },
+    emerald_teal: {
+      name: "Emerald FinOps",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f0fdf4",
@@ -130,8 +157,8 @@
       peakBadgeText: "#854d0e",
       scale: ["#f0fdf4", "#d1fae5", "#6ee7b7", "#34d399", "#10b981", "#059669", "#064e3b"]
     },
-    amber_sunset: {
-      name: "Warm Amber Sunset",
+    sunset_media: {
+      name: "Sunset Media",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#fffbeb",
@@ -145,20 +172,35 @@
       peakBadgeText: "#78350f",
       scale: ["#fffbeb", "#fef3c7", "#fde68a", "#fbbf24", "#f59e0b", "#d97706", "#7c2d12"]
     },
-    cyber_neon: {
-      name: "Cyber Neon (Dark)",
-      isDark: true,
-      bg: "#0b0f19",
-      cardBg: "#111827",
-      border: "#1f2937",
-      text: "#f8fafc",
-      subtext: "#94a3b8",
-      grid: "#1e293b",
-      emptyCell: "#111827",
-      dividerColor: "#475569",
-      peakBadgeBg: "rgba(245, 158, 11, 0.2)",
-      peakBadgeText: "#fbbf24",
-      scale: ["#111827", "#1e1b4b", "#312e81", "#4f46e5", "#818cf8", "#c084fc", "#00f0ff"]
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f0f9ff",
+      border: "#bae6fd",
+      text: "#0c4a6e",
+      subtext: "#0369a1",
+      grid: "#e0f2fe",
+      emptyCell: "#f0f9ff",
+      dividerColor: "#7dd3fc",
+      peakBadgeBg: "#e0f2fe",
+      peakBadgeText: "#0284c7",
+      scale: ["#f0f9ff", "#e0f2fe", "#bae6fd", "#38bdf8", "#0284c7", "#0369a1", "#0c4a6e"]
+    },
+    custom_override: {
+      name: "Custom Hex Override",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      grid: "#e2e8f0",
+      emptyCell: "#f1f5f9",
+      dividerColor: "#94a3b8",
+      peakBadgeBg: "#fef08a",
+      peakBadgeText: "#854d0e",
+      scale: ["#f1f5f9", "#cbd5e1", "#94a3b8", "#3b82f6", "#1d4ed8", "#1e1b4b"]
     }
   };
 
@@ -182,6 +224,23 @@
     { key: "saturday", label: "Saturday", short: "Sat", isWeekend: true, dayIndex: 6 }
   ];
 
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || list.length === 0) return null;
+    if (overrideVal) {
+      var trimmed = String(overrideVal).trim();
+      var idx = parseInt(trimmed, 10);
+      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+        return list[idx - 1];
+      }
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === trimmed || list[i].label === trimmed || list[i].label_short === trimmed) {
+          return list[i];
+        }
+      }
+    }
+    return list[defaultIdx] || list[0];
+  }
+
   function normalizeDayString(val) {
     if (val === null || val === undefined) return null;
     var s = String(val).toLowerCase().trim();
@@ -192,7 +251,6 @@
     if (s.indexOf("fri") !== -1) return "friday";
     if (s.indexOf("sat") !== -1) return "saturday";
     if (s.indexOf("sun") !== -1) return "sunday";
-    // Check if numeric 0-6 (0=Sun or 0=Mon)
     var n = parseInt(s, 10);
     if (!isNaN(n)) {
       if (n === 0) return "sunday";
@@ -214,7 +272,6 @@
       if (h >= 0 && h <= 23) return h;
     }
     var s = String(val).trim();
-    // Handle "14:00" or "2 PM" or "02:00:00"
     if (s.indexOf(":") !== -1) {
       var parts = s.split(":");
       var hParsed = parseInt(parts[0], 10);
@@ -227,42 +284,41 @@
     return null;
   }
 
-  function formatMetricValue(val, fmt, meas) {
+  function formatValue(val, formatType, lookerRendered) {
     if (val === null || val === undefined || isNaN(val)) return "-";
+    if (formatType === "auto" && lookerRendered) return lookerRendered;
     var num = Number(val);
-    var measName = (meas && (meas.name || meas.label || "")) ? String(meas.name || meas.label).toLowerCase() : "";
+    var abs = Math.abs(num);
+    var sign = num < 0 ? "-" : "";
 
-    // Check if measure is explicitly GRP, ratings, impressions, spots or count
-    var isRatingOrCount = measName.indexOf("grp") !== -1 || measName.indexOf("rating") !== -1 ||
-      measName.indexOf("trp") !== -1 || measName.indexOf("impression") !== -1 ||
-      measName.indexOf("count") !== -1 || measName.indexOf("spot") !== -1;
-
-    var isSpendOrCost = measName.indexOf("spend") !== -1 || measName.indexOf("cost") !== -1 ||
-      measName.indexOf("rate") !== -1 || measName.indexOf("price") !== -1 ||
-      measName.indexOf("budget") !== -1 || measName.indexOf("revenue") !== -1;
-
-    // If metric is rating/GRP or if format is compact_num/integer, format as number
-    if (fmt === "compact_num" || (isRatingOrCount && !isSpendOrCost && fmt !== "currency")) {
-      var suffix = (measName.indexOf("grp") !== -1) ? " GRP" : "";
-      if (Math.abs(num) >= 1e9) return (num / 1e9).toFixed(2) + "B" + suffix;
-      if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M" + suffix;
-      if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "k" + suffix;
-      return (Math.abs(num) >= 100 ? Math.round(num).toLocaleString() : num.toFixed(1)) + suffix;
+    switch (formatType) {
+      case "percentage":
+      case "percent":
+        return sign + (abs < 1 && abs > 0 ? (abs * 100).toFixed(1) : abs.toFixed(1)) + "%";
+      case "compact_number":
+      case "compact_num":
+        if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
+        if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
+        if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+        return sign + (abs >= 10 ? Math.round(abs).toLocaleString() : abs.toFixed(1));
+      case "compact_currency":
+        if (abs >= 1e9) return sign + "$" + (abs / 1e9).toFixed(2) + "B";
+        if (abs >= 1e6) return sign + "$" + (abs / 1e6).toFixed(2) + "M";
+        if (abs >= 1e3) return sign + "$" + (abs / 1e3).toFixed(1) + "K";
+        return sign + "$" + abs.toFixed(abs % 1 === 0 ? 0 : 2);
+      case "currency":
+        return sign + "$" + abs.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      case "decimal_2":
+        return sign + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      case "raw":
+        return String(val);
+      case "auto":
+      default:
+        if (lookerRendered) return lookerRendered;
+        if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
+        if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+        return sign + (abs >= 10 ? Math.round(abs).toLocaleString() : abs.toFixed(1));
     }
-
-    if (fmt === "percent") {
-      return (num * 100).toFixed(1) + "%";
-    }
-
-    if (fmt === "integer") {
-      return Math.round(num).toLocaleString();
-    }
-
-    // Currency formatting
-    if (Math.abs(num) >= 1e9) return "$" + (num / 1e9).toFixed(2) + "B";
-    if (Math.abs(num) >= 1e6) return "$" + (num / 1e6).toFixed(2) + "M";
-    if (Math.abs(num) >= 1e3) return "$" + (num / 1e3).toFixed(1) + "k";
-    return "$" + num.toLocaleString(undefined, { maximumFractionDigits: 0 });
   }
 
   function getHourLabel(hour, format24) {
@@ -292,7 +348,9 @@
     id: "broadcast_daypart_grid",
     label: "Broadcast Programming Schedule & Daypart Performance Grid",
     options: {
-      // SECTION 1: DISPLAY
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       viewMode: {
         type: "string",
         label: "Layout View Mode",
@@ -307,11 +365,46 @@
         ],
         default: "split_view"
       },
+      dayDimOverride: {
+        type: "string",
+        label: "Day Dimension Index/Name (1 = Col 1, e.g. Day of Week)",
+        default: "1",
+        section: "Display",
+        order: 2
+      },
+      hourDimOverride: {
+        type: "string",
+        label: "Hour Dimension Index/Name (2 = Col 2, e.g. Hour of Day)",
+        default: "2",
+        section: "Display",
+        order: 3
+      },
+      sliceDimOverride: {
+        type: "string",
+        label: "Slicing Category Dimension Index/Name (Optional, e.g. Channel/Network)",
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      primaryMeasureOverride: {
+        type: "string",
+        label: "Primary Metric Measure Index/Name (1 = Measure 1, e.g. Spend / GRPs)",
+        default: "1",
+        section: "Display",
+        order: 5
+      },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target / Benchmark Measure Index/Name (Optional)",
+        default: "",
+        section: "Display",
+        order: 6
+      },
       startOfWeek: {
         type: "string",
         label: "Start of Week",
         section: "Display",
-        order: 2,
+        order: 7,
         display: "select",
         values: [
           { "Monday (Broadcast & ISO Standard)": "monday" },
@@ -323,7 +416,7 @@
         type: "string",
         label: "Daypart Grouping Scheme",
         section: "Display",
-        order: 3,
+        order: 8,
         display: "select",
         values: [
           { "Broadcast / Nielsen Standard (6 Tiers)": "nielsen" },
@@ -332,11 +425,48 @@
         ],
         default: "nielsen"
       },
+      targetCalculationMode: {
+        type: "string",
+        label: "Target / Benchmark Calculation Mode",
+        display: "select",
+        values: [
+          { "Dataset Mean (Average Hourly Velocity)": "dataset_mean" },
+          { "Dataset Median": "dataset_median" },
+          { "Fixed Benchmark Target Value": "fixed" },
+          { "Top Percentile P75 Target": "percentile_p75" },
+          { "Top Percentile P90 Target": "percentile_p90" },
+          { "Target Measure Column": "measure_column" }
+        ],
+        default: "dataset_mean",
+        section: "Display",
+        order: 9
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Benchmark Target Value (when Fixed Mode, 0 = Auto)",
+        default: 0,
+        section: "Display",
+        order: 10
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Reference Line & Benchmark Label",
+        default: "Benchmark Target",
+        section: "Display",
+        order: 11
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Drop-Off / Outlier Anomaly Alert Threshold (%)",
+        default: 20,
+        section: "Display",
+        order: 12
+      },
       highlightPeaks: {
         type: "string",
         label: "Peak Slot Anomaly Detection",
         section: "Display",
-        order: 4,
+        order: 13,
         display: "select",
         values: [
           { "Top 5% Peak Slots (★ Gold)": "top_5" },
@@ -346,65 +476,159 @@
         ],
         default: "top_5"
       },
-      valueFormat: {
+      sortBy: {
         type: "string",
-        label: "Value Metric Formatting",
-        section: "Display",
-        order: 5,
+        label: "Schedule & Category Sort Order",
         display: "select",
         values: [
-          { "Compact Currency ($1.2M)": "compact_currency" },
-          { "Standard Currency ($1,234,567)": "currency" },
-          { "Compact Number (1.2M)": "compact_num" },
-          { "Standard Integer (1,234)": "integer" },
-          { "Percentage (12.3%)": "percent" }
+          { "Chronological / Natural": "chronological" },
+          { "Metric Volume (Descending)": "metric_desc" },
+          { "Metric Volume (Ascending)": "metric_asc" },
+          { "Alphabetical": "alphabetical" }
         ],
-        default: "compact_currency"
+        default: "chronological",
+        section: "Display",
+        order: 14
+      },
+      topNLimit: {
+        type: "number",
+        label: "Top-N Slices/Categories Display Limit (0 = All)",
+        default: 0,
+        section: "Display",
+        order: 15
+      },
+      rollupOther: {
+        type: "boolean",
+        label: "Rollup Unselected Slices into 'Other'",
+        default: false,
+        section: "Display",
+        order: 16
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Data Cells",
+        default: true,
+        section: "Display",
+        order: 17
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive Scorecard HUD Mode",
+        display: "select",
+        values: [
+          { "Full Scorecard HUD (Top Band)": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "hidden" }
+        ],
+        default: "scorecard",
+        section: "Display",
+        order: 18
+      },
+      showValueLabels: {
+        type: "string",
+        label: "In-Cell & Curve Data Labels",
+        display: "select",
+        values: [
+          { "Show All Cell Values": "all" },
+          { "Peaks / Outliers Only": "peaks_only" },
+          { "Hidden": "hidden" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 19
       },
       showMarginals: {
         type: "boolean",
         label: "Show Marginal Rollups (Day/Hour Totals)",
         section: "Display",
-        order: 6,
-        default: true
-      },
-      showCellValues: {
-        type: "boolean",
-        label: "Show In-Cell Values",
-        section: "Display",
-        order: 7,
+        order: 20,
         default: true
       },
       showSearch: {
         type: "boolean",
         label: "Show Slicing & Filter Toolbar",
         section: "Display",
-        order: 8,
+        order: 21,
         default: true
       },
+      customTitleOverride: {
+        type: "string",
+        label: "Custom Title Override",
+        default: "",
+        section: "Display",
+        order: 22
+      },
+      customSubtitleOverride: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 23
+      },
 
-      // SECTION 2: STYLE
+      // ==========================================
+      // SECTION 2: STYLE (Strictly minimized tab)
+      // ==========================================
       colorPalette: {
         type: "string",
-        label: "Color Palette & Theme",
+        label: "Brand Palette Preset",
         section: "Style",
         order: 1,
         display: "select",
         values: [
-          { "Nielsen Broadcast (Midnight / Cyan / Gold)": "nielsen_broadcast" },
-          { "Streaming Crimson (Charcoal / Red)": "netflix_crimson" },
-          { "Google Enterprise Blue": "google_blue" },
-          { "Emerald Ratings Green": "emerald_ratings" },
-          { "Warm Amber Sunset": "amber_sunset" },
-          { "Cyber Neon (Dark Mode)": "cyber_neon" }
+          { "Nielsen Broadcast (Midnight / Gold)": "nielsen_broadcast" },
+          { "Google Enterprise Blue": "google_enterprise" },
+          { "Executive Indigo": "indigo_violet" },
+          { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Dark (Neon)": "cyberpunk_neon" },
+          { "Emerald FinOps": "emerald_teal" },
+          { "Sunset Media (Warm Amber)": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Custom Hex Override": "custom_override" }
         ],
         default: "nielsen_broadcast"
+      },
+      customPrimaryHex: {
+        type: "string",
+        label: "Custom Primary Brand Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveHex: {
+        type: "string",
+        label: "Custom Positive / Peak Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeHex: {
+        type: "string",
+        label: "Custom Off-Peak / Deficit Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity",
+        display: "select",
+        values: [
+          { "Higher is Better (Ratings, Spend, Concurrency)": "higher_is_better" },
+          { "Lower is Better (Latency, Churn, Error Rate)": "lower_is_better" }
+        ],
+        default: "higher_is_better",
+        section: "Style",
+        order: 5
       },
       colorScaleMode: {
         type: "string",
         label: "Color Scale Dynamics",
         section: "Style",
-        order: 2,
+        order: 6,
         display: "select",
         values: [
           { "Quantile (Balanced Contrast Across Cells)": "quantile" },
@@ -417,7 +641,7 @@
         type: "number",
         label: "Cell Corner Radius (px)",
         section: "Style",
-        order: 3,
+        order: 7,
         display: "range",
         min: 0,
         max: 8,
@@ -428,12 +652,42 @@
         type: "number",
         label: "Cell Spacing (px)",
         section: "Style",
-        order: 4,
+        order: 8,
         display: "range",
         min: 1,
         max: 6,
         step: 1,
         default: 2
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography Font Scale",
+        display: "select",
+        values: [
+          { "Compact (High Density Dashboard)": "compact" },
+          { "Standard (Default)": "standard" },
+          { "Large Presentation (Executive Wallboard)": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 9
+      },
+      valueFormat: {
+        type: "string",
+        label: "Value Formatting Style",
+        display: "select",
+        values: [
+          { "Auto (Looker / Contextual)": "auto" },
+          { "Compact Currency (.2M)": "compact_currency" },
+          { "Standard Currency (,234,567)": "currency" },
+          { "Compact Number (1.2M)": "compact_num" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal (1,234.56)": "decimal_2" },
+          { "Raw Unformatted": "raw" }
+        ],
+        default: "auto",
+        section: "Style",
+        order: 10
       }
     },
 
@@ -465,7 +719,6 @@
       this._tooltip.style.transition = "opacity 0.12s ease-out";
       document.body.appendChild(this._tooltip);
 
-      // Slicing state for expanded row limit
       this._selectedSlice = "ALL";
       this._selectedMeasureIndex = 0;
     },
@@ -598,10 +851,32 @@
 
       var themeKey = config.colorPalette || "nielsen_broadcast";
       var theme = THEMES[themeKey] || THEMES.nielsen_broadcast;
+
+      // Custom hex overrides if specified
+      if (themeKey === "custom_override" || config.customPrimaryHex || config.customPositiveHex || config.customNegativeHex) {
+        theme = Object.assign({}, theme);
+        if (config.customPrimaryHex) {
+          theme.scale = ["#f8fafc", "#e2e8f0", "#93c5fd", config.customPrimaryHex, "#1e1b4b"];
+        }
+        if (config.customPositiveHex) {
+          theme.peakBadgeText = config.customPositiveHex;
+          theme.peakBadgeBg = config.customPositiveHex + "22";
+        }
+        if (config.customNegativeHex) {
+          theme.dividerColor = config.customNegativeHex;
+        }
+      }
+
+      // Font scale multiplier
+      var fontMultiplier = 1.0;
+      if (config.fontScale === "compact") fontMultiplier = 0.88;
+      else if (config.fontScale === "large") fontMultiplier = 1.18;
+
       container.style.background = theme.bg;
       container.style.color = theme.text;
+      container.style.fontSize = (12 * fontMultiplier) + "px";
 
-      // Identify dimensions and measures
+      // Dynamic field-role resolution
       var dimensions = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
         ? queryResponse.fields.dimensions
         : (queryResponse.fields.dimension_like || []);
@@ -612,54 +887,58 @@
         measures = queryResponse.fields.table_calculations;
       }
 
-      var dayDim = null;
-      var hourDim = null;
-      var sliceDim = null;
+      var dayDim = resolveField(dimensions, config.dayDimOverride, 0);
+      var hourDim = resolveField(dimensions, config.hourDimOverride, 1);
+      var sliceDim = config.sliceDimOverride ? resolveField(dimensions, config.sliceDimOverride, 2) : (dimensions.length > 2 ? dimensions[2] : null);
 
-      dimensions.forEach(function (dim) {
-        var name = (dim.name || "").toLowerCase();
-        var label = (dim.label || "").toLowerCase();
-        if (!dayDim && (name.indexOf("day_of_week") !== -1 || name.indexOf("dayofweek") !== -1 || label.indexOf("day of week") !== -1 || name.indexOf("day") !== -1)) {
-          dayDim = dim;
-        } else if (!hourDim && (name.indexOf("hour") !== -1 || label.indexOf("hour") !== -1 || name.indexOf("time_of_day") !== -1)) {
-          hourDim = dim;
-        } else if (!sliceDim) {
-          sliceDim = dim;
-        }
-      });
+      var activeMeasure = resolveField(measures, config.primaryMeasureOverride, self._selectedMeasureIndex);
+      var targetMeasure = config.targetMeasureOverride ? resolveField(measures, config.targetMeasureOverride, -1) : null;
 
-      // Fallbacks if not detected by naming
-      if (!dayDim) dayDim = dimensions[0];
-      if (!hourDim) hourDim = dimensions[1];
-      if (!sliceDim && dimensions.length > 2) sliceDim = dimensions[2];
-
-      var activeMeasure = measures[self._selectedMeasureIndex] || measures[0];
-
-      // Build Day configuration
+      // Start of week configuration
       var startOfWeek = config.startOfWeek || "monday";
       var daysConfig = startOfWeek === "sunday" ? DAYS_SUNDAY_START : DAYS_MONDAY_START;
 
-      // Extract unique slicing categories for 5,000+ row scalability
+      // Slicing categories for 5,000+ row scalability & Top-N
       var sliceValues = ["ALL"];
+      var sliceSums = {};
       if (sliceDim) {
-        var sliceSet = new Set();
         data.forEach(function (row) {
           var sliceCell = row[sliceDim.name];
           var val = (sliceCell && typeof sliceCell === "object") ? (sliceCell.value !== undefined ? sliceCell.value : sliceCell.rendered) : sliceCell;
           if (val !== null && val !== undefined && val !== "") {
-            sliceSet.add(String(val));
+            var sKey = String(val);
+            var mCell = row[activeMeasure.name];
+            var mVal = (mCell && typeof mCell === "object") ? Number(mCell.value) : Number(mCell);
+            sliceSums[sKey] = (sliceSums[sKey] || 0) + (isNaN(mVal) ? 0 : mVal);
           }
         });
-        sliceValues = ["ALL"].concat(Array.from(sliceSet).sort());
+
+        var sortedSlices = Object.keys(sliceSums);
+        if (config.sortBy === "metric_desc") {
+          sortedSlices.sort(function (a, b) { return sliceSums[b] - sliceSums[a]; });
+        } else if (config.sortBy === "metric_asc") {
+          sortedSlices.sort(function (a, b) { return sliceSums[a] - sliceSums[b]; });
+        } else if (config.sortBy === "alphabetical") {
+          sortedSlices.sort();
+        }
+
+        var topN = config.topNLimit ? parseInt(config.topNLimit, 10) : 0;
+        if (topN > 0 && sortedSlices.length > topN) {
+          var kept = sortedSlices.slice(0, topN);
+          if (config.rollupOther) kept.push("Other");
+          sliceValues = ["ALL"].concat(kept);
+        } else {
+          sliceValues = ["ALL"].concat(sortedSlices);
+        }
       }
 
       // Aggregate data into a 7x24 Matrix
-      // Key: `${dayKey}_${hourNum}`
       var matrix = {};
       daysConfig.forEach(function (d) {
         matrix[d.key] = new Array(24).fill(0);
       });
-      var cellRawRows = {}; // Keep reference to Looker row for drilldown
+      var cellRawRows = {};
+      var targetValues = [];
 
       var totalVolume = 0;
       var nonZeroCount = 0;
@@ -689,7 +968,14 @@
           measVal = Number(measCell) || 0;
         }
 
+        if (targetMeasure && row[targetMeasure.name] !== undefined) {
+          var tCell = row[targetMeasure.name];
+          var tVal = (tCell && typeof tCell === "object") ? Number(tCell.value) : Number(tCell);
+          if (!isNaN(tVal)) targetValues.push(tVal);
+        }
+
         if (dayKey && hourNum !== null && !isNaN(measVal) && matrix[dayKey]) {
+          if (config.suppressZeroNull && measVal === 0) return;
           matrix[dayKey][hourNum] += measVal;
           totalVolume += measVal;
           if (measVal > 0) nonZeroCount++;
@@ -705,7 +991,7 @@
 
       if (minVal === Infinity) minVal = 0;
 
-      // Compute statistics for peak anomaly detection
+      // Extract all cell values for statistical distributions & targets
       var allValues = [];
       daysConfig.forEach(function (d) {
         for (var h = 0; h < 24; h++) {
@@ -720,11 +1006,31 @@
 
       var p95 = d3.quantile(allValues, 0.95) || 0;
       var p90 = d3.quantile(allValues, 0.90) || 0;
+      var p75 = d3.quantile(allValues, 0.75) || 0;
+      var median = d3.quantile(allValues, 0.50) || 0;
+
+      // Benchmark Target Resolution
+      var benchmarkTarget = mean;
+      var targetMode = config.targetCalculationMode || "dataset_mean";
+      if (targetMode === "dataset_median") benchmarkTarget = median;
+      else if (targetMode === "percentile_p75") benchmarkTarget = p75;
+      else if (targetMode === "percentile_p90") benchmarkTarget = p90;
+      else if (targetMode === "fixed") benchmarkTarget = config.fixedTargetValue || mean;
+      else if (targetMode === "measure_column" && targetValues.length > 0) {
+        benchmarkTarget = targetValues.reduce(function (a, b) { return a + b; }, 0) / targetValues.length;
+      }
+
       var peakThreshold = p95;
       var peakOption = config.highlightPeaks || "top_5";
       if (peakOption === "top_10") peakThreshold = p90;
       else if (peakOption === "above_avg") peakThreshold = mean + stdDev;
       else if (peakOption === "none") peakThreshold = Infinity;
+
+      // Metric polarity handling (invert color scales if lower is better)
+      var scaleColors = theme.scale.slice();
+      if (config.metricPolarity === "lower_is_better") {
+        scaleColors.reverse();
+      }
 
       // Color Scale Setup
       var colorScale;
@@ -732,15 +1038,15 @@
       if (colorScaleMode === "quantile" && allValues.length > 0) {
         colorScale = d3.scaleQuantile()
           .domain(allValues.filter(function (v) { return v > 0; }))
-          .range(theme.scale);
+          .range(scaleColors);
       } else if (colorScaleMode === "log" && maxVal > 0) {
         colorScale = d3.scaleLog()
           .domain([Math.max(1, minVal), maxVal])
-          .range([theme.scale[0], theme.scale[theme.scale.length - 1]]);
+          .range([scaleColors[0], scaleColors[scaleColors.length - 1]]);
       } else {
         colorScale = d3.scaleLinear()
-          .domain(d3.ticks(0, maxVal, theme.scale.length))
-          .range(theme.scale);
+          .domain(d3.ticks(0, maxVal, scaleColors.length))
+          .range(scaleColors);
       }
 
       // Daypart Grouping Scheme
@@ -776,6 +1082,7 @@
         var weekdayVelocity = dpWeekday / ((dp.hours.length * 5) || 1);
         var weekendVelocity = dpWeekend / ((dp.hours.length * 2) || 1);
         var weekendIndex = weekdayVelocity > 0 ? (weekendVelocity / weekdayVelocity) * 100 : 100;
+        var varianceVsBenchmark = benchmarkTarget > 0 ? ((hourlyVelocity - benchmarkTarget) / benchmarkTarget) * 100 : 0;
 
         return {
           id: dp.id,
@@ -789,7 +1096,8 @@
           peakVal: dpPeakVal,
           peakDay: dpPeakDay,
           peakHour: dpPeakHour,
-          weekendIndex: weekendIndex
+          weekendIndex: weekendIndex,
+          varianceVsBenchmark: varianceVsBenchmark
         };
       });
 
@@ -812,7 +1120,63 @@
       }
       var maxHourTotal = Math.max.apply(null, hourTotals) || 1;
 
-      // Top Toolbar: Slicing Selector & Measure Switcher
+      // Executive Scorecard HUD (Top Band)
+      if (config.hudMode !== "hidden") {
+        var hudElem = document.createElement("div");
+        hudElem.className = "broadcast-hud";
+        hudElem.style.display = config.hudMode === "compact_strip" ? "flex" : "grid";
+        hudElem.style.gridTemplateColumns = "repeat(auto-fit, minmax(180px, 1fr))";
+        hudElem.style.alignItems = "center";
+        hudElem.style.gap = "10px";
+        hudElem.style.padding = config.hudMode === "compact_strip" ? "6px 14px" : "12px 16px";
+        hudElem.style.background = theme.cardBg;
+        hudElem.style.borderBottom = "1px solid " + theme.border;
+        hudElem.style.marginBottom = "10px";
+
+        var titleText = config.customTitleOverride || (activeMeasure.label + " Daypart Schedule");
+        var subtitleText = config.customSubtitleOverride || ("7-Day x 24-Hour Broadcast Distribution • " + (dayDim.label || "Day") + " x " + (hourDim.label || "Hour"));
+
+        if (config.hudMode === "compact_strip") {
+          hudElem.innerHTML =
+            '<div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">' +
+              '<span style="font-size:12px; font-weight:700; color:' + theme.text + ';">' + titleText + '</span>' +
+              '<span style="font-size:10px; color:' + theme.subtext + ';">Total: <strong>' + formatValue(totalVolume, config.valueFormat || "auto") + '</strong></span>' +
+              '<span style="font-size:10px; color:' + theme.subtext + ';">Hourly Mean: <strong>' + formatValue(mean, config.valueFormat || "auto") + '</strong></span>' +
+              '<span style="font-size:10px; color:' + (theme.isDark ? "#38bdf8" : "#0284c7") + ';">' + (config.referenceLineLabel || "Target") + ': <strong>' + formatValue(benchmarkTarget, config.valueFormat || "auto") + '</strong></span>' +
+            '</div>';
+        } else {
+          // Full Scorecard
+          var variancePct = benchmarkTarget > 0 ? ((mean - benchmarkTarget) / benchmarkTarget) * 100 : 0;
+          var varianceSign = variancePct >= 0 ? "+" : "";
+          var isPositive = config.metricPolarity === "lower_is_better" ? variancePct <= 0 : variancePct >= 0;
+          var varColor = isPositive ? (theme.isDark ? "#34d399" : "#059669") : (theme.isDark ? "#f87171" : "#dc2626");
+
+          hudElem.innerHTML =
+            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
+              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">' + titleText + '</div>' +
+              '<div style="font-size:16px; font-weight:800; color:' + theme.text + ';">' + formatValue(totalVolume, config.valueFormat || "auto") + '</div>' +
+              '<div style="font-size:10px; color:' + theme.subtext + ';">' + subtitleText + '</div>' +
+            '</div>' +
+            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
+              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">Hourly Velocity</div>' +
+              '<div style="font-size:16px; font-weight:800; color:' + theme.text + ';">' + formatValue(mean, config.valueFormat || "auto") + '/hr</div>' +
+              '<div style="font-size:10px; color:' + theme.subtext + ';">Active Slots: ' + nonZeroCount + ' / 168</div>' +
+            '</div>' +
+            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
+              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">' + (config.referenceLineLabel || "Benchmark Target") + '</div>' +
+              '<div style="font-size:16px; font-weight:800; color:' + (theme.isDark ? "#38bdf8" : "#0284c7") + ';">' + formatValue(benchmarkTarget, config.valueFormat || "auto") + '</div>' +
+              '<div style="font-size:10px; font-weight:700; color:' + varColor + ';">Variance: ' + varianceSign + variancePct.toFixed(1) + '%</div>' +
+            '</div>' +
+            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
+              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">Peak Slot Threshold</div>' +
+              '<div style="font-size:16px; font-weight:800; color:' + (theme.isDark ? "#fbbf24" : "#b45309") + ';">★ &ge; ' + formatValue(peakThreshold, config.valueFormat || "auto") + '</div>' +
+              '<div style="font-size:10px; color:' + theme.subtext + ';">P95 Anomaly Threshold</div>' +
+            '</div>';
+        }
+        container.appendChild(hudElem);
+      }
+
+      // Slicing & Filter Toolbar
       if (config.showSearch !== false) {
         var toolbar = document.createElement("div");
         toolbar.className = "broadcast-toolbar";
@@ -821,33 +1185,14 @@
         toolbar.style.alignItems = "center";
         toolbar.style.justifyContent = "space-between";
         toolbar.style.gap = "10px";
-        toolbar.style.padding = "10px 16px";
+        toolbar.style.padding = "8px 16px";
         toolbar.style.borderBottom = "1px solid " + theme.border;
         toolbar.style.background = theme.cardBg;
 
         var leftGroup = document.createElement("div");
         leftGroup.style.display = "flex";
         leftGroup.style.alignItems = "center";
-        leftGroup.style.gap = "12px";
-
-        // Title and Total Volume KPI Badge
-        var titleElem = document.createElement("div");
-        titleElem.style.fontSize = "13px";
-        titleElem.style.fontWeight = "700";
-        titleElem.style.letterSpacing = "0.3px";
-        titleElem.style.color = theme.text;
-        titleElem.innerHTML = "📺 <strong>" + activeMeasure.label + "</strong> Daypart Schedule";
-        leftGroup.appendChild(titleElem);
-
-        var totalBadge = document.createElement("div");
-        totalBadge.style.fontSize = "11px";
-        totalBadge.style.fontWeight = "600";
-        totalBadge.style.padding = "3px 8px";
-        totalBadge.style.borderRadius = "4px";
-        totalBadge.style.background = theme.border;
-        totalBadge.style.color = theme.text;
-        totalBadge.innerText = "Total: " + formatMetricValue(totalVolume, config.valueFormat || "compact_currency");
-        leftGroup.appendChild(totalBadge);
+        leftGroup.style.gap = "10px";
 
         // Measure Switcher if multiple measures
         if (measures.length > 1) {
@@ -864,7 +1209,7 @@
             var opt = document.createElement("option");
             opt.value = idx;
             opt.text = "Metric: " + m.label;
-            if (idx === self._selectedMeasureIndex) opt.selected = true;
+            if (m.name === activeMeasure.name) opt.selected = true;
             measSelect.appendChild(opt);
           });
           measSelect.onchange = function (e) {
@@ -881,7 +1226,7 @@
         rightGroup.style.alignItems = "center";
         rightGroup.style.gap = "12px";
 
-        // Dimension Slicer Dropdown for 5,000+ row queries
+        // Dimension Slicer Dropdown
         if (sliceDim && sliceValues.length > 2) {
           var sliceLabel = document.createElement("label");
           sliceLabel.style.fontSize = "11.5px";
@@ -912,22 +1257,6 @@
           rightGroup.appendChild(sliceLabel);
         }
 
-        // Peak Legend Pill
-        if (config.highlightPeaks !== "none") {
-          var peakPill = document.createElement("div");
-          peakPill.style.fontSize = "11px";
-          peakPill.style.display = "flex";
-          peakPill.style.alignItems = "center";
-          peakPill.style.gap = "4px";
-          peakPill.style.padding = "3px 7px";
-          peakPill.style.borderRadius = "4px";
-          peakPill.style.background = theme.peakBadgeBg;
-          peakPill.style.color = theme.peakBadgeText;
-          peakPill.style.fontWeight = "600";
-          peakPill.innerHTML = "★ Peak Slot: &ge; " + formatMetricValue(peakThreshold, config.valueFormat || "compact_currency");
-          rightGroup.appendChild(peakPill);
-        }
-
         toolbar.appendChild(rightGroup);
         container.appendChild(toolbar);
       }
@@ -942,18 +1271,18 @@
       var viewMode = config.viewMode || "split_view";
 
       if (viewMode === "hourly_grid") {
-        self._renderHourlyMatrix(d3, mainArea, matrix, daysConfig, dayparts, dayTotals, hourTotals, maxHourTotal, peakThreshold, colorScale, theme, config, activeMeasure, cellRawRows, totalVolume);
+        self._renderHourlyMatrix(d3, mainArea, matrix, daysConfig, dayparts, dayTotals, hourTotals, maxHourTotal, peakThreshold, colorScale, theme, config, activeMeasure, cellRawRows, totalVolume, benchmarkTarget, fontMultiplier);
       } else if (viewMode === "daypart_blocks") {
-        self._renderDaypartBlocks(mainArea, daypartStats, totalVolume, theme, config, activeMeasure);
+        self._renderDaypartBlocks(mainArea, daypartStats, totalVolume, theme, config, activeMeasure, benchmarkTarget, fontMultiplier);
       } else if (viewMode === "diurnal_curves") {
-        self._renderDiurnalCurves(d3, mainArea, matrix, daysConfig, dayparts, theme, config, activeMeasure);
+        self._renderDiurnalCurves(d3, mainArea, matrix, daysConfig, dayparts, theme, config, activeMeasure, benchmarkTarget, fontMultiplier);
       } else {
-        // SPLIT VIEW (Top: 7x24 Matrix, Bottom: Daypart Scorecards & Diurnal curves)
+        // SPLIT VIEW
         var topSection = document.createElement("div");
         topSection.style.marginBottom = "24px";
         mainArea.appendChild(topSection);
 
-        self._renderHourlyMatrix(d3, topSection, matrix, daysConfig, dayparts, dayTotals, hourTotals, maxHourTotal, peakThreshold, colorScale, theme, config, activeMeasure, cellRawRows, totalVolume);
+        self._renderHourlyMatrix(d3, topSection, matrix, daysConfig, dayparts, dayTotals, hourTotals, maxHourTotal, peakThreshold, colorScale, theme, config, activeMeasure, cellRawRows, totalVolume, benchmarkTarget, fontMultiplier);
 
         var bottomSection = document.createElement("div");
         bottomSection.style.display = "grid";
@@ -968,13 +1297,13 @@
         daypartsCard.style.border = "1px solid " + theme.border;
         daypartsCard.style.background = theme.cardBg;
         var dpTitle = document.createElement("div");
-        dpTitle.style.fontSize = "13px";
+        dpTitle.style.fontSize = (13 * fontMultiplier) + "px";
         dpTitle.style.fontWeight = "700";
         dpTitle.style.marginBottom = "12px";
         dpTitle.style.color = theme.text;
         dpTitle.innerHTML = "🎯 Broadcast Daypart Performance Breakdown";
         daypartsCard.appendChild(dpTitle);
-        self._renderDaypartBlocks(daypartsCard, daypartStats, totalVolume, theme, config, activeMeasure);
+        self._renderDaypartBlocks(daypartsCard, daypartStats, totalVolume, theme, config, activeMeasure, benchmarkTarget, fontMultiplier);
         bottomSection.appendChild(daypartsCard);
 
         var diurnalCard = document.createElement("div");
@@ -983,21 +1312,22 @@
         diurnalCard.style.border = "1px solid " + theme.border;
         diurnalCard.style.background = theme.cardBg;
         var curveTitle = document.createElement("div");
-        curveTitle.style.fontSize = "13px";
+        curveTitle.style.fontSize = (13 * fontMultiplier) + "px";
         curveTitle.style.fontWeight = "700";
         curveTitle.style.marginBottom = "12px";
         curveTitle.style.color = theme.text;
         curveTitle.innerHTML = "📈 24-Hour Diurnal Progression Curves";
         diurnalCard.appendChild(curveTitle);
-        self._renderDiurnalCurves(d3, diurnalCard, matrix, daysConfig, dayparts, theme, config, activeMeasure);
+        self._renderDiurnalCurves(d3, diurnalCard, matrix, daysConfig, dayparts, theme, config, activeMeasure, benchmarkTarget, fontMultiplier);
         bottomSection.appendChild(diurnalCard);
       }
     },
 
-    _renderHourlyMatrix: function (d3, targetElem, matrix, daysConfig, dayparts, dayTotals, hourTotals, maxHourTotal, peakThreshold, colorScale, theme, config, activeMeasure, cellRawRows, totalVolume) {
+    _renderHourlyMatrix: function (d3, targetElem, matrix, daysConfig, dayparts, dayTotals, hourTotals, maxHourTotal, peakThreshold, colorScale, theme, config, activeMeasure, cellRawRows, totalVolume, benchmarkTarget, fontMultiplier) {
       var self = this;
       var showMarginals = config.showMarginals !== false;
-      var showValues = config.showCellValues !== false;
+      var showValues = config.showValueLabels !== "hidden";
+      var peaksOnly = config.showValueLabels === "peaks_only";
       var cellRadius = config.cellRadius !== undefined ? config.cellRadius : 4;
       var spacing = config.cellSpacing !== undefined ? config.cellSpacing : 2;
 
@@ -1022,7 +1352,7 @@
       var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      // Crosshair highlight overlay elements
+      // Crosshair highlight overlay
       var rowHighlight = g.append("rect")
         .attr("class", "row-highlight")
         .attr("x", 0)
@@ -1043,7 +1373,7 @@
         .style("display", "none")
         .style("pointer-events", "none");
 
-      // Marginal Top Mini-Bars (Hourly totals)
+      // Marginal Top Mini-Bars
       if (showMarginals) {
         var topBarsG = svg.append("g")
           .attr("transform", "translate(" + margin.left + ", 6)");
@@ -1064,23 +1394,23 @@
         }
       }
 
-      // Segment contiguous daypart ranges for clean, non-overlapping header placement
+      // Daypart Header Segments
       var daypartSegments = [];
       dayparts.forEach(function (dp) {
         var sortedHours = dp.hours.slice().sort(function (a, b) { return a - b; });
         var curStart = null;
         var curEnd = null;
         for (var i = 0; i < sortedHours.length; i++) {
-          var h = sortedHours[i];
+          var hr = sortedHours[i];
           if (curStart === null) {
-            curStart = h;
-            curEnd = h;
-          } else if (h === curEnd + 1) {
-            curEnd = h;
+            curStart = hr;
+            curEnd = hr;
+          } else if (hr === curEnd + 1) {
+            curEnd = hr;
           } else {
             daypartSegments.push({ dp: dp, start: curStart, end: curEnd });
-            curStart = h;
-            curEnd = h;
+            curStart = hr;
+            curEnd = hr;
           }
         }
         if (curStart !== null) {
@@ -1098,7 +1428,6 @@
         var segWidth = segX2 - segX1;
         var segCenter = segX1 + (segWidth / 2);
 
-        // Header label above hours (centered above its hourly segment)
         svg.append("text")
           .attr("x", margin.left + segCenter)
           .attr("y", daypartHeaderY)
@@ -1109,7 +1438,6 @@
           .attr("fill", dp.color)
           .text(dp.name.toUpperCase());
 
-        // Header accent line spanning the daypart segment
         svg.append("rect")
           .attr("x", margin.left + segX1 + 2)
           .attr("y", daypartBarY)
@@ -1119,7 +1447,6 @@
           .attr("fill", dp.color)
           .attr("opacity", 0.7);
 
-        // Vertical boundary dashed line on the left of daypart segment
         if (segX1 > 0) {
           g.append("line")
             .attr("x1", segX1)
@@ -1133,9 +1460,9 @@
         }
       });
 
-      // Hour Labels on X-axis (Above heatmap cells)
-      for (var h = 0; h < 24; h++) {
-        var hx = (h * baseCellWidth) + (baseCellWidth / 2);
+      // Hour Labels
+      for (var hrIdx = 0; hrIdx < 24; hrIdx++) {
+        var hx = (hrIdx * baseCellWidth) + (baseCellWidth / 2);
         g.append("text")
           .attr("x", hx)
           .attr("y", -8)
@@ -1143,20 +1470,19 @@
           .attr("font-size", "9.5px")
           .attr("font-weight", "600")
           .attr("fill", theme.subtext)
-          .text(getHourLabel(h, false));
+          .text(getHourLabel(hrIdx, false));
       }
 
       // Day Rows and Heatmap Cells
       daysConfig.forEach(function (d, rowIdx) {
         var ry = rowIdx * cellHeight;
 
-        // Day Label on Left
         var labelG = g.append("g")
           .attr("transform", "translate(-12," + (ry + (cellHeight / 2) + 4) + ")");
 
         labelG.append("text")
           .attr("text-anchor", "end")
-          .attr("font-size", "12px")
+          .attr("font-size", (12 * fontMultiplier) + "px")
           .attr("font-weight", d.isWeekend ? "700" : "600")
           .attr("fill", d.isWeekend ? (theme.isDark ? "#38bdf8" : "#0284c7") : theme.text)
           .text(d.label);
@@ -1180,7 +1506,6 @@
             .text("WKND");
         }
 
-        // 24 Cells in this Row
         for (var h = 0; h < 24; h++) {
           var val = matrix[d.key][h];
           var cx = (h * baseCellWidth) + spacing;
@@ -1206,8 +1531,8 @@
             .attr("stroke-width", isPeak ? 1.5 : 0)
             .style("transition", "transform 0.1s ease, filter 0.1s ease");
 
-          // Value inside cell
-          if (showValues && val > 0) {
+          var shouldShowVal = showValues && (peaksOnly ? isPeak : val > 0);
+          if (shouldShowVal && val > 0) {
             var textColor = getTextColorForBackground(cellColor);
             cellG.append("text")
               .attr("x", cx + (cw / 2))
@@ -1217,10 +1542,9 @@
               .attr("font-weight", isPeak ? "700" : "500")
               .attr("fill", textColor)
               .style("pointer-events", "none")
-              .text(formatMetricValue(val, config.valueFormat || "compact_currency"));
+              .text(formatValue(val, config.valueFormat || "auto"));
           }
 
-          // Peak slot star badge
           if (isPeak) {
             cellG.append("text")
               .attr("x", cx + cw - 3)
@@ -1232,7 +1556,6 @@
               .text("★");
           }
 
-          // Event Handlers for Cell
           (function (dayObj, hourNum, cellVal, isPeakSlot) {
             var rawRow = cellRawRows[dayObj.key + "_" + hourNum];
 
@@ -1249,6 +1572,8 @@
               var daySum = dayTotals[dayObj.key] ? dayTotals[dayObj.key].sum : 0;
               var pctOfDay = daySum > 0 ? ((cellVal / daySum) * 100).toFixed(1) + "%" : "0%";
               var pctOfWeek = totalVolume > 0 ? ((cellVal / totalVolume) * 100).toFixed(1) + "%" : "0%";
+              var deltaTarget = benchmarkTarget > 0 ? ((cellVal - benchmarkTarget) / benchmarkTarget) * 100 : 0;
+              var deltaSign = deltaTarget >= 0 ? "+" : "";
 
               var tt = self._tooltip;
               tt.style.background = theme.isDark ? "#1e293b" : "#ffffff";
@@ -1261,10 +1586,11 @@
                   (daypartInfo ? '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; background:' + daypartInfo.color + '; color:#fff;">' + daypartInfo.name + '</span>' : '') +
                 '</div>' +
                 '<div style="font-size:15px; font-weight:700; color:' + (theme.isDark ? '#38bdf8' : '#0284c7') + '; margin-bottom:4px;">' +
-                  activeMeasure.label + ': ' + formatMetricValue(cellVal, config.valueFormat || "compact_currency") +
+                  activeMeasure.label + ': ' + formatValue(cellVal, config.valueFormat || "auto") +
                 '</div>' +
                 '<div style="font-size:11px; color:' + theme.subtext + '; line-height:1.4;">' +
-                  'Day Share: <strong>' + pctOfDay + '</strong> &bull; Week Share: <strong>' + pctOfWeek + '</strong>' +
+                  'Day Share: <strong>' + pctOfDay + '</strong> &bull; Week Share: <strong>' + pctOfWeek + '</strong><br/>' +
+                  'Vs ' + (config.referenceLineLabel || "Benchmark") + ': <strong>' + deltaSign + deltaTarget.toFixed(1) + '%</strong>' +
                   (isPeakSlot ? '<div style="color:' + (theme.isDark ? '#fbbf24' : '#b45309') + '; font-weight:700; margin-top:3px;">★ Peak Anomaly Slot</div>' : '') +
                   (rawRow && rawRow[activeMeasure.name] && rawRow[activeMeasure.name].links ? '<div style="margin-top:4px; color:#2563eb;">Click to drill down &rarr;</div>' : '') +
                 '</div>';
@@ -1277,8 +1603,8 @@
               var tt = self._tooltip;
               var x = event.clientX + 14;
               var y = event.clientY - 30;
-              if (x + 220 > window.innerWidth) x = event.clientX - 230;
-              if (y + 120 > window.innerHeight) y = event.clientY - 120;
+              if (x + 240 > window.innerWidth) x = event.clientX - 250;
+              if (y + 130 > window.innerHeight) y = event.clientY - 130;
               tt.style.left = x + "px";
               tt.style.top = y + "px";
             });
@@ -1291,7 +1617,6 @@
               self._tooltip.style.opacity = "0";
             });
 
-            // Looker drilldown integration
             cellG.on("click", function (event) {
               if (rawRow && rawRow[activeMeasure.name] && rawRow[activeMeasure.name].links) {
                 LookerCharts.Utils.openDrillMenu({
@@ -1303,7 +1628,6 @@
           })(d, h, val, isPeak);
         }
 
-        // Right Daily Marginal Summary Pill
         if (showMarginals) {
           var dStat = dayTotals[d.key];
           var mx = gridWidth + 14;
@@ -1313,14 +1637,14 @@
             .attr("transform", "translate(" + mx + "," + my + ")");
 
           pillG.append("text")
-            .attr("font-size", "11.5px")
+            .attr("font-size", (11.5 * fontMultiplier) + "px")
             .attr("font-weight", "700")
             .attr("fill", theme.text)
-            .text(formatMetricValue(dStat ? dStat.sum : 0, config.valueFormat || "compact_currency"));
+            .text(formatValue(dStat ? dStat.sum : 0, config.valueFormat || "auto"));
 
           pillG.append("text")
             .attr("x", 68)
-            .attr("font-size", "10px")
+            .attr("font-size", (10 * fontMultiplier) + "px")
             .attr("font-weight", "500")
             .attr("fill", theme.subtext)
             .text("(" + (dStat ? dStat.pctOfWeek.toFixed(1) : "0") + "%)");
@@ -1328,7 +1652,7 @@
       });
     },
 
-    _renderDaypartBlocks: function (targetElem, daypartStats, totalVolume, theme, config, activeMeasure) {
+    _renderDaypartBlocks: function (targetElem, daypartStats, totalVolume, theme, config, activeMeasure, benchmarkTarget, fontMultiplier) {
       var grid = document.createElement("div");
       grid.className = "daypart-cards-grid";
       grid.style.display = "grid";
@@ -1345,23 +1669,28 @@
         card.style.borderTop = "3px solid " + dp.color;
         card.style.boxShadow = "0 1px 3px rgba(0,0,0,0.03)";
 
+        var deltaSign = dp.varianceVsBenchmark >= 0 ? "+" : "";
+        var isPositive = config.metricPolarity === "lower_is_better" ? dp.varianceVsBenchmark <= 0 : dp.varianceVsBenchmark >= 0;
+        var varColor = isPositive ? (theme.isDark ? "#34d399" : "#059669") : (theme.isDark ? "#f87171" : "#dc2626");
+
         card.innerHTML =
           '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
-            '<span style="font-size:12px; font-weight:700; color:' + theme.text + ';">' + dp.name + '</span>' +
-            '<span style="font-size:10px; font-weight:600; color:' + theme.subtext + ';">' + dp.desc + '</span>' +
+            '<span style="font-size:' + (12 * fontMultiplier) + 'px; font-weight:700; color:' + theme.text + ';">' + dp.name + '</span>' +
+            '<span style="font-size:' + (10 * fontMultiplier) + 'px; font-weight:600; color:' + theme.subtext + ';">' + dp.desc + '</span>' +
           '</div>' +
-          '<div style="font-size:18px; font-weight:800; color:' + theme.text + '; margin-bottom:4px;">' +
-            formatMetricValue(dp.sum, config.valueFormat || "compact_currency") +
+          '<div style="font-size:' + (18 * fontMultiplier) + 'px; font-weight:800; color:' + theme.text + '; margin-bottom:4px;">' +
+            formatValue(dp.sum, config.valueFormat || "auto") +
           '</div>' +
           '<div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">' +
             '<div style="flex:1; height:6px; background:' + theme.emptyCell + '; border-radius:3px; overflow:hidden;">' +
               '<div style="width:' + Math.min(100, dp.sharePct) + '%; height:100%; background:' + dp.color + '; border-radius:3px;"></div>' +
             '</div>' +
-            '<span style="font-size:11px; font-weight:700; color:' + dp.color + ';">' + dp.sharePct.toFixed(1) + '%</span>' +
+            '<span style="font-size:' + (11 * fontMultiplier) + 'px; font-weight:700; color:' + dp.color + ';">' + dp.sharePct.toFixed(1) + '%</span>' +
           '</div>' +
-          '<div style="font-size:10.5px; color:' + theme.subtext + '; line-height:1.4;">' +
-            '<div>Velocity: <strong>' + formatMetricValue(dp.hourlyVelocity, config.valueFormat || "compact_currency") + '/hr</strong></div>' +
+          '<div style="font-size:' + (10.5 * fontMultiplier) + 'px; color:' + theme.subtext + '; line-height:1.4;">' +
+            '<div>Velocity: <strong>' + formatValue(dp.hourlyVelocity, config.valueFormat || "auto") + '/hr</strong></div>' +
             '<div>Peak Day: <strong>' + dp.peakDay + ' (' + getHourLabel(dp.peakHour, false) + ')</strong></div>' +
+            '<div>Vs Benchmark: <strong style="color:' + varColor + ';">' + deltaSign + dp.varianceVsBenchmark.toFixed(1) + '%</strong></div>' +
             '<div>Weekend Index: <strong>' + dp.weekendIndex.toFixed(0) + '</strong> (' + (dp.weekendIndex >= 100 ? '▲ +' + (dp.weekendIndex - 100).toFixed(0) + '%' : '▼ -' + (100 - dp.weekendIndex).toFixed(0) + '%') + ')</div>' +
           '</div>';
 
@@ -1369,7 +1698,7 @@
       });
     },
 
-    _renderDiurnalCurves: function (d3, targetElem, matrix, daysConfig, dayparts, theme, config, activeMeasure) {
+    _renderDiurnalCurves: function (d3, targetElem, matrix, daysConfig, dayparts, theme, config, activeMeasure, benchmarkTarget, fontMultiplier) {
       var wrap = document.createElement("div");
       wrap.style.width = "100%";
       wrap.style.height = "260px";
@@ -1428,6 +1757,28 @@
           .text(dp.name);
       });
 
+      // Benchmark Target Line
+      if (benchmarkTarget > 0 && benchmarkTarget <= maxCurveVal * 1.1) {
+        g.append("line")
+          .attr("x1", 0)
+          .attr("x2", chartW)
+          .attr("y1", yScale(benchmarkTarget))
+          .attr("y2", yScale(benchmarkTarget))
+          .attr("stroke", theme.isDark ? "#38bdf8" : "#0284c7")
+          .attr("stroke-width", 1.5)
+          .attr("stroke-dasharray", "4,3")
+          .attr("opacity", 0.85);
+
+        g.append("text")
+          .attr("x", chartW - 4)
+          .attr("y", yScale(benchmarkTarget) - 4)
+          .attr("text-anchor", "end")
+          .attr("font-size", "8.5px")
+          .attr("font-weight", "700")
+          .attr("fill", theme.isDark ? "#38bdf8" : "#0284c7")
+          .text((config.referenceLineLabel || "Target") + ": " + formatValue(benchmarkTarget, config.valueFormat || "auto"));
+      }
+
       // Grid Lines
       g.append("g")
         .attr("stroke", theme.grid)
@@ -1448,7 +1799,7 @@
 
       var yAxis = d3.axisLeft(yScale)
         .ticks(4)
-        .tickFormat(function (d) { return formatMetricValue(d, config.valueFormat || "compact_currency"); });
+        .tickFormat(function (d) { return formatValue(d, config.valueFormat || "auto"); });
 
       g.append("g")
         .call(yAxis)
@@ -1456,7 +1807,6 @@
         .selectAll("text")
         .attr("font-size", "9.5px");
 
-      // Spline line generator
       var line = d3.line()
         .x(function (d, i) { return xScale(i); })
         .y(function (d) { return yScale(d); })

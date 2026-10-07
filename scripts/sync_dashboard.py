@@ -56,6 +56,7 @@ VOL2_VIZ_MAP = {
     "violin_distribution_plot": "🔬 Statistical, ML & Forecasting",
     "forecast_confidence_cone": "🔬 Statistical, ML & Forecasting",
     "roc_curve_evaluator": "🔬 Statistical, ML & Forecasting",
+    "raincloud_plot": "🔬 Statistical, ML & Forecasting",
     "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
     "bilateral_chord_diagram": "🛍️ Retail, Supply Chain & FinOps",
     "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps"
@@ -142,7 +143,8 @@ VIZ_EMOJI_MAP = {
     "roc_curve_evaluator": "📈",
     "cell_tower_polar_coverage": "📡",
     "inventory_stockout_sawtooth": "📦",
-    "multi_touch_attribution_pathway": "🎬"
+    "multi_touch_attribution_pathway": "🎬",
+    "raincloud_plot": "🌧️"
 }
 
 

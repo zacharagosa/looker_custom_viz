@@ -158,3 +158,8 @@ Cyclical inventory depletion sawtooth curves and replenishment jump visualizer f
 Enterprise-grade multi-touch marketing attribution suite and cross-channel conversion path visualizer for media and ad-ops analytics, comparing 5 algorithmic models (First-Touch, Last-Touch, Linear, Time-Decay half-life, and Markov Chain / Shapley game theory) alongside multi-hop touchpoint Sankey flows and ROAS efficiency frontier scatter.
 ![Multi-Touch Marketing Attribution & Path Analyzer](../assets/screenshots/multi_touch_attribution_pathway.png)
 
+### 38. Raincloud Plot (Half-Violin KDE + Boxplot + Jittered Beeswarm)
+Multi-layered statistical distribution chart combining a smooth Half-Violin kernel density estimation (KDE) cloud, an aligned boxplot with median/IQR/whiskers, and jittered raw observation dots with Looker drill-down support.
+![Raincloud Plot](../assets/screenshots/raincloud_plot.png)
+
+

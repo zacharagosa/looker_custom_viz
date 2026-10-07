@@ -1,0 +1,29 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "cortex_security_incidents",
+  "fields": [
+    "cortex_security_incidents.mitre_tactic",
+    "cortex_security_incidents.incident_id",
+    "cortex_security_incidents.avg_mttr_minutes",
+    "cortex_security_incidents.alert_count"
+  ],
+  "sorts": [
+    "cortex_security_incidents.mitre_tactic asc",
+    "cortex_security_incidents.avg_mttr_minutes desc"
+  ],
+  "limit": "1500",
+  "vis_config": {
+    "type": "raincloud_plot",
+    "viewMode": "horizontal_split",
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "lower_is_better",
+    "referenceLineLabel": "SLA MTTR Target (180m)",
+    "targetCalculationMode": "dataset_mean",
+    "hudMode": "scorecard",
+    "showValueLabels": "all",
+    "showSearch": true,
+    "outlierThreshold": "tukey_fence",
+    "bandwidthMode": "silverman",
+    "valueFormat": "decimal_2"
+  }
+}
