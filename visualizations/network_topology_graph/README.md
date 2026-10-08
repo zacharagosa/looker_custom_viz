@@ -64,23 +64,39 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Force-Directed Topology` | `force_directed`, `concentric_radial`, `circular_peering`, `adjacency_matrix` |
+| `sourceDimOverride` | Select | Auto | Dynamic 1-based index or field name for Source Node |
+| `targetDimOverride` | Select | Auto | Dynamic 1-based index or field name for Target Node |
+| `volumeMeasureOverride` | Select | Auto | Dynamic 1-based index or field name for Throughput/Volume Measure |
+| `latencyMeasureOverride` | Select | Auto | Dynamic 1-based index or field name for Latency/Quality Measure |
+| `countMeasureOverride` | Select | Auto | Dynamic 1-based index or field name for Packet/Record Count Measure |
 | `flowAnimation` | Select | `Glowing Packet Pulses` | `pulse`, `dash`, `none` |
 | `nodeSizing` | Select | `By Total Volume / Throughput` | `volume`, `degree`, `uniform` |
 | `edgeMetric` | Select | `Color by Latency / Quality` | `latency`, `volume`, `uniform` |
-| `showExecutiveHUD` | Boolean | `true` | Display top executive telemetry stats HUD |
-| `showSearch` | Boolean | `true` | Display real-time node search filter box |
-| `showLabels` | Select | `Always Visible` | `always`, `hover_focus`, `off` |
+| `targetCalculationMode` | Select | `Fixed Latency Threshold` | `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90` |
+| `latencyThreshold` | Number | `3.8` | Fixed threshold for warning/bottleneck alerts |
+| `referenceLineLabel` | String | `Bottleneck Threshold` | Label for anomaly threshold alerts |
+| `sortBy` | Select | `Degree Centrality (High to Low)` | `degree_desc`, `metric_desc`, `metric_asc`, `alpha` |
 | `nodeLimit` | Select | `All Nodes` | `all`, `25`, `50`, `100` |
-| `valueFormat` | Select | `Network Bandwidth (bps/Mbps/Gbps)`| `bandwidth`, `compact_num`, `compact_currency`, `numeric` |
+| `suppressZeroNull` | Boolean | `false` | Suppress nodes and links with zero/null throughput |
+| `hudMode` | Select | `Full Scorecard HUD` | `scorecard`, `compact_strip`, `none` |
+| `showLabels` | Select | `Always Visible` | `always`, `peaks_only`, `hover_focus`, `off` |
+| `customTitle` | String | `""` | Custom chart title override |
+| `customSubtitle` | String | `""` | Custom subtitle / description override |
+| `showSearch` | Boolean | `true` | Display real-time node search filter box |
 
 ### Style Tab
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `colorTheme` | Select | `Cyber NOC Dark` | `cyber_dark`, `google_blue`, `slate`, `emerald` |
+| `colorTheme` | Select | `Cyber NOC Dark` | `cyber_dark`, `google_enterprise`, `modern_slate`, `zayo_corporate`, `slate`, `emerald`, `sunset_media`, `wellverse_healthcare`, `custom` |
+| `customPrimaryColor` | Color | `""` | Custom primary node & link highlight color |
+| `customPositiveColor` | Color | `""` | Custom optimal / healthy latency hex color |
+| `customNegativeColor` | Color | `""` | Custom bottleneck / alert hex color |
+| `metricPolarity` | Select | `Lower is Better` | `lower_better`, `higher_better` |
+| `fontScale` | Select | `Standard (100%)` | `compact` (85%), `standard` (100%), `large` (125%) |
+| `valueFormat` | Select | `Network Bandwidth (bps/Mbps/Gbps)`| `bandwidth`, `compact_num`, `compact_currency`, `numeric` |
 | `baseNodeRadius` | Number | `13` | Base node circle radius in pixels |
 | `linkDistance` | Number | `110` | Physics spring link distance in pixels |
 | `linkThickness` | Number | `2` | Link line thickness multiplier (1-6) |
-| `latencyThreshold` | Number | `3.8` | Threshold for warning/bottleneck alerts |
 | `particleSpeed` | Select | `Normal (2.0s)` | `fast`, `normal`, `slow` |
 
 ---

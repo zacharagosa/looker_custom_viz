@@ -59,7 +59,8 @@ VOL2_VIZ_MAP = {
     "raincloud_plot": "🔬 Statistical, ML & Forecasting",
     "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
     "bilateral_chord_diagram": "🛍️ Retail, Supply Chain & FinOps",
-    "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps"
+    "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps",
+    "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps"
 }
 
 CATEGORY_TAB_MAP = {
@@ -144,7 +145,8 @@ VIZ_EMOJI_MAP = {
     "cell_tower_polar_coverage": "📡",
     "inventory_stockout_sawtooth": "📦",
     "multi_touch_attribution_pathway": "🎬",
-    "raincloud_plot": "🌧️"
+    "raincloud_plot": "🌧️",
+    "pvm_revenue_bridge": "🌉"
 }
 
 

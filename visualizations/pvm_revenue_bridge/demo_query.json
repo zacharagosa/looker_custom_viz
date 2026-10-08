@@ -1,0 +1,28 @@
+{
+  "model": "wellverse_mba",
+  "view": "order_lines",
+  "fields": [
+    "medical_products.category",
+    "order_lines.order_month",
+    "order_lines.total_spend",
+    "order_lines.units_ordered"
+  ],
+  "filters": {
+    "order_lines.order_month": "2025-11 to 2026-04"
+  },
+  "sorts": [
+    "order_lines.total_spend desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "pvm_revenue_bridge",
+    "layoutMode": "pvm_waterfall",
+    "colorTheme": "wellverse_healthcare",
+    "hudMode": "scorecard",
+    "showConnectorLines": true,
+    "showVarianceBadges": true,
+    "showDataLabels": "all",
+    "valueFormat": "compact_currency",
+    "metricPolarity": "higher_better"
+  }
+}

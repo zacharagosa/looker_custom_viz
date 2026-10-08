@@ -255,20 +255,22 @@
       "measures": "1 to 3 Measures: Volume/Throughput (e.g. order_items.total_sale_price), Latency/Delay (e.g. order_items.average_shipping_time), Packet Count (e.g. order_items.order_count)"
     },
     "suggested_dataset": {
-      "model": "thelook",
-      "explore": "order_items",
+      "model": "zayo_network_analytics",
+      "explore": "network_operations_and_anomalies",
       "fields": [
-        "distribution_centers.name",
-        "users.state",
-        "order_items.total_sale_price",
-        "order_items.average_shipping_time",
-        "order_items.order_count"
+        "fiber_routes.origin_city",
+        "fiber_routes.dest_city",
+        "route_traffic_anomalies.avg_bandwidth_utilization_gbps",
+        "route_traffic_anomalies.avg_utilization_pct",
+        "route_traffic_anomalies.total_anomalies_detected"
       ]
     },
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/network_topology_graph/screenshot.png",
-    "looker_demo_url": "/explore/zayo_network_analytics/network_operations_and_anomalies?qid=5Y2hXdmtH6pDzBU81NsEOV&toggle=vis"
+    "looker_demo_url": "/explore/zayo_network_analytics/network_operations_and_anomalies?fields=fiber_routes.origin_city,fiber_routes.dest_city,route_traffic_anomalies.avg_bandwidth_utilization_gbps,route_traffic_anomalies.avg_utilization_pct,route_traffic_anomalies.total_anomalies_detected&sorts=route_traffic_anomalies.avg_bandwidth_utilization_gbps+desc&limit=500&vis=%7B%22type%22%3A%22network_topology_graph%22%2C%22viewMode%22%3A%22force_directed%22%2C%22flowAnimation%22%3A%22pulse%22%2C%22nodeSizing%22%3A%22volume%22%2C%22edgeMetric%22%3A%22latency%22%2C%22colorTheme%22%3A%22cyber_dark%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showLabels%22%3A%22always%22%2C%22valueFormat%22%3A%22bandwidth%22%2C%22baseNodeRadius%22%3A15%2C%22linkDistance%22%3A125%2C%22latencyThreshold%22%3A68.0%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-08"
   },
   {
     "id": "sankey_flow_diagram",
@@ -1207,5 +1209,69 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-07",
     "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.incident_id,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.alert_count&sorts=cortex_security_incidents.mitre_tactic+asc,cortex_security_incidents.avg_mttr_minutes+desc&limit=1500&vis=%7B%22type%22%3A%22raincloud_plot%22%2C%22viewMode%22%3A%22horizontal_split%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22referenceLineLabel%22%3A%22SLA+MTTR+Target+%28180m%29%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22outlierThreshold%22%3A%22tukey_fence%22%2C%22bandwidthMode%22%3A%22silverman%22%2C%22valueFormat%22%3A%22decimal_2%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "noc_incident_timeline",
+    "name": "NOC Incident Timeline",
+    "date_added": "2026-10-07",
+    "library": "D3.js v7",
+    "category": "Telecom, Cloud & SecOps",
+    "description": "Telecom NOC war-room swimlane timeline for a single outage case: multi-source-system lanes on an hour/minute axis, severity-colored markers with pulsing Critical rings, collision-aware labels, Opened / SLA deadline / Now reference lines with breach shading, and a compact SLA HUD strip.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Lane (source system), 1 Event Timestamp, 1 Event Type label, optional Description, Actor and Severity dimensions; filter to a single case",
+      "measures": "none"
+    },
+    "suggested_dataset": {
+      "model": "zayo_network_analytics",
+      "explore": "noc_case_war_room",
+      "fields": [
+        "noc_case_timeline.event_time_time",
+        "noc_case_timeline.source_system",
+        "noc_case_timeline.event_type",
+        "noc_case_timeline.description",
+        "noc_case_timeline.actor",
+        "noc_case_timeline.severity"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/noc_incident_timeline/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-07",
+    "looker_demo_url": "/explore/zayo_network_analytics/noc_case_war_room?fields=noc_case_timeline.event_time_time,noc_case_timeline.source_system,noc_case_timeline.event_type,noc_case_timeline.description,noc_case_timeline.actor,noc_case_timeline.severity&f[noc_case_timeline.case_id]=CASE-2026-9901&sorts=noc_case_timeline.event_time_time+asc&limit=500&vis=%7B%22type%22%3A%22noc_incident_timeline%22%2C%22slaTargetHours%22%3A4%2C%22nowMode%22%3A%22latest_event%22%2C%22labelDensity%22%3A%22all%22%2C%22showHud%22%3Atrue%2C%22colorPalette%22%3A%22zayo_orange%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "pvm_revenue_bridge",
+    "name": "Price-Volume-Mix (PVM) Revenue Bridge Waterfall",
+    "date_added": "2026-10-08",
+    "library": "D3.js v7",
+    "category": "Retail, Supply Chain & FinOps",
+    "description": "Executive Price-Volume-Mix (PVM) revenue walk and financial bridge waterfall decomposing top-line delta into distinct Price Realization, Volume Growth, and Product Mix Shift contributions. Features stepped connector lines, variance badges, category-level breakdown, elasticity matrix quadrant bubbles, and multi-currency formatting.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Category Dimension (e.g. medical_products.category), 1 Optional Period Dimension (e.g. order_lines.order_month)",
+      "measures": "1 Revenue / Spend Measure (e.g. order_lines.total_spend), 1 Optional Volume / Units Measure (e.g. order_lines.units_ordered)"
+    },
+    "suggested_dataset": {
+      "model": "wellverse_mba",
+      "explore": "order_lines",
+      "fields": [
+        "medical_products.category",
+        "order_lines.order_month",
+        "order_lines.total_spend",
+        "order_lines.units_ordered"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/pvm_revenue_bridge/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-08",
+    "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=medical_products.category,order_lines.order_month,order_lines.total_spend,order_lines.units_ordered&f[order_lines.order_month]=2025-11+to+2026-04&sorts=order_lines.total_spend+desc&limit=500&vis=%7B%22type%22%3A%22pvm_revenue_bridge%22%2C%22layoutMode%22%3A%22pvm_waterfall%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConnectorLines%22%3Atrue%2C%22showVarianceBadges%22%3Atrue%2C%22showDataLabels%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22metricPolarity%22%3A%22higher_better%22%7D&origin=share-expanded&toggle=vis"
   }
 ]

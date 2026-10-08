@@ -176,8 +176,163 @@
       hudText: "#064e3b",
       buttonBg: "#dcfce7",
       buttonHover: "#bbf7d0"
+    },
+    google_enterprise: {
+      name: "Google Enterprise",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8f9fa",
+      border: "#dadce0",
+      text: "#202124",
+      subtext: "#5f6368",
+      nodeFill: "#e8f0fe",
+      nodeStroke: "#1a73e8",
+      nodeHighlight: "#1967d2",
+      linkDefault: "#dadce0",
+      linkHighlight: "#1a73e8",
+      pulseColor: "#1a73e8",
+      optimalLatency: "#188038",
+      warningLatency: "#f9ab00",
+      criticalLatency: "#d93025",
+      hudBg: "rgba(255, 255, 255, 0.96)",
+      hudBorder: "#dadce0",
+      hudText: "#202124",
+      buttonBg: "#f1f3f4",
+      buttonHover: "#e8eaed"
+    },
+    modern_slate: {
+      name: "Modern Slate",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      nodeFill: "#f1f5f9",
+      nodeStroke: "#0f766e",
+      nodeHighlight: "#0284c7",
+      linkDefault: "#cbd5e1",
+      linkHighlight: "#0f766e",
+      pulseColor: "#0284c7",
+      optimalLatency: "#10b981",
+      warningLatency: "#f59e0b",
+      criticalLatency: "#ef4444",
+      hudBg: "rgba(255, 255, 255, 0.96)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      buttonBg: "#f1f5f9",
+      buttonHover: "#e2e8f0"
+    },
+    cyberpunk_dark: {
+      name: "Cyberpunk Dark",
+      isDark: true,
+      bg: "#0b0f19",
+      cardBg: "#111827",
+      border: "#1f2937",
+      text: "#f9fafb",
+      subtext: "#9ca3af",
+      nodeFill: "#1e293b",
+      nodeStroke: "#00f0ff",
+      nodeHighlight: "#a855f7",
+      linkDefault: "#334155",
+      linkHighlight: "#00f0ff",
+      pulseColor: "#00f0ff",
+      optimalLatency: "#00f5d4",
+      warningLatency: "#ffbe0b",
+      criticalLatency: "#f72585",
+      hudBg: "rgba(17, 24, 39, 0.94)",
+      hudBorder: "#374151",
+      hudText: "#e5e7eb",
+      buttonBg: "#1f2937",
+      buttonHover: "#374151"
+    },
+    emerald_finops: {
+      name: "Emerald FinOps",
+      isDark: false,
+      bg: "#fcfdfd",
+      cardBg: "#f0fdf4",
+      border: "#dcfce7",
+      text: "#064e3b",
+      subtext: "#047857",
+      nodeFill: "#ecfdf5",
+      nodeStroke: "#059669",
+      nodeHighlight: "#10b981",
+      linkDefault: "#a7f3d0",
+      linkHighlight: "#059669",
+      pulseColor: "#10b981",
+      optimalLatency: "#059669",
+      warningLatency: "#d97706",
+      criticalLatency: "#dc2626",
+      hudBg: "rgba(240, 253, 244, 0.96)",
+      hudBorder: "#bbf7d0",
+      hudText: "#064e3b",
+      buttonBg: "#dcfce7",
+      buttonHover: "#bbf7d0"
+    },
+    sunset_media: {
+      name: "Sunset Media",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#fffbeb",
+      border: "#fde68a",
+      text: "#431407",
+      subtext: "#9a3412",
+      nodeFill: "#fff7ed",
+      nodeStroke: "#ea580c",
+      nodeHighlight: "#c2410c",
+      linkDefault: "#fed7aa",
+      linkHighlight: "#ea580c",
+      pulseColor: "#f97316",
+      optimalLatency: "#16a34a",
+      warningLatency: "#f59e0b",
+      criticalLatency: "#dc2626",
+      hudBg: "rgba(255, 255, 255, 0.96)",
+      hudBorder: "#fed7aa",
+      hudText: "#431407",
+      buttonBg: "#fff7ed",
+      buttonHover: "#ffedd5"
+    },
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      nodeFill: "#f0fdf4",
+      nodeStroke: "#00af68",
+      nodeHighlight: "#143359",
+      linkDefault: "#cbd5e1",
+      linkHighlight: "#00af68",
+      pulseColor: "#00af68",
+      optimalLatency: "#00af68",
+      warningLatency: "#ea580c",
+      criticalLatency: "#b42318",
+      hudBg: "rgba(255, 255, 255, 0.96)",
+      hudBorder: "#e2e8f0",
+      hudText: "#0f172a",
+      buttonBg: "#f8fafc",
+      buttonHover: "#e2e8f0"
     }
   };
+
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || list.length === 0) return null;
+    if (overrideVal) {
+      var trimmed = String(overrideVal).trim();
+      var idx = parseInt(trimmed, 10);
+      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+        return list[idx - 1];
+      }
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === trimmed || list[i].label === trimmed || list[i].label_short === trimmed) {
+          return list[i];
+        }
+      }
+    }
+    return defaultIdx >= 0 && defaultIdx < list.length ? list[defaultIdx] : (list[0] || null);
+  }
 
   function formatValue(val, fmt) {
     if (val === null || val === undefined || isNaN(val)) return "-";
@@ -216,7 +371,9 @@
     id: "network_topology_graph",
     label: "Network Topology & Latency Flow Graph",
     options: {
-      // SECTION 1: DISPLAY
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly 2 tabs rule)
+      // ==========================================
       viewMode: {
         type: "string",
         label: "Layout Mode",
@@ -231,11 +388,56 @@
         ],
         default: "force_directed"
       },
+      sourceDimOverride: {
+        type: "string",
+        label: "Source Node Dimension",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 2
+      },
+      targetDimOverride: {
+        type: "string",
+        label: "Target Node Dimension",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      volumeMeasureOverride: {
+        type: "string",
+        label: "Throughput / Volume Measure",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      latencyMeasureOverride: {
+        type: "string",
+        label: "Latency / Delay Measure",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      countMeasureOverride: {
+        type: "string",
+        label: "Packet / Flow Count Measure (Optional)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
       flowAnimation: {
         type: "string",
         label: "Traffic Flow Animation",
         section: "Display",
-        order: 2,
+        order: 7,
         display: "select",
         values: [
           { "Glowing Packet Pulses": "pulse" },
@@ -248,7 +450,7 @@
         type: "string",
         label: "Node Sizing",
         section: "Display",
-        order: 3,
+        order: 8,
         display: "select",
         values: [
           { "By Total Volume / Throughput": "volume" },
@@ -261,7 +463,7 @@
         type: "string",
         label: "Link Color & Scaling",
         section: "Display",
-        order: 4,
+        order: 9,
         display: "select",
         values: [
           { "Color by Latency / Quality": "latency" },
@@ -270,111 +472,232 @@
         ],
         default: "latency"
       },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive Metrics HUD",
-        section: "Display",
-        order: 5,
-        default: true
-      },
-      showSearch: {
-        type: "boolean",
-        label: "Show Search & Node Filter",
-        section: "Display",
-        order: 6,
-        default: true
-      },
-      showLabels: {
+      targetCalculationMode: {
         type: "string",
-        label: "Node Labels",
-        section: "Display",
-        order: 7,
+        label: "Bottleneck Threshold Mode",
         display: "select",
         values: [
-          { "Always Visible": "always" },
-          { "On Hover / Focus Only": "hover_focus" },
-          { "Hidden": "off" }
+          { "Custom Static Threshold": "fixed" },
+          { "Dataset Mean Latency": "dataset_mean" },
+          { "Dataset Median Latency": "dataset_median" },
+          { "Percentile P75": "percentile_p75" },
+          { "Percentile P90": "percentile_p90" }
         ],
-        default: "always"
+        default: "fixed",
+        section: "Display",
+        order: 10
+      },
+      latencyThreshold: {
+        type: "number",
+        label: "Static Bottleneck Latency Alert Threshold",
+        section: "Display",
+        order: 11,
+        default: 3.8
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Custom Reference Line / SLA Target Label",
+        default: "SLA Latency Benchmark",
+        section: "Display",
+        order: 12
+      },
+      sortBy: {
+        type: "string",
+        label: "Node / Link Sorting",
+        display: "select",
+        values: [
+          { "Metric Descending (Highest Volume First)": "metric_desc" },
+          { "Metric Ascending (Lowest Volume First)": "metric_asc" },
+          { "Alphabetical (A - Z)": "alphabetical" },
+          { "Natural / Query Order": "natural" }
+        ],
+        default: "metric_desc",
+        section: "Display",
+        order: 13
       },
       nodeLimit: {
         type: "string",
-        label: "High-Density Node Limit",
+        label: "Top-N Node Capacity Limit",
         section: "Display",
-        order: 8,
+        order: 14,
         display: "select",
         values: [
-          { "All Nodes": "all" },
+          { "All Nodes (Up to 5,000 rows)": "all" },
           { "Top 25 Nodes": "25" },
           { "Top 50 Nodes": "50" },
           { "Top 100 Nodes": "100" }
         ],
         default: "all"
       },
-      valueFormat: {
-        type: "string",
-        label: "Volume Metric Format",
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Volume Links",
+        default: true,
         section: "Display",
-        order: 9,
+        order: 15
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive Telemetry HUD Mode",
         display: "select",
         values: [
-          { "Network Bandwidth (bps/Mbps/Gbps)": "bandwidth" },
-          { "Metric Packets (k/M/B)": "compact_num" },
-          { "Currency ($)": "compact_currency" },
-          { "Raw Number": "numeric" }
+          { "Full Scorecard HUD": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "none" }
         ],
-        default: "bandwidth"
+        default: "scorecard",
+        section: "Display",
+        order: 16
+      },
+      showLabels: {
+        type: "string",
+        label: "Node Label Density",
+        section: "Display",
+        order: 17,
+        display: "select",
+        values: [
+          { "All Nodes Visible": "always" },
+          { "Min / Max Peaks Only": "peaks_only" },
+          { "On Hover / Focus Only": "hover_focus" },
+          { "Hidden": "off" }
+        ],
+        default: "always"
+      },
+      customTitle: {
+        type: "string",
+        label: "Custom Chart Title Override",
+        default: "",
+        section: "Display",
+        order: 18
+      },
+      customSubtitle: {
+        type: "string",
+        label: "Custom Subtitle / Description Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      showSearch: {
+        type: "boolean",
+        label: "Show Interactive Node Search & Filter Bar",
+        section: "Display",
+        order: 20,
+        default: true
       },
 
-      // SECTION 2: STYLE
+      // ==========================================
+      // SECTION 2: STYLE (Strictly 2 tabs rule)
+      // ==========================================
       colorTheme: {
         type: "string",
-        label: "Visual Theme",
+        label: "Brand Palette Preset",
         section: "Style",
         order: 1,
         display: "select",
         values: [
+          { "Cyber NOC Dark (Midnight)": "cyber_dark" },
+          { "Google Enterprise": "google_enterprise" },
+          { "Modern Slate": "modern_slate" },
           { "Zayo Corporate Orange (Light)": "zayo_corporate" },
-          { "Zayo Telecom Orange": "google_blue" },
           { "Executive Slate": "slate" },
-          { "Emerald Mesh": "emerald" },
-          { "Cyber NOC Dark": "cyber_dark" }
+          { "Emerald FinOps / Mesh": "emerald" },
+          { "Sunset Media": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Custom Hex Override": "custom" }
         ],
-        default: "zayo_corporate"
+        default: "cyber_dark"
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Primary Node / Link Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Optimal / Safe Latency Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Bottleneck / Critical Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity (Goal Direction)",
+        display: "select",
+        values: [
+          { "Lower is Better (Latency / Churn / Jitter / Cost)": "lower_better" },
+          { "Higher is Better (Throughput / Bandwidth / Packets)": "higher_better" }
+        ],
+        default: "lower_better",
+        section: "Style",
+        order: 5
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & Font Scaling",
+        display: "select",
+        values: [
+          { "Compact (Dense Dashboard Tiles)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (Executive Boardroom)": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 6
+      },
+      valueFormat: {
+        type: "string",
+        label: "Value & Metric Format",
+        section: "Style",
+        order: 7,
+        display: "select",
+        values: [
+          { "Network Bandwidth (bps/Mbps/Gbps)": "bandwidth" },
+          { "Compact Number (1.2M / 45K)": "compact_num" },
+          { "Compact Currency (.2M / 5K)": "compact_currency" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal 2dp (1,234.56)": "decimal_2" },
+          { "Raw (Exact Database Value)": "numeric" }
+        ],
+        default: "bandwidth"
       },
       baseNodeRadius: {
         type: "number",
         label: "Base Node Radius (px)",
         section: "Style",
-        order: 2,
+        order: 8,
         default: 13
       },
       linkDistance: {
         type: "number",
         label: "Link Spring Distance (px)",
         section: "Style",
-        order: 3,
+        order: 9,
         default: 110
       },
       linkThickness: {
         type: "number",
         label: "Link Thickness Multiplier",
         section: "Style",
-        order: 4,
+        order: 10,
         default: 2
-      },
-      latencyThreshold: {
-        type: "number",
-        label: "Bottleneck Latency Alert Threshold",
-        section: "Style",
-        order: 5,
-        default: 3.8
       },
       particleSpeed: {
         type: "string",
         label: "Packet Animation Speed",
         section: "Style",
-        order: 6,
+        order: 11,
         display: "select",
         values: [
           { "Fast (1.2s)": "fast" },
@@ -385,7 +708,72 @@
       }
     },
 
-    create: function (element, config) {
+    // ------------------------------------------------------------------
+    // Dynamic Field-Role Dropdowns
+    // Populates every field-role selector from the live query's actual
+    // dimensions & measures (via Looker's  trigger) so users
+    // pick columns by name instead of typing 1-based column indexes.
+    // ------------------------------------------------------------------
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        sourceDimOverride: { role: "dimension", defaultIdx: 0 },
+        targetDimOverride: { role: "dimension", defaultIdx: 1 },
+        volumeMeasureOverride: { role: "measure", defaultIdx: 0 },
+        latencyMeasureOverride: { role: "measure", defaultIdx: 1 },
+        countMeasureOverride: { role: "measure", defaultIdx: -1 }
+      };
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : (spec.role === "any" ? dims.concat(meas) : dims);
+        var autoField = spec.defaultIdx >= 0 ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto → " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        for (var i = 0; i < list.length; i++) {
+          var fld = list[i];
+          var lbl = fieldLabel(fld);
+          if (seen[fld.name]) continue;
+          seen[fld.name] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        }
+        newOptions[key].display = "select";
+        newOptions[key].values = values;
+        newOptions[key].default = "";
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        console.warn("registerOptions unavailable in this host:", e);
+      }
+    },
+
+create: function (element, config) {
       this._element = element;
       this._setupLifecycleObservers(element);
 
@@ -534,6 +922,7 @@
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
+      this._registerDynamicFieldOptions(queryResponse);
       this._element = element;
       this._lastElement = element;
       this._lastData = data;
@@ -628,8 +1017,9 @@
       }
 
       var fields = queryResponse.fields;
-      var dims = fields.dimensions || fields.dimension_like || [];
-      var meas = fields.measures || fields.measure_like || [];
+      var dims = (fields.dimensions && fields.dimensions.length) ? fields.dimensions : (fields.dimension_like || []);
+      var meas = (fields.measures && fields.measures.length) ? fields.measures : (fields.measure_like || []);
+      if (!meas.length && fields.table_calculations && fields.table_calculations.length) meas = fields.table_calculations;
 
       if (dims.length === 0) {
         this.addError({
@@ -639,15 +1029,30 @@
         return;
       }
 
-      var sourceDim = dims[0];
-      var targetDim = dims.length > 1 ? dims[1] : dims[0];
-      var isSelfLoopModel = dims.length === 1;
+      var sourceDim = resolveField(dims, config.sourceDimOverride, 0);
+      var targetDim = resolveField(dims, config.targetDimOverride, dims.length > 1 ? 1 : 0);
+      var isSelfLoopModel = dims.length === 1 && (!config.targetDimOverride || config.targetDimOverride === "");
 
-      var volumeMeas = meas.length > 0 ? meas[0] : null;
-      var latencyMeas = meas.length > 1 ? meas[1] : null;
-      var countMeas = meas.length > 2 ? meas[2] : null;
+      var volumeMeas = resolveField(meas, config.volumeMeasureOverride, 0);
+      var latencyMeas = resolveField(meas, config.latencyMeasureOverride, meas.length > 1 ? 1 : -1);
+      var countMeas = resolveField(meas, config.countMeasureOverride, meas.length > 2 ? 2 : -1);
 
       var theme = THEMES[config.colorTheme] || THEMES.cyber_dark;
+      if (config.colorTheme === "custom") {
+        theme = Object.assign({}, theme, {
+          nodeStroke: config.customPrimaryColor || theme.nodeStroke,
+          linkHighlight: config.customPrimaryColor || theme.linkHighlight,
+          pulseColor: config.customPrimaryColor || theme.pulseColor,
+          optimalLatency: config.customPositiveColor || theme.optimalLatency,
+          criticalLatency: config.customNegativeColor || theme.criticalLatency
+        });
+      }
+      if (config.metricPolarity === "higher_better") {
+        var origOpt = theme.optimalLatency;
+        theme.optimalLatency = theme.criticalLatency;
+        theme.criticalLatency = origOpt;
+      }
+
       this._container.style.backgroundColor = theme.bg;
 
       // ==========================================
@@ -658,8 +1063,7 @@
       var totalVolume = 0;
       var latencyWeightedSum = 0;
       var latencyWeightTotal = 0;
-      var bottleneckThreshold = Number(config.latencyThreshold) || 3.8;
-      var bottleneckCount = 0;
+      var allLatencies = [];
 
       for (var i = 0; i < data.length; i++) {
         var row = data[i];
@@ -686,6 +1090,13 @@
         if (countMeas && row[countMeas.name] && !isNaN(Number(row[countMeas.name].value))) {
           cnt = Math.max(1, Number(row[countMeas.name].value));
         }
+
+        // Suppress zero/null rows if enabled
+        if (config.suppressZeroNull && vol === 0) {
+          continue;
+        }
+
+        allLatencies.push(lat);
 
         // Initialize Nodes (Store only essential drill links rather than entire row)
         if (!nodesMap[sVal]) {
@@ -758,6 +1169,28 @@
         latencyWeightTotal += vol;
       }
 
+      // Calculate Bottleneck Threshold based on Target Calculation Mode
+      var bottleneckThreshold = Number(config.latencyThreshold) || 3.8;
+      var targetMode = config.targetCalculationMode || "fixed";
+      if (allLatencies.length > 0 && targetMode !== "fixed") {
+        var sortedLat = allLatencies.slice().sort(function (a, b) { return a - b; });
+        if (targetMode === "dataset_mean") {
+          var sum = sortedLat.reduce(function (acc, v) { return acc + v; }, 0);
+          bottleneckThreshold = sum / sortedLat.length;
+        } else if (targetMode === "dataset_median") {
+          var mid = Math.floor(sortedLat.length / 2);
+          bottleneckThreshold = sortedLat.length % 2 !== 0 ? sortedLat[mid] : ((sortedLat[mid - 1] + sortedLat[mid]) / 2);
+        } else if (targetMode === "percentile_p75") {
+          var p75Idx = Math.floor(sortedLat.length * 0.75);
+          bottleneckThreshold = sortedLat[p75Idx] || bottleneckThreshold;
+        } else if (targetMode === "percentile_p90") {
+          var p90Idx = Math.floor(sortedLat.length * 0.90);
+          bottleneckThreshold = sortedLat[p90Idx] || bottleneckThreshold;
+        }
+      }
+
+      var bottleneckCount = 0;
+
       // Finalize Links
       var links = Object.values(linksMap).map(function (lnk) {
         var avgLat = lnk.volume > 0 ? (lnk.weightedLatencySum / lnk.volume) : 0;
@@ -776,13 +1209,24 @@
         return n;
       });
 
+      // Interactive Sorting
+      var sortBy = config.sortBy || "degree_desc";
+      if (sortBy === "metric_desc") {
+        allNodes.sort(function (a, b) { return b.totalVolume - a.totalVolume; });
+      } else if (sortBy === "metric_asc") {
+        allNodes.sort(function (a, b) { return a.totalVolume - b.totalVolume; });
+      } else if (sortBy === "alpha") {
+        allNodes.sort(function (a, b) { return a.name.localeCompare(b.name); });
+      } else if (sortBy === "degree_desc") {
+        allNodes.sort(function (a, b) { return b.degree - a.degree; });
+      }
+
       // Density limiter
       var nodeLimitConfig = config.nodeLimit || "all";
       var activeNodes = allNodes;
       if (nodeLimitConfig !== "all") {
         var lim = parseInt(nodeLimitConfig, 10);
         if (!isNaN(lim) && lim < allNodes.length) {
-          allNodes.sort(function (a, b) { return b.totalVolume - a.totalVolume; });
           var topSet = {};
           for (var t = 0; t < lim; t++) {
             topSet[allNodes[t].id] = true;
@@ -799,8 +1243,11 @@
       var minLatency = d3.min(links, function (d) { return d.latency; }) || 0;
       var maxLatency = d3.max(links, function (d) { return d.latency; }) || 5;
 
+      // Font scale factor
+      var fontScaleFactor = config.fontScale === "compact" ? 0.85 : (config.fontScale === "large" ? 1.25 : 1.0);
+
       // ==========================================
-      // 3. EXECUTIVE HUD (Optimized, No Backdrop Readback)
+      // 3. EXECUTIVE HUD & HEADER
       // ==========================================
       var hudContainer = document.createElement("div");
       hudContainer.className = "network-topology-hud";
@@ -815,48 +1262,101 @@
       hudContainer.style.gap = "12px";
       hudContainer.style.pointerEvents = "none";
 
-      if (config.showExecutiveHUD !== false) {
+      var leftHudWrapper = document.createElement("div");
+      leftHudWrapper.style.display = "flex";
+      leftHudWrapper.style.alignItems = "center";
+      leftHudWrapper.style.gap = "12px";
+      leftHudWrapper.style.pointerEvents = "auto";
+
+      // Optional Custom Title / Subtitle Override
+      if (config.customTitle || config.customSubtitle) {
+        var titleCard = document.createElement("div");
+        titleCard.style.padding = "6px 12px";
+        titleCard.style.background = theme.hudBg;
+        titleCard.style.border = "1px solid " + theme.hudBorder;
+        titleCard.style.borderRadius = "8px";
+        titleCard.style.boxShadow = "0 4px 14px rgba(0,0,0,0.18)";
+        var titleHtml = "";
+        if (config.customTitle) {
+          titleHtml += '<div style="font-size:' + (13 * fontScaleFactor) + 'px; font-weight:700; color:' + theme.text + ';">' + config.customTitle + '</div>';
+        }
+        if (config.customSubtitle) {
+          titleHtml += '<div style="font-size:' + (10.5 * fontScaleFactor) + 'px; color:' + theme.subtext + ';">' + config.customSubtitle + '</div>';
+        }
+        titleCard.innerHTML = titleHtml;
+        leftHudWrapper.appendChild(titleCard);
+      }
+
+      var hudMode = config.hudMode || (config.showExecutiveHUD === false ? "none" : "scorecard");
+
+      if (hudMode === "scorecard") {
         var statsCard = document.createElement("div");
         statsCard.style.pointerEvents = "auto";
         statsCard.style.display = "flex";
         statsCard.style.alignItems = "center";
-        statsCard.style.gap = "14px";
+        statsCard.style.gap = (14 * fontScaleFactor) + "px";
         statsCard.style.padding = "8px 16px";
         statsCard.style.background = theme.hudBg;
         statsCard.style.border = "1px solid " + theme.hudBorder;
         statsCard.style.borderRadius = "8px";
         statsCard.style.boxShadow = "0 4px 14px rgba(0,0,0,0.18)";
         statsCard.style.color = theme.hudText;
-        statsCard.style.fontSize = "11.5px";
+        statsCard.style.fontSize = (11.5 * fontScaleFactor) + "px";
 
         statsCard.innerHTML =
           '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="font-size:14px;">📡</span>' +
+            '<span style="font-size:' + (14 * fontScaleFactor) + 'px;">📡</span>' +
             '<span>Nodes: <strong style="color:' + (theme.isDark ? '#38bdf8' : '#0284c7') + ';">' + activeNodes.length + '</strong></span>' +
           '</div>' +
           '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
           '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="font-size:14px;">🔗</span>' +
+            '<span style="font-size:' + (14 * fontScaleFactor) + 'px;">🔗</span>' +
             '<span>Links: <strong style="color:' + (theme.isDark ? '#38bdf8' : '#0284c7') + ';">' + links.length + '</strong></span>' +
           '</div>' +
           '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
           '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="font-size:14px;">⚡</span>' +
+            '<span style="font-size:' + (14 * fontScaleFactor) + 'px;">⚡</span>' +
             '<span>Throughput: <strong style="color:' + theme.text + ';">' + formatValue(totalVolume, config.valueFormat || "bandwidth") + '</strong></span>' +
           '</div>' +
           '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
           '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="font-size:14px;">⏱️</span>' +
+            '<span style="font-size:' + (14 * fontScaleFactor) + 'px;">⏱️</span>' +
             '<span>Avg Latency: <strong style="color:' + (avgNetworkLatency > bottleneckThreshold ? theme.criticalLatency : theme.optimalLatency) + ';">' + formatLatency(avgNetworkLatency) + '</strong></span>' +
           '</div>' +
           (bottleneckCount > 0 ?
             ('<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
              '<div style="display:flex; align-items:center; gap:6px; color:' + theme.criticalLatency + '; font-weight:700;">' +
-               '<span style="font-size:14px;">⚠️</span>' +
-               '<span>' + bottleneckCount + ' Bottlenecks</span>' +
+               '<span style="font-size:' + (14 * fontScaleFactor) + 'px;">⚠️</span>' +
+               '<span>' + bottleneckCount + ' ' + (config.referenceLineLabel || 'Bottlenecks') + '</span>' +
              '</div>') : '');
 
-        hudContainer.appendChild(statsCard);
+        leftHudWrapper.appendChild(statsCard);
+      } else if (hudMode === "compact_strip") {
+        var stripCard = document.createElement("div");
+        stripCard.style.pointerEvents = "auto";
+        stripCard.style.display = "flex";
+        stripCard.style.alignItems = "center";
+        stripCard.style.gap = "8px";
+        stripCard.style.padding = "4px 10px";
+        stripCard.style.background = theme.hudBg;
+        stripCard.style.border = "1px solid " + theme.hudBorder;
+        stripCard.style.borderRadius = "6px";
+        stripCard.style.boxShadow = "0 2px 8px rgba(0,0,0,0.14)";
+        stripCard.style.color = theme.hudText;
+        stripCard.style.fontSize = (10.5 * fontScaleFactor) + "px";
+
+        stripCard.innerHTML =
+          '<span>' + activeNodes.length + ' Nodes</span> • ' +
+          '<span>' + links.length + ' Links</span> • ' +
+          '<span>' + formatValue(totalVolume, config.valueFormat || "bandwidth") + '</span> • ' +
+          '<span style="color:' + (avgNetworkLatency > bottleneckThreshold ? theme.criticalLatency : theme.optimalLatency) + '; font-weight:700;">' + formatLatency(avgNetworkLatency) + '</span>' +
+          (bottleneckCount > 0 ? (' • <span style="color:' + theme.criticalLatency + '; font-weight:700;">⚠️ ' + bottleneckCount + ' Alerts</span>') : '');
+
+        leftHudWrapper.appendChild(stripCard);
+      }
+
+      if (leftHudWrapper.children.length > 0) {
+        hudContainer.appendChild(leftHudWrapper);
       }
 
       // Search Box
