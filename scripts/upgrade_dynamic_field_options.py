@@ -81,6 +81,13 @@ FIELD_SPECS = {
         "measureFieldOverride": ("measure", 0),
         "secondaryMeasureOverride": ("measure", 1),
     },
+    "media_audience_overlap_euler": {
+        "networkFieldOverride": ("dimension", 0),
+        "segmentFieldOverride": ("dimension", 1),
+        "demoFieldOverride": ("dimension", 2),
+        "reachMeasureOverride": ("measure", 0),
+        "secondaryMeasureOverride": ("measure", 1),
+    },
     "mitre_attack_matrix": {
         "dimTacticOverride": ("dimension", 0),
         "dimTechniqueOverride": ("dimension", 1),
@@ -109,6 +116,13 @@ FIELD_SPECS = {
         "fpFieldOverride": ("any", 7),
         "tnFieldOverride": ("any", 8),
         "fnFieldOverride": ("any", 9),
+    },
+    "sankey_flow_diagram": {
+        "sourceDimOverride": ("dimension", 0),
+        "intermediateDimOverride": ("dimension", 1),
+        "targetDimOverride": ("dimension", 2),
+        "volumeMeasureOverride": ("measure", 0),
+        "secondaryMeasureOverride": ("measure", -1),
     },
     "sparkline_matrix_table": {
         "dimFieldOverride": ("dimension", 0),

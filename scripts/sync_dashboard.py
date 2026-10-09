@@ -60,7 +60,8 @@ VOL2_VIZ_MAP = {
     "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
     "bilateral_chord_diagram": "🛍️ Retail, Supply Chain & FinOps",
     "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps",
-    "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps"
+    "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps",
+    "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops"
 }
 
 CATEGORY_TAB_MAP = {
@@ -146,7 +147,8 @@ VIZ_EMOJI_MAP = {
     "inventory_stockout_sawtooth": "📦",
     "multi_touch_attribution_pathway": "🎬",
     "raincloud_plot": "🌧️",
-    "pvm_revenue_bridge": "🌉"
+    "pvm_revenue_bridge": "🌉",
+    "media_audience_overlap_euler": "⭕"
 }
 
 

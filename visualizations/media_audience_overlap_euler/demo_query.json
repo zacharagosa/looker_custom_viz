@@ -1,0 +1,23 @@
+{
+  "model": "tvun_media_analytics",
+  "view": "ad_spot_airings",
+  "fields": [
+    "broadcast_programming.network",
+    "broadcast_programming.genre",
+    "nielsen_ratings_markets.target_demographic",
+    "nielsen_ratings_markets.total_grps",
+    "ad_spot_airings.total_spend_mxn"
+  ],
+  "sorts": [
+    "nielsen_ratings_markets.total_grps desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "media_audience_overlap_euler",
+    "layoutMode": "euler_circles",
+    "colorTheme": "sunset_media",
+    "hudMode": "scorecard",
+    "showDataLabels": "all",
+    "metricPolarity": "higher_better"
+  }
+}

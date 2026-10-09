@@ -299,7 +299,10 @@
     },
     "deployed": true,
     "instance_wide": true,
-    "screenshot": "visualizations/sankey_flow_diagram/screenshot.png"
+    "screenshot": "visualizations/sankey_flow_diagram/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-09",
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.traffic_source,products.category,order_items.status,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=365+days&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sankey_flow_diagram%22%2C%22viewMode%22%3A%22sankey%22%2C%22nodeAlignment%22%3A%22justify%22%2C%22linkColorMode%22%3A%22gradient%22%2C%22colorPalette%22%3A%22corporate_blue%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curvature%22%3A0.5%2C%22nodeWidth%22%3A18%2C%22nodePadding%22%3A16%2C%22showNodeValues%22%3Atrue%2C%22showNodePercentages%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22enableAnimation%22%3Atrue%2C%22highlightFlowsOnHover%22%3Atrue%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "rank_bump_chart",
@@ -1273,5 +1276,37 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-08",
     "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=medical_products.category,order_lines.order_month,order_lines.total_spend,order_lines.units_ordered&f[order_lines.order_month]=2025-11+to+2026-04&sorts=order_lines.total_spend+desc&limit=500&vis=%7B%22type%22%3A%22pvm_revenue_bridge%22%2C%22layoutMode%22%3A%22pvm_waterfall%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConnectorLines%22%3Atrue%2C%22showVarianceBadges%22%3Atrue%2C%22showDataLabels%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22metricPolarity%22%3A%22higher_better%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "media_audience_overlap_euler",
+    "name": "Media Audience Overlap & Co-Viewing Euler Matrix",
+    "date_added": "2026-10-09",
+    "library": "D3.js v7",
+    "category": "Media, Broadcast & Ad-Ops",
+    "description": "Executive audience deduplication, cross-platform co-viewing, and incremental reach Euler/Venn matrix for broadcast television networks, streaming services, and media planners. Features proportional Euler circles with physics-optimized overlap spacing, pairwise co-viewing affinity grid, exclusive vs shared reach waterfall, and demographic segment concentration bubbles.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Primary Network / Platform Dimension (e.g. broadcast_programming.network), Optional 2nd/3rd Dimension (broadcast_programming.genre, nielsen_ratings_markets.target_demographic)",
+      "measures": "1 Reach / Ratings Measure (e.g. nielsen_ratings_markets.total_grps), Optional Secondary Measure (e.g. ad_spot_airings.total_spend_mxn)"
+    },
+    "suggested_dataset": {
+      "model": "tvun_media_analytics",
+      "explore": "ad_spot_airings",
+      "fields": [
+        "broadcast_programming.network",
+        "broadcast_programming.genre",
+        "nielsen_ratings_markets.target_demographic",
+        "nielsen_ratings_markets.total_grps",
+        "ad_spot_airings.total_spend_mxn"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/media_audience_overlap_euler/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-09",
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,nielsen_ratings_markets.target_demographic,nielsen_ratings_markets.total_grps,ad_spot_airings.total_spend_mxn&sorts=nielsen_ratings_markets.total_grps+desc&limit=500&vis=%7B%22type%22%3A%22media_audience_overlap_euler%22%2C%22layoutMode%22%3A%22euler_circles%22%2C%22colorTheme%22%3A%22sunset_media%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showDataLabels%22%3A%22all%22%2C%22metricPolarity%22%3A%22higher_better%22%7D&origin=share-expanded&toggle=vis"
   }
 ]

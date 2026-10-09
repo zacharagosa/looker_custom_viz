@@ -43,22 +43,9 @@
   }
 
   var PALETTES = {
-    wellverse: {
-      name: "Wellverse",
-      colors: ["#143359", "#00AF68", "#2E7CF6", "#FFB500", "#7C5CFC", "#14B8A6", "#E5484D", "#94A3B8", "#1E467A", "#5FD3A0", "#8FB8F9", "#FFD166"],
-      bg: "#ffffff",
-      cardBg: "#F8FAFC",
-      text: "#0F172A",
-      subtext: "#64748B",
-      border: "#E2E8F0",
-      linkDefault: "#CBD5E1",
-      linkHover: "#143359",
-      hudBg: "rgba(255, 255, 255, 0.94)",
-      nodeStroke: "#ffffff",
-      pulseColor: "#00AF68"
-    },
-    corporate_blue: {
-      name: "Google & Corporate Blue",
+    google_enterprise: {
+      name: "Google Enterprise Blue",
+      isDark: false,
       colors: ["#1a73e8", "#12b5cb", "#e52592", "#f9ab00", "#1e8e3e", "#9334e6", "#e8710a", "#188038", "#4285f4", "#ea4335"],
       bg: "#ffffff",
       cardBg: "#f8fafc",
@@ -71,8 +58,9 @@
       nodeStroke: "#ffffff",
       pulseColor: "#38bdf8"
     },
-    executive_slate: {
-      name: "Executive Slate & Charcoal",
+    modern_slate: {
+      name: "Modern Slate",
+      isDark: false,
       colors: ["#334155", "#475569", "#64748b", "#0f766e", "#0369a1", "#4338ca", "#b45309", "#be123c", "#15803d", "#701a75"],
       bg: "#ffffff",
       cardBg: "#f8fafc",
@@ -85,22 +73,24 @@
       nodeStroke: "#ffffff",
       pulseColor: "#0ea5e9"
     },
-    vibrant_modern: {
-      name: "Vibrant Modern Neon",
-      colors: ["#6366f1", "#ec4899", "#8b5cf6", "#14b8a6", "#f59e0b", "#3b82f6", "#10b981", "#f43f5e", "#06b6d4", "#a855f7"],
-      bg: "#ffffff",
-      cardBg: "#fdf4ff",
-      text: "#18181b",
-      subtext: "#71717a",
-      border: "#e4e4e7",
-      linkDefault: "#d4d4d8",
-      linkHover: "#8b5cf6",
-      hudBg: "rgba(255, 255, 255, 0.94)",
-      nodeStroke: "#ffffff",
-      pulseColor: "#ec4899"
+    cyberpunk_dark: {
+      name: "Cyberpunk Dark (NOC)",
+      isDark: true,
+      colors: ["#38bdf8", "#a855f7", "#34d399", "#f472b6", "#fbbf24", "#818cf8", "#2dd4bf", "#fb7185", "#60a5fa", "#c084fc"],
+      bg: "#0b0f19",
+      cardBg: "#111827",
+      text: "#f9fafb",
+      subtext: "#9ca3af",
+      border: "#1f2937",
+      linkDefault: "#1f2937",
+      linkHover: "#38bdf8",
+      hudBg: "rgba(17, 24, 39, 0.92)",
+      nodeStroke: "#111827",
+      pulseColor: "#00f0ff"
     },
-    emerald_teal: {
-      name: "Emerald Forest & Teal",
+    emerald_finops: {
+      name: "Emerald FinOps",
+      isDark: false,
       colors: ["#059669", "#0d9488", "#0284c7", "#10b981", "#14b8a6", "#047857", "#0f766e", "#0369a1", "#16a34a", "#22c55e"],
       bg: "#ffffff",
       cardBg: "#f0fdf4",
@@ -113,8 +103,9 @@
       nodeStroke: "#ffffff",
       pulseColor: "#10b981"
     },
-    warm_amber: {
-      name: "Warm Amber & Sunset",
+    sunset_media: {
+      name: "Sunset Media",
+      isDark: false,
       colors: ["#ea580c", "#d97706", "#e11d48", "#b45309", "#c2410c", "#be123c", "#f59e0b", "#f97316", "#fb7185", "#fbbf24"],
       bg: "#ffffff",
       cardBg: "#fffbeb",
@@ -127,19 +118,35 @@
       nodeStroke: "#ffffff",
       pulseColor: "#f97316"
     },
-    dark_cyber: {
-      name: "Dark Cyber NOC",
-      colors: ["#38bdf8", "#a855f7", "#34d399", "#f472b6", "#fbbf24", "#818cf8", "#2dd4bf", "#fb7185", "#60a5fa", "#c084fc"],
-      bg: "#0b0f19",
-      cardBg: "#111827",
-      text: "#f9fafb",
-      subtext: "#9ca3af",
-      border: "#1f2937",
-      linkDefault: "#1f2937",
-      linkHover: "#38bdf8",
-      hudBg: "rgba(17, 24, 39, 0.92)",
-      nodeStroke: "#111827",
-      pulseColor: "#00f0ff"
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
+      isDark: false,
+      colors: ["#143359", "#00AF68", "#2E7CF6", "#FFB500", "#7C5CFC", "#14B8A6", "#E5484D", "#94A3B8", "#1E467A", "#5FD3A0", "#8FB8F9", "#FFD166"],
+      bg: "#ffffff",
+      cardBg: "#F8FAFC",
+      text: "#0F172A",
+      subtext: "#64748B",
+      border: "#E2E8F0",
+      linkDefault: "#CBD5E1",
+      linkHover: "#143359",
+      hudBg: "rgba(255, 255, 255, 0.94)",
+      nodeStroke: "#ffffff",
+      pulseColor: "#00AF68"
+    },
+    custom_override: {
+      name: "Custom Hex Override",
+      isDark: false,
+      colors: ["#1a73e8", "#34a853", "#fbbc04", "#ea4335", "#9334e6", "#00bcd4", "#ff6d00", "#455a64"],
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      text: "#0f172a",
+      subtext: "#64748b",
+      border: "#e2e8f0",
+      linkDefault: "#cbd5e1",
+      linkHover: "#1a73e8",
+      hudBg: "rgba(255, 255, 255, 0.94)",
+      nodeStroke: "#ffffff",
+      pulseColor: "#1a73e8"
     }
   };
 
@@ -155,23 +162,52 @@
       case "currency":
         return "$" + n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
       case "compact":
+      case "compact_num":
+      case "compact_number":
         if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + "B";
         if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + "M";
         if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(1) + "k";
         return n.toLocaleString();
       case "percent":
+      case "percentage":
         return (n * 100).toFixed(1) + "%";
+      case "decimal_2":
+        return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      case "raw":
+        return String(n);
       case "integer":
       default:
         return Math.round(n).toLocaleString();
     }
   }
 
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || list.length === 0) return null;
+    if (overrideVal) {
+      var trimmed = String(overrideVal).trim();
+      var idx = parseInt(trimmed, 10);
+      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+        return list[idx - 1];
+      }
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === trimmed || list[i].label === trimmed || list[i].label_short === trimmed) {
+          return list[i];
+        }
+      }
+    }
+    if (defaultIdx >= 0 && defaultIdx < list.length) {
+      return list[defaultIdx];
+    }
+    return list[0] || null;
+  }
+
   looker.plugins.visualizations.add({
     id: "sankey_flow_diagram",
     label: "Sankey Flow & Allocation Diagram",
     options: {
-      // SECTION 1: DISPLAY
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       viewMode: {
         type: "string",
         label: "Flow Layout Mode",
@@ -186,11 +222,56 @@
         ],
         default: "sankey"
       },
+      sourceDimOverride: {
+        type: "string",
+        label: "Stage 1: Source / Origin Dimension",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 2
+      },
+      intermediateDimOverride: {
+        type: "string",
+        label: "Stage 2: Transition / Intermediate Dimension",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      targetDimOverride: {
+        type: "string",
+        label: "Stage 3: Destination / Outcome Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      volumeMeasureOverride: {
+        type: "string",
+        label: "Primary Volume Measure",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      secondaryMeasureOverride: {
+        type: "string",
+        label: "Target / Benchmark Measure (Optional)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
       nodeAlignment: {
         type: "string",
         label: "Node Alignment",
         section: "Display",
-        order: 2,
+        order: 7,
         display: "select",
         values: [
           { "Justify (Outer Edges)": "justify" },
@@ -204,7 +285,7 @@
         type: "string",
         label: "Link Gradient Mode",
         section: "Display",
-        order: 3,
+        order: 8,
         display: "select",
         values: [
           { "Source-to-Target Gradient": "gradient" },
@@ -218,7 +299,7 @@
         type: "number",
         label: "Bézier Curvature (0.1 - 0.8)",
         section: "Display",
-        order: 4,
+        order: 9,
         display: "range",
         min: 0.1,
         max: 0.8,
@@ -229,7 +310,7 @@
         type: "string",
         label: "Minimum Flow Threshold Filter",
         section: "Display",
-        order: 5,
+        order: 10,
         display: "select",
         values: [
           { "Show All Flows (0%)": "0" },
@@ -244,7 +325,7 @@
         type: "string",
         label: "Top Paths Limit (Rows Optimization)",
         section: "Display",
-        order: 6,
+        order: 11,
         display: "select",
         values: [
           { "All Paths (Up to 5,000 rows)": "all" },
@@ -255,79 +336,222 @@
         ],
         default: "all"
       },
-      showNodeValues: {
+      enableOtherRollup: {
         type: "boolean",
-        label: "Show Node Metrics",
+        label: "Rollup Unselected Flows into (Other) Stream",
         section: "Display",
-        order: 7,
+        order: 12,
+        default: false
+      },
+      sortBy: {
+        type: "string",
+        label: "Node & Flow Sort Order",
+        section: "Display",
+        order: 13,
+        display: "select",
+        values: [
+          { "Flow Volume Descending (Highest First)": "volume_desc" },
+          { "Flow Volume Ascending (Lowest First)": "volume_asc" },
+          { "Alphabetical / Categorical": "alphabetical" },
+          { "Chronological / Natural Order": "natural" }
+        ],
+        default: "volume_desc"
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero & Null Flow Paths",
+        section: "Display",
+        order: 14,
         default: true
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Target / Benchmark Calculation Mode",
+        section: "Display",
+        order: 15,
+        display: "select",
+        values: [
+          { "Dataset Mean (Average Node Volume)": "dataset_mean" },
+          { "Dataset Median": "dataset_median" },
+          { "Fixed Benchmark Target Value": "fixed" },
+          { "Top Percentile P75 Target": "percentile_p75" },
+          { "Top Percentile P90 Target": "percentile_p90" },
+          { "Target Measure Column": "measure_column" }
+        ],
+        default: "dataset_mean"
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Benchmark Target Value",
+        section: "Display",
+        order: 16,
+        default: 100000
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Benchmark Reference Line Label",
+        section: "Display",
+        order: 17,
+        default: "Target Quota"
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Anomaly Alert Threshold (% of Target)",
+        section: "Display",
+        order: 18,
+        default: 125
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive Scorecard HUD Mode",
+        section: "Display",
+        order: 19,
+        display: "select",
+        values: [
+          { "Full Scorecard HUD (Top Band)": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "hidden" }
+        ],
+        default: "scorecard"
+      },
+      showValueLabels: {
+        type: "string",
+        label: "Node & Ribbon Data Labels",
+        section: "Display",
+        order: 20,
+        display: "select",
+        values: [
+          { "Show All Node Metrics": "all" },
+          { "Dominant / Peak Flows Only": "peaks_only" },
+          { "Hidden": "hidden" }
+        ],
+        default: "all"
       },
       showNodePercentages: {
         type: "boolean",
-        label: "Show Stage Share %",
+        label: "Show Stage Share % on Nodes",
         section: "Display",
-        order: 8,
+        order: 21,
         default: true
       },
       showSearch: {
         type: "boolean",
-        label: "Show Path Search Filter",
+        label: "Show Path Search Filter Toolbar",
         section: "Display",
-        order: 9,
-        default: true
-      },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive KPI Summary Bar",
-        section: "Display",
-        order: 10,
+        order: 22,
         default: true
       },
       enableAnimation: {
         type: "boolean",
         label: "Pulse Particle Flow Animation",
         section: "Display",
-        order: 11,
+        order: 23,
         default: true
       },
       highlightFlowsOnHover: {
         type: "boolean",
         label: "Bi-Directional Path Highlighting",
         section: "Display",
-        order: 12,
+        order: 24,
         default: true
       },
+      customTitleOverride: {
+        type: "string",
+        label: "Custom Title Override",
+        section: "Display",
+        order: 25,
+        default: ""
+      },
+      customSubtitleOverride: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        section: "Display",
+        order: 26,
+        default: ""
+      },
 
-      // SECTION 2: STYLE
+      // ==========================================
+      // SECTION 2: STYLE (Strictly minimized tab)
+      // ==========================================
       colorPalette: {
         type: "string",
-        label: "Color Palette & Theme",
+        label: "Brand Palette Theme",
         section: "Style",
         order: 1,
         display: "select",
         values: [
-          { "Google & Corporate Blue": "corporate_blue" },
-          { "Executive Slate & Charcoal": "executive_slate" },
-          { "Vibrant Modern Neon": "vibrant_modern" },
-          { "Emerald Forest & Teal": "emerald_teal" },
-          { "Warm Amber & Sunset": "warm_amber" },
-          { "Dark Cyber NOC": "dark_cyber" },
-          { "Wellverse": "wellverse" }
+          { "Google Enterprise Blue": "google_enterprise" },
+          { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Dark (NOC)": "cyberpunk_dark" },
+          { "Emerald FinOps": "emerald_finops" },
+          { "Sunset Media (Warm Amber)": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Custom Hex Override": "custom_override" }
         ],
-        default: "corporate_blue"
+        default: "google_enterprise"
+      },
+      customPrimaryHex: {
+        type: "string",
+        label: "Custom Primary Accent Hex",
+        section: "Style",
+        order: 2,
+        display: "color",
+        default: "#1a73e8"
+      },
+      customPositiveHex: {
+        type: "string",
+        label: "Custom Target / Positive Flow Hex",
+        section: "Style",
+        order: 3,
+        display: "color",
+        default: "#0d9488"
+      },
+      customNegativeHex: {
+        type: "string",
+        label: "Custom Anomaly / Alert Flow Hex",
+        section: "Style",
+        order: 4,
+        display: "color",
+        default: "#e11d48"
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Target Polarity",
+        section: "Style",
+        order: 5,
+        display: "select",
+        values: [
+          { "Higher is Better (Revenue, Conversions, Throughput)": "higher_is_better" },
+          { "Lower is Better (Latency, Churn, Cost Leakage)": "lower_is_better" }
+        ],
+        default: "higher_is_better"
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography Font Scale",
+        section: "Style",
+        order: 6,
+        display: "select",
+        values: [
+          { "Compact (High-Density Dashboard)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (Executive Wallboard)": "large" }
+        ],
+        default: "standard"
       },
       valueFormat: {
         type: "string",
-        label: "Metric Value Format",
+        label: "Value Formatting Style",
         section: "Style",
-        order: 2,
+        order: 7,
         display: "select",
         values: [
-          { "Compact Currency (.2M)": "compact_currency" },
-          { "Full Currency (,234,567)": "currency" },
-          { "Compact Number (1.2M)": "compact" },
-          { "Integer (1,234,567)": "integer" },
-          { "Percentage (84.2%)": "percent" }
+          { "Compact Currency ($1.2M)": "compact_currency" },
+          { "Standard Currency ($1,234,567)": "currency" },
+          { "Compact Number (1.2M)": "compact_number" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal 2dp (1,234.56)": "decimal_2" },
+          { "Raw Unformatted": "raw" }
         ],
         default: "compact_currency"
       },
@@ -335,10 +559,10 @@
         type: "number",
         label: "Node Width (px)",
         section: "Style",
-        order: 3,
+        order: 8,
         display: "range",
         min: 8,
-        max: 32,
+        max: 36,
         step: 2,
         default: 18
       },
@@ -346,9 +570,9 @@
         type: "number",
         label: "Node Vertical Gap (px)",
         section: "Style",
-        order: 4,
+        order: 9,
         display: "range",
-        min: 6,
+        min: 4,
         max: 36,
         step: 2,
         default: 16
@@ -357,12 +581,77 @@
         type: "number",
         label: "Flow Ribbon Opacity (0.15 - 0.70)",
         section: "Style",
-        order: 5,
+        order: 10,
         display: "range",
         min: 0.15,
         max: 0.70,
         step: 0.05,
         default: 0.38
+      }
+    },
+
+    // ------------------------------------------------------------------
+    // Dynamic Field-Role Dropdowns
+    // Populates every field-role selector from the live query's actual
+    // dimensions & measures (via Looker's `registerOptions` trigger) so users
+    // pick columns by name instead of typing 1-based column indexes.
+    // ------------------------------------------------------------------
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        sourceDimOverride: { role: "dimension", defaultIdx: 0 },
+        intermediateDimOverride: { role: "dimension", defaultIdx: 1 },
+        targetDimOverride: { role: "dimension", defaultIdx: 2 },
+        volumeMeasureOverride: { role: "measure", defaultIdx: 0 },
+        secondaryMeasureOverride: { role: "measure", defaultIdx: -1 }
+      };
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : (spec.role === "any" ? dims.concat(meas) : dims);
+        var autoField = spec.defaultIdx >= 0 && spec.defaultIdx < list.length ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto \\u2192 " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].type = "string";
+        newOptions[key].display = "select";
+        newOptions[key].values = values;
+        newOptions[key].default = "";
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        console.warn("registerOptions unavailable in this host:", e);
       }
     },
 
@@ -514,8 +803,17 @@
       var oldTooltips = document.querySelectorAll(".sankey-tooltip-floating");
       oldTooltips.forEach(function (t) { t.remove(); });
 
-      var palKey = config.colorPalette || "corporate_blue";
-      var theme = PALETTES[palKey] || PALETTES.corporate_blue;
+      var palKey = config.colorPalette || "google_enterprise";
+      var theme = PALETTES[palKey] || PALETTES.google_enterprise;
+      if (palKey === "custom_override") {
+        theme = Object.assign({}, theme);
+        if (config.customPrimaryHex) {
+          theme.colors = [config.customPrimaryHex, config.customPositiveHex || "#0d9488", config.customNegativeHex || "#e11d48", "#12b5cb", "#f9ab00", "#9334e6", "#e8710a"];
+          theme.linkHover = config.customPrimaryHex;
+          theme.pulseColor = config.customPrimaryHex;
+        }
+      }
+
       var viewMode = config.viewMode || "sankey";
       var nodeAlign = config.nodeAlignment || "justify";
       var linkColorMode = config.linkColorMode || "gradient";
@@ -524,33 +822,68 @@
       var nodePadding = Number(config.nodePadding) || 16;
       var linkOpacity = Number(config.linkOpacity) || 0.38;
       var valueFmt = config.valueFormat || "compact_currency";
-      var showValues = config.showNodeValues !== false;
+      var showValues = config.showValueLabels !== "hidden";
       var showPct = config.showNodePercentages !== false;
       var showSearch = config.showSearch !== false;
-      var showHUD = config.showExecutiveHUD !== false;
+      var hudMode = config.hudMode || "scorecard";
       var enableAnim = config.enableAnimation !== false;
       var highlightHover = config.highlightFlowsOnHover !== false;
       var minLinkPct = parseFloat(config.minLinkPct) || 0;
       var topPathsLimit = config.topPathsLimit || "all";
+      var enableOtherRollup = config.enableOtherRollup === true;
+      var sortBy = config.sortBy || "volume_desc";
+      var suppressZeroNull = config.suppressZeroNull !== false;
+      var targetMode = config.targetCalculationMode || "dataset_mean";
+      var fixedTargetVal = Number(config.fixedTargetValue) || 100000;
+      var refLabel = config.referenceLineLabel || "Target Quota";
+      var anomalyThresholdPct = Number(config.anomalyThresholdPct) || 125;
+      var metricPolarity = config.metricPolarity || "higher_is_better";
+      var fontScale = config.fontScale || "standard";
 
       root.style.backgroundColor = theme.bg;
       root.style.color = theme.text;
+      if (fontScale === "compact") {
+        root.style.fontSize = "11px";
+      } else if (fontScale === "large") {
+        root.style.fontSize = "13.5px";
+      } else {
+        root.style.fontSize = "12px";
+      }
 
-      var valMeasureName = meas[0].name;
-      var secMeasureName = meas.length > 1 ? meas[1].name : null;
+      // Resolve field overrides
+      var resolvedSourceDim = resolveField(dims, config.sourceDimOverride, 0);
+      var resolvedInterDim = resolveField(dims, config.intermediateDimOverride, 1);
+      var resolvedTargetDim = config.targetDimOverride ? resolveField(dims, config.targetDimOverride, 2) : (dims.length > 2 ? dims[2] : null);
 
-      var stageDimNames = dims.map(function (d) { return d.name; });
-      var stageLabels = dims.map(function (d) { return d.label_short || d.label || d.name; });
+      var activeStageDims = [resolvedSourceDim, resolvedInterDim];
+      if (resolvedTargetDim && resolvedTargetDim.name !== resolvedInterDim.name) {
+        activeStageDims.push(resolvedTargetDim);
+      }
+      // If there are more dimensions in query not mapped, include remaining in sequential order up to 8 stages
+      if (!config.sourceDimOverride && !config.intermediateDimOverride && dims.length > 3) {
+        activeStageDims = dims.slice(0, 8);
+      }
+
+      var stageDimNames = activeStageDims.map(function (d) { return d.name; });
+      var stageLabels = activeStageDims.map(function (d) { return d.label_short || d.label || d.name; });
+
+      var resolvedVolMeasure = resolveField(meas, config.volumeMeasureOverride, 0);
+      var resolvedSecMeasure = config.secondaryMeasureOverride ? resolveField(meas, config.secondaryMeasureOverride, -1) : (meas.length > 1 ? meas[1] : null);
+
+      var valMeasureName = resolvedVolMeasure ? resolvedVolMeasure.name : meas[0].name;
+      var secMeasureName = resolvedSecMeasure ? resolvedSecMeasure.name : null;
 
       var rawPaths = [];
       var totalGlobalVolume = 0;
+      var allRowValues = [];
 
       data.forEach(function (row) {
         var rawVal = row[valMeasureName] ? row[valMeasureName].value : 0;
         var val = Number(rawVal) || 0;
-        if (val <= 0) return;
+        if (suppressZeroNull && val <= 0) return;
 
         totalGlobalVolume += val;
+        allRowValues.push(val);
         var secVal = secMeasureName && row[secMeasureName] ? Number(row[secMeasureName].value) || 0 : null;
 
         var pathNodes = [];
@@ -569,11 +902,60 @@
         });
       });
 
+      // Target calculation mode
+      var computedBenchmark = 0;
+      if (targetMode === "fixed") {
+        computedBenchmark = fixedTargetVal;
+      } else if (targetMode === "measure_column" && secMeasureName) {
+        var sumTarget = 0, countTarget = 0;
+        data.forEach(function (r) {
+          if (r[secMeasureName] && !isNaN(Number(r[secMeasureName].value))) {
+            sumTarget += Number(r[secMeasureName].value);
+            countTarget++;
+          }
+        });
+        computedBenchmark = countTarget > 0 ? (sumTarget / countTarget) : 0;
+      } else if (allRowValues.length > 0) {
+        var sortedVals = allRowValues.slice().sort(function (a, b) { return a - b; });
+        if (targetMode === "dataset_median") {
+          var mid = Math.floor(sortedVals.length / 2);
+          computedBenchmark = sortedVals.length % 2 !== 0 ? sortedVals[mid] : (sortedVals[mid - 1] + sortedVals[mid]) / 2;
+        } else if (targetMode === "percentile_p75") {
+          var p75Idx = Math.min(sortedVals.length - 1, Math.floor(sortedVals.length * 0.75));
+          computedBenchmark = sortedVals[p75Idx];
+        } else if (targetMode === "percentile_p90") {
+          var p90Idx = Math.min(sortedVals.length - 1, Math.floor(sortedVals.length * 0.90));
+          computedBenchmark = sortedVals[p90Idx];
+        } else {
+          computedBenchmark = totalGlobalVolume / (allRowValues.length || 1);
+        }
+      }
+
+      // Top-N and Other Rollup
       if (topPathsLimit !== "all") {
         var pLimit = parseInt(topPathsLimit, 10) || 50;
         rawPaths.sort(function (a, b) { return b.value - a.value; });
         if (rawPaths.length > pLimit) {
-          rawPaths = rawPaths.slice(0, pLimit);
+          if (enableOtherRollup) {
+            var keptPaths = rawPaths.slice(0, pLimit);
+            var otherPaths = rawPaths.slice(pLimit);
+            var otherVol = otherPaths.reduce(function (sum, p) { return sum + p.value; }, 0);
+            if (otherVol > 0) {
+              var otherNodes = [];
+              for (var s = 0; s < stageDimNames.length; s++) {
+                otherNodes.push({ stage: s, name: "(Other Flows)", links: null });
+              }
+              keptPaths.push({
+                nodes: otherNodes,
+                value: otherVol,
+                secondary: null,
+                row: {}
+              });
+            }
+            rawPaths = keptPaths;
+          } else {
+            rawPaths = rawPaths.slice(0, pLimit);
+          }
         }
       }
 
@@ -644,6 +1026,7 @@
         nd.color = colorScale(nd.name);
       });
 
+      // Header controls: Custom Title, Subtitle, HUD, Search
       var topControls = document.createElement("div");
       topControls.style.display = "flex";
       topControls.style.alignItems = "center";
@@ -655,34 +1038,80 @@
       topControls.style.gap = "12px";
       topControls.style.flexWrap = "wrap";
 
-      if (showHUD) {
+      var titleContainer = document.createElement("div");
+      titleContainer.style.display = "flex";
+      titleContainer.style.flexDirection = "column";
+      titleContainer.style.gap = "2px";
+
+      if (config.customTitleOverride) {
+        var tEl = document.createElement("div");
+        tEl.style.fontWeight = "700";
+        tEl.style.fontSize = fontScale === "large" ? "15px" : "13px";
+        tEl.style.color = theme.text;
+        tEl.innerText = config.customTitleOverride;
+        titleContainer.appendChild(tEl);
+      }
+      if (config.customSubtitleOverride) {
+        var stEl = document.createElement("div");
+        stEl.style.fontSize = "11px";
+        stEl.style.color = theme.subtext;
+        stEl.innerText = config.customSubtitleOverride;
+        titleContainer.appendChild(stEl);
+      }
+      if (titleContainer.childNodes.length > 0) {
+        topControls.appendChild(titleContainer);
+      }
+
+      if (hudMode !== "hidden") {
         var hud = document.createElement("div");
         hud.style.display = "flex";
         hud.style.alignItems = "center";
-        hud.style.gap = "16px";
-        hud.style.fontSize = "12px";
+        hud.style.gap = hudMode === "compact_strip" ? "8px" : "14px";
+        hud.style.fontSize = fontScale === "compact" ? "11px" : "12px";
+        hud.style.flexWrap = "wrap";
 
         var totalNodes = Object.keys(nodeRegistry).length;
         var totalLinks = finalLinks.length;
         var stagesCount = stageDimNames.length;
+        var avgPerNode = totalNodes > 0 ? (totalGlobalVolume / totalNodes) : 0;
+        var targetDiffPct = computedBenchmark > 0 ? Math.round(((avgPerNode - computedBenchmark) / computedBenchmark) * 100) : 0;
+        var isAnomaly = computedBenchmark > 0 && Math.abs(targetDiffPct) >= (anomalyThresholdPct - 100);
 
-        hud.innerHTML = 
-          '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<span style="font-weight:700;color:' + theme.text + ';">🌊 Flow Volume:</span> ' +
-            '<span style="font-weight:600;padding:2px 8px;border-radius:12px;background:' + (theme.isDark ? '#1e293b' : '#e0f2fe') + ';color:' + (theme.isDark ? '#38bdf8' : '#0369a1') + ';">' + formatMetric(totalGlobalVolume, valueFmt) + '</span>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<span style="color:' + theme.subtext + ';">Stages:</span> ' +
-            '<span style="font-weight:600;">' + stagesCount + '</span>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<span style="color:' + theme.subtext + ';">Nodes:</span> ' +
-            '<span style="font-weight:600;">' + totalNodes + '</span>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<span style="color:' + theme.subtext + ';">Links:</span> ' +
-            '<span style="font-weight:600;">' + totalLinks + '</span>' +
-          '</div>';
+        var statusBg = (metricPolarity === "higher_is_better" ? targetDiffPct >= 0 : targetDiffPct <= 0) ? "#dcfce7" : "#fee2e2";
+        var statusColor = (metricPolarity === "higher_is_better" ? targetDiffPct >= 0 : targetDiffPct <= 0) ? "#15803d" : "#b91c1c";
+
+        if (hudMode === "compact_strip") {
+          hud.innerHTML = 
+            '<span style="font-weight:700;color:' + theme.text + ';">🌊 Vol: ' + formatMetric(totalGlobalVolume, valueFmt) + '</span>' +
+            '<span style="color:' + theme.subtext + ';">|</span>' +
+            '<span style="color:' + theme.subtext + ';">Stages: <b>' + stagesCount + '</b></span>' +
+            '<span style="color:' + theme.subtext + ';">|</span>' +
+            '<span style="color:' + theme.subtext + ';">Nodes: <b>' + totalNodes + '</b></span>' +
+            '<span style="color:' + theme.subtext + ';">|</span>' +
+            '<span style="color:' + theme.subtext + ';">' + refLabel + ': <b>' + formatMetric(computedBenchmark, valueFmt) + '</b></span>';
+        } else {
+          hud.innerHTML = 
+            '<div style="display:flex;align-items:center;gap:6px;">' +
+              '<span style="font-weight:700;color:' + theme.text + ';">🌊 Total Flow:</span> ' +
+              '<span style="font-weight:600;padding:2px 8px;border-radius:12px;background:' + (theme.isDark ? "#1e293b" : "#e0f2fe") + ';color:' + (theme.isDark ? "#38bdf8" : "#0369a1") + ';">' + formatMetric(totalGlobalVolume, valueFmt) + '</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:6px;">' +
+              '<span style="color:' + theme.subtext + ';">Stages:</span> ' +
+              '<span style="font-weight:600;">' + stagesCount + '</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:6px;">' +
+              '<span style="color:' + theme.subtext + ';">Active Nodes:</span> ' +
+              '<span style="font-weight:600;">' + totalNodes + '</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:6px;">' +
+              '<span style="color:' + theme.subtext + ';">' + refLabel + ':</span> ' +
+              '<span style="font-weight:600;">' + formatMetric(computedBenchmark, valueFmt) + '</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;background:' + statusBg + ';color:' + statusColor + ';font-weight:600;font-size:11px;">' +
+              (targetDiffPct >= 0 ? '▲ ' : '▼ ') + Math.abs(targetDiffPct) + '% vs Target' +
+              (isAnomaly ? ' ⚠️' : '') +
+            '</div>';
+        }
 
         topControls.appendChild(hud);
       }
@@ -792,7 +1221,7 @@
       } else if (viewMode === "horizontal_tree") {
         renderTreeMode(d3, svg, rawPaths, stageLabels, width, height, theme, valueFmt, tooltip, highlightHover);
       } else {
-        renderSankeyMode(d3, svg, defs, nodeRegistry, finalLinks, stageDimNames, stageLabels, width, height, theme, config, valueFmt, tooltip, showValues, showPct, enableAnim, highlightHover);
+        renderSankeyMode(d3, svg, defs, nodeRegistry, finalLinks, stageDimNames, stageLabels, width, height, theme, config, valueFmt, tooltip, showValues, showPct, enableAnim, highlightHover, sortBy);
       }
 
       function applyFilter(query) {
@@ -817,7 +1246,7 @@
     }
   });
 
-  function renderSankeyMode(d3, svg, defs, nodeRegistry, finalLinks, stageDimNames, stageLabels, width, height, theme, config, valueFmt, tooltip, showValues, showPct, enableAnim, highlightHover) {
+  function renderSankeyMode(d3, svg, defs, nodeRegistry, finalLinks, stageDimNames, stageLabels, width, height, theme, config, valueFmt, tooltip, showValues, showPct, enableAnim, highlightHover, sortBy) {
     var margin = { top: 20, right: 30, bottom: 20, left: 30 };
     var innerWidth = Math.max(100, width - margin.left - margin.right);
     var innerHeight = Math.max(100, height - margin.top - margin.bottom);
@@ -828,6 +1257,7 @@
     var linkOpacity = Number(config.linkOpacity) || 0.38;
     var linkColorMode = config.linkColorMode || "gradient";
     var nodeAlign = config.nodeAlignment || "justify";
+    var labelDensity = config.showValueLabels || "all";
 
     var stages = [];
     for (var s = 0; s < stageDimNames.length; s++) {
@@ -842,7 +1272,15 @@
     });
 
     stages.forEach(function (stg) {
-      stg.sort(function (a, b) { return b.value - a.value; });
+      if (sortBy === "volume_asc") {
+        stg.sort(function (a, b) { return a.value - b.value; });
+      } else if (sortBy === "alphabetical") {
+        stg.sort(function (a, b) { return a.name.localeCompare(b.name); });
+      } else if (sortBy === "natural") {
+        // preserve natural insertion order
+      } else {
+        stg.sort(function (a, b) { return b.value - a.value; });
+      }
     });
 
     var numStages = stageDimNames.length;
@@ -948,30 +1386,30 @@
     function ribbonPath(d) {
       var x0 = d.sx;
       var x1 = d.tx;
-      var y0Top = d.sy;
-      var y0Bottom = d.sy + d.sHeight;
-      var y1Top = d.ty;
-      var y1Bottom = d.ty + d.tHeight;
-
       var xi = d3.interpolateNumber(x0, x1);
       var x2 = xi(curvature);
       var x3 = xi(1 - curvature);
+      var y0 = d.sy;
+      var y1 = d.ty;
+      var y0b = d.sy + d.sHeight;
+      var y1b = d.ty + d.tHeight;
 
-      return "M" + x0 + "," + y0Top +
-        "C" + x2 + "," + y0Top + " " + x3 + "," + y1Top + " " + x1 + "," + y1Top +
-        "L" + x1 + "," + y1Bottom +
-        "C" + x3 + "," + y1Bottom + " " + x2 + "," + y0Bottom + " " + x0 + "," + y0Bottom +
-        "Z";
+      return "M" + x0 + "," + y0 +
+             "C" + x2 + "," + y0 + " " + x3 + "," + y1 + " " + x1 + "," + y1 +
+             "L" + x1 + "," + y1b +
+             "C" + x3 + "," + y1b + " " + x2 + "," + y0b + " " + x0 + "," + y0b +
+             "Z";
     }
 
     function centerlinePath(d) {
       var x0 = d.sx;
       var x1 = d.tx;
-      var y0 = d.sy + d.sHeight / 2;
-      var y1 = d.ty + d.tHeight / 2;
       var xi = d3.interpolateNumber(x0, x1);
       var x2 = xi(curvature);
       var x3 = xi(1 - curvature);
+      var y0 = d.sy + d.sHeight / 2;
+      var y1 = d.ty + d.tHeight / 2;
+
       return "M" + x0 + "," + y0 + "C" + x2 + "," + y0 + " " + x3 + "," + y1 + " " + x1 + "," + y1;
     }
 
@@ -1005,6 +1443,8 @@
     stages.forEach(function (stg) {
       allNodes = allNodes.concat(stg);
     });
+
+    var maxNodeVal = d3.max(allNodes, function (d) { return d.value; }) || 1;
 
     var nodeGroup = g.append("g").attr("class", "nodes-layer");
     var nodeContainers = nodeGroup.selectAll(".sankey-node")
@@ -1047,6 +1487,10 @@
       .style("font-weight", "600")
       .style("letter-spacing", "-0.1px")
       .text(function (d) {
+        var isPeak = (d.value / maxNodeVal) >= 0.75;
+        if (labelDensity === "hidden") return d.name;
+        if (labelDensity === "peaks_only" && !isPeak) return d.name;
+
         var str = d.name;
         if (showValues) {
           str += " (" + formatMetric(d.value, valueFmt);
