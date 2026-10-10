@@ -15,6 +15,18 @@ VIZ_DIR = os.path.join(BASE, "visualizations")
 # viz_id -> { optionKey: (role, defaultIdx) }   role in {"dimension", "measure", "any"}
 # defaultIdx = -1 means "" resolves to None / not used (optional field).
 FIELD_SPECS = {
+    "cloud_finops_commit_horizon": {
+        "entityDimOverride": ("dimension", 0),
+        "dateDimOverride": ("dimension", 1),
+        "measureFieldOverride": ("measure", 0),
+        "wasteMeasureOverride": ("measure", 1),
+    },
+    "rank_bump_chart": {
+        "dimFieldOverride": ("dimension", 0),
+        "pivotFieldOverride": ("dimension", 1),
+        "measureFieldOverride": ("measure", 0),
+        "targetMeasureOverride": ("measure", -1),
+    },
     "broadcast_daypart_grid": {
         "dayDimOverride": ("dimension", 0),
         "hourDimOverride": ("dimension", 1),

@@ -69,6 +69,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Raincloud Plot (Half-Violin + Boxplot + Beeswarm)**](visualizations/raincloud_plot/)<br>`raincloud_plot` | Statistical, ML & Forecasting | 2 dims (Category + Obs ID) + 1–2 measures | [📸 View](assets/screenshots/raincloud_plot.png) |
 | [**Price-Volume-Mix (PVM) Revenue Bridge**](visualizations/pvm_revenue_bridge/)<br>`pvm_revenue_bridge` | Retail, Supply Chain & FinOps | 1 Category dim + 0–1 Period dim + 1–2 measures | [📸 View](assets/screenshots/pvm_revenue_bridge.png) |
 | [**Media Audience Overlap & Co-Viewing Euler Matrix**](visualizations/media_audience_overlap_euler/)<br>`media_audience_overlap_euler` | Media, Broadcast & Ad-Ops | 1 Network dim + 0–2 Segment dims + 1–2 measures | [📸 View](visualizations/media_audience_overlap_euler/screenshot.png) |
+| [**Cloud FinOps Commit/CUD Utilization & Waste Horizon Chart**](visualizations/cloud_finops_commit_horizon/)<br>`cloud_finops_commit_horizon` | Telecom, Cloud & SecOps | 2 dims (Commitment + Date) + 1–2 measures (Util + Waste) | [📸 View](visualizations/cloud_finops_commit_horizon/screenshot.png) |
 
 ---
 

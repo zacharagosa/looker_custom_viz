@@ -42,170 +42,183 @@
   }
 
   var PALETTES = {
-    wellverse: {
-      name: "Wellverse",
-      colors: ["#143359", "#00AF68", "#2E7CF6", "#FFB500", "#7C5CFC", "#14B8A6", "#E5484D", "#94A3B8", "#1E467A", "#5FD3A0", "#8FB8F9", "#FFD166"],
-      bg: "#ffffff",
-      cardBg: "#F8FAFC",
-      text: "#0F172A",
-      subtext: "#64748B",
-      border: "#E2E8F0",
-      grid: "#EEF2F7",
-      nodeFill: "#ffffff",
-      hudBg: "rgba(255, 255, 255, 0.96)",
-      glowColor: "rgba(20, 51, 89, 0.35)",
-      posBadgeBg: "#E6F7EF",
-      posBadgeText: "#006B40",
-      negBadgeBg: "#FDECEC",
-      negBadgeText: "#B42318",
-      neutralBadgeBg: "#EEF2F7",
-      neutralBadgeText: "#64748B"
+    google_enterprise: {
+      name: 'Google Enterprise',
+      colors: ['#4285F4', '#34A853', '#FBBC04', '#EA4335', '#9C27B0', '#00ACC1', '#FF7043', '#1A73E8', '#188038', '#D93025'],
+      bg: '#ffffff',
+      cardBg: '#f8f9fa',
+      text: '#202124',
+      subtext: '#5f6368',
+      border: '#dadce0',
+      grid: '#f1f3f4',
+      nodeFill: '#ffffff',
+      hudBg: 'rgba(255, 255, 255, 0.96)',
+      glowColor: 'rgba(66, 133, 244, 0.35)',
+      posBadgeBg: '#ceead6',
+      posBadgeText: '#137333',
+      negBadgeBg: '#fad2cf',
+      negBadgeText: '#c5221f',
+      neutralBadgeBg: '#e8eaed',
+      neutralBadgeText: '#3c4043'
     },
-    corporate_modern: {
-      name: "Corporate Modern (Executive)",
-      colors: ["#2563eb", "#0284c7", "#0d9488", "#10b981", "#8b5cf6", "#f59e0b", "#f43f5e", "#6366f1", "#ec4899", "#14b8a6", "#84cc16", "#e11d48"],
-      bg: "#ffffff",
-      cardBg: "#f8fafc",
-      text: "#0f172a",
-      subtext: "#64748b",
-      border: "#e2e8f0",
-      grid: "#f1f5f9",
-      nodeFill: "#ffffff",
-      hudBg: "rgba(255, 255, 255, 0.96)",
-      glowColor: "rgba(37, 99, 235, 0.35)",
-      posBadgeBg: "#dcfce7",
-      posBadgeText: "#15803d",
-      negBadgeBg: "#fee2e2",
-      negBadgeText: "#b91c1c",
-      neutralBadgeBg: "#f1f5f9",
-      neutralBadgeText: "#475569"
+    modern_slate: {
+      name: 'Modern Slate',
+      colors: ['#2563eb', '#0284c7', '#0d9488', '#10b981', '#8b5cf6', '#f59e0b', '#f43f5e', '#6366f1', '#ec4899', '#14b8a6'],
+      bg: '#ffffff',
+      cardBg: '#f8fafc',
+      text: '#0f172a',
+      subtext: '#64748b',
+      border: '#e2e8f0',
+      grid: '#f1f5f9',
+      nodeFill: '#ffffff',
+      hudBg: 'rgba(255, 255, 255, 0.96)',
+      glowColor: 'rgba(37, 99, 235, 0.35)',
+      posBadgeBg: '#dcfce7',
+      posBadgeText: '#15803d',
+      negBadgeBg: '#fee2e2',
+      negBadgeText: '#b91c1c',
+      neutralBadgeBg: '#f1f5f9',
+      neutralBadgeText: '#475569'
     },
-    google_vibrant: {
-      name: "Google Vibrant",
-      colors: ["#1a73e8", "#34a853", "#f9ab00", "#ea4335", "#9334e6", "#12b5cb", "#e52592", "#e8710a", "#188038", "#4285f4", "#fa7b17", "#00838f"],
-      bg: "#ffffff",
-      cardBg: "#ffffff",
-      text: "#202124",
-      subtext: "#5f6368",
-      border: "#dadce0",
-      grid: "#f8f9fa",
-      nodeFill: "#ffffff",
-      hudBg: "rgba(255, 255, 255, 0.96)",
-      glowColor: "rgba(26, 115, 232, 0.35)",
-      posBadgeBg: "#ceead6",
-      posBadgeText: "#137333",
-      negBadgeBg: "#fad2cf",
-      negBadgeText: "#c5221f",
-      neutralBadgeBg: "#e8eaed",
-      neutralBadgeText: "#3c4043"
+    cyberpunk_dark: {
+      name: 'Cyberpunk Dark (NOC / Telemetry)',
+      colors: ['#38bdf8', '#818cf8', '#c084fc', '#f472b6', '#4ade80', '#fbbf24', '#fb7185', '#2dd4bf', '#a78bfa', '#facc15'],
+      bg: '#0b1120',
+      cardBg: '#111827',
+      text: '#f8fafc',
+      subtext: '#94a3b8',
+      border: '#1e293b',
+      grid: '#1e293b',
+      nodeFill: '#0b1120',
+      hudBg: 'rgba(17, 24, 39, 0.94)',
+      glowColor: 'rgba(56, 189, 248, 0.5)',
+      posBadgeBg: '#064e3b',
+      posBadgeText: '#6ee7b7',
+      negBadgeBg: '#4c0519',
+      negBadgeText: '#fda4af',
+      neutralBadgeBg: '#1e293b',
+      neutralBadgeText: '#cbd5e1'
     },
-    cyber_dark: {
-      name: "Cyber Dark (NOC / Telemetry)",
-      colors: ["#38bdf8", "#818cf8", "#c084fc", "#f472b6", "#4ade80", "#fbbf24", "#fb7185", "#2dd4bf", "#a78bfa", "#facc15", "#34d399", "#60a5fa"],
-      bg: "#0b1120",
-      cardBg: "#111827",
-      text: "#f8fafc",
-      subtext: "#94a3b8",
-      border: "#1e293b",
-      grid: "#1e293b",
-      nodeFill: "#0b1120",
-      hudBg: "rgba(17, 24, 39, 0.94)",
-      glowColor: "rgba(56, 189, 248, 0.5)",
-      posBadgeBg: "#064e3b",
-      posBadgeText: "#6ee7b7",
-      negBadgeBg: "#4c0519",
-      negBadgeText: "#fda4af",
-      neutralBadgeBg: "#1e293b",
-      neutralBadgeText: "#cbd5e1"
+    emerald_finops: {
+      name: 'Emerald FinOps',
+      colors: ['#059669', '#10b981', '#047857', '#0d9488', '#14b8a6', '#0f766e', '#34d399', '#6ee7b7', '#065f46', '#115e59'],
+      bg: '#ffffff',
+      cardBg: '#f0fdf4',
+      text: '#064e3b',
+      subtext: '#047857',
+      border: '#bbf7d0',
+      grid: '#f0fdf4',
+      nodeFill: '#ffffff',
+      hudBg: 'rgba(255, 255, 255, 0.96)',
+      glowColor: 'rgba(16, 185, 129, 0.35)',
+      posBadgeBg: '#d1fae5',
+      posBadgeText: '#065f46',
+      negBadgeBg: '#ffe4e6',
+      negBadgeText: '#9f1239',
+      neutralBadgeBg: '#e2e8f0',
+      neutralBadgeText: '#475569'
     },
-    sunset_ember: {
-      name: "Sunset Ember & Coral",
-      colors: ["#f97316", "#ef4444", "#e11d48", "#be123c", "#fb923c", "#f59e0b", "#d97706", "#b45309", "#ea580c", "#c2410c", "#fdba74", "#f43f5e"],
-      bg: "#ffffff",
-      cardBg: "#fffbeb",
-      text: "#431407",
-      subtext: "#7c2d12",
-      border: "#fed7aa",
-      grid: "#fff7ed",
-      nodeFill: "#ffffff",
-      hudBg: "rgba(255, 255, 255, 0.96)",
-      glowColor: "rgba(249, 115, 22, 0.35)",
-      posBadgeBg: "#dcfce7",
-      posBadgeText: "#15803d",
-      negBadgeBg: "#fee2e2",
-      negBadgeText: "#b91c1c",
-      neutralBadgeBg: "#fef3c7",
-      neutralBadgeText: "#78350f"
+    sunset_media: {
+      name: 'Sunset Media & Coral',
+      colors: ['#f97316', '#ef4444', '#e11d48', '#be123c', '#fb923c', '#f59e0b', '#d97706', '#b45309', '#ea580c', '#c2410c'],
+      bg: '#ffffff',
+      cardBg: '#fffbeb',
+      text: '#431407',
+      subtext: '#7c2d12',
+      border: '#fed7aa',
+      grid: '#fff7ed',
+      nodeFill: '#ffffff',
+      hudBg: 'rgba(255, 255, 255, 0.96)',
+      glowColor: 'rgba(249, 115, 22, 0.35)',
+      posBadgeBg: '#dcfce7',
+      posBadgeText: '#15803d',
+      negBadgeBg: '#fee2e2',
+      negBadgeText: '#b91c1c',
+      neutralBadgeBg: '#fef3c7',
+      neutralBadgeText: '#78350f'
     },
-    emerald_wealth: {
-      name: "Emerald & Forest Wealth",
-      colors: ["#059669", "#10b981", "#047857", "#0d9488", "#14b8a6", "#0f766e", "#34d399", "#6ee7b7", "#065f46", "#115e59", "#2dd4bf", "#84cc16"],
-      bg: "#ffffff",
-      cardBg: "#f0fdf4",
-      text: "#064e3b",
-      subtext: "#047857",
-      border: "#bbf7d0",
-      grid: "#f0fdf4",
-      nodeFill: "#ffffff",
-      hudBg: "rgba(255, 255, 255, 0.96)",
-      glowColor: "rgba(16, 185, 129, 0.35)",
-      posBadgeBg: "#d1fae5",
-      posBadgeText: "#065f46",
-      negBadgeBg: "#ffe4e6",
-      negBadgeText: "#9f1239",
-      neutralBadgeBg: "#e2e8f0",
-      neutralBadgeText: "#475569"
-    },
-    monochromatic_steel: {
-      name: "Monochromatic Slate & Steel",
-      colors: ["#0f172a", "#334155", "#475569", "#64748b", "#94a3b8", "#1e293b", "#4b5563", "#374151", "#1f2937", "#111827", "#6b7280", "#9ca3af"],
-      bg: "#ffffff",
-      cardBg: "#f8fafc",
-      text: "#0f172a",
-      subtext: "#475569",
-      border: "#cbd5e1",
-      grid: "#f1f5f9",
-      nodeFill: "#ffffff",
-      hudBg: "rgba(255, 255, 255, 0.96)",
-      glowColor: "rgba(15, 23, 42, 0.3)",
-      posBadgeBg: "#dcfce7",
-      posBadgeText: "#15803d",
-      negBadgeBg: "#fee2e2",
-      negBadgeText: "#b91c1c",
-      neutralBadgeBg: "#f1f5f9",
-      neutralBadgeText: "#334155"
+    wellverse_healthcare: {
+      name: 'Wellverse Healthcare',
+      colors: ['#143359', '#00AF68', '#2E7CF6', '#FFB500', '#7C5CFC', '#14B8A6', '#E5484D', '#94A3B8', '#1E467A', '#5FD3A0'],
+      bg: '#ffffff',
+      cardBg: '#F8FAFC',
+      text: '#143359',
+      subtext: '#64748B',
+      border: '#CBD5E1',
+      grid: '#EEF2F7',
+      nodeFill: '#ffffff',
+      hudBg: 'rgba(255, 255, 255, 0.96)',
+      glowColor: 'rgba(20, 51, 89, 0.35)',
+      posBadgeBg: '#E6F7EF',
+      posBadgeText: '#006B40',
+      negBadgeBg: '#FDECEC',
+      negBadgeText: '#B42318',
+      neutralBadgeBg: '#EEF2F7',
+      neutralBadgeText: '#64748B'
     }
   };
 
-  function formatMetricValue(val, formatMode) {
-    if (val === null || val === undefined || isNaN(val)) return "N/A";
-    var num = Number(val);
-    if (formatMode === "integer") return num.toLocaleString("en-US", { maximumFractionDigits: 0 });
-    if (formatMode === "decimal") return num.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 2 });
-    if (formatMode === "percent") return (num * 100).toFixed(1) + "%";
-    if (formatMode === "currency") return "$" + num.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    if (formatMode === "compact_currency") {
-      var abs = Math.abs(num);
-      var sign = num < 0 ? "-" : "";
-      if (abs >= 1e9) return sign + "$" + (abs / 1e9).toFixed(2) + "B";
-      if (abs >= 1e6) return sign + "$" + (abs / 1e6).toFixed(1) + "M";
-      if (abs >= 1e3) return sign + "$" + (abs / 1e3).toFixed(1) + "K";
-      return sign + "$" + abs.toFixed(0);
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || list.length === 0) return null;
+    if (overrideVal) {
+      var trimmed = String(overrideVal).trim();
+      var idx = parseInt(trimmed, 10);
+      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+        return list[idx - 1];
+      }
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].name === trimmed || list[i].label === trimmed || list[i].label_short === trimmed) {
+          return list[i];
+        }
+      }
     }
-    // Default compact number
-    var a = Math.abs(num);
-    var s = num < 0 ? "-" : "";
-    if (a >= 1e9) return s + (a / 1e9).toFixed(2) + "B";
-    if (a >= 1e6) return s + (a / 1e6).toFixed(1) + "M";
-    if (a >= 1e3) return s + (a / 1e3).toFixed(1) + "K";
-    return s + a.toFixed(1);
+    return defaultIdx >= 0 ? (list[defaultIdx] || list[0]) : null;
+  }
+
+  function formatMetricValue(val, formatMode, lookerRendered) {
+    if (val === null || val === undefined || isNaN(val)) return 'N/A';
+    if (formatMode === 'auto' && lookerRendered) return lookerRendered;
+    var num = Number(val);
+    var abs = Math.abs(num);
+    var sign = num < 0 ? '-' : '';
+    if (formatMode === 'compact_currency') {
+      if (abs >= 1e9) return sign + '$' + (abs / 1e9).toFixed(2) + 'B';
+      if (abs >= 1e6) return sign + '$' + (abs / 1e6).toFixed(1) + 'M';
+      if (abs >= 1e3) return sign + '$' + (abs / 1e3).toFixed(1) + 'K';
+      return sign + '$' + abs.toFixed(0);
+    }
+    if (formatMode === 'compact_number' || formatMode === 'compact') {
+      if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + 'B';
+      if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + 'M';
+      if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + 'K';
+      return sign + abs.toFixed(1);
+    }
+    if (formatMode === 'percentage' || formatMode === 'percent') {
+      return (num * (abs <= 1.0 ? 100 : 1)).toFixed(1) + '%';
+    }
+    if (formatMode === 'decimal_2' || formatMode === 'decimal') {
+      return sign + abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    if (formatMode === 'integer') {
+      return sign + abs.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+    if (formatMode === 'raw') {
+      return String(val);
+    }
+    // Default fallback
+    if (abs >= 1e9) return sign + '$' + (abs / 1e9).toFixed(2) + 'B';
+    if (abs >= 1e6) return sign + '$' + (abs / 1e6).toFixed(1) + 'M';
+    if (abs >= 1e3) return sign + '$' + (abs / 1e3).toFixed(1) + 'K';
+    return sign + '$' + abs.toFixed(0);
   }
 
   var visObject = {
     id: "rank_bump_chart",
     label: "Rank Bump & Trajectory Chart",
     options: {
-      // SECTION 1: DISPLAY
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       viewMode: {
         type: "string",
         label: "Visualization Mode",
@@ -220,11 +233,85 @@
         ],
         default: "bump"
       },
+      dimFieldOverride: {
+        type: "string",
+        label: "Entity Dimension",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 2
+      },
+      pivotFieldOverride: {
+        type: "string",
+        label: "Pivot / Period Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      measureFieldOverride: {
+        type: "string",
+        label: "Primary Ranking Measure",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Comparison / Target Measure (Optional)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Reference Line / Target Mode",
+        section: "Display",
+        order: 6,
+        display: "select",
+        values: [
+          { "Dataset Mean (Average Rank / Value)": "dataset_mean" },
+          { "Dataset Median": "dataset_median" },
+          { "Fixed Benchmark Value": "fixed_value" },
+          { "Top Percentile P75 Target": "percentile_p75" },
+          { "Top Percentile P90 Target": "percentile_p90" },
+          { "Measure Column (Target Measure)": "measure_column" },
+          { "None / Hidden": "none" }
+        ],
+        default: "dataset_mean"
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Target Value (when Fixed Mode)",
+        section: "Display",
+        order: 7,
+        default: 0
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Reference Line Label",
+        section: "Display",
+        order: 8,
+        default: "Performance Baseline"
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Rank Volatility Alert Threshold (Spots Shifted)",
+        section: "Display",
+        order: 9,
+        default: 3
+      },
       curveInterpolation: {
         type: "string",
         label: "Curve Interpolation",
         section: "Display",
-        order: 2,
+        order: 10,
         display: "select",
         values: [
           { "Bump X (Smooth Cubic Bézier)": "bumpX" },
@@ -234,11 +321,26 @@
         ],
         default: "bumpX"
       },
+      sortBy: {
+        type: "string",
+        label: "Entity Sorting & Ordering",
+        section: "Display",
+        order: 11,
+        display: "select",
+        values: [
+          { "Final Period Rank (Leader First)": "rank_asc" },
+          { "Total Aggregate Metric Descending": "metric_desc" },
+          { "Total Aggregate Metric Ascending": "metric_asc" },
+          { "Alphabetical (A to Z)": "alphabetical" },
+          { "Natural / Query Order": "natural" }
+        ],
+        default: "rank_asc"
+      },
       topNEntities: {
         type: "string",
         label: "Display Entity Limit",
         section: "Display",
-        order: 3,
+        order: 12,
         display: "select",
         values: [
           { "Top 5 Ranked Entities": "5" },
@@ -251,109 +353,260 @@
         ],
         default: "12"
       },
-      valueFormat: {
-        type: "string",
-        label: "Metric Value Format",
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Group Remaining into 'Other' Aggregate",
         section: "Display",
-        order: 4,
+        order: 13,
+        default: false
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Value Entities",
+        section: "Display",
+        order: 14,
+        default: true
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive KPI HUD Mode",
+        section: "Display",
+        order: 15,
         display: "select",
         values: [
-          { "Compact Currency ($1.2M, $45K)": "compact_currency" },
-          { "Full Currency ($1,234,567)": "currency" },
-          { "Compact Metric (1.2M, 45K)": "compact" },
-          { "Integer (1,234)": "integer" },
-          { "Percentage (12.5%)": "percent" }
+          { "Full Scorecard HUD (Top Band)": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "hidden" }
         ],
-        default: "compact_currency"
+        default: "scorecard"
+      },
+      showValueLabels: {
+        type: "string",
+        label: "Data Value Labels",
+        section: "Display",
+        order: 16,
+        display: "select",
+        values: [
+          { "All Entities": "all" },
+          { "Min/Max Peaks & Leaders Only": "peaks_only" },
+          { "Hidden": "hidden" }
+        ],
+        default: "all"
+      },
+      customTitleOverride: {
+        type: "string",
+        label: "Custom Chart Title Override",
+        section: "Display",
+        order: 17,
+        default: ""
+      },
+      customSubtitleOverride: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        section: "Display",
+        order: 18,
+        default: ""
       },
       lineWidth: {
         type: "number",
         label: "Trajectory Line Thickness (px)",
         section: "Display",
-        order: 5,
+        order: 19,
         default: 4
       },
       nodeRadius: {
         type: "number",
         label: "Node Marker Radius (px)",
         section: "Display",
-        order: 6,
+        order: 20,
         default: 14
       },
       showNodeRanks: {
         type: "boolean",
         label: "Show Rank Numbers in Nodes (#1, #2)",
         section: "Display",
-        order: 7,
-        default: true
-      },
-      showEndLabels: {
-        type: "boolean",
-        label: "Show Final Period Entity Labels",
-        section: "Display",
-        order: 8,
+        order: 21,
         default: true
       },
       showRankBadges: {
         type: "boolean",
         label: "Show Net Rank Shift Delta Badges (+2, -1)",
         section: "Display",
-        order: 9,
-        default: true
-      },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive Summary KPI HUD",
-        section: "Display",
-        order: 10,
+        order: 22,
         default: true
       },
       showSearch: {
         type: "boolean",
         label: "Show Interactive Entity Search Filter",
         section: "Display",
-        order: 11,
+        order: 23,
         default: true
       },
 
-      // SECTION 2: STYLE
+      // ==========================================
+      // SECTION 2: STYLE (Strictly minimized tab)
+      // ==========================================
       colorPalette: {
         type: "string",
-        label: "Color Palette & Theme",
+        label: "Brand Palette Preset",
         section: "Style",
         order: 1,
         display: "select",
         values: [
-          { "Corporate Modern (Executive)": "corporate_modern" },
-          { "Google Vibrant": "google_vibrant" },
-          { "Cyber Dark (NOC / Telemetry)": "cyber_dark" },
-          { "Sunset Ember & Coral": "sunset_ember" },
-          { "Emerald & Forest Wealth": "emerald_wealth" },
-          { "Monochromatic Slate & Steel": "monochromatic_steel" },
-          { "Wellverse": "wellverse" }
+          { "Google Enterprise": "google_enterprise" },
+          { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Dark (NOC / Telemetry)": "cyberpunk_dark" },
+          { "Emerald FinOps": "emerald_finops" },
+          { "Sunset Media & Coral": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Custom Hex Override": "custom_override" }
         ],
-        default: "corporate_modern"
+        default: "google_enterprise"
+      },
+      customPrimaryHex: {
+        type: "string",
+        label: "Custom Primary Leader Hex",
+        display: "color",
+        section: "Style",
+        order: 2,
+        default: ""
+      },
+      customPositiveHex: {
+        type: "string",
+        label: "Custom Positive Rank Gainer Hex",
+        display: "color",
+        section: "Style",
+        order: 3,
+        default: ""
+      },
+      customNegativeHex: {
+        type: "string",
+        label: "Custom Negative Rank Faller Hex",
+        display: "color",
+        section: "Style",
+        order: 4,
+        default: ""
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity",
+        section: "Style",
+        order: 5,
+        display: "select",
+        values: [
+          { "Higher is Better (#1 = Highest Metric)": "higher_is_better" },
+          { "Lower is Better (#1 = Lowest Cost/Latency/Defect)": "lower_is_better" }
+        ],
+        default: "higher_is_better"
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography Font Scale",
+        section: "Style",
+        order: 6,
+        display: "select",
+        values: [
+          { "Compact (High Density Dashboard)": "compact" },
+          { "Standard (Default)": "standard" },
+          { "Large Presentation (Executive Wallboard)": "large" }
+        ],
+        default: "standard"
+      },
+      valueFormat: {
+        type: "string",
+        label: "Metric Value Format",
+        section: "Style",
+        order: 7,
+        display: "select",
+        values: [
+          { "Auto (from Looker Field)": "auto" },
+          { "Compact Currency ($1.2M, $45K)": "compact_currency" },
+          { "Compact Number (1.2M, 45K)": "compact_number" },
+          { "Percentage (12.5%)": "percentage" },
+          { "Decimal (1,234.56)": "decimal_2" },
+          { "Integer (1,234)": "integer" },
+          { "Raw Unformatted": "raw" }
+        ],
+        default: "compact_currency"
       },
       showVerticalGrid: {
         type: "boolean",
         label: "Show Period Vertical Gridlines",
         section: "Style",
-        order: 2,
+        order: 8,
         default: true
       },
       showRankAxis: {
         type: "boolean",
         label: "Show Left-Hand Rank Numbers Axis",
         section: "Style",
-        order: 3,
+        order: 9,
         default: true
       },
       animateTrajectories: {
         type: "boolean",
         label: "Enable Smooth Transition Path Drawing",
         section: "Style",
-        order: 4,
+        order: 10,
         default: true
+      }
+    },
+
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        dimFieldOverride: { role: "dimension", defaultIdx: 0 },
+        pivotFieldOverride: { role: "dimension", defaultIdx: 1 },
+        measureFieldOverride: { role: "measure", defaultIdx: 0 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
+      };
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : (spec.role === "any" ? dims.concat(meas) : dims);
+        var autoField = spec.defaultIdx >= 0 ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto \u2192 " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].type = "string";
+        newOptions[key].display = "select";
+        newOptions[key].values = values;
+        newOptions[key].default = "";
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        console.warn("registerOptions unavailable in this host:", e);
       }
     },
 
@@ -427,8 +680,7 @@
       }, 50);
     },
 
-    updateAsync: function (data, element, config, queryResponse, details, done) {
-      this._element = element;
+    updateAsync: function (data, element, config, queryResponse, details, done) {\n      this._registerDynamicFieldOptions(queryResponse);\n      this._element = element;
       this._lastElement = element;
       this._lastData = data;
       this._lastConfig = config;
@@ -500,9 +752,19 @@
         return;
       }
 
+      // Dynamic field resolution
+      var resolvedEntityDim = resolveField(dimensions, config.dimFieldOverride, 0);
+      var resolvedPivotDim = resolveField(dimensions, config.pivotFieldOverride, 1);
+      var resolvedMeasure = resolveField(measures, config.measureFieldOverride, 0);
+      var resolvedTargetMeasure = resolveField(measures, config.targetMeasureOverride, -1);
+
       // Configuration settings
-      var themeKey = config.colorPalette || "corporate_modern";
-      var theme = PALETTES[themeKey] || PALETTES.corporate_modern;
+      var themeKey = config.colorPalette || "google_enterprise";
+      var theme = Object.assign({}, PALETTES[themeKey] || PALETTES.google_enterprise);
+      if (config.customPrimaryHex) theme.colors = [config.customPrimaryHex].concat(theme.colors);
+      if (config.customPositiveHex) { theme.posBadgeText = config.customPositiveHex; }
+      if (config.customNegativeHex) { theme.negBadgeText = config.customNegativeHex; }
+
       var viewMode = config.viewMode || "bump";
       var curveType = config.curveInterpolation || "bumpX";
       var topN = config.topNEntities || "12";
@@ -512,19 +774,28 @@
       var showNodeRanks = config.showNodeRanks !== false;
       var showEndLabels = config.showEndLabels !== false;
       var showRankBadges = config.showRankBadges !== false;
-      var showExecutiveHUD = config.showExecutiveHUD !== false;
+      var hudMode = config.hudMode || "scorecard";
+      var showExecutiveHUD = hudMode !== "hidden";
       var showSearch = config.showSearch !== false;
       var showVerticalGrid = config.showVerticalGrid !== false;
       var showRankAxis = config.showRankAxis !== false;
       var animateTrajectories = config.animateTrajectories !== false;
+      var metricPolarity = config.metricPolarity || "higher_is_better";
+      var fontScale = config.fontScale || "standard";
+      var targetMode = config.targetCalculationMode || "dataset_mean";
+      var fixedTarget = Number(config.fixedTargetValue) || 0;
+      var referenceLabel = config.referenceLineLabel || "Performance Baseline";
+      var anomalyThreshold = Number(config.anomalyThresholdPct) || 3;
+      var sortByMode = config.sortBy || "rank_asc";
+      var suppressZeroNull = config.suppressZeroNull !== false;
 
       // Extract Entities, Periods, and Metrics
       var periods = [];
       var entitiesMap = {}; // entityName -> { name: string, values: { [period]: number }, drills: { [period]: any } }
       var isPivoted = (pivots.length > 0) || (queryResponse.pivots && queryResponse.pivots.length > 0);
 
-      var entityDim = dimensions[0] ? (dimensions[0].name || dimensions[0]) : "entity";
-      var entityLabel = dimensions[0] ? (dimensions[0].label_short || dimensions[0].label || dimensions[0].name || "Entity") : "Entity";
+      var entityDim = resolvedEntityDim ? (resolvedEntityDim.name || resolvedEntityDim) : (dimensions[0] ? (dimensions[0].name || dimensions[0]) : "entity");
+      var entityLabel = resolvedEntityDim ? (resolvedEntityDim.label_short || resolvedEntityDim.label || resolvedEntityDim.name || "Entity") : "Entity";
 
       if (isPivoted) {
         // Collect periods in order from queryResponse.pivots
@@ -557,7 +828,7 @@
           });
         }
 
-        var primaryMeasure = measures[0] ? (measures[0].name || measures[0]) : null;
+        var primaryMeasure = resolvedMeasure ? (resolvedMeasure.name || resolvedMeasure) : (measures[0] ? (measures[0].name || measures[0]) : null);
 
         data.forEach(function (row) {
           var entityCell = row[entityDim];
@@ -785,23 +1056,45 @@
         hud.style.borderBottom = "1px solid " + theme.border;
         hud.style.fontSize = "12px";
 
-        var statsHtml = '<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">';
-        statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Active ' + entityLabel + 's</span>' +
-                     '<div style="font-size: 16px; font-weight: 800; color:' + theme.text + ';">' + totalEntities + '</div></div>';
+        var titleText = config.customTitleOverride || ("Executive " + entityLabel + " Rank Trajectories");
+        var subtitleText = config.customSubtitleOverride || (viewMode === "slope" ? "Two-Period Comparative Shift" : "Multi-Period Volatility & Competitive Momentum");
 
-        statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Current #1 Leader</span>' +
-                     '<div style="font-size: 15px; font-weight: 800; color:' + (topEntity.color || theme.text) + ';">🥇 ' + topEntity.name + ' <span style="font-size: 12px; font-weight: 600; color:' + theme.subtext + ';">(' + formatMetricValue(topEntity.latestValue, valueFormat) + ')</span></div></div>';
+        var statsHtml = "";
+        if (hudMode === "compact_strip") {
+          statsHtml = '<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">' +
+            '<span style="font-weight: 700; color:' + theme.text + ';">' + titleText + '</span>' +
+            '<span style="color:' + theme.subtext + ';">|</span>' +
+            '<span style="color:' + theme.subtext + ';">#1: <strong style="color:' + (topEntity.color || theme.text) + ';">' + topEntity.name + '</strong> (' + formatMetricValue(topEntity.latestValue, valueFormat) + ')</span>';
+          if (biggestGainer && maxGain > 0) {
+            statsHtml += '<span style="color:' + theme.subtext + ';">|</span><span style="color:' + theme.posBadgeText + ';">▲ ' + biggestGainer.name + ' (+' + maxGain + ')</span>';
+          }
+          if (biggestFaller && maxLoss < 0) {
+            statsHtml += '<span style="color:' + theme.subtext + ';">|</span><span style="color:' + theme.negBadgeText + ';">▼ ' + biggestFaller.name + ' (' + maxLoss + ')</span>';
+          }
+          statsHtml += '</div>';
+        } else {
+          statsHtml = '<div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">';
+          if (config.customTitleOverride) {
+            statsHtml += '<div><div style="font-size: 14px; font-weight: 800; color:' + theme.text + ';">' + titleText + '</div>' +
+                         '<div style="font-size: 11px; color:' + theme.subtext + ';">' + subtitleText + '</div></div>';
+          }
+          statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Active ' + entityLabel + 's</span>' +
+                       '<div style="font-size: 16px; font-weight: 800; color:' + theme.text + ';">' + totalEntities + '</div></div>';
 
-        if (biggestGainer && maxGain > 0) {
-          statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Top Rank Gainer</span>' +
-                       '<div style="font-size: 14px; font-weight: 700; color:' + theme.posBadgeText + ';">🚀 ' + biggestGainer.name + ' <span style="padding: 1px 6px; border-radius: 4px; background:' + theme.posBadgeBg + '; font-size: 11px;">+' + maxGain + ' spots</span></div></div>';
+          statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Current #1 Leader</span>' +
+                       '<div style="font-size: 15px; font-weight: 800; color:' + (topEntity.color || theme.text) + ';">🥇 ' + topEntity.name + ' <span style="font-size: 12px; font-weight: 600; color:' + theme.subtext + ';">(' + formatMetricValue(topEntity.latestValue, valueFormat) + ')</span></div></div>';
+
+          if (biggestGainer && maxGain > 0) {
+            statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Top Rank Gainer</span>' +
+                         '<div style="font-size: 14px; font-weight: 700; color:' + theme.posBadgeText + ';">🚀 ' + biggestGainer.name + ' <span style="padding: 1px 6px; border-radius: 4px; background:' + theme.posBadgeBg + '; font-size: 11px;">+' + maxGain + ' spots</span></div></div>';
+          }
+
+          if (biggestFaller && maxLoss < 0) {
+            statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Top Rank Faller</span>' +
+                         '<div style="font-size: 14px; font-weight: 700; color:' + theme.negBadgeText + ';">🔻 ' + biggestFaller.name + ' <span style="padding: 1px 6px; border-radius: 4px; background:' + theme.negBadgeBg + '; font-size: 11px;">' + maxLoss + ' spots</span></div></div>';
+          }
+          statsHtml += '</div>';
         }
-
-        if (biggestFaller && maxLoss < 0) {
-          statsHtml += '<div><span style="color:' + theme.subtext + '; text-transform: uppercase; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;">Top Rank Faller</span>' +
-                       '<div style="font-size: 14px; font-weight: 700; color:' + theme.negBadgeText + ';">🔻 ' + biggestFaller.name + ' <span style="padding: 1px 6px; border-radius: 4px; background:' + theme.negBadgeBg + '; font-size: 11px;">' + maxLoss + ' spots</span></div></div>';
-        }
-        statsHtml += '</div>';
 
         // Search Input
         var searchContainer = document.createElement("div");

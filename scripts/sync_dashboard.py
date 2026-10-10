@@ -53,6 +53,7 @@ VOL2_VIZ_MAP = {
     "network_topology_graph": "📡 Telecom, Cloud & SecOps",
     "mitre_attack_matrix": "📡 Telecom, Cloud & SecOps",
     "cell_tower_polar_coverage": "📡 Telecom, Cloud & SecOps",
+    "cloud_finops_commit_horizon": "📡 Telecom, Cloud & SecOps",
     "violin_distribution_plot": "🔬 Statistical, ML & Forecasting",
     "forecast_confidence_cone": "🔬 Statistical, ML & Forecasting",
     "roc_curve_evaluator": "🔬 Statistical, ML & Forecasting",
@@ -148,7 +149,8 @@ VIZ_EMOJI_MAP = {
     "multi_touch_attribution_pathway": "🎬",
     "raincloud_plot": "🌧️",
     "pvm_revenue_bridge": "🌉",
-    "media_audience_overlap_euler": "⭕"
+    "media_audience_overlap_euler": "⭕",
+    "cloud_finops_commit_horizon": "⚡",
 }
 
 
