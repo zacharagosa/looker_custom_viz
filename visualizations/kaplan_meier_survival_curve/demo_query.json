@@ -1,0 +1,27 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "cortex_security_incidents",
+  "fields": [
+    "cortex_security_incidents.mitre_tactic",
+    "cortex_security_incidents.incident_id",
+    "cortex_security_incidents.avg_mttr_minutes",
+    "cortex_security_incidents.alert_count"
+  ],
+  "sorts": [
+    "cortex_security_incidents.avg_mttr_minutes asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "kaplan_meier_survival_curve",
+    "viewMode": "survival",
+    "showConfidenceInterval": true,
+    "showRiskTable": true,
+    "showMedianGuide": true,
+    "hudDensity": "full",
+    "targetMode": "fixed_value",
+    "fixedTargetValue": 120,
+    "targetLabel": "Incident SLA (120m)",
+    "colorPalette": "cyberpunk_dark",
+    "timeUnit": "Minutes"
+  }
+}

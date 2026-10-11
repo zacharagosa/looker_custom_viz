@@ -162,4 +162,8 @@ Enterprise-grade multi-touch marketing attribution suite and cross-channel conve
 Multi-layered statistical distribution chart combining a smooth Half-Violin kernel density estimation (KDE) cloud, an aligned boxplot with median/IQR/whiskers, and jittered raw observation dots with Looker drill-down support.
 ![Raincloud Plot](../assets/screenshots/raincloud_plot.png)
 
+### 39. Kaplan-Meier Survival & Hazard Curve
+Non-parametric survival analysis and step hazard estimator with Greenwood 95% confidence interval ribbons, synchronized At-Risk life tables, median survival horizon line, and pairwise Log-Rank cohort tests for SecOps MTTR incident resolution, customer churn, and hardware reliability.
+![Kaplan-Meier Survival & Hazard Curve](../visualizations/kaplan_meier_survival_curve/screenshot.png)
+
 

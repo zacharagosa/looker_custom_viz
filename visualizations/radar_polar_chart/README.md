@@ -16,42 +16,51 @@ This custom visualization directly addresses validated enterprise blockers and i
 
 ---
 
-## ✨ Core Capabilities
+## ✨ Core Capabilities & Flexibility Upgrade
 
 ### 1. Multi-Mode Adaptability
 Switch between 4 functional visual representations with a single dropdown:
-- **Polygon Radar (Spider Web)**: Classic equi-angular polygon grid with semi-transparent shaded area polygons, radial spokes, and vertex markers.
+- **Polygon Radar (Spider Web)**: Classic equi-angular polygon grid with semi-transparent shaded area polygons, radial spokes, vertex markers, and benchmark targets.
 - **Coxcomb / Nightingale Rose**: Circular angular wedge sectors whose radial length represents metric magnitude.
 - **Radial Spoke Bar / Lollipop**: Clean circular baseline with directional radial lollipop bars projecting outward.
 - **Small Multiples Facet Grid**: Matrix of mini radar charts comparing all entities side-by-side in a responsive grid.
 
-### 2. Multi-Unit Scale Normalization
-Solves the fundamental radar chart challenge of comparing metrics with completely different units (e.g. `$ Revenue`, `Order Count`, `Days Latency`, `Margin %`):
-- **Independent 100% Max per Spoke**: Normalizes each spoke independently to its own maximum, enabling balanced multivariable comparison across mixed units.
-- **Global Absolute Scale**: Shared absolute scale across all spokes (ideal for percentage or index metrics).
-- **Benchmark Median Ratio Ring**: Indexes each metric to its cohort median / baseline ring (100% = Baseline), where overperforming metrics project outward and underperforming metrics sit inward.
+### 2. Dynamic Field-Role Mapping
+- **Entity Dimension Override**: Dropdown dynamically populated from live query dimensions to re-map which column acts as the primary entity without reordering Looker Explore columns.
+- **Group Dimension Override**: Select cohort/group dimension for segmented small multiples.
+- **Primary Measure Override**: Re-map primary metric column.
+- **Benchmark / Target Measure Override**: Optional second measure column to act as benchmark ring.
 
-### 3. High-Density Scalability (5,000+ Rows)
-- **Client-Side Rollup & Aggregation**: Automatically averages or rolls up multi-row entities when queries exceed thousands of rows.
-- **Top-N Slicing**: Instantly slice to Top 3, 5, 10, 25, or All entities to eliminate visual clutter.
-- **Search-as-you-type Filter**: Instantaneous client-side search across all entities.
-- **Paginated Small Multiples**: Renders hundreds of faceted entities smoothly without frame drops.
+### 3. Configurable Benchmark Lines, Goals & Anomaly Thresholds
+- **Target Mode**: None, Fixed Goal Value, Dataset Mean, Dataset Median (P50), Top Quartile (P75), or Elite Frontier (P90).
+- **Custom Benchmark Label**: Configurable reference line label.
+- **Anomaly Threshold**: Automatically audits spoke deviation against cohort median and flags asymmetrical outliers.
 
-### 4. Minimal Option Sections (No Crowded Modals)
-Conforming strictly to Looker UI UX best practices, options are consolidated into **exactly 2 clean tabs**:
-- `Display`: Display Mode, Normalization Mode, Entity Slice Limit, Metric Format, Concentric Grid Rings, Spoke Labels, Legend Pills, Search Box, Executive HUD.
-- `Style`: Color Palette Theme (Google Modern, Cyber Neon, Emerald Mint, Sunset Ember, Executive Slate), Web Background Shape (Polygon vs Circle), Line Interpolation (Linear vs Cardinal Spline), Area Fill Opacity, Stroke Thickness.
+### 4. Sorting, Top-N Slicing & Rollup
+- **Interactive Sort Order**: Highest Aggregate Metric First, Lowest First, Alphabetical (A-Z), or Query Default.
+- **Top-N Slicing with 'Other' Rollup**: Slices Top 3, 5, 8, 10, 15, 25, or All entities, with an optional toggle to consolidate remaining entities into a synthetic `"Other (Rollup)"` series.
+- **Zero & Null Suppression**: Cleanses sparse queries and missing attributes automatically.
 
-### 5. Dynamic Interactivity & Drilldown
-- **Interactive Entity Focus**: Clicking any entity pill in the legend isolates that entity and dims the rest.
-- **Rich Hover Tooltips**: Displays formatted values, raw values, normalized spoke percentage scores, and entity details.
-- **Looker Drill Menus**: Native Looker drill-down links integrated directly onto vertex markers and data points.
+### 5. Executive Scorecard HUD & Label Density
+- **HUD Density**: Full Scorecard (Multivariate Balance Score %, Leader Footprint, Target Attainment, Anomaly Alerts), Compact Status Strip, or Hidden (maximum canvas space).
+- **Vertex Labels**: All Values, Min/Max Peaks Only, or Hidden.
+- **Custom Header Overrides**: Configurable custom chart title and subtitle.
+
+### 6. Custom Brand Palettes & Typography
+- **Enterprise Palettes**: Google Enterprise, Modern Slate, Cyberpunk Dark (NOC / Telemetry), Emerald FinOps, Sunset Media & Coral, Wellverse Healthcare, or Custom Hex Override.
+- **Custom Hex Overrides**: Primary Leader Hex, Positive/Pass Hex, Negative/Lag Hex.
+- **Metric Polarity**: Higher is Better vs Lower is Better (for latency/churn/cost).
+- **Typography Scale**: Compact (high density dashboard), Standard, or Large Presentation (executive wallboard).
+- **Value Formatting**: Auto (from LookML), Compact Number, Compact Currency, Percentage, Decimal 2dp, or Raw.
+
+### 7. Strictly 2 Clean Option Tabs
+Conforming strictly to Looker UI UX best practices, options are consolidated into **exactly 2 clean tabs** (`Display` and `Style`) to prevent header crowding in the Edit Viz modal.
 
 ---
 
 ## 📊 Data Shape Requirements
 
-The visualization flexibly supports **three distinct data shapes**, making it universally compatible with any Looker Explore:
+The visualization flexibly supports **three distinct data shapes**:
 
 ### Shape A: Multi-Measure (Wide Format - Recommended)
 - **Dimensions**: 1 Dimension (Entity name, e.g. `products.category`, `users.traffic_source`, or `reps.name`).
