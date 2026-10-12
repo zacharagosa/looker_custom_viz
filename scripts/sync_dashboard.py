@@ -62,6 +62,7 @@ VOL2_VIZ_MAP = {
     "bilateral_chord_diagram": "🛍️ Retail, Supply Chain & FinOps",
     "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps",
     "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps",
+    "finops_cud_attribution_bridge": "🛍️ Retail, Supply Chain & FinOps",
     "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops",
     "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting"
 }
@@ -153,6 +154,7 @@ VIZ_EMOJI_MAP = {
     "media_audience_overlap_euler": "⭕",
     "cloud_finops_commit_horizon": "⚡",
     "kaplan_meier_survival_curve": "📉",
+    "finops_cud_attribution_bridge": "☁️",
 }
 
 

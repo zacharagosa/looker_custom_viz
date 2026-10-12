@@ -61,28 +61,50 @@ The **Geospatial Flow & Route Arc Map** provides pure SVG/Canvas rendering with 
 ## ⚙️ Configuration Options
 
 ### Display Tab
+- **Dynamic Field-Role Mapping**:
+  - `originDimOverride`: Dynamic select dropdown to explicitly map the Origin Hub / City dimension.
+  - `destDimOverride`: Dynamic select dropdown to explicitly map the Destination State / City dimension.
+  - `volumeMeasureOverride`: Dynamic select dropdown to explicitly map the primary flow volume / weight measure.
+  - `latencyMeasureOverride`: Dynamic select dropdown to explicitly map the latency, transit time, or secondary measure.
 - **Map Flow Layout**: `curved_arcs` (Bézier Flow Arcs), `hub_spoke` (Hub & Spoke), `hexbin_density` (Hexbin Density Grid), `choropleth_overlay` (Choropleth Corridor).
-- **Route Density Filter**: `all`, `15`, `25`, `50`, `100`.
+- **Corridor Sorting & Density**:
+  - `sortOrder`: `metric_desc` (Volume Descending), `metric_asc` (Volume Ascending), `alphabetical` (Route Name A–Z), `natural` (Natural Explore Order).
+  - `topRoutes`: `all`, `15`, `25`, `50`, `100`.
+  - `enableOtherRollup`: Toggle automatic consolidation of non-top corridors into an aggregate "Other Corridors" summary.
+  - `suppressZeroNull`: Toggle filtering out zero or null flow volumes.
+- **Configurable Benchmarks & Target Thresholds**:
+  - `targetCalculationMode`: Benchmark mode: `none`, `dataset_mean` (Average Flow), `dataset_median` (Median Flow), `percentile_p75` (Top Quartile P75), `percentile_p90` (P90 Arterial), `fixed_value` (Custom Target).
+  - `fixedTargetValue`: Custom numerical benchmark value when target mode is set to Fixed.
+  - `referenceLineLabel`: Custom benchmark title displayed in tooltips and HUD.
+  - `anomalyThresholdPct`: Anomaly detection threshold percentage (10% to 100%) to flag corridors deviating significantly from benchmark.
 - **Arc Arch & Curvature**: `0.2` (Subtle), `0.35` (Balanced), `0.55` (High Great-Circle).
 - **Flow Pulse Animation**: `pulse` (Animated Particles), `glow` (Subtle Glow), `none` (Static Arcs).
-- **Show Executive KPI HUD**: Toggle floating network metrics banner.
-- **Show Origin Hub Selector**: Toggle interactive origin dropdown filter.
-- **Show Route Search Filter**: Toggle interactive search filter.
-- **Volume Metric Format**: `compact_currency` ($1.2M), `currency` ($1,234,567), `compact_num` (1.2M), `integer`.
+- **HUD & Legend Density**:
+  - `hudDensity`: `full` (Full Glassmorphism Scorecard), `compact` (Compact KPI Strip), `hidden` (Hide HUD).
+  - `labelDensity`: `all` (Show All Hub & State Labels), `peaks_only` (Top Arterial Hubs Only), `hidden` (Hide Map Labels).
+  - `customChartTitle` & `customChartSubtitle`: Custom header title and subtitle text overrides.
+- **Interactive Controls**:
+  - `showOriginFilter`: Toggle origin hub dropdown filter.
+  - `showSearch`: Toggle real-time corridor search filter.
 
 ### Style Tab
-- **Color Theme**:
-  - `cyber_dark`: Deep slate background (`#0b0f19`), neon cyan origin hubs, hot pink destinations, and electric glowing corridors.
-  - `executive_slate`: Clean corporate dark slate with crisp blue/teal gradients.
-  - `light_minimal`: Crisp porcelain white background with slate borders and cobalt corridors.
-  - `ocean_blue`: Deep maritime navy background with gold and turquoise accents.
+- **Color Theme & Palettes**:
+  - 8 Enterprise Color Palettes: `cyber_dark` (Cyberpunk Dark), `google_enterprise` (Google Enterprise Modern), `executive_slate` (Modern Corporate Slate), `emerald_finops` (Emerald FinOps), `sunset_media` (Sunset Media), `wellverse_healthcare` (Wellverse Healthcare), `ocean_blue` (Deep Maritime Navy), `custom` (Custom Hex Override).
+- **Custom Brand Hex Overrides**:
+  - `customPrimaryHex`: Custom hex color for origin hubs and primary flows.
+  - `customPositiveHex`: Custom hex color for corridors above benchmark / positive status.
+  - `customNegativeHex`: Custom hex color for corridors below benchmark / anomalous latency.
+- **Metric Polarity**: `higher_is_better` (Volume/Revenue) vs `lower_is_better` (Transit Days/Latency/Cost).
 - **Arc Coloring Scheme**: `by_origin` (Color by Origin Hub), `by_volume` (Color by Volume Intensity), `by_latency` (Turbo gradient by Transit Time), `monochrome`.
-- **Base Arc Stroke Width**: 1.0 to 10.0.
-- **Origin Hub Radius**: 4 to 20.
-- **Scale Endpoints by Volume**: Toggle dynamic magnitude-based endpoint point sizing (area scales with total shipped inflow).
-- **Max Endpoint Radius**: 6 to 30px (upper bound for highest-volume destination endpoints).
-- **Min Endpoint Radius**: 1 to 10px (lower bound for baseline destination endpoints).
-- **Show Node & State Labels**: Toggle state and origin hub typography.
+- **Typography & Formatting**:
+  - `fontScale`: `compact` (85%), `standard` (100%), `large` (115% Presentation).
+  - `valueFormat`: `compact_currency` ($1.2M), `currency` ($1,234,567), `compact_num` (1.2M), `integer` (1,234), `percent` (45.2%), `decimal_2` (1,234.56), `raw`.
+- **Geometry Controls**:
+  - `baseArcWidth`: 1.0 to 10.0 base stroke width.
+  - `originHubRadius`: 4 to 20 base origin hub circle radius.
+  - `scaleEndpointRadius`: Toggle dynamic magnitude-based endpoint point sizing (area scales with total shipped inflow).
+  - `maxEndpointRadius`: 6 to 30px (upper bound for highest-volume destination endpoints).
+  - `minEndpointRadius`: 1 to 10px (lower bound for baseline destination endpoints).
 
 ---
 

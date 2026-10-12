@@ -71,6 +71,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Price-Volume-Mix (PVM) Revenue Bridge**](visualizations/pvm_revenue_bridge/)<br>`pvm_revenue_bridge` | Retail, Supply Chain & FinOps | 1 Category dim + 0–1 Period dim + 1–2 measures | [📸 View](assets/screenshots/pvm_revenue_bridge.png) |
 | [**Media Audience Overlap & Co-Viewing Euler Matrix**](visualizations/media_audience_overlap_euler/)<br>`media_audience_overlap_euler` | Media, Broadcast & Ad-Ops | 1 Network dim + 0–2 Segment dims + 1–2 measures | [📸 View](visualizations/media_audience_overlap_euler/screenshot.png) |
 | [**Cloud FinOps Commit/CUD Utilization & Waste Horizon Chart**](visualizations/cloud_finops_commit_horizon/)<br>`cloud_finops_commit_horizon` | Telecom, Cloud & SecOps | 2 dims (Commitment + Date) + 1–2 measures (Util + Waste) | [📸 View](visualizations/cloud_finops_commit_horizon/screenshot.png) |
+| [**Cloud FinOps CUD Attribution & Savings Bridge**](visualizations/finops_cud_attribution_bridge/)<br>`finops_cud_attribution_bridge` | Retail, Supply Chain & FinOps | 1–2 dims (Folder + Service) + 1–4 measures (Gross, Credits, Fees, Net) | [📸 View](visualizations/finops_cud_attribution_bridge/screenshot.png) |
 
 ---
 
