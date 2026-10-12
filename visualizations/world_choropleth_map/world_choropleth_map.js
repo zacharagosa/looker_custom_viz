@@ -1198,6 +1198,11 @@
         renderVisualization(cachedWorldData);
       } else {
         d3.json(WORLD_TOPOJSON_URL).then(function (world) {
+          // world-atlas ids are zero-padded ISO numeric codes ("036" Australia, "076" Brazil) while the
+          // lookup tables use unpadded codes ("36"); normalize once so every country can be matched.
+          ((world.objects && world.objects.countries && world.objects.countries.geometries) || []).forEach(function (g) {
+            if (g.id !== undefined && /^\d+$/.test(String(g.id))) g.id = String(parseInt(g.id, 10));
+          });
           cachedWorldData = world;
           renderVisualization(world);
         }).catch(function (err) {
