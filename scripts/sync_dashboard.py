@@ -155,6 +155,7 @@ VIZ_EMOJI_MAP = {
     "cloud_finops_commit_horizon": "⚡",
     "kaplan_meier_survival_curve": "📉",
     "finops_cud_attribution_bridge": "☁️",
+    "slopegraph": "📐",
 }
 
 

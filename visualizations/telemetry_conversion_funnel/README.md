@@ -2,7 +2,6 @@
 
 ![Telemetry & Conversion Funnel Looker Custom Visualization](screenshot.png)
 
-
 An executive-grade, high-performance telemetry pipeline and conversion funnel visualization built with **D3.js v7** for Looker. Specifically engineered for **Gaming Telemetry** (FTUE level progression, player drop-off, in-game economy sink funnels), **E-Commerce & Retail** (Checkout conversion, cart abandonment, multi-touch attribution channels), and **SaaS & Product Telemetry** (Onboarding activation, sign-up workflows, product feature adoption).
 
 ---
@@ -12,13 +11,15 @@ An executive-grade, high-performance telemetry pipeline and conversion funnel vi
 - **4 Multi-Mode Pipeline Layouts**:
   1. **Curved Stream Pipeline**: Smooth continuous Bézier flow ribbon connecting stage pillars with organic liquid contours and bottleneck drop-off indicators.
   2. **Stepped Isometric Funnel**: Classic trapezoidal stage blocks with highlighted drop-off lateral badges and stage-to-stage conversion metrics.
-  3. **Waterfall Drop-off Stack**: Dual-column bar layout pairing retained stage volume with red downward churn columns highlighting exact lost counts.
+  3. **Waterfall Drop-off Stack**: Dual-column bar layout pairing retained stage volume with downward churn columns highlighting exact lost counts.
   4. **Segmented Stacked Stream**: Multi-channel or multi-cohort stage breakdown displaying stacked categorical bands across every funnel step.
-- **Dual-Metric Telemetry Support**: Compare primary throughput volume (users, events, sessions) with a secondary business metric (revenue, gross margin, processing time) simultaneously.
-- **Client-Side Scalability (5,000+ Rows)**: High-performance client-side aggregation, multi-dimensional slicing, and dynamic sorting ensure smooth 60fps rendering even on massive datasets.
-- **Interactive Executive HUD Bar**: Real-time KPI summary displaying Top-of-Funnel Entry, Bottom-of-Funnel Conversion %, Total Steps, and automated Primary Bottleneck Detection.
-- **Client-Side Live Filtering**: Instantaneous in-memory stage search filter and interactive segment/channel dropdown selector.
-- **Rich Glassmorphism Tooltips & Looker Drill-Down**: Deep stage insights with step-to-step conversion, top-of-funnel conversion, drop-off quantities, and native Looker drill-down menu support.
+- **Dynamic Field-Role Mapping**: Custom select dropdowns automatically populated from the live query (`Stage Dimension`, `Segment / Cohort Dimension`, `Primary Volume Measure`, `Secondary Metric Measure`).
+- **Configurable Benchmark Reference Lines & Targets**: Benchmark calculation modes (`Dataset Mean`, `Dataset Median`, `Percentile P75`, `Percentile P90`, `Fixed Goal Value`) with customizable reference labels and chokepoint drop-off alert thresholds.
+- **Interactive Sorting & Top-N Rollups**: Order stages naturally, by volume descending/ascending, or alphabetically, with Top-N density limits (5, 8, 12, 15) and automatic grouping into an `'Other Stages'` rollup.
+- **Dual-Metric Telemetry Support**: Compare primary throughput volume (players, users, events) with a secondary business metric (revenue, IAP monetization, session duration).
+- **Client-Side Scalability (5,000+ Rows)**: High-performance O(N) client-side aggregation, multi-dimensional slicing, and dynamic sorting ensure smooth 60fps rendering.
+- **Executive KPI HUD Scorecard**: Real-time KPI summary displaying Top-of-Funnel Entry, Net Retention %, Benchmark Target, and primary bottleneck/chokepoint detection with Full, Compact, or Hidden density modes.
+- **Brand Palettes & Metric Polarity**: 8 brand themes (Google Enterprise, Modern Slate, Cyber Teal, Neon Violet, Emerald Growth, Sunset Amber, Wellverse Healthcare, Custom Hex Override) with polarity toggles (`Higher is Better` vs `Lower is Better`).
 - **Streamlined 2-Tab Options Modal**: Options are strictly organized into `Display` and `Style` tabs to prevent crowded or overlapping edit dialog headers in Looker.
 
 ---
@@ -28,10 +29,10 @@ An executive-grade, high-performance telemetry pipeline and conversion funnel vi
 The visualization supports three versatile data formats:
 
 ### Format A: Multi-Dimensional Cohort / Channel Funnel (Recommended)
-- **Dimension 1 (Segment/Channel)**: e.g. `users.traffic_source`, `users.country`, `device_type`
-- **Dimension 2 (Funnel Stage)**: e.g. `order_items.status`, `events.event_name`, `levels.level_number`
-- **Measure 1 (Primary Volume)**: e.g. `order_items.order_count`, `events.count`, `users.count`
-- **Measure 2 (Optional Secondary Metric)**: e.g. `order_items.total_sale_price`, `orders.total_revenue`
+- **Dimension 1 (Cohort/Segment)**: e.g. `player_onboarding_funnel.acquisition_channel`
+- **Dimension 2 (Funnel Stage)**: e.g. `player_onboarding_funnel.funnel_stage`
+- **Measure 1 (Primary Volume)**: e.g. `player_onboarding_funnel.players_reached`
+- **Measure 2 (Optional Secondary Metric)**: e.g. `player_onboarding_funnel.total_iap_revenue_usd`
 
 ### Format B: Single-Dimension Funnel
 - **Dimension 1 (Funnel Stage)**: e.g. `order_items.status`
@@ -48,19 +49,34 @@ The visualization supports three versatile data formats:
 
 ### Section 1: Display
 - **Funnel Pipeline Layout**: `Curved Stream Pipeline`, `Stepped Isometric Funnel`, `Waterfall Drop-off Stack`, `Segmented Stacked Stream`
-- **Metric Display Mode**: `Primary Volume Only`, `Primary Volume + Secondary Metric`, `Conversion Percentage Only`
+- **Funnel Stage Dimension**: Dynamically populated dropdown of query dimensions.
+- **Cohort / Segment Dimension**: Optional breakdown dimension for multi-channel funnel slicing.
+- **Primary Volume Measure**: Dynamically populated primary throughput measure.
+- **Secondary Metric Measure**: Optional secondary measure (monetization, latency, revenue).
+- **Benchmark Target Mode**: `None`, `Dataset Mean`, `Dataset Median`, `Top Quartile Benchmark (P75)`, `Elite Benchmark (P90)`, `Fixed Goal Value`
+- **Fixed Benchmark Target Value**: Custom numeric threshold when using Fixed Goal mode.
+- **Reference Line Label**: Custom label for the benchmark target chip and reference marker.
+- **Chokepoint Drop-off Alert Threshold (%)**: Drop-off rate threshold (default 35%) to flag severe funnel leakage.
+- **Funnel Stage Ordering**: `Query Default (Natural Order)`, `Volume Descending`, `Volume Ascending`, `Alphabetical Stage Name`
+- **Stage Density Filter (Top-N)**: `All Stages`, `Top 5`, `Top 8`, `Top 12`, `Top 15`
+- **Group Remaining into 'Other' Aggregate Stage**: Toggle automatic rollup of trailing stages.
+- **Suppress Zero & Null Value Stages**: Filter out stages with 0 or null throughput.
+- **Executive KPI HUD Scorecard**: `Full Scorecard Banner`, `Compact Status Strip`, `Hidden`
+- **In-Stage Value & Drop-off Labels**: `All Labels & Drop-off Badges`, `Chokepoints & Outliers Only`, `Hidden`
 - **Conversion % Reference**: `Step-to-Step Conversion`, `Top of Funnel Overall`, `Both Metrics`
 - **Pipeline Orientation**: `Horizontal Flow (Left to Right)`, `Vertical Pipeline (Top to Bottom)`
-- **Show Drop-off Badges & Leakage %**: Toggle red loss indicators between stages
-- **Show Executive KPI HUD Bar**: Toggle top summary KPI cards
-- **Show In-Stage Value Labels**: Toggle metric value readouts on stage blocks
-- **Show Stage Titles**: Toggle stage name labels
-- **Show Live Search & Filter Bar**: Toggle in-memory search input
-- **Primary Value Formatting**: `Compact Number (1.2M, 45K)`, `Compact Currency ($1.2M)`, `Full Currency ($1,234,567.89)`, `Raw Integer`
+- **Custom Title Override**: Custom title heading above the funnel.
+- **Show Live Search & Filter Bar**: Instant client-side search input.
 
 ### Section 2: Style
-- **Color Palette & Theme**: `Cyber Teal (Dark)`, `Neon Violet (Dark)`, `Executive Slate (Light)`, `Emerald Growth (Light)`, `Sunset Amber (Light)`
+- **Brand Palette Preset**: `Cyber Teal (Dark)`, `Google Enterprise`, `Modern Slate (Light)`, `Neon Violet (Dark)`, `Emerald Growth (Light)`, `Sunset Amber (Light)`, `Wellverse Healthcare`, `Custom Hex Override`
+- **Custom Primary Stage Hex**: Color picker for primary stage fill.
+- **Custom Positive / Retained Hex**: Color picker for retained flow and passing benchmarks.
+- **Custom Drop-off / Leakage Hex**: Color picker for drop-off badges and leakage paths.
+- **Metric Polarity**: `Higher is Better` (Conversion/Volume) vs `Lower is Better` (Churn/Drop-off/Friction).
 - **Surface Styling**: `Smooth Gradient Blend`, `Solid Color Stages`, `Glass Translucent Fill`
 - **Curvature & Neck Shaping**: `High Flow Bézier Curves`, `Subtle Dynamic Arcs`, `Linear Sharp Edges`
-- **Stage Gap Padding (px)**: Spacing between stages (default: 16px)
-- **Minimum Neck Thickness (px)**: Minimum rendering thickness for small downstream stages (default: 28px)
+- **Typography & Label Scale**: `Compact (85%)`, `Standard (100%)`, `Large Presentation (120%)`
+- **Primary Value Formatting**: `Auto / Dynamic`, `Compact Number (1.2M, 45K)`, `Compact Currency ($1.2M)`, `Percentage (45.2%)`, `Decimal (2dp)`, `Full Currency`, `Raw Integer`
+- **Stage Gap Padding (px)**: Spacing between stages (default: 16px).
+- **Minimum Neck Thickness (px)**: Minimum thickness for small downstream stages (default: 28px).

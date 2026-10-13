@@ -31,6 +31,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Rank Bump & Trajectory Chart**](visualizations/rank_bump_chart/)<br>`rank_bump_chart` | Leaderboards & Grids | 1 entity dim + 1 pivot (or 2–12 meas) | [📸 View](assets/screenshots/rank_bump_chart.png) |
 | [**Collapsible Hierarchical Tree Grid**](visualizations/hierarchical_tree_table/)<br>`hierarchical_tree_table` | Leaderboards & Grids | 2–6 dims (Hierarchy) + 1–4 meas | [📸 View](assets/screenshots/hierarchical_tree_table.png) |
 | [**Dynamic Pivot Matrix & Heatmap Grid**](visualizations/dynamic_pivot_matrix/)<br>`dynamic_pivot_matrix` | Leaderboards & Grids | 1–2 dims + 1 pivot + 1–4 meas | [📸 View](assets/screenshots/dynamic_pivot_matrix.png) |
+| [**Slopegraph & Multi-Period Rank Comparison**](visualizations/slopegraph/)<br>`slopegraph` | Leaderboards & Grids | 1 entity dim + 1 period dim + 1 metric meas | [📸 View](assets/screenshots/slopegraph.png) |
 | [**Sankey Flow Diagram**](visualizations/sankey_flow_diagram/)<br>`sankey_flow_diagram` | Flow, Networks & Hierarchy | 2–8 sequential dims + 1–2 measures | [📸 View](assets/screenshots/sankey_flow_diagram.png) |
 | [**Interactive Hierarchical Drilldown Treemap**](visualizations/interactive_drilldown_treemap/)<br>`interactive_drilldown_treemap` | Flow, Networks & Hierarchy | 1–6 dims (Hierarchy) + 1–2 measures | [📸 View](assets/screenshots/interactive_drilldown_treemap.png) |
 | [**Sunburst Multi-Level Partition Wheel**](visualizations/sunburst_partition_wheel/)<br>`sunburst_partition_wheel` | Flow, Networks & Hierarchy | 1–5 Hierarchical dims + 1–2 measures | [📸 View](assets/screenshots/sunburst_partition_wheel.png) |
@@ -71,7 +72,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Price-Volume-Mix (PVM) Revenue Bridge**](visualizations/pvm_revenue_bridge/)<br>`pvm_revenue_bridge` | Retail, Supply Chain & FinOps | 1 Category dim + 0–1 Period dim + 1–2 measures | [📸 View](assets/screenshots/pvm_revenue_bridge.png) |
 | [**Media Audience Overlap & Co-Viewing Euler Matrix**](visualizations/media_audience_overlap_euler/)<br>`media_audience_overlap_euler` | Media, Broadcast & Ad-Ops | 1 Network dim + 0–2 Segment dims + 1–2 measures | [📸 View](visualizations/media_audience_overlap_euler/screenshot.png) |
 | [**Cloud FinOps Commit/CUD Utilization & Waste Horizon Chart**](visualizations/cloud_finops_commit_horizon/)<br>`cloud_finops_commit_horizon` | Telecom, Cloud & SecOps | 2 dims (Commitment + Date) + 1–2 measures (Util + Waste) | [📸 View](visualizations/cloud_finops_commit_horizon/screenshot.png) |
-| [**Cloud FinOps CUD Attribution & Savings Bridge**](visualizations/finops_cud_attribution_bridge/)<br>`finops_cud_attribution_bridge` | Retail, Supply Chain & FinOps | 1–2 dims (Folder + Service) + 1–4 measures (Gross, Credits, Fees, Net) | [📸 View](visualizations/finops_cud_attribution_bridge/screenshot.png) |
+| [**FinOps CUD Attribution & Waste Waterfall Bridge**](visualizations/finops_cud_attribution_bridge/)<br>`finops_cud_attribution_bridge` | Telecom, Cloud & SecOps | 1 SKU/Account dim + 1–2 measures | [📸 View](visualizations/finops_cud_attribution_bridge/screenshot.png) |
 
 ---
 

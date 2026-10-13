@@ -1,0 +1,38 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.created_year",
+    "order_items.total_sale_price"
+  ],
+  "filters": {
+    "order_items.created_year": "2023,2024"
+  },
+  "sorts": [
+    "products.category asc",
+    "order_items.created_year asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "slopegraph",
+    "layoutMode": "dual_axis_value",
+    "targetCalculationMode": "dataset_mean",
+    "referenceLineLabel": "Mean Annual Category Sales",
+    "sortOrder": "delta_desc",
+    "topEntities": "all",
+    "enableOtherRollup": false,
+    "suppressZeroNull": true,
+    "hudDensity": "full",
+    "labelDensity": "all",
+    "showRankBadges": true,
+    "showSearch": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "higher_is_better",
+    "lineCurve": "straight",
+    "lineWidth": 2.5,
+    "fontScale": "standard",
+    "valueFormat": "compact_currency",
+    "axisPadding": 180
+  }
+}

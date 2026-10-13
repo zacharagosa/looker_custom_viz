@@ -158,7 +158,96 @@
       connector: "rgba(217, 119, 6, 0.25)",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#d97706"
+    },
+    google_enterprise: {
+      name: "Google Enterprise",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafd",
+      border: "#dadce0",
+      text: "#202124",
+      subtext: "#5f6368",
+      hudBg: "rgba(248, 250, 253, 0.95)",
+      hudBorder: "#dadce0",
+      hudText: "#202124",
+      hudSubtext: "#5f6368",
+      accent: "#1a73e8",
+      stageColors: ["#1a73e8", "#4285f4", "#34a853", "#fbbc04", "#ea4335", "#9c27b0", "#00acc1", "#ff7043"],
+      dropoffFill: "rgba(234, 67, 53, 0.12)",
+      dropoffStroke: "#ea4335",
+      dropoffText: "#c5221f",
+      retainedFill: "#1a73e8",
+      connector: "rgba(26, 115, 232, 0.25)",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#1a73e8"
+    },
+    modern_slate: {
+      name: "Modern Slate (Light)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      hudSubtext: "#64748b",
+      accent: "#2563eb",
+      stageColors: ["#2563eb", "#3b82f6", "#60a5fa", "#0ea5e9", "#06b6d4", "#14b8a6", "#10b981", "#84cc16"],
+      dropoffFill: "rgba(220, 38, 38, 0.12)",
+      dropoffStroke: "#dc2626",
+      dropoffText: "#b91c1c",
+      retainedFill: "#2563eb",
+      connector: "rgba(37, 99, 235, 0.25)",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#2563eb"
+    },
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
+      isDark: false,
+      bg: "#f8fafc",
+      cardBg: "#ffffff",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#475569",
+      hudBg: "rgba(255, 255, 255, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      hudSubtext: "#475569",
+      accent: "#0284c7",
+      stageColors: ["#0284c7", "#0d9488", "#059669", "#3b82f6", "#6366f1", "#8b5cf6", "#d97706", "#e11d48"],
+      dropoffFill: "rgba(239, 68, 68, 0.12)",
+      dropoffStroke: "#ef4444",
+      dropoffText: "#dc2626",
+      retainedFill: "#0284c7",
+      connector: "rgba(2, 132, 199, 0.25)",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#0284c7"
+    },
+    custom_override: {
+      name: "Custom Hex Override",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      hudSubtext: "#64748b",
+      accent: "#2563eb",
+      stageColors: ["#2563eb", "#3b82f6", "#60a5fa", "#0ea5e9", "#06b6d4", "#14b8a6", "#10b981", "#84cc16"],
+      dropoffFill: "rgba(220, 38, 38, 0.12)",
+      dropoffStroke: "#dc2626",
+      dropoffText: "#b91c1c",
+      retainedFill: "#2563eb",
+      connector: "rgba(37, 99, 235, 0.25)",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#2563eb"
     }
+
   };
 
   function formatMetricValue(val, fmt) {
@@ -178,6 +267,14 @@
       return num.toLocaleString();
     } else if (fmt === "percent") {
       return (num * 100).toFixed(1) + "%";
+    } else if (fmt === "decimal_2dp") {
+      return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    } else if (fmt === "raw_num") {
+      return String(num);
+    } else if (fmt === "auto") {
+      if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M";
+      if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "K";
+      return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2);
     }
     return Math.round(num).toLocaleString();
   }
@@ -185,8 +282,10 @@
   looker.plugins.visualizations.add({
     id: "telemetry_conversion_funnel",
     label: "Telemetry & Conversion Funnel",
-    options: {
-      // SECTION 1: DISPLAY
+        options: {
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       funnelLayout: {
         type: "string",
         label: "Funnel Pipeline Layout",
@@ -201,18 +300,147 @@
         section: "Display",
         order: 1
       },
-      metricMode: {
+      stageDimOverride: {
         type: "string",
-        label: "Metric Display Mode",
+        label: "Funnel Stage Dimension",
         display: "select",
-        values: [
-          { "Primary Volume Only": "primary_only" },
-          { "Primary Volume + Secondary Metric": "dual_metric" },
-          { "Conversion Percentage Only": "pct_only" }
-        ],
-        default: "primary_only",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: "",
         section: "Display",
         order: 2
+      },
+      segmentDimOverride: {
+        type: "string",
+        label: "Cohort / Segment Dimension",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      volumeMeasureOverride: {
+        type: "string",
+        label: "Primary Volume Measure",
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      secondaryMeasureOverride: {
+        type: "string",
+        label: "Secondary Metric Measure",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Benchmark Target Mode",
+        section: "Display",
+        order: 6,
+        display: "select",
+        values: [
+          { "None (No Benchmark Line)": "none" },
+          { "Dataset Mean (Average Stage Volume)": "dataset_mean" },
+          { "Dataset Median (P50 Stage Volume)": "dataset_median" },
+          { "Top Quartile Benchmark (P75)": "percentile_p75" },
+          { "Elite Retention Benchmark (P90)": "percentile_p90" },
+          { "Fixed Goal Value": "fixed_value" }
+        ],
+        default: "dataset_mean"
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Benchmark Target Value",
+        section: "Display",
+        order: 7,
+        default: 50000
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Reference Line Label",
+        section: "Display",
+        order: 8,
+        default: "Benchmark Target"
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Chokepoint Drop-off Alert Threshold (%)",
+        section: "Display",
+        order: 9,
+        default: 35
+      },
+      sortOrder: {
+        type: "string",
+        label: "Funnel Stage Ordering",
+        section: "Display",
+        order: 10,
+        display: "select",
+        values: [
+          { "Query Default (Natural Order)": "natural" },
+          { "Volume Descending (Standard Funnel)": "metric_desc" },
+          { "Volume Ascending": "metric_asc" },
+          { "Alphabetical Stage Name": "alphabetical" }
+        ],
+        default: "natural"
+      },
+      topStages: {
+        type: "string",
+        label: "Stage Density Filter (Top-N)",
+        section: "Display",
+        order: 11,
+        display: "select",
+        values: [
+          { "All Stages (Expanded)": "all" },
+          { "Top 5 Core Funnel Stages": "5" },
+          { "Top 8 Stages": "8" },
+          { "Top 12 Stages": "12" },
+          { "Top 15 Stages": "15" }
+        ],
+        default: "all"
+      },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Group Remaining into 'Other' Aggregate Stage",
+        section: "Display",
+        order: 12,
+        default: false
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero & Null Value Stages",
+        section: "Display",
+        order: 13,
+        default: true
+      },
+      hudDensity: {
+        type: "string",
+        label: "Executive KPI HUD Scorecard",
+        section: "Display",
+        order: 14,
+        display: "select",
+        values: [
+          { "Full Scorecard Banner": "full" },
+          { "Compact Status Strip": "compact" },
+          { "Hidden (Maximize Funnel Canvas)": "hidden" }
+        ],
+        default: "full"
+      },
+      labelDensity: {
+        type: "string",
+        label: "In-Stage Value & Drop-off Labels",
+        section: "Display",
+        order: 15,
+        display: "select",
+        values: [
+          { "All Labels & Drop-off Badges": "all" },
+          { "Chokepoints & Outliers Only": "chokepoints_only" },
+          { "Hidden (Tooltips Only)": "hidden" }
+        ],
+        default: "all"
       },
       pctBaseline: {
         type: "string",
@@ -225,7 +453,7 @@
         ],
         default: "step_to_step",
         section: "Display",
-        order: 3
+        order: 16
       },
       funnelOrientation: {
         type: "string",
@@ -237,73 +465,79 @@
         ],
         default: "horizontal",
         section: "Display",
-        order: 4
+        order: 17
       },
-      showDropoffBadges: {
-        type: "boolean",
-        label: "Show Drop-off Badges & Leakage %",
-        default: true,
+      customTitleOverride: {
+        type: "string",
+        label: "Custom Title Override",
         section: "Display",
-        order: 5
-      },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive KPI HUD Bar",
-        default: true,
-        section: "Display",
-        order: 6
-      },
-      showStepValues: {
-        type: "boolean",
-        label: "Show In-Stage Value Labels",
-        default: true,
-        section: "Display",
-        order: 7
-      },
-      showStepLabels: {
-        type: "boolean",
-        label: "Show Stage Titles",
-        default: true,
-        section: "Display",
-        order: 8
+        order: 18,
+        default: ""
       },
       showSearch: {
         type: "boolean",
         label: "Show Live Search & Filter Bar",
         default: true,
         section: "Display",
-        order: 9
-      },
-      valueFormat: {
-        type: "string",
-        label: "Primary Value Formatting",
-        display: "select",
-        values: [
-          { "Compact Number (1.2M, 45K)": "compact_num" },
-          { "Compact Currency ($1.2M)": "compact_currency" },
-          { "Full Currency ($1,234,567.89)": "full_currency" },
-          { "Raw Integer": "raw_num" }
-        ],
-        default: "compact_num",
-        section: "Display",
-        order: 10
+        order: 19
       },
 
-      // SECTION 2: STYLE
+      // ==========================================
+      // SECTION 2: STYLE (Strictly minimized tab)
+      // ==========================================
       colorTheme: {
         type: "string",
-        label: "Color Palette & Theme",
+        label: "Brand Palette Preset",
         display: "select",
         values: [
           { "Cyber Teal (Dark)": "cyber_teal" },
+          { "Google Enterprise": "google_enterprise" },
+          { "Modern Slate (Light)": "modern_slate" },
           { "Neon Violet (Dark)": "neon_violet" },
-          { "Executive Slate (Light)": "executive_slate" },
           { "Emerald Growth (Light)": "emerald_growth" },
-          { "Sunset Amber (Light)": "sunset_amber" }
+          { "Sunset Amber (Light)": "sunset_amber" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Custom Hex Override": "custom_override" }
         ],
         default: "cyber_teal",
         section: "Style",
         order: 1
+      },
+      customPrimaryHex: {
+        type: "string",
+        label: "Custom Primary Stage Hex",
+        display: "color",
+        section: "Style",
+        order: 2,
+        default: ""
+      },
+      customPositiveHex: {
+        type: "string",
+        label: "Custom Positive / Retained Hex",
+        display: "color",
+        section: "Style",
+        order: 3,
+        default: ""
+      },
+      customNegativeHex: {
+        type: "string",
+        label: "Custom Drop-off / Leakage Hex",
+        display: "color",
+        section: "Style",
+        order: 4,
+        default: ""
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity",
+        section: "Style",
+        order: 5,
+        display: "select",
+        values: [
+          { "Higher is Better (Conversion, Retention, Revenue)": "higher_is_better" },
+          { "Lower is Better (Drop-off, Churn, Latency, Friction)": "lower_is_better" }
+        ],
+        default: "higher_is_better"
       },
       funnelGradient: {
         type: "string",
@@ -316,7 +550,7 @@
         ],
         default: "smooth",
         section: "Style",
-        order: 2
+        order: 6
       },
       curvatureIntensity: {
         type: "string",
@@ -329,21 +563,113 @@
         ],
         default: "curved",
         section: "Style",
-        order: 3
+        order: 7
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & Label Scale",
+        section: "Style",
+        order: 8,
+        display: "select",
+        values: [
+          { "Compact (85%)": "compact" },
+          { "Standard (100%)": "standard" },
+          { "Large Presentation (120%)": "large" }
+        ],
+        default: "standard"
+      },
+      valueFormat: {
+        type: "string",
+        label: "Primary Value Formatting",
+        display: "select",
+        values: [
+          { "Auto / Dynamic": "auto" },
+          { "Compact Number (1.2M, 45K)": "compact_num" },
+          { "Compact Currency ($1.2M)": "compact_currency" },
+          { "Percentage (45.2%)": "percent" },
+          { "Decimal (2 Decimal Places)": "decimal_2dp" },
+          { "Full Currency ($1,234,567.89)": "full_currency" },
+          { "Raw Integer": "raw_num" }
+        ],
+        default: "compact_num",
+        section: "Style",
+        order: 9
       },
       stagePadding: {
         type: "number",
         label: "Stage Gap Padding (px)",
         default: 16,
         section: "Style",
-        order: 4
+        order: 10
       },
       minNeckWidth: {
         type: "number",
         label: "Minimum Neck Thickness (px)",
         default: 28,
         section: "Style",
-        order: 5
+        order: 11
+      }
+    },
+
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      if (!queryResponse || !queryResponse.fields) return;
+      var fields = queryResponse.fields;
+      var dims = (fields.dimensions || []).concat(fields.dimension_like || []);
+      var meas = (fields.measures || []).concat(fields.measure_like || []);
+      if (meas.length === 0 && fields.table_calculations) {
+        meas = fields.table_calculations;
+      }
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" +
+                      meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      var fieldSpecs = {
+        stageDimOverride: { role: "dimension", defaultIdx: dims.length > 1 ? 1 : 0 },
+        segmentDimOverride: { role: "dimension", defaultIdx: dims.length > 1 ? 0 : -1 },
+        volumeMeasureOverride: { role: "measure", defaultIdx: 0 },
+        secondaryMeasureOverride: { role: "measure", defaultIdx: meas.length > 1 ? 1 : -1 }
+      };
+
+      Object.keys(fieldSpecs).forEach(function (key) {
+        var spec = fieldSpecs[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : dims;
+        var autoField = spec.defaultIdx >= 0 && spec.defaultIdx < list.length ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto \u2192 " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].type = "string";
+        newOptions[key].display = "select";
+        newOptions[key].values = values;
+        newOptions[key].default = "";
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        console.warn("registerOptions unavailable in this host:", e);
       }
     },
 
@@ -424,7 +750,8 @@
     },
 
     updateAsync: function (data, element, config, queryResponse, details, onComplete) {
-      this.clearErrors();
+      if (this.clearErrors) this.clearErrors();
+      this._registerDynamicFieldOptions(queryResponse);
 
       this._element = element;
       this._lastElement = element;
@@ -437,7 +764,7 @@
       }
 
       if (!data || data.length === 0) {
-        this.addError({
+        if (this.addError) this.addError({
           title: "No Data",
           message: "The query returned no results to render."
         });
@@ -450,7 +777,7 @@
       var meas = fields.measures || [];
 
       if (dims.length === 0 && meas.length < 2) {
-        this.addError({
+        if (this.addError) this.addError({
           title: "Insufficient Fields",
           message: "Telemetry & Conversion Funnel requires either: (1) 1 Dimension for Stage and 1-2 Measures, or (2) 2 Dimensions (Segment + Stage) and 1 Measure, or (3) 2 or more Measures representing sequential stages."
         });
@@ -474,18 +801,47 @@
     },
 
     _parseData: function (data, queryResponse, config) {
+      var self = this;
       var fields = queryResponse.fields;
-      var dims = fields.dimensions || [];
-      var meas = fields.measures || [];
+      var dims = (fields.dimensions || []).concat(fields.dimension_like || []);
+      var meas = (fields.measures || []).concat(fields.measure_like || []);
+      if (meas.length === 0 && fields.table_calculations) {
+        meas = fields.table_calculations;
+      }
+
+      function resolveField(list, overrideVal, fallbackIdx) {
+        if (!list || list.length === 0) return null;
+        if (overrideVal && typeof overrideVal === "string" && overrideVal.trim() !== "") {
+          var trimmed = overrideVal.trim();
+          for (var i = 0; i < list.length; i++) {
+            if (list[i].name === trimmed || list[i].label === trimmed || list[i].label_short === trimmed) {
+              return list[i];
+            }
+          }
+          var parsedIdx = parseInt(trimmed, 10);
+          if (!isNaN(parsedIdx) && parsedIdx >= 1 && parsedIdx <= list.length) {
+            return list[parsedIdx - 1];
+          }
+        }
+        if (fallbackIdx >= 0 && fallbackIdx < list.length) {
+          return list[fallbackIdx];
+        }
+        return null;
+      }
+
+      var stageDim = resolveField(dims, config.stageDimOverride, dims.length > 1 ? 1 : 0);
+      var segDim = resolveField(dims, config.segmentDimOverride, dims.length > 1 ? 0 : -1);
+      var primMeas = resolveField(meas, config.volumeMeasureOverride, 0);
+      var secMeas = resolveField(meas, config.secondaryMeasureOverride, meas.length > 1 ? 1 : -1);
 
       var stages = [];
       var segments = [];
-      var isMultiSegment = false;
-      var hasSecondaryMetric = meas.length >= 2;
+      var isMultiSegment = !!segDim && dims.length >= 2;
+      var hasSecondaryMetric = !!secMeas;
 
       // Mode A: Multi-Measure Funnel (0 dimensions, 2+ measures)
       if (dims.length === 0 && meas.length >= 2) {
-        var row = data[0];
+        var row = data[0] || {};
         meas.forEach(function (m, idx) {
           var cell = row[m.name];
           var rawVal = cell ? (cell.value !== undefined ? cell.value : cell) : 0;
@@ -500,21 +856,15 @@
           });
         });
       }
-      // Mode B: 2 Dimensions (Segment / Channel + Stage) + 1-2 Measures
-      else if (dims.length >= 2) {
-        isMultiSegment = true;
-        var segDim = dims[0];
-        var stageDim = dims[1];
-        var primMeas = meas[0];
-        var secMeas = meas.length > 1 ? meas[1] : null;
-
+      // Mode B: Segment Dimension + Stage Dimension
+      else if (isMultiSegment && stageDim) {
         var segMap = {};
         var stageSet = {};
         var stageOrderMap = {};
 
         data.forEach(function (row) {
-          var segCell = row[segDim.name];
-          var segVal = segCell ? String(segCell.value !== undefined ? segCell.value : segCell) : "Unknown";
+          var segCell = segDim ? row[segDim.name] : null;
+          var segVal = segCell ? String(segCell.value !== undefined ? segCell.value : segCell) : "All";
           var stCell = row[stageDim.name];
           var stVal = stCell ? String(stCell.value !== undefined ? stCell.value : stCell) : "Stage";
 
@@ -551,22 +901,19 @@
           }
         });
 
-        // Validate selected segment against available segments
-        if (this._selectedSegment && this._selectedSegment !== "ALL" && segments.indexOf(this._selectedSegment) === -1) {
-          this._selectedSegment = "ALL";
+        if (self._selectedSegment && self._selectedSegment !== "ALL" && segments.indexOf(self._selectedSegment) === -1) {
+          self._selectedSegment = "ALL";
         }
 
-        // Filter by selected segment
-        var targetSeg = this._selectedSegment || "ALL";
+        var targetSeg = self._selectedSegment || "ALL";
         var aggStages = {};
         Object.keys(stageSet).forEach(function (stName) {
-          aggStages[stName] = { id: stName, name: stName, value: 0, secondaryValue: 0, drillData: null, segmentBreakdown: {} };
+          aggStages[stName] = { id: stName, name: stName, value: 0, secondaryValue: 0, drillData: null, segmentBreakdown: {}, naturalOrder: stageOrderMap[stName] || 0 };
         });
 
         Object.keys(segMap).forEach(function (segKey) {
           var sData = segMap[segKey];
           if (!sData || !sData.stages) return;
-
           var isIncluded = (targetSeg === "ALL" || targetSeg === segKey);
 
           Object.keys(sData.stages).forEach(function (stKey) {
@@ -579,7 +926,6 @@
               if (!aggStages[stKey].drillData) aggStages[stKey].drillData = stObj.drillData;
             }
 
-            // Record segment contribution for segmented layout
             if (!aggStages[stKey].segmentBreakdown[segKey]) {
               aggStages[stKey].segmentBreakdown[segKey] = 0;
             }
@@ -592,36 +938,28 @@
         Object.keys(aggStages).forEach(function (stKey) {
           stages.push(aggStages[stKey]);
         });
-
-        // Natural sort by stage volume descending to reflect funnel flow
-        stages.sort(function (a, b) {
-          if (b.value !== a.value) {
-            return b.value - a.value;
-          }
-          return (stageOrderMap[a.name] || 0) - (stageOrderMap[b.name] || 0);
-        });
       }
-      // Mode C: 1 Dimension (Stage) + 1-2 Measures
+      // Mode C: 1 Dimension (Stage) + Measures
       else {
-        var stageDim1 = dims[0];
-        var primMeas1 = meas[0];
-        var secMeas1 = meas.length > 1 ? meas[1] : null;
-
+        var activeStageDim = stageDim || (dims.length > 0 ? dims[0] : null);
         var stageAgg = {};
-        data.forEach(function (row) {
-          var cell = row[stageDim1.name];
-          var name = cell ? String(cell.value !== undefined ? cell.value : cell) : "Unknown";
-          var primCell = primMeas1 ? row[primMeas1.name] : null;
+        var appearanceOrder = {};
+
+        data.forEach(function (row, rowIdx) {
+          var cell = activeStageDim ? row[activeStageDim.name] : null;
+          var name = cell ? String(cell.value !== undefined ? cell.value : cell) : ("Stage " + (rowIdx + 1));
+          var primCell = primMeas ? row[primMeas.name] : null;
           var val = primCell ? Number(primCell.value !== undefined ? primCell.value : primCell) || 0 : 1;
 
           var secVal = 0;
-          if (secMeas1) {
-            var secCell = row[secMeas1.name];
+          if (secMeas) {
+            var secCell = row[secMeas.name];
             secVal = secCell ? Number(secCell.value !== undefined ? secCell.value : secCell) || 0 : 0;
           }
 
           if (!stageAgg[name]) {
-            stageAgg[name] = { id: name, name: name, value: 0, secondaryValue: 0, drillData: primCell || cell };
+            stageAgg[name] = { id: name, name: name, value: 0, secondaryValue: 0, drillData: primCell || cell, naturalOrder: Object.keys(appearanceOrder).length };
+            appearanceOrder[name] = true;
           }
           stageAgg[name].value += val;
           stageAgg[name].secondaryValue += secVal;
@@ -630,24 +968,74 @@
         Object.keys(stageAgg).forEach(function (k) {
           stages.push(stageAgg[k]);
         });
+      }
 
-        // Sort descending by primary volume to form a true funnel pipeline
-        stages.sort(function (a, b) {
-          return b.value - a.value;
+      // Null / Zero Suppression
+      if (config.suppressZeroNull !== false) {
+        stages = stages.filter(function (s) {
+          return s.value > 0 && !isNaN(s.value);
         });
       }
 
-      // Filter by search text if applicable
-      if (this._searchFilter && this._searchFilter.trim() !== "") {
-        var q = this._searchFilter.trim().toLowerCase();
+      // Interactive Search Filter
+      if (self._searchFilter && self._searchFilter.trim() !== "") {
+        var q = self._searchFilter.trim().toLowerCase();
         stages = stages.filter(function (s) {
           return s.name.toLowerCase().indexOf(q) !== -1;
         });
       }
 
-      // Compute conversion metrics (step-to-step and top-of-funnel)
+      // Sorting
+      var sortOrder = config.sortOrder || "natural";
+      if (sortOrder === "metric_desc") {
+        stages.sort(function (a, b) { return b.value - a.value; });
+      } else if (sortOrder === "metric_asc") {
+        stages.sort(function (a, b) { return a.value - b.value; });
+      } else if (sortOrder === "alphabetical") {
+        stages.sort(function (a, b) { return a.name.localeCompare(b.name); });
+      } else {
+        // Natural query order
+        stages.sort(function (a, b) {
+          if (typeof a.naturalOrder !== "undefined" && typeof b.naturalOrder !== "undefined") {
+            return a.naturalOrder - b.naturalOrder;
+          }
+          return 0;
+        });
+      }
+
+      // Top-N Filtering & 'Other' Rollup
+      var topNConfig = config.topStages || "all";
+      if (topNConfig !== "all") {
+        var nLimit = parseInt(topNConfig, 10);
+        if (!isNaN(nLimit) && nLimit > 0 && stages.length > nLimit) {
+          var retainedStages = stages.slice(0, nLimit);
+          var droppedStages = stages.slice(nLimit);
+          if (config.enableOtherRollup) {
+            var otherVal = 0;
+            var otherSec = 0;
+            droppedStages.forEach(function (ds) {
+              otherVal += ds.value;
+              otherSec += ds.secondaryValue;
+            });
+            retainedStages.push({
+              id: "other_stages_rollup",
+              name: "Other Stages (" + droppedStages.length + ")",
+              value: otherVal,
+              secondaryValue: otherSec,
+              drillData: null,
+              isOtherRollup: true
+            });
+          }
+          stages = retainedStages;
+        }
+      }
+
+      // Compute conversion metrics
       var maxVal = stages.length > 0 ? stages[0].value : 1;
       var topVal = maxVal > 0 ? maxVal : 1;
+
+      var chokepointThresh = typeof config.anomalyThresholdPct !== "undefined" && config.anomalyThresholdPct !== null && config.anomalyThresholdPct !== "" ? Number(config.anomalyThresholdPct) : 35;
+      if (isNaN(chokepointThresh)) chokepointThresh = 35;
 
       stages.forEach(function (st, i) {
         st.index = i;
@@ -656,27 +1044,49 @@
           st.stepPct = 1.0;
           st.dropoffVal = 0;
           st.dropoffPct = 0;
+          st.isChokepoint = false;
         } else {
           var prevVal = stages[i - 1].value;
           st.stepPct = prevVal > 0 ? (st.value / prevVal) : 0;
           st.dropoffVal = Math.max(0, prevVal - st.value);
           st.dropoffPct = prevVal > 0 ? (st.dropoffVal / prevVal) : 0;
+          st.isChokepoint = (st.dropoffPct * 100) >= chokepointThresh;
         }
       });
+
+      // Benchmark Target Calculation
+      var targetMode = config.targetCalculationMode || "dataset_mean";
+      var targetVal = 0;
+      if (stages.length > 0 && targetMode !== "none") {
+        var vals = stages.map(function (s) { return s.value; }).sort(function (a, b) { return a - b; });
+        var sum = vals.reduce(function (acc, v) { return acc + v; }, 0);
+        var mean = sum / vals.length;
+        var median = vals[Math.floor(vals.length / 2)];
+        var p75 = vals[Math.floor(vals.length * 0.75)] || median;
+        var p90 = vals[Math.floor(vals.length * 0.90)] || p75;
+
+        if (targetMode === "dataset_mean") targetVal = mean;
+        else if (targetMode === "dataset_median") targetVal = median;
+        else if (targetMode === "percentile_p75") targetVal = p75;
+        else if (targetMode === "percentile_p90") targetVal = p90;
+        else if (targetMode === "fixed_value") targetVal = Number(config.fixedTargetValue) || 0;
+      }
 
       return {
         stages: stages,
         segments: segments,
         isMultiSegment: isMultiSegment,
         hasSecondaryMetric: hasSecondaryMetric,
-        primaryLabel: meas.length > 0 ? (meas[0].label_short || meas[0].label || meas[0].name) : "Volume",
-        secondaryLabel: meas.length > 1 ? (meas[1].label_short || meas[1].label || meas[1].name) : "Secondary Metric",
+        primaryLabel: primMeas ? (primMeas.label_short || primMeas.label || primMeas.name) : "Volume",
+        secondaryLabel: secMeas ? (secMeas.label_short || secMeas.label || secMeas.name) : "Secondary Metric",
         topVal: topVal,
         bottomVal: stages.length > 0 ? stages[stages.length - 1].value : 0,
-        overallConversion: stages.length > 0 && topVal > 0 ? (stages[stages.length - 1].value / topVal) : 0
+        overallConversion: stages.length > 0 && topVal > 0 ? (stages[stages.length - 1].value / topVal) : 0,
+        targetVal: targetVal,
+        targetMode: targetMode,
+        referenceLineLabel: config.referenceLineLabel || "Benchmark Target"
       };
     },
-
     _render: function (d3, data, config, queryResponse) {
       var self = this;
       var container = this._container;
@@ -692,7 +1102,38 @@
       var isCompactHeight = clientH < 340;
 
       var themeKey = config.colorTheme || "cyber_teal";
-      var theme = THEMES[themeKey] || THEMES.cyber_teal;
+      if (themeKey === "executive_slate") themeKey = "modern_slate";
+      var rawTheme = THEMES[themeKey] || THEMES.cyber_teal;
+      var theme = Object.assign({}, rawTheme);
+      theme.stageColors = rawTheme.stageColors.slice();
+
+      // Custom hex overrides
+      if (config.customPrimaryHex && config.customPrimaryHex.trim() !== "") {
+        theme.accent = config.customPrimaryHex.trim();
+        theme.retainedFill = config.customPrimaryHex.trim();
+        theme.stageColors[0] = config.customPrimaryHex.trim();
+      }
+      if (config.customPositiveHex && config.customPositiveHex.trim() !== "") {
+        theme.retainedFill = config.customPositiveHex.trim();
+        theme.accent = config.customPositiveHex.trim();
+      }
+      if (config.customNegativeHex && config.customNegativeHex.trim() !== "") {
+        theme.dropoffStroke = config.customNegativeHex.trim();
+        theme.dropoffText = config.customNegativeHex.trim();
+      }
+
+      // Polarity: Lower is Better (e.g. latency, churn, defect, friction)
+      var isLowerBetter = config.metricPolarity === "lower_is_better";
+      if (isLowerBetter) {
+        var origDropStroke = theme.dropoffStroke;
+        var origDropText = theme.dropoffText;
+        theme.dropoffStroke = theme.accent;
+        theme.dropoffText = theme.accent;
+        theme.accent = origDropStroke;
+        theme.retainedFill = origDropStroke;
+      }
+
+      var fontMult = config.fontScale === "compact" ? 0.85 : (config.fontScale === "large" ? 1.2 : 1.0);
       container.style.backgroundColor = theme.bg;
       container.style.color = theme.text;
 
@@ -722,7 +1163,85 @@
       container.appendChild(topControls);
 
       // HUD Metrics Cards
-      if (config.showExecutiveHUD !== false) {
+      var hudMode = config.hudDensity || (config.showExecutiveHUD === false ? "hidden" : "full");
+      if (hudMode !== "hidden") {
+        var hudGroup = document.createElement("div");
+        hudGroup.style.display = "flex";
+        hudGroup.style.alignItems = "center";
+        hudGroup.style.gap = isCompactHeight ? "8px" : "14px";
+        hudGroup.style.flexWrap = "wrap";
+
+        // Find biggest drop-off bottleneck
+        var biggestDrop = { name: "None", val: 0, pct: 0 };
+        for (var b = 1; b < stages.length; b++) {
+          if (stages[b].dropoffVal > biggestDrop.val) {
+            biggestDrop = {
+              name: stages[b - 1].name + " \u2192 " + stages[b].name,
+              val: stages[b].dropoffVal,
+              pct: stages[b].dropoffPct
+            };
+          }
+        }
+
+        var hudItems = [];
+        if (config.customTitleOverride && config.customTitleOverride.trim() !== "") {
+          hudItems.push({ label: "FUNNEL SCOPE", value: config.customTitleOverride.trim(), sub: "Custom View" });
+        }
+        hudItems.push({ label: "TOP OF FUNNEL", value: formatMetricValue(parsed.topVal, config.valueFormat || "compact_num"), sub: stages[0].name });
+        hudItems.push({ label: "NET RETENTION", value: formatMetricValue(parsed.bottomVal, config.valueFormat || "compact_num"), sub: (parsed.overallConversion * 100).toFixed(1) + "% Net Conversion" });
+        
+        if (parsed.targetVal > 0 && parsed.targetMode !== "none") {
+          hudItems.push({ label: "BENCHMARK TARGET", value: formatMetricValue(parsed.targetVal, config.valueFormat || "compact_num"), sub: parsed.referenceLineLabel });
+        }
+        if (parsed.hasSecondaryMetric && config.metricMode === "dual_metric") {
+          var secSum = 0;
+          stages.forEach(function (s) { secSum += s.secondaryValue; });
+          hudItems.push({ label: (parsed.secondaryLabel || "SECONDARY METRIC").toUpperCase(), value: formatMetricValue(secSum, "compact_currency"), sub: "Total Aggregate" });
+        }
+        hudItems.push({ label: isLowerBetter ? "LEAKAGE REDUCTION" : "PRIMARY BOTTLENECK", value: (biggestDrop.pct * 100).toFixed(1) + "% Drop", sub: biggestDrop.name, alert: !isLowerBetter });
+
+        if (hudMode === "compact") {
+          // Compact strip
+          hudItems = hudItems.slice(0, 3);
+        }
+
+        hudItems.forEach(function (item) {
+          var card = document.createElement("div");
+          card.style.display = "flex";
+          card.style.flexDirection = "column";
+          card.style.padding = isCompactHeight ? "2px 8px" : "4px 10px";
+          card.style.background = item.alert ? "rgba(239, 68, 68, 0.12)" : (theme.isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.03)");
+          card.style.border = "1px solid " + (item.alert ? "rgba(239, 68, 68, 0.4)" : theme.hudBorder);
+          card.style.borderRadius = "6px";
+
+          var lbl = document.createElement("span");
+          lbl.style.fontSize = Math.round((isCompactHeight ? 8.5 : 9.5) * fontMult) + "px";
+          lbl.style.fontWeight = "700";
+          lbl.style.letterSpacing = "0.5px";
+          lbl.style.color = item.alert ? (theme.isDark ? "#f87171" : "#dc2626") : theme.hudSubtext;
+          lbl.innerText = item.label;
+
+          var val = document.createElement("span");
+          val.style.fontSize = Math.round((isCompactHeight ? 11.5 : 13.5) * fontMult) + "px";
+          val.style.fontWeight = "800";
+          val.style.color = item.alert ? (theme.isDark ? "#fca5a5" : "#b91c1c") : theme.hudText;
+          val.innerText = item.value;
+
+          var sub = document.createElement("span");
+          sub.style.fontSize = Math.round((isCompactHeight ? 9 : 10) * fontMult) + "px";
+          sub.style.color = theme.subtext;
+          sub.style.whiteSpace = "nowrap";
+          sub.style.overflow = "hidden";
+          sub.style.textOverflow = "ellipsis";
+          sub.style.maxWidth = isCompactHeight ? "120px" : "160px";
+          sub.innerText = item.sub;
+
+          card.appendChild(lbl);
+          card.appendChild(val);
+          card.appendChild(sub);
+          hudGroup.appendChild(card);
+        });
+        
         var hudGroup = document.createElement("div");
         hudGroup.style.display = "flex";
         hudGroup.style.alignItems = "center";
