@@ -64,6 +64,7 @@ VOL2_VIZ_MAP = {
     "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps",
     "finops_cud_attribution_bridge": "🛍️ Retail, Supply Chain & FinOps",
     "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops",
+    "content_genre_affinity_network": "🎬 Media, Broadcast & Ad-Ops",
     "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting"
 }
 
@@ -156,6 +157,7 @@ VIZ_EMOJI_MAP = {
     "kaplan_meier_survival_curve": "📉",
     "finops_cud_attribution_bridge": "☁️",
     "slopegraph": "📐",
+    "content_genre_affinity_network": "🌐",
 }
 
 

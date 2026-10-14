@@ -1,0 +1,23 @@
+{
+  "model": "tvun_media_analytics",
+  "view": "ad_spot_airings",
+  "fields": [
+    "broadcast_programming.genre",
+    "advertiser_campaigns.industry_category",
+    "ad_spot_airings.total_spend_mxn",
+    "nielsen_ratings_markets.total_grps"
+  ],
+  "sorts": [
+    "ad_spot_airings.total_spend_mxn desc"
+  ],
+  "limit": "100",
+  "vis_config": {
+    "type": "content_genre_affinity_network",
+    "networkLayout": "force_directed",
+    "targetCalculationMode": "dataset_mean",
+    "hudMode": "full",
+    "colorTheme": "sunset_media",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency"
+  }
+}
