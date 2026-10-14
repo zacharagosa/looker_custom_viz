@@ -8,10 +8,10 @@ An enterprise-grade, high-density **Kaplan-Meier Survival, Nelson-Aalen Cumulati
 
 Survival analysis (time-to-event modeling) is ubiquitous across healthcare clinical trials, customer SaaS subscription churn, hardware reliability/MTBF, and cybersecurity incident response (MTTR). Out-of-the-box Looker visualizations lack native step-function survival curves, Greenwood confidence bands, censoring tick markers, and aligned At-Risk summary tables.
 
-This custom visualization directly addresses long-standing customer requests and internal escalations:
-1. **Buganizer Cloud Blocker [b/312984102](https://b.corp.google.com/issues/312984102)**: *"Kaplan-Meier Survival Analysis & Attrition Curve in Looker"* — healthcare and biotech customers requiring statistical survival analysis step plots with Greenwood confidence intervals.
-2. **Buganizer Cloud Blocker [b/289410591](https://b.corp.google.com/issues/289410591)**: *"Time-to-Event and Attrition Survival Curves with Risk Tables"* — customer engineering requests for life tables and log-rank comparisons across customer cohorts.
-3. **Internal YAQS**: *"How to implement Kaplan-Meier / Churn Survival Curves with Censoring in Looker"* — solving the step-down curve requirement with right-censored event tracking.
+This custom visualization directly addresses high-priority customer requirements across enterprise analytics:
+1. **Healthcare & Life Sciences**: Clinical trial survival analysis, patient attrition tracking, and drug efficacy step plots with Greenwood confidence intervals.
+2. **SaaS & Subscription Analytics**: Time-to-churn survival curves, retention modeling, and risk tables across subscription cohorts.
+3. **Hardware & SecOps Reliability**: Mean Time Between Failures (MTBF) and Mean Time to Resolution (MTTR) survival curves with right-censored incident tracking.
 
 ---
 
