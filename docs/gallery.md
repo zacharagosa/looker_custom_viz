@@ -166,4 +166,9 @@ Multi-layered statistical distribution chart combining a smooth Half-Violin kern
 Non-parametric survival analysis and step hazard estimator with Greenwood 95% confidence interval ribbons, synchronized At-Risk life tables, median survival horizon line, and pairwise Log-Rank cohort tests for SecOps MTTR incident resolution, customer churn, and hardware reliability.
 ![Kaplan-Meier Survival & Hazard Curve](../visualizations/kaplan_meier_survival_curve/screenshot.png)
 
+### 40. UpSet Set-Intersection & Market Basket Affinity Grid
+Enterprise matrix-based set-intersection and market basket affinity visualization solving Google Cloud Blockers b/396288129, b/482910482, and b/519284711. Replaces unreadable multi-set Venn diagrams with an UpSet combination dot-matrix, synchronized vertical intersection bars, horizontal marginal set size bars, pairwise affinity heatmap mode, executive KPI HUD, and Looker drill-down menus.
+![UpSet Set-Intersection & Market Basket Affinity Grid](../assets/screenshots/upset_affinity_grid.png)
+
+
 

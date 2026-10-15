@@ -59,10 +59,10 @@ VOL2_VIZ_MAP = {
     "roc_curve_evaluator": "🔬 Statistical, ML & Forecasting",
     "raincloud_plot": "🔬 Statistical, ML & Forecasting",
     "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
-    "bilateral_chord_diagram": "🛍️ Retail, Supply Chain & FinOps",
     "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps",
     "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps",
     "finops_cud_attribution_bridge": "🛍️ Retail, Supply Chain & FinOps",
+    "upset_affinity_grid": "🛍️ Retail, Supply Chain & FinOps",
     "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops",
     "content_genre_affinity_network": "🎬 Media, Broadcast & Ad-Ops",
     "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting"
@@ -158,6 +158,7 @@ VIZ_EMOJI_MAP = {
     "finops_cud_attribution_bridge": "☁️",
     "slopegraph": "📐",
     "content_genre_affinity_network": "🌐",
+    "upset_affinity_grid": "🛒",
 }
 
 

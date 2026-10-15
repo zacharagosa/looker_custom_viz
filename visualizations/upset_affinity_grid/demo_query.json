@@ -1,0 +1,29 @@
+{
+  "model": "thelook",
+  "view": "affinity",
+  "fields": [
+    "product_a.category",
+    "product_b.category",
+    "affinity.joint_order_freq",
+    "affinity.combined_affinity"
+  ],
+  "filters": {
+    "product_a.category": "-EMPTY",
+    "product_b.category": "-EMPTY"
+  },
+  "sorts": [
+    "affinity.joint_order_freq desc"
+  ],
+  "limit": "100",
+  "vis_config": {
+    "type": "upset_affinity_grid",
+    "layoutMode": "upset_matrix",
+    "sortOrder": "size_desc",
+    "topNCount": "20",
+    "valueFormat": "compact_num",
+    "targetCalculationMode": "dataset_mean",
+    "hudMode": "full",
+    "colorPalette": "google_enterprise",
+    "fontScale": "standard"
+  }
+}
