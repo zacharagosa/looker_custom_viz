@@ -670,6 +670,8 @@
         });
       }
       this._container.style.backgroundColor = theme.bg;
+      this._container.style.display = "flex";
+      this._container.style.flexDirection = "column";
 
       var fontScale = 1.0;
       if (config.fontScale === "compact") fontScale = 0.88;
@@ -797,16 +799,17 @@
 
       if (hudMode !== "hidden") {
         var hudContainer = document.createElement("div");
-        hudContainer.style.position = "absolute";
-        hudContainer.style.top = "10px";
-        hudContainer.style.left = "14px";
-        hudContainer.style.right = "14px";
+        // In-flow header row (never overlays the chart canvas)
+        hudContainer.style.position = "relative";
+        hudContainer.style.flex = "0 0 auto";
+        hudContainer.style.padding = (8 * fontScale) + "px 14px " + (4 * fontScale) + "px 14px";
         hudContainer.style.zIndex = "10";
         hudContainer.style.display = "flex";
+        hudContainer.style.flexWrap = "wrap";
         hudContainer.style.alignItems = "center";
         hudContainer.style.justifyContent = "space-between";
-        hudContainer.style.gap = "10px";
-        hudContainer.style.pointerEvents = "none";
+        hudContainer.style.gap = "8px 10px";
+        hudContainer.style.boxSizing = "border-box";
 
         var kpiCard = document.createElement("div");
         kpiCard.style.pointerEvents = "auto";
@@ -895,11 +898,22 @@
       // ==========================================
       // 3. SVG & LAYOUT CALCULATION
       // ==========================================
-      var containerRect = this._container.getBoundingClientRect();
-      var width = Math.max(450, containerRect.width);
-      var height = Math.max(320, containerRect.height);
+      // Chart canvas wrapper takes the remaining height below the HUD row
+      var chartWrap = document.createElement("div");
+      chartWrap.className = "parallel-coords-canvas";
+      chartWrap.style.position = "relative";
+      chartWrap.style.flex = "1 1 0";
+      chartWrap.style.minHeight = "0";
+      chartWrap.style.width = "100%";
+      chartWrap.style.overflow = "hidden";
+      this._container.appendChild(chartWrap);
 
-      var topMargin = (hudMode !== "hidden" ? 64 : 28) * fontScale;
+      var chartRect = chartWrap.getBoundingClientRect();
+      var width = Math.max(320, chartRect.width || 0);
+      var height = Math.max(200, chartRect.height || 0);
+
+      // Room for the axis header labels only (HUD is no longer overlaid)
+      var topMargin = 30 * fontScale;
       var bottomMargin = 45 * fontScale;
       var leftMargin = 60 * fontScale;
       var rightMargin = 60 * fontScale;
@@ -918,7 +932,7 @@
         .range([0, innerWidth])
         .padding(0.08);
 
-      var svg = d3.select(this._container)
+      var svg = d3.select(chartWrap)
         .append("svg")
         .attr("width", "100%")
         .attr("height", "100%")
@@ -1040,13 +1054,33 @@
       });
 
       // Axis Headers (Metric Names)
+      // Edge axes anchor inward so long headers never clip at the tile edges;
+      // headers longer than the axis spacing are truncated with a hover title.
+      var nAxes = activeMeasures.length;
+      var axisSpacing = nAxes > 1 ? (xScale.step ? xScale.step() : innerWidth / (nAxes - 1)) : innerWidth;
+      var headerFontPx = 11 * fontScale;
+      var maxHeaderChars = Math.max(6, Math.floor((axisSpacing - 10) / (headerFontPx * 0.58)));
       axisGroups.append("text")
-        .attr("text-anchor", "middle")
+        .attr("text-anchor", function (m, i) {
+          if (nAxes > 1 && i === 0) return "start";
+          if (nAxes > 1 && i === nAxes - 1) return "end";
+          return "middle";
+        })
+        .attr("x", function (m, i) {
+          if (nAxes > 1 && i === 0) return -10;
+          if (nAxes > 1 && i === nAxes - 1) return 10;
+          return 0;
+        })
         .attr("y", -14 * fontScale)
         .attr("fill", theme.text)
-        .attr("font-size", (11 * fontScale) + "px")
+        .attr("font-size", headerFontPx + "px")
         .attr("font-weight", "700")
-        .text(function (m) { return m.label_short || m.label || m.name; });
+        .text(function (m) {
+          var lbl = m.label_short || m.label || m.name;
+          return lbl.length > maxHeaderChars ? lbl.slice(0, maxHeaderChars - 1) + "\u2026" : lbl;
+        })
+        .append("title")
+        .text(function (m) { return m.label || m.label_short || m.name; });
 
       // Axis Footers (Metric Units / Summary)
       axisGroups.append("text")
@@ -1095,7 +1129,7 @@
           brushedCountSpan.textContent = passingCount + " / " + entities.length + " (" + pct + "%)";
         }
 
-        var clearBtn = document.getElementById("clear-brushes-btn");
+        var clearBtn = self._container.querySelector("#clear-brushes-btn");
         if (clearBtn) {
           clearBtn.style.display = hasActiveBrushes ? "inline-block" : "none";
           clearBtn.onclick = function () {
