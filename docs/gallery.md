@@ -170,5 +170,10 @@ Non-parametric survival analysis and step hazard estimator with Greenwood 95% co
 Enterprise matrix-based set-intersection and market basket affinity visualization solving Google Cloud Blockers b/396288129, b/482910482, and b/519284711. Replaces unreadable multi-set Venn diagrams with an UpSet combination dot-matrix, synchronized vertical intersection bars, horizontal marginal set size bars, pairwise affinity heatmap mode, executive KPI HUD, and Looker drill-down menus.
 ![UpSet Set-Intersection & Market Basket Affinity Grid](../assets/screenshots/upset_affinity_grid.png)
 
+### 41. Parallel Coordinates Multivariate Profiler
+High-dimensional multivariate exploratory profiling visualization solving Google Cloud Blockers b/412891924 and b/384910283. Renders multi-dimensional entities as continuous polylines intersecting parallel vertical metric axes with smooth cubic B-splines, straight linear segments, centroid edge bundling, interactive 1D multi-axis brushing with live pass-through counters, benchmark reference profile lines, executive KPI HUD, and Looker drill-down menus.
+![Parallel Coordinates Multivariate Profiler](../assets/screenshots/parallel_coordinates_profiler.png)
+
+
 
 

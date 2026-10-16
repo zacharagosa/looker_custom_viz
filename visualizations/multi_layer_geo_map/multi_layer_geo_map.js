@@ -1,27 +1,23 @@
 /**
- * Dual-Axis Multi-Layer Geospatial Map - Looker Custom Visualization
- * Built with D3.js v7 & TopoJSON Client
+ * Looker Custom Visualization: Dual-Axis Multi-Layer Geospatial Map
  *
- * Inspired by:
- * - Buganizer Cloud Blocker b/243984441: "Multi-layer maps in BI products"
- * - PRD - Looker Map Viz improvements (go/prd-looker-map-viz-improvements):
- *   "As an Analyst, I should be able to plot multiple measures as distinct identifiers on a map.
- *    Google Map Viz should support multiple measures on the same map viz. Each measure should be
- *    displayed as an identifiable value. Analysts should be able to configure layers separately."
- *
- * Capabilities:
- * - Dual-Axis Multi-Layer Engine:
- *     Layer 1: Choropleth polygon fill based on Primary Measure (e.g. Total Revenue / Volume).
- *     Layer 2: Proportional centroid bubble pins sized & styled by Secondary Measure (e.g. Profit Margin, Orders, or Latency).
- * - Multi-Mode Geospatial Layouts:
- *     1. "dual_layer": Synchronized Choropleth Heatmap + Proportional Bubble Pins.
- *     2. "choropleth_only": High-contrast pure choropleth boundary heatmap.
- *     3. "bubble_only": Proportional bubble scatter map over subtle boundary outlines.
+ * Visual Paradigms & Capabilities:
+ * - Multi-Layer Geospatial Rendering:
+ *     1. Layer 1: Continuous Choropleth boundary polygon heatmap (Albers USA or Hex Cartogram)
+ *     2. Layer 2: Proportional centroid bubble pins with dynamic radii scaling
+ *     3. Layer 3: Contextual hover inspector, percentile benchmarks, and drill-downs
+ * - Multi-Modal Layouts:
+ *     1. "dual_layer": Choropleth region heatmap + Proportional centroid bubble pins.
+ *     2. "choropleth_only": High-contrast boundary polygon heatmap.
+ *     3. "bubble_only": Proportional scatter circles on neutral territory basemap.
  *     4. "hex_cartogram": Equal-area hexagonal state cartogram eliminating geographic area bias.
+ * - Dynamic Field-Role Mapping: Auto-populated select dropdowns for State Dimension and Measures.
+ * - Configurable Benchmark Targets: Mean, Median, P75, P90, or Fixed Target with anomaly alert thresholds.
+ * - Sorting, Top-N Bucketing & Null Suppression.
+ * - Multi-Density Executive HUD: Full scorecard, compact strip, or hidden.
  * - Interactive Pan & Zoom: Smooth D3 zoom with floating reset and navigation controls.
  * - Dual-Axis Legends: Synchronized color gradient ramp for Layer 1 + nested circle scale for Layer 2.
- * - Executive HUD & State Search: Real-time national KPI rollups, national state rankings, and quick search.
- * - Looker Drill-Down Integration: Native drill menus on state click.
+ * - Native Looker Drill-Downs: Contextual drill menu integration on click.
  */
 
 (function () {
@@ -155,8 +151,8 @@
   }
 
   var THEMES = {
-    blue_amber: {
-      name: "Google Blue & Amber",
+    google_enterprise: {
+      name: "Google Enterprise",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f8fafc",
@@ -172,6 +168,25 @@
       hudBg: "rgba(255, 255, 255, 0.94)",
       hudBorder: "#cbd5e1",
       buttonBg: "#f1f5f9",
+      buttonHover: "#e2e8f0"
+    },
+    modern_slate: {
+      name: "Modern Executive Slate",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#cbd5e1",
+      text: "#1e293b",
+      subtext: "#64748b",
+      stateBorder: "#ffffff",
+      stateEmpty: "#f1f5f9",
+      choroplethRange: ["#f1f5f9", "#cbd5e1", "#64748b", "#334155", "#0f172a"],
+      bubbleFill: "#6366f1",
+      bubbleStroke: "#3730a3",
+      bubbleText: "#ffffff",
+      hudBg: "rgba(255, 255, 255, 0.94)",
+      hudBorder: "#cbd5e1",
+      buttonBg: "#f8fafc",
       buttonHover: "#e2e8f0"
     },
     cyber_dark: {
@@ -193,8 +208,8 @@
       buttonBg: "#1f2937",
       buttonHover: "#374151"
     },
-    emerald_rose: {
-      name: "Emerald & Rose",
+    emerald_finops: {
+      name: "Emerald FinOps",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f0fdf4",
@@ -212,31 +227,84 @@
       buttonBg: "#f0fdf4",
       buttonHover: "#d1fae5"
     },
-    slate_purple: {
-      name: "Executive Slate & Indigo",
+    sunset_media: {
+      name: "Sunset Media",
       isDark: false,
       bg: "#ffffff",
-      cardBg: "#f8fafc",
-      border: "#cbd5e1",
-      text: "#1e293b",
-      subtext: "#64748b",
+      cardBg: "#fff7ed",
+      border: "#fed7aa",
+      text: "#7c2d12",
+      subtext: "#9a3412",
       stateBorder: "#ffffff",
-      stateEmpty: "#f1f5f9",
-      choroplethRange: ["#f1f5f9", "#cbd5e1", "#64748b", "#334155", "#0f172a"],
-      bubbleFill: "#6366f1",
-      bubbleStroke: "#3730a3",
+      stateEmpty: "#fef2f2",
+      choroplethRange: ["#ffedd5", "#fdba74", "#fb923c", "#ea580c", "#9a3412"],
+      bubbleFill: "#8b5cf6",
+      bubbleStroke: "#5b21b6",
       bubbleText: "#ffffff",
       hudBg: "rgba(255, 255, 255, 0.94)",
-      hudBorder: "#cbd5e1",
-      buttonBg: "#f8fafc",
-      buttonHover: "#e2e8f0"
+      hudBorder: "#fdba74",
+      buttonBg: "#ffedd5",
+      buttonHover: "#fed7aa"
+    },
+    wellverse: {
+      name: "Wellverse Healthcare",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f0fdfa",
+      border: "#ccfbf1",
+      text: "#134e4a",
+      subtext: "#0f766e",
+      stateBorder: "#ffffff",
+      stateEmpty: "#f8fafc",
+      choroplethRange: ["#ccfbf1", "#5eead4", "#14b8a6", "#0f766e", "#134e4a"],
+      bubbleFill: "#f97316",
+      bubbleStroke: "#c2410c",
+      bubbleText: "#ffffff",
+      hudBg: "rgba(255, 255, 255, 0.94)",
+      hudBorder: "#99f6e4",
+      buttonBg: "#f0fdfa",
+      buttonHover: "#ccfbf1"
     }
   };
 
-  function formatValue(val, fmt) {
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || !list.length) return null;
+    if (overrideVal) {
+      var needle = String(overrideVal).trim().toLowerCase();
+      for (var i = 0; i < list.length; i++) {
+        var f = list[i];
+        if (f.name && f.name.toLowerCase() === needle) return f;
+        if (f.label && f.label.toLowerCase() === needle) return f;
+        if (f.label_short && f.label_short.toLowerCase() === needle) return f;
+      }
+      var numericIdx = parseInt(overrideVal, 10);
+      if (!isNaN(numericIdx) && numericIdx >= 1 && numericIdx <= list.length) {
+        return list[numericIdx - 1];
+      }
+    }
+    if (defaultIdx >= 0 && defaultIdx < list.length) {
+      return list[defaultIdx];
+    }
+    return null;
+  }
+
+  function formatValue(val, fmt, field) {
     if (val === null || val === undefined || isNaN(val)) return "-";
     var num = Number(val);
-    switch (fmt) {
+    var chosenFmt = fmt || "auto";
+
+    if (chosenFmt === "auto") {
+      var fieldName = (field && (field.name || field.label || "")).toLowerCase();
+      if (fieldName.indexOf("price") !== -1 || fieldName.indexOf("spend") !== -1 || fieldName.indexOf("cost") !== -1 || fieldName.indexOf("revenue") !== -1 || fieldName.indexOf("margin") !== -1 || fieldName.indexOf("$") !== -1) {
+        chosenFmt = "compact_currency";
+      } else if (fieldName.indexOf("%") !== -1 || fieldName.indexOf("pct") !== -1 || fieldName.indexOf("rate") !== -1 || fieldName.indexOf("ratio") !== -1) {
+        chosenFmt = "percentage";
+      } else {
+        chosenFmt = "compact_num";
+      }
+    }
+
+    switch (chosenFmt) {
       case "compact_currency":
         if (Math.abs(num) >= 1e9) return "$" + (num / 1e9).toFixed(2) + "B";
         if (Math.abs(num) >= 1e6) return "$" + (num / 1e6).toFixed(2) + "M";
@@ -249,6 +317,10 @@
         return num.toLocaleString();
       case "percentage":
         return num.toFixed(1) + "%";
+      case "decimal_2dp":
+        return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      case "raw":
+        return String(num);
       case "numeric":
       default:
         return Math.round(num).toLocaleString();
@@ -259,7 +331,9 @@
     id: "multi_layer_geo_map",
     label: "Dual-Axis Multi-Layer Geospatial Map",
     options: {
+      // ==========================================
       // SECTION 1: DISPLAY
+      // ==========================================
       mapMode: {
         type: "string",
         label: "Geospatial Map Mode",
@@ -274,82 +348,174 @@
         ],
         default: "dual_layer"
       },
-      bubbleMetric: {
+      stateDimOverride: {
         type: "string",
-        label: "Bubble Overlay Metric (Layer 2)",
+        label: "Primary State Dimension",
         section: "Display",
         order: 2,
         display: "select",
-        values: [
-          { "Measure 2 (Secondary Metric)": "measure2" },
-          { "Measure 1 (Primary Volume)": "measure1" },
-          { "Measure 3 (Tertiary Metric)": "measure3" }
-        ],
-        default: "measure2"
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: ""
       },
-      showBubbleLabels: {
+      choroplethMeasureOverride: {
         type: "string",
-        label: "Bubble Centroid Labels",
+        label: "Layer 1 (Choropleth Fill) Measure",
         section: "Display",
         order: 3,
         display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: ""
+      },
+      bubbleMeasureOverride: {
+        type: "string",
+        label: "Layer 2 (Bubble Pins) Measure",
+        section: "Display",
+        order: 4,
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: ""
+      },
+      tertiaryMeasureOverride: {
+        type: "string",
+        label: "Layer 3 (Tooltip & Context) Measure",
+        section: "Display",
+        order: 5,
+        display: "select",
+        values: [{ "Auto / None (run query to populate choices)": "" }],
+        default: ""
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Reference Benchmark Target Mode",
+        section: "Display",
+        order: 6,
+        display: "select",
         values: [
-          { "Always Visible": "always" },
-          { "On Hover / Focus Only": "hover_focus" },
-          { "Hidden": "off" }
+          { "None (No Benchmark Target)": "none" },
+          { "Dataset Mean (Average of States)": "dataset_mean" },
+          { "Dataset Median (P50)": "dataset_median" },
+          { "Top Quartile Benchmark (P75)": "percentile_p75" },
+          { "Top Decile Benchmark (P90)": "percentile_p90" },
+          { "Fixed Target Value": "fixed_value" }
         ],
-        default: "always"
+        default: "none"
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Custom Fixed Target Benchmark Value",
+        section: "Display",
+        order: 7,
+        default: 0
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Target Benchmark Metric Label",
+        section: "Display",
+        order: 8,
+        default: "Benchmark Target"
+      },
+      alertThreshold: {
+        type: "number",
+        label: "Underperformance Warning Threshold %",
+        section: "Display",
+        order: 9,
+        default: 20
+      },
+      sortOrder: {
+        type: "string",
+        label: "State Ranking & Sort Order",
+        section: "Display",
+        order: 10,
+        display: "select",
+        values: [
+          { "Choropleth Metric Descending (Highest First)": "metric_desc" },
+          { "Choropleth Metric Ascending (Lowest First)": "metric_asc" },
+          { "Alphabetical by State Name": "alphabetical" },
+          { "Natural / Query Order": "natural" }
+        ],
+        default: "metric_desc"
+      },
+      topN: {
+        type: "string",
+        label: "Top-N State Focus Limit",
+        section: "Display",
+        order: 11,
+        display: "select",
+        values: [
+          { "All States (No Filter)": "all" },
+          { "Top 10 States Only": "10" },
+          { "Top 15 States Only": "15" },
+          { "Top 20 States Only": "20" },
+          { "Top 25 States Only": "25" }
+        ],
+        default: "all"
+      },
+      suppressNulls: {
+        type: "boolean",
+        label: "Suppress Zero / Null States",
+        section: "Display",
+        order: 12,
+        default: false
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive KPI HUD Mode",
+        section: "Display",
+        order: 13,
+        display: "select",
+        values: [
+          { "Full Scorecard Strip": "full" },
+          { "Compact Metric Pill": "compact" },
+          { "Hidden (Maximum Map Canvas)": "hidden" }
+        ],
+        default: "full"
+      },
+      labelDensity: {
+        type: "string",
+        label: "Centroid Postal Code Labels",
+        section: "Display",
+        order: 14,
+        display: "select",
+        values: [
+          { "All States Labeled": "all" },
+          { "Top 10 Peaks Only": "peaks" },
+          { "On Hover / Focus Only": "hover_only" },
+          { "Hidden": "hidden" }
+        ],
+        default: "all"
       },
       showDualLegend: {
         type: "boolean",
         label: "Show Dual-Layer Legends",
         section: "Display",
-        order: 4,
-        default: true
-      },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive KPI Banner",
-        section: "Display",
-        order: 5,
+        order: 15,
         default: true
       },
       showSearch: {
         type: "boolean",
-        label: "Show State Search Filter",
+        label: "Show Interactive State Filter",
         section: "Display",
-        order: 6,
+        order: 16,
         default: true
       },
-      valueFormat1: {
+      chartTitleOverride: {
         type: "string",
-        label: "Layer 1 (Choropleth) Format",
+        label: "Custom Map Title Override",
         section: "Display",
-        order: 7,
-        display: "select",
-        values: [
-          { "Compact Currency ($1.2M)": "compact_currency" },
-          { "Compact Number (1.2M)": "compact_num" },
-          { "Raw Numeric": "numeric" }
-        ],
-        default: "compact_currency"
+        order: 17,
+        default: ""
       },
-      valueFormat2: {
+      chartSubtitleOverride: {
         type: "string",
-        label: "Layer 2 (Bubbles) Format",
+        label: "Custom Subtitle Override",
         section: "Display",
-        order: 8,
-        display: "select",
-        values: [
-          { "Compact Currency ($1.2M)": "compact_currency" },
-          { "Compact Number (1.2M)": "compact_num" },
-          { "Percentage (%)": "percentage" },
-          { "Raw Numeric": "numeric" }
-        ],
-        default: "compact_currency"
+        order: 18,
+        default: ""
       },
 
+      // ==========================================
       // SECTION 2: STYLE
+      // ==========================================
       colorTheme: {
         type: "string",
         label: "Visual Palette Theme",
@@ -357,26 +523,158 @@
         order: 1,
         display: "select",
         values: [
-          { "Google Blue & Amber": "blue_amber" },
-          { "Cyber NOC Dark": "cyber_dark" },
-          { "Emerald & Rose": "emerald_rose" },
-          { "Executive Slate & Indigo": "slate_purple" }
+          { "Google Enterprise (Blue & Amber)": "google_enterprise" },
+          { "Modern Executive Slate (Indigo & Slate)": "modern_slate" },
+          { "Cyber NOC Dark (Cyan & Rose Neon)": "cyber_dark" },
+          { "Emerald FinOps (Green & Ruby)": "emerald_finops" },
+          { "Sunset Media (Amber & Violet)": "sunset_media" },
+          { "Wellverse Healthcare (Teal & Coral)": "wellverse" },
+          { "Custom Hex Overrides": "custom" }
         ],
-        default: "blue_amber"
+        default: "google_enterprise"
+      },
+      primaryColorOverride: {
+        type: "string",
+        label: "Custom Primary Choropleth Hex",
+        section: "Style",
+        order: 2,
+        display: "color",
+        default: ""
+      },
+      bubbleColorOverride: {
+        type: "string",
+        label: "Custom Bubble Pin Hex",
+        section: "Style",
+        order: 3,
+        display: "color",
+        default: ""
+      },
+      polarity: {
+        type: "string",
+        label: "Metric Polarity",
+        section: "Style",
+        order: 4,
+        display: "select",
+        values: [
+          { "Higher is Better (Revenue, Volume, Gross Margin)": "higher_better" },
+          { "Lower is Better (Latency, Return Rate, Defects, Churn)": "lower_better" }
+        ],
+        default: "higher_better"
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & UI Scale",
+        section: "Style",
+        order: 5,
+        display: "select",
+        values: [
+          { "Compact (Dense Dashboard Layouts)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (EBC / Video Walls)": "large" }
+        ],
+        default: "standard"
+      },
+      valueFormat1: {
+        type: "string",
+        label: "Layer 1 (Choropleth) Format",
+        section: "Style",
+        order: 6,
+        display: "select",
+        values: [
+          { "Auto Detect from Measure": "auto" },
+          { "Compact Currency (.2M)": "compact_currency" },
+          { "Compact Number (1.2M)": "compact_num" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal (1,234.56)": "decimal_2dp" },
+          { "Raw Numeric": "raw" }
+        ],
+        default: "auto"
+      },
+      valueFormat2: {
+        type: "string",
+        label: "Layer 2 (Bubbles) Format",
+        section: "Style",
+        order: 7,
+        display: "select",
+        values: [
+          { "Auto Detect from Measure": "auto" },
+          { "Compact Currency (.2M)": "compact_currency" },
+          { "Compact Number (1.2M)": "compact_num" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal (1,234.56)": "decimal_2dp" },
+          { "Raw Numeric": "raw" }
+        ],
+        default: "auto"
       },
       bubbleScale: {
         type: "number",
         label: "Bubble Radius Scale Multiplier",
         section: "Style",
-        order: 2,
+        order: 8,
         default: 1.2
       },
       choroplethOpacity: {
         type: "number",
         label: "Choropleth Fill Opacity",
         section: "Style",
-        order: 3,
+        order: 9,
         default: 0.85
+      }
+    },
+
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        stateDimOverride: { role: "dimension", defaultIdx: 0 },
+        choroplethMeasureOverride: { role: "measure", defaultIdx: 0 },
+        bubbleMeasureOverride: { role: "measure", defaultIdx: 1 },
+        tertiaryMeasureOverride: { role: "measure", defaultIdx: 2 }
+      };
+
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : dims;
+        var autoField = (spec.defaultIdx >= 0 && spec.defaultIdx < list.length) ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto → " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].values = values;
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (err) {
+        // Safe trigger failure catch in dev test harness
       }
     },
 
@@ -385,6 +683,10 @@
       this._setupLifecycleObservers(element);
 
       element.innerHTML = "";
+      element.style.boxSizing = "border-box";
+      element.style.padding = "0";
+      element.style.overflow = "hidden";
+
       this._container = document.createElement("div");
       this._container.className = "looker-multi-layer-geo-container";
       this._container.style.width = "100%";
@@ -420,14 +722,14 @@
         this._resizeObserver = null;
       }
       if (typeof ResizeObserver !== "undefined" && element) {
-        this._resizeObserver = new ResizeObserver(function () {
-          self._onResize();
+        this._resizeObserver = new ResizeObserver(function (entries) {
+          self._onResize(entries);
         });
         this._resizeObserver.observe(element);
       }
     },
 
-    _onResize: function () {
+    _onResize: function (entries) {
       var self = this;
       if (!self._lastData || !self._lastQueryResponse) return;
       var el = self._element || self._lastElement;
@@ -437,9 +739,17 @@
       var curH = el.clientHeight || 0;
       if (curW <= 10 || curH <= 10) return;
 
+      if (self._lastWidth && self._lastHeight) {
+        var dw = Math.abs(curW - self._lastWidth);
+        var dh = Math.abs(curH - self._lastHeight);
+        if (dw < 4 && dh < 4) return;
+      }
+
       if (self._resizeTimer) clearTimeout(self._resizeTimer);
       self._resizeTimer = setTimeout(function () {
         if (self._lastData && self._lastQueryResponse) {
+          self._lastWidth = curW;
+          self._lastHeight = curH;
           self.updateAsync(
             self._lastData,
             el,
@@ -460,8 +770,14 @@
       this._lastQueryResponse = queryResponse;
       this._lastDetails = details;
 
+      this._registerDynamicFieldOptions(queryResponse);
+
       if (!this._container || !element.contains(this._container)) {
         element.innerHTML = "";
+        element.style.boxSizing = "border-box";
+        element.style.padding = "0";
+        element.style.overflow = "hidden";
+
         this._container = document.createElement("div");
         this._container.className = "looker-multi-layer-geo-container";
         this._container.style.width = "100%";
@@ -472,21 +788,27 @@
         element.appendChild(this._container);
       }
 
-      this.clearErrors();
+      if (this.clearErrors) {
+        try { this.clearErrors(); } catch (e) {}
+      }
 
       var self = this;
       ensureDependencies(function (d3, topojson) {
         fetchUSGeoJSON(topojson, function (geoData) {
           try {
             self._render(d3, geoData, data, element, config, queryResponse);
-            done();
+            if (typeof done === "function") done();
           } catch (err) {
             console.error("Multi-Layer Geo Map Render Error:", err);
-            self.addError({
-              title: "Rendering Error",
-              message: err.message || "Failed to render Dual-Axis Multi-Layer Geospatial Map."
-            });
-            done();
+            if (self.addError) {
+              try {
+                self.addError({
+                  title: "Rendering Error",
+                  message: err.message || "Failed to render Dual-Axis Multi-Layer Geospatial Map."
+                });
+              } catch (e) {}
+            }
+            if (typeof done === "function") done();
           }
         });
       });
@@ -498,37 +820,70 @@
       if (this._tooltip) this._tooltip.style.display = "none";
 
       if (!data || !data.length) {
-        this.addError({
-          title: "No Data",
-          message: "The query returned no data rows to visualize."
-        });
+        if (this.addError) {
+          try {
+            this.addError({
+              title: "No Data",
+              message: "The query returned no data rows to visualize."
+            });
+          } catch (e) {}
+        }
         return;
       }
 
       var fields = queryResponse.fields;
       var dims = fields.dimensions || fields.dimension_like || [];
       var meas = fields.measures || fields.measure_like || [];
+      if (!meas.length && fields.table_calculations && fields.table_calculations.length) {
+        meas = fields.table_calculations;
+      }
 
       if (dims.length < 1 || meas.length < 1) {
-        this.addError({
-          title: "Fields Required",
-          message: "Dual-Axis Map requires 1 State Dimension (e.g. users.state) and at least 1 Numeric Measure (preferably 2 for dual-axis)."
-        });
+        if (this.addError) {
+          try {
+            this.addError({
+              title: "Fields Required",
+              message: "Dual-Axis Map requires 1 State Dimension (e.g. users.state) and at least 1 Numeric Measure."
+            });
+          } catch (e) {}
+        }
         return;
       }
 
-      var stateDim = dims[0];
-      var m1 = meas[0];
-      var m2 = meas.length > 1 ? meas[1] : meas[0];
-      var m3 = meas.length > 2 ? meas[2] : null;
+      var stateDim = resolveField(dims, config.stateDimOverride, 0) || dims[0];
+      var m1 = resolveField(meas, config.choroplethMeasureOverride, 0) || meas[0];
+      var m2 = resolveField(meas, config.bubbleMeasureOverride, 1) || (meas.length > 1 ? meas[1] : meas[0]);
+      var m3 = resolveField(meas, config.tertiaryMeasureOverride, 2) || (meas.length > 2 ? meas[2] : null);
 
-      // Select bubble metric
-      var bubbleMeas = m2;
-      if (config.bubbleMetric === "measure1") bubbleMeas = m1;
-      else if (config.bubbleMetric === "measure3" && m3) bubbleMeas = m3;
+      var themeKey = config.colorTheme || "google_enterprise";
+      var theme = THEMES[themeKey] || THEMES.google_enterprise;
 
-      var theme = THEMES[config.colorTheme] || THEMES.blue_amber;
+      // Handle custom hex color overrides
+      if (config.primaryColorOverride && typeof d3.interpolateRgb === "function") {
+        var baseC = config.primaryColorOverride;
+        theme = Object.assign({}, theme, {
+          choroplethRange: [
+            d3.interpolateRgb("#ffffff", baseC)(0.15),
+            d3.interpolateRgb("#ffffff", baseC)(0.35),
+            baseC,
+            d3.interpolateRgb(baseC, "#000000")(0.25),
+            d3.interpolateRgb(baseC, "#000000")(0.55)
+          ]
+        });
+      }
+      if (config.bubbleColorOverride) {
+        theme = Object.assign({}, theme, {
+          bubbleFill: config.bubbleColorOverride,
+          bubbleStroke: config.bubbleColorOverride
+        });
+      }
+
       this._container.style.backgroundColor = theme.bg;
+
+      // Font Scale Multiplier
+      var fontScale = 1.0;
+      if (config.fontScale === "compact") fontScale = 0.88;
+      else if (config.fontScale === "large") fontScale = 1.15;
 
       // ==========================================
       // 1. DATA AGGREGATION & NORMALIZATION
@@ -536,6 +891,7 @@
       var stateMetrics = {};
       var totalM1 = 0;
       var totalM2 = 0;
+      var totalM3 = 0;
 
       for (var i = 0; i < data.length; i++) {
         var row = data[i];
@@ -543,8 +899,11 @@
         var code = resolveStateCode(rawState);
         if (!code) continue;
 
-        var v1 = (row[m1.name] && !isNaN(Number(row[m1.name].value))) ? Number(row[m1.name].value) : 0;
-        var v2 = (bubbleMeas && row[bubbleMeas.name] && !isNaN(Number(row[bubbleMeas.name].value))) ? Number(row[bubbleMeas.name].value) : 0;
+        var v1 = (m1 && row[m1.name] && !isNaN(Number(row[m1.name].value))) ? Number(row[m1.name].value) : 0;
+        var v2 = (m2 && row[m2.name] && !isNaN(Number(row[m2.name].value))) ? Number(row[m2.name].value) : 0;
+        var v3 = (m3 && row[m3.name] && !isNaN(Number(row[m3.name].value))) ? Number(row[m3.name].value) : 0;
+
+        if (config.suppressNulls && v1 === 0 && v2 === 0) continue;
 
         if (!stateMetrics[code]) {
           stateMetrics[code] = {
@@ -553,6 +912,7 @@
             fips: STATE_LOOKUP[code].fips,
             val1: 0,
             val2: 0,
+            val3: 0,
             rowCount: 0,
             drillLinks: (row[stateDim.name] && row[stateDim.name].links) || null
           };
@@ -560,14 +920,65 @@
 
         stateMetrics[code].val1 += v1;
         stateMetrics[code].val2 += v2;
+        stateMetrics[code].val3 += v3;
         stateMetrics[code].rowCount++;
         totalM1 += v1;
         totalM2 += v2;
+        totalM3 += v3;
       }
 
-      // Compute ranks
       var statesArr = Object.values(stateMetrics);
-      statesArr.sort(function (a, b) { return b.val1 - a.val1; });
+      if (!statesArr.length) {
+        if (this.addError) {
+          try {
+            this.addError({
+              title: "No Matching State Geography",
+              message: "Could not resolve any state names or postal codes in '" + stateDim.name + "'."
+            });
+          } catch (e) {}
+        }
+        return;
+      }
+
+      // Compute Benchmark Target
+      var targetMode = config.targetCalculationMode || "none";
+      var benchmarkTarget = null;
+      var sortedVals1 = statesArr.map(function (s) { return s.val1; }).sort(function (a, b) { return a - b; });
+
+      if (targetMode === "fixed_value") {
+        benchmarkTarget = Number(config.fixedTargetValue) || 0;
+      } else if (targetMode === "dataset_mean") {
+        benchmarkTarget = totalM1 / statesArr.length;
+      } else if (targetMode === "dataset_median") {
+        benchmarkTarget = d3.quantile(sortedVals1, 0.5) || 0;
+      } else if (targetMode === "percentile_p75") {
+        benchmarkTarget = d3.quantile(sortedVals1, 0.75) || 0;
+      } else if (targetMode === "percentile_p90") {
+        benchmarkTarget = d3.quantile(sortedVals1, 0.90) || 0;
+      }
+
+      var alertThreshold = Number(config.alertThreshold) || 20;
+      var isLowerBetter = (config.polarity === "lower_better");
+      var onTrackCount = 0;
+
+      statesArr.forEach(function (s) {
+        if (benchmarkTarget !== null && benchmarkTarget > 0) {
+          var ratio = s.val1 / benchmarkTarget;
+          var onTrack = isLowerBetter ? (ratio <= 1 + alertThreshold / 100) : (ratio >= 1 - alertThreshold / 100);
+          s.onTrack = onTrack;
+          if (onTrack) onTrackCount++;
+        }
+      });
+
+      // Sorting & Ranking
+      var sortOrder = config.sortOrder || "metric_desc";
+      if (sortOrder === "metric_desc") {
+        statesArr.sort(function (a, b) { return b.val1 - a.val1; });
+      } else if (sortOrder === "metric_asc") {
+        statesArr.sort(function (a, b) { return a.val1 - b.val1; });
+      } else if (sortOrder === "alphabetical") {
+        statesArr.sort(function (a, b) { return a.name.localeCompare(b.name); });
+      }
       statesArr.forEach(function (s, idx) { s.rank1 = idx + 1; });
 
       var statesByM2 = statesArr.slice().sort(function (a, b) { return b.val2 - a.val2; });
@@ -575,6 +986,14 @@
 
       var topStateM1 = statesArr[0] || { name: "-", val1: 0 };
       var topStateM2 = statesByM2[0] || { name: "-", val2: 0 };
+
+      // Top-N Filtering
+      var topN = config.topN || "all";
+      var topNMap = {};
+      if (topN !== "all") {
+        var limit = parseInt(topN, 10);
+        statesArr.slice(0, limit).forEach(function (s) { topNMap[s.code] = true; });
+      }
 
       var minM1 = d3.min(statesArr, function (d) { return d.val1; }) || 0;
       var maxM1 = d3.max(statesArr, function (d) { return d.val1; }) || 1;
@@ -595,83 +1014,120 @@
       // ==========================================
       // 2. EXECUTIVE KPI HUD & SEARCH BAR
       // ==========================================
-      var hudContainer = document.createElement("div");
-      hudContainer.style.position = "absolute";
-      hudContainer.style.top = "12px";
-      hudContainer.style.left = "12px";
-      hudContainer.style.right = "12px";
-      hudContainer.style.zIndex = "10";
-      hudContainer.style.display = "flex";
-      hudContainer.style.alignItems = "center";
-      hudContainer.style.justifyContent = "space-between";
-      hudContainer.style.gap = "12px";
-      hudContainer.style.pointerEvents = "none";
+      var hudMode = config.hudMode || "full";
+      var searchInput = null;
 
-      if (config.showExecutiveHUD !== false) {
+      if (hudMode !== "hidden") {
+        var hudContainer = document.createElement("div");
+        hudContainer.style.position = "absolute";
+        hudContainer.style.top = "10px";
+        hudContainer.style.left = "12px";
+        hudContainer.style.right = "12px";
+        hudContainer.style.zIndex = "10";
+        hudContainer.style.display = "flex";
+        hudContainer.style.alignItems = "center";
+        hudContainer.style.justifyContent = "space-between";
+        hudContainer.style.gap = "10px";
+        hudContainer.style.pointerEvents = "none";
+
         var kpiCard = document.createElement("div");
         kpiCard.style.pointerEvents = "auto";
         kpiCard.style.display = "flex";
         kpiCard.style.alignItems = "center";
-        kpiCard.style.gap = "14px";
-        kpiCard.style.padding = "8px 16px";
+        kpiCard.style.flexWrap = "wrap";
+        kpiCard.style.gap = (10 * fontScale) + "px";
+        kpiCard.style.padding = (6 * fontScale) + "px " + (14 * fontScale) + "px";
         kpiCard.style.background = theme.hudBg;
         kpiCard.style.border = "1px solid " + theme.hudBorder;
         kpiCard.style.borderRadius = "8px";
         kpiCard.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
-        kpiCard.style.fontSize = "11.5px";
+        kpiCard.style.fontSize = (11.5 * fontScale) + "px";
         kpiCard.style.color = theme.text;
 
-        kpiCard.innerHTML =
-          '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="font-size:14px;">🗺️</span>' +
-            '<span>States: <strong>' + statesArr.length + ' Active</strong></span>' +
-          '</div>' +
-          '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
-          '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="width:10px; height:10px; border-radius:2px; background:' + theme.choroplethRange[theme.choroplethRange.length - 1] + '; display:inline-block;"></span>' +
-            '<span>' + (m1.label_short || m1.label || m1.name) + ': <strong>' + formatValue(totalM1, config.valueFormat1 || "compact_currency") + '</strong></span>' +
-          '</div>' +
-          '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
-          '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="width:10px; height:10px; border-radius:50%; background:' + theme.bubbleFill + '; display:inline-block;"></span>' +
-            '<span>' + (bubbleMeas.label_short || bubbleMeas.label || bubbleMeas.name) + ': <strong>' + formatValue(totalM2, config.valueFormat2 || "compact_currency") + '</strong></span>' +
-          '</div>' +
-          '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
-          '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span>Top Volume: <strong style="color:' + theme.text + ';">' + topStateM1.name + '</strong></span>' +
-          '</div>';
+        var hudHTML = "";
 
+        // Custom Title / Subtitle
+        if (config.chartTitleOverride) {
+          hudHTML +=
+            '<div style="display:flex; flex-direction:column; margin-right:4px;">' +
+              '<span style="font-weight:700; font-size:' + (12.5 * fontScale) + 'px; color:' + theme.text + ';">' + config.chartTitleOverride + '</span>' +
+              (config.chartSubtitleOverride ? '<span style="font-size:' + (10 * fontScale) + 'px; color:' + theme.subtext + ';">' + config.chartSubtitleOverride + '</span>' : '') +
+            '</div>' +
+            '<div style="width:1px; height:18px; background:' + theme.hudBorder + ';"></div>';
+        }
+
+        if (hudMode === "full") {
+          hudHTML +=
+            '<div style="display:flex; align-items:center; gap:6px;">' +
+              '<span style="font-size:' + (13 * fontScale) + 'px;">🗺️</span>' +
+              '<span>States: <strong>' + statesArr.length + ' Active</strong></span>' +
+            '</div>' +
+            '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
+            '<div style="display:flex; align-items:center; gap:6px;">' +
+              '<span style="width:10px; height:10px; border-radius:2px; background:' + theme.choroplethRange[theme.choroplethRange.length - 1] + '; display:inline-block;"></span>' +
+              '<span>' + (m1.label_short || m1.label || m1.name) + ': <strong>' + formatValue(totalM1, config.valueFormat1, m1) + '</strong></span>' +
+            '</div>' +
+            '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
+            '<div style="display:flex; align-items:center; gap:6px;">' +
+              '<span style="width:10px; height:10px; border-radius:50%; background:' + theme.bubbleFill + '; display:inline-block;"></span>' +
+              '<span>' + (m2.label_short || m2.label || m2.name) + ': <strong>' + formatValue(totalM2, config.valueFormat2, m2) + '</strong></span>' +
+            '</div>' +
+            '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
+            '<div style="display:flex; align-items:center; gap:6px;">' +
+              '<span>Top State: <strong style="color:' + theme.text + ';">' + topStateM1.name + '</strong></span>' +
+            '</div>';
+
+          if (benchmarkTarget !== null) {
+            var pctOnTrack = ((onTrackCount / statesArr.length) * 100).toFixed(0);
+            var badgeColor = onTrackCount >= (statesArr.length * 0.7) ? "#16a34a" : "#dc2626";
+            hudHTML +=
+              '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
+              '<div style="display:flex; align-items:center; gap:6px;">' +
+                '<span>🎯 ' + (config.referenceLineLabel || "Target") + ': <strong>' + formatValue(benchmarkTarget, config.valueFormat1, m1) + '</strong></span>' +
+                '<span style="background:' + badgeColor + '1a; color:' + badgeColor + '; padding:1px 6px; border-radius:4px; font-weight:700; font-size:' + (10 * fontScale) + 'px;">' + onTrackCount + '/' + statesArr.length + ' (' + pctOnTrack + '%)</span>' +
+              '</div>';
+          }
+        } else {
+          // Compact HUD mode
+          hudHTML +=
+            '<span>🗺️ <strong>' + statesArr.length + ' States</strong></span>' +
+            '<span style="color:' + theme.subtext + ';">•</span>' +
+            '<span>' + (m1.label_short || m1.label || m1.name) + ': <strong>' + formatValue(totalM1, config.valueFormat1, m1) + '</strong></span>' +
+            '<span style="color:' + theme.subtext + ';">•</span>' +
+            '<span>' + (m2.label_short || m2.label || m2.name) + ': <strong>' + formatValue(totalM2, config.valueFormat2, m2) + '</strong></span>';
+        }
+
+        kpiCard.innerHTML = hudHTML;
         hudContainer.appendChild(kpiCard);
+
+        // Search Box
+        if (config.showSearch !== false) {
+          var searchBox = document.createElement("div");
+          searchBox.style.pointerEvents = "auto";
+          searchBox.style.display = "flex";
+          searchBox.style.alignItems = "center";
+          searchBox.style.padding = (5 * fontScale) + "px " + (10 * fontScale) + "px";
+          searchBox.style.background = theme.hudBg;
+          searchBox.style.border = "1px solid " + theme.hudBorder;
+          searchBox.style.borderRadius = "8px";
+          searchBox.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
+
+          searchInput = document.createElement("input");
+          searchInput.type = "text";
+          searchInput.placeholder = "🔍 Search State...";
+          searchInput.style.border = "none";
+          searchInput.style.background = "transparent";
+          searchInput.style.outline = "none";
+          searchInput.style.fontSize = (11 * fontScale) + "px";
+          searchInput.style.color = theme.text;
+          searchInput.style.width = (150 * fontScale) + "px";
+
+          searchBox.appendChild(searchInput);
+          hudContainer.appendChild(searchBox);
+        }
+
+        this._container.appendChild(hudContainer);
       }
-
-      // Search Box
-      var searchInput = null;
-      if (config.showSearch !== false) {
-        var searchBox = document.createElement("div");
-        searchBox.style.pointerEvents = "auto";
-        searchBox.style.display = "flex";
-        searchBox.style.alignItems = "center";
-        searchBox.style.padding = "6px 12px";
-        searchBox.style.background = theme.hudBg;
-        searchBox.style.border = "1px solid " + theme.hudBorder;
-        searchBox.style.borderRadius = "8px";
-        searchBox.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
-
-        searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.placeholder = "🔍 Search State / Postal Code...";
-        searchInput.style.border = "none";
-        searchInput.style.background = "transparent";
-        searchInput.style.outline = "none";
-        searchInput.style.fontSize = "11.5px";
-        searchInput.style.color = theme.text;
-        searchInput.style.width = "180px";
-
-        searchBox.appendChild(searchInput);
-        hudContainer.appendChild(searchBox);
-      }
-
-      this._container.appendChild(hudContainer);
 
       // ==========================================
       // 3. SVG & PROJECTION SETUP
@@ -747,7 +1203,6 @@
       var bubbleGroups = null;
 
       if (mapMode === "hex_cartogram") {
-        // Equal-Area Hexagonal Cartogram Layout
         var hexSide = Math.min(width / 14, height / 10) * 0.9;
         var hexRadius = hexSide;
         var hexW = Math.sqrt(3) * hexRadius;
@@ -776,11 +1231,13 @@
           var sMeta = STATE_LOOKUP[code];
           var center = getHexCenter(sMeta.hex.q, sMeta.hex.r);
           var mData = stateMetrics[code] || { code: code, name: sMeta.name, val1: 0, val2: 0, rank1: 99, rank2: 99 };
+          var isTopN = topN === "all" || Boolean(topNMap[code]);
           return {
             code: code,
             name: sMeta.name,
             center: center,
-            metric: mData
+            metric: mData,
+            isTopN: isTopN
           };
         });
 
@@ -793,6 +1250,7 @@
           .attr("points", function (d) { return hexPolygonPoints(d.center[0], d.center[1], hexRadius * 0.94); })
           .attr("fill", function (d) {
             if (mapMode === "bubble_only") return theme.stateEmpty;
+            if (topN !== "all" && !d.isTopN) return theme.stateEmpty;
             return d.metric.val1 > 0 ? choroplethScale(d.metric.val1) : theme.stateEmpty;
           })
           .attr("fill-opacity", Number(config.choroplethOpacity) || 0.85)
@@ -811,21 +1269,32 @@
 
         if (mapMode !== "choropleth_only") {
           bubbleGroups.append("circle")
-            .attr("r", function (d) { return d.metric.val2 > 0 ? bubbleRadiusScale(d.metric.val2) : (hexRadius * 0.3); })
+            .attr("r", function (d) {
+              if (topN !== "all" && !d.isTopN) return 0;
+              return d.metric.val2 > 0 ? bubbleRadiusScale(d.metric.val2) : (hexRadius * 0.3);
+            })
             .attr("fill", theme.bubbleFill)
             .attr("fill-opacity", 0.85)
             .attr("stroke", theme.bubbleStroke)
             .attr("stroke-width", 1.8);
         }
 
-        bubbleGroups.append("text")
-          .attr("text-anchor", "middle")
-          .attr("dy", "0.35em")
-          .attr("font-size", "11px")
-          .attr("font-weight", "700")
-          .attr("fill", mapMode === "choropleth_only" ? (theme.isDark ? "#ffffff" : "#0f172a") : theme.bubbleText)
-          .style("pointer-events", "none")
-          .text(function (d) { return d.code; });
+        var labelDensity = config.labelDensity || "all";
+        if (labelDensity !== "hidden") {
+          bubbleGroups.append("text")
+            .attr("text-anchor", "middle")
+            .attr("dy", "0.35em")
+            .attr("font-size", (11 * fontScale) + "px")
+            .attr("font-weight", "700")
+            .attr("fill", mapMode === "choropleth_only" ? (theme.isDark ? "#ffffff" : "#0f172a") : theme.bubbleText)
+            .style("pointer-events", "none")
+            .style("opacity", function (d) {
+              if (labelDensity === "hover_only") return 0;
+              if (labelDensity === "peaks" && d.metric.rank1 > 10) return 0;
+              return 1;
+            })
+            .text(function (d) { return d.code; });
+        }
 
       } else {
         // Albers USA Geometric Projection
@@ -842,12 +1311,14 @@
           var sMeta = code ? STATE_LOOKUP[code] : null;
           var mData = code ? (stateMetrics[code] || { code: code, name: sMeta ? sMeta.name : "Unknown", val1: 0, val2: 0, rank1: 99, rank2: 99 }) : null;
           var centroid = pathGenerator.centroid(feat);
+          var isTopN = topN === "all" || Boolean(topNMap[code]);
           return {
             feature: feat,
             code: code,
             name: sMeta ? sMeta.name : (feat.properties ? feat.properties.name : "Unknown"),
             metric: mData,
-            centroid: centroid
+            centroid: centroid,
+            isTopN: isTopN
           };
         }).filter(function (d) { return d.code && !isNaN(d.centroid[0]); });
 
@@ -863,6 +1334,7 @@
           .attr("d", function (d) { return pathGenerator(d.feature); })
           .attr("fill", function (d) {
             if (mapMode === "bubble_only") return theme.stateEmpty;
+            if (topN !== "all" && !d.isTopN) return theme.stateEmpty;
             return (d.metric && d.metric.val1 > 0) ? choroplethScale(d.metric.val1) : theme.stateEmpty;
           })
           .attr("fill-opacity", Number(config.choroplethOpacity) || 0.85)
@@ -873,7 +1345,7 @@
 
         // Draw Proportional Centroid Bubbles (Layer 2)
         bubbleGroups = bubbleLayer.selectAll("g.bubble-pin")
-          .data(validFeatures.filter(function (d) { return d.metric && d.metric.val2 > 0; }))
+          .data(validFeatures.filter(function (d) { return d.metric && d.metric.val2 > 0 && (topN === "all" || d.isTopN); }))
           .enter()
           .append("g")
           .attr("class", "bubble-pin")
@@ -889,16 +1361,20 @@
             .attr("stroke-width", 1.5)
             .style("transition", "transform 0.15s ease");
 
-          var showLabels = config.showBubbleLabels || "always";
-          if (showLabels !== "off") {
+          var labelDensity = config.labelDensity || "all";
+          if (labelDensity !== "hidden") {
             bubbleGroups.append("text")
               .attr("text-anchor", "middle")
               .attr("dy", "0.35em")
-              .attr("font-size", function (d) { return Math.max(9, Math.min(12, bubbleRadiusScale(d.metric.val2) * 0.85)) + "px"; })
+              .attr("font-size", function (d) { return (Math.max(9, Math.min(12, bubbleRadiusScale(d.metric.val2) * 0.85)) * fontScale) + "px"; })
               .attr("font-weight", "700")
               .attr("fill", theme.bubbleText)
               .style("pointer-events", "none")
-              .style("opacity", showLabels === "always" ? 1 : 0)
+              .style("opacity", function (d) {
+                if (labelDensity === "hover_only") return 0;
+                if (labelDensity === "peaks" && d.metric.rank1 > 10) return 0;
+                return 1;
+              })
               .text(function (d) { return d.code; });
           }
         }
@@ -910,14 +1386,14 @@
       function handleMouseEnter(event, d) {
         var sCode = d.code;
         var sName = d.name;
-        var mData = d.metric || (stateMetrics[sCode] || { val1: 0, val2: 0, rank1: "-", rank2: "-" });
+        var mData = d.metric || (stateMetrics[sCode] || { val1: 0, val2: 0, val3: 0, rank1: "-", rank2: "-" });
 
         statePaths.attr("stroke", function (p) { return p.code === sCode ? theme.text : theme.stateBorder; })
           .attr("stroke-width", function (p) { return p.code === sCode ? 2.5 : 1.2; });
 
         if (bubbleGroups) {
           bubbleGroups.selectAll("circle").attr("stroke-width", function (b) { return b.code === sCode ? 3 : 1.5; });
-          if (config.showBubbleLabels === "hover_focus") {
+          if (config.labelDensity === "hover_only") {
             bubbleGroups.selectAll("text").style("opacity", function (b) { return b.code === sCode ? 1 : 0; });
           }
         }
@@ -930,16 +1406,39 @@
         var pct1 = totalM1 > 0 ? ((mData.val1 / totalM1) * 100).toFixed(1) + "%" : "0%";
         var pct2 = totalM2 > 0 ? ((mData.val2 / totalM2) * 100).toFixed(1) + "%" : "0%";
 
+        var targetHTML = "";
+        if (benchmarkTarget !== null && benchmarkTarget > 0) {
+          var variancePct = (((mData.val1 - benchmarkTarget) / benchmarkTarget) * 100).toFixed(1);
+          var varSign = Number(variancePct) > 0 ? "+" : "";
+          var isVarianceGood = isLowerBetter ? (Number(variancePct) <= 0) : (Number(variancePct) >= 0);
+          var varianceColor = isVarianceGood ? "#16a34a" : "#dc2626";
+          targetHTML =
+            '<div style="display:grid; grid-template-columns:auto 1fr; gap:6px 12px; font-size:11px; margin-top:4px; padding-top:4px; border-top:1px dashed ' + theme.border + ';">' +
+              '<span style="color:' + theme.subtext + ';">' + (config.referenceLineLabel || "Benchmark Target") + ':</span>' +
+              '<strong style="text-align:right; color:' + varianceColor + ';">' + formatValue(benchmarkTarget, config.valueFormat1, m1) + ' (' + varSign + variancePct + '%)</strong>' +
+            '</div>';
+        }
+
+        var tertiaryHTML = "";
+        if (m3 && mData.val3 !== undefined && mData.val3 !== 0) {
+          tertiaryHTML =
+            '<span style="color:' + theme.subtext + ';">' + (m3.label_short || m3.label || m3.name) + ':</span>' +
+            '<strong style="text-align:right;">' + formatValue(mData.val3, config.valueFormat2, m3) + '</strong>';
+        }
+
         tt.innerHTML =
-          '<div style="font-size:13px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:6px;">' +
+          '<div style="font-size:13px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; justify-content:space-between; gap:8px;">' +
             '<span>📍 ' + sName + ' (' + sCode + ')</span>' +
+            (mData.onTrack !== undefined ? ('<span style="font-size:10px; padding:2px 6px; border-radius:4px; background:' + (mData.onTrack ? '#16a34a1a; color:#16a34a' : '#dc26261a; color:#dc2626') + '; font-weight:700;">' + (mData.onTrack ? 'ON TRACK' : 'ALERT') + '</span>') : '') +
           '</div>' +
           '<div style="display:grid; grid-template-columns:auto 1fr; gap:6px 12px; font-size:11.5px; border-top:1px solid ' + theme.border + '; padding-top:6px;">' +
             '<span style="color:' + theme.subtext + ';">' + (m1.label_short || m1.label || m1.name) + ' (Choropleth):</span>' +
-            '<strong style="text-align:right;">' + formatValue(mData.val1, config.valueFormat1 || "compact_currency") + ' (' + pct1 + ', Rank #' + (mData.rank1 || "-") + ')</strong>' +
-            '<span style="color:' + theme.subtext + ';">' + (bubbleMeas.label_short || bubbleMeas.label || bubbleMeas.name) + ' (Bubble):</span>' +
-            '<strong style="text-align:right; color:' + theme.bubbleStroke + ';">' + formatValue(mData.val2, config.valueFormat2 || "compact_currency") + ' (' + pct2 + ', Rank #' + (mData.rank2 || "-") + ')</strong>' +
+            '<strong style="text-align:right;">' + formatValue(mData.val1, config.valueFormat1, m1) + ' (' + pct1 + ', Rank #' + (mData.rank1 || "-") + ')</strong>' +
+            '<span style="color:' + theme.subtext + ';">' + (m2.label_short || m2.label || m2.name) + ' (Bubble):</span>' +
+            '<strong style="text-align:right; color:' + theme.bubbleStroke + ';">' + formatValue(mData.val2, config.valueFormat2, m2) + ' (' + pct2 + ', Rank #' + (mData.rank2 || "-") + ')</strong>' +
+            tertiaryHTML +
           '</div>' +
+          targetHTML +
           (mData.drillLinks ? '<div style="margin-top:6px; font-size:11px; color:#2563eb;">Click to drill down &rarr;</div>' : '');
 
         tt.style.display = "block";
@@ -951,7 +1450,7 @@
         var x = event.clientX + 14;
         var y = event.clientY - 20;
         if (x + 280 > window.innerWidth) x = event.clientX - 290;
-        if (y + 140 > window.innerHeight) y = event.clientY - 140;
+        if (y + 160 > window.innerHeight) y = event.clientY - 160;
         tt.style.left = x + "px";
         tt.style.top = y + "px";
       }
@@ -960,7 +1459,7 @@
         statePaths.attr("stroke", theme.stateBorder).attr("stroke-width", 1.2);
         if (bubbleGroups) {
           bubbleGroups.selectAll("circle").attr("stroke-width", 1.5);
-          if (config.showBubbleLabels === "hover_focus") {
+          if (config.labelDensity === "hover_only") {
             bubbleGroups.selectAll("text").style("opacity", 0);
           }
         }
@@ -1034,13 +1533,13 @@
         legendBox.style.background = theme.hudBg;
         legendBox.style.border = "1px solid " + theme.hudBorder;
         legendBox.style.borderRadius = "8px";
-        legendBox.style.padding = "10px 14px";
+        legendBox.style.padding = (8 * fontScale) + "px " + (12 * fontScale) + "px";
         legendBox.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
-        legendBox.style.fontSize = "11px";
+        legendBox.style.fontSize = (10.5 * fontScale) + "px";
         legendBox.style.color = theme.text;
         legendBox.style.display = "flex";
         legendBox.style.flexDirection = "column";
-        legendBox.style.gap = "8px";
+        legendBox.style.gap = "6px";
 
         // Choropleth Legend
         var choroTitle = document.createElement("div");
@@ -1055,8 +1554,8 @@
 
         theme.choroplethRange.forEach(function (color) {
           var block = document.createElement("div");
-          block.style.width = "22px";
-          block.style.height = "10px";
+          block.style.width = (20 * fontScale) + "px";
+          block.style.height = "9px";
           block.style.background = color;
           block.style.borderRadius = "2px";
           rampContainer.appendChild(block);
@@ -1066,12 +1565,12 @@
         var labelRow = document.createElement("div");
         labelRow.style.display = "flex";
         labelRow.style.justifyContent = "space-between";
-        labelRow.style.fontSize = "10px";
+        labelRow.style.fontSize = (9.5 * fontScale) + "px";
         labelRow.style.color = theme.subtext;
-        labelRow.innerHTML = "<span>" + formatValue(minM1, config.valueFormat1 || "compact_currency") + "</span><span>" + formatValue(maxM1, config.valueFormat1 || "compact_currency") + "</span>";
+        labelRow.innerHTML = "<span>" + formatValue(minM1, config.valueFormat1, m1) + "</span><span>" + formatValue(maxM1, config.valueFormat1, m1) + "</span>";
         legendBox.appendChild(labelRow);
 
-        // Bubble Scale Legend (if bubbles enabled)
+        // Bubble Scale Legend
         if (mapMode !== "choropleth_only") {
           var bubbleDivider = document.createElement("div");
           bubbleDivider.style.height = "1px";
@@ -1083,13 +1582,13 @@
           bubbleTitle.style.display = "flex";
           bubbleTitle.style.alignItems = "center";
           bubbleTitle.style.gap = "6px";
-          bubbleTitle.innerHTML = '<span style="width:8px; height:8px; border-radius:50%; background:' + theme.bubbleFill + '; display:inline-block;"></span><span>' + (bubbleMeas.label_short || bubbleMeas.label || bubbleMeas.name) + " (Bubble Size)</span>";
+          bubbleTitle.innerHTML = '<span style="width:8px; height:8px; border-radius:50%; background:' + theme.bubbleFill + '; display:inline-block;"></span><span>' + (m2.label_short || m2.label || m2.name) + " (Bubble Size)</span>";
           legendBox.appendChild(bubbleTitle);
 
           var bubbleExamples = document.createElement("div");
           bubbleExamples.style.display = "flex";
           bubbleExamples.style.alignItems = "center";
-          bubbleExamples.style.gap = "12px";
+          bubbleExamples.style.gap = "10px";
           bubbleExamples.style.marginTop = "2px";
 
           [0.25, 0.65, 1.0].forEach(function (frac) {
@@ -1103,14 +1602,14 @@
             var dot = document.createElement("div");
             dot.style.width = (r * 2) + "px";
             dot.style.height = (r * 2) + "px";
-            dot.style.borderRadius = "50%";
+            dot.style.borderRadius = "50";
             dot.style.background = theme.bubbleFill;
             dot.style.border = "1px solid " + theme.bubbleStroke;
 
             var txt = document.createElement("span");
-            txt.style.fontSize = "9.5px";
+            txt.style.fontSize = (9 * fontScale) + "px";
             txt.style.color = theme.subtext;
-            txt.textContent = formatValue(val, config.valueFormat2 || "compact_currency");
+            txt.textContent = formatValue(val, config.valueFormat2, m2);
 
             bContainer.appendChild(dot);
             bContainer.appendChild(txt);

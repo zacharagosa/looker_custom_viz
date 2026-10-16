@@ -159,6 +159,7 @@ VIZ_EMOJI_MAP = {
     "slopegraph": "📐",
     "content_genre_affinity_network": "🌐",
     "upset_affinity_grid": "🛒",
+    "parallel_coordinates_profiler": "📐",
 }
 
 

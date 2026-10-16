@@ -1,0 +1,39 @@
+{
+  "model": "nokia_network_ops",
+  "view": "network_operations",
+  "fields": [
+    "cell_towers.site_name",
+    "cell_towers.market",
+    "network_kpi_telemetry.avg_throughput_mbps",
+    "network_kpi_telemetry.avg_latency_ms",
+    "network_kpi_telemetry.avg_packet_loss_pct",
+    "network_kpi_telemetry.avg_call_drop_rate",
+    "network_kpi_telemetry.avg_energy_kwh"
+  ],
+  "sorts": [
+    "network_kpi_telemetry.avg_throughput_mbps desc"
+  ],
+  "limit": "60",
+  "vis_config": {
+    "type": "parallel_coordinates_profiler",
+    "curveType": "smooth_spline",
+    "entityDimOverride": "",
+    "groupDimOverride": "",
+    "primaryMeasureOverride": "",
+    "targetCalculationMode": "dataset_mean",
+    "referenceLineLabel": "Network SLA Mean Benchmark",
+    "alertThreshold": 25,
+    "sortOrder": "metric_desc",
+    "topN": "all",
+    "suppressNulls": true,
+    "hudMode": "full",
+    "showBrushHUD": true,
+    "colorTheme": "google_enterprise",
+    "lineOpacity": 0.45,
+    "lineWidth": 1.8,
+    "highlightWidth": 3.5,
+    "polarity": "higher_better",
+    "fontScale": "standard",
+    "valueFormat": "auto"
+  }
+}
