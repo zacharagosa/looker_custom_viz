@@ -54,6 +54,7 @@ VOL2_VIZ_MAP = {
     "mitre_attack_matrix": "📡 Telecom, Cloud & SecOps",
     "cell_tower_polar_coverage": "📡 Telecom, Cloud & SecOps",
     "cloud_finops_commit_horizon": "📡 Telecom, Cloud & SecOps",
+    "distributed_trace_flamegraph": "📡 Telecom, Cloud & SecOps",
     "violin_distribution_plot": "🔬 Statistical, ML & Forecasting",
     "forecast_confidence_cone": "🔬 Statistical, ML & Forecasting",
     "roc_curve_evaluator": "🔬 Statistical, ML & Forecasting",
@@ -401,7 +402,14 @@ def sync_dashboard(dashboard_id=DASHBOARD_VOL1_ID, profile="default"):
 
     for item in catalog:
         viz_id = item.get("id")
+        if viz_id in ("zayo_noc_executive_scorecard", "zayo_predictive_maintenance_deck", "zayo_optical_spectrum_waterfall", "noc_incident_timeline"):
+            print(f"  -> Skipping '{viz_id}' from showcase dashboard sync (private / non-showcase)")
+            continue
         q_file = os.path.join(base_dir, "visualizations", viz_id, "demo_query.json")
+        if viz_id in ("zayo_noc_executive_scorecard", "zayo_predictive_maintenance_deck", "zayo_optical_spectrum_waterfall", "noc_incident_timeline"):
+            print(f"  -> Skipping '{viz_id}' from showcase dashboard sync (private / non-showcase)")
+            continue
+
         if not os.path.exists(q_file):
             print(f"  -> Skipping '{viz_id}' from showcase dashboard sync (no demo_query.json)")
             continue

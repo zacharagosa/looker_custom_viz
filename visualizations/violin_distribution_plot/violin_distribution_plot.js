@@ -125,6 +125,21 @@
       outlierColor: "#f43f5e",
       grid: "#f5f7ff"
     },
+    wellverse: {
+      name: "Wellverse Healthcare",
+      colors: ["#007a87", "#00a896", "#028090", "#05668d", "#f08080", "#f4a261", "#e76f51", "#2a9d8f"],
+      bg: "#ffffff",
+      text: "#134e4a",
+      subtext: "#0d9488",
+      border: "#ccfbf1",
+      hudBg: "#f0fdfa",
+      boxFill: "#ffffff",
+      boxStroke: "#0f766e",
+      medianColor: "#007a87",
+      whiskerColor: "#0d9488",
+      outlierColor: "#e11d48",
+      grid: "#f0fdfa"
+    },
     monochrome_slate: {
       name: "Monochrome Executive Slate",
       colors: ["#334155", "#475569", "#64748b", "#1e293b", "#94a3b8", "#0f172a", "#52525b", "#71717a"],
@@ -334,7 +349,7 @@
   looker.plugins.visualizations.add({
     id: "violin_distribution_plot",
     label: "Violin & Box Plot Distribution Analyzer",
-    options: {
+        options: {
       // ==========================================
       // SECTION 1: DISPLAY (Strictly minimized tab)
       // ==========================================
@@ -352,6 +367,42 @@
         section: "Display",
         order: 1
       },
+      categoryDimOverride: {
+        type: "string",
+        label: "Category Dimension (X-Axis Lane)",
+        section: "Display",
+        order: 2,
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: ""
+      },
+      metricMeasureOverride: {
+        type: "string",
+        label: "Observation Value Measure / Numeric Field (Y-Axis)",
+        section: "Display",
+        order: 3,
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: ""
+      },
+      observationDimOverride: {
+        type: "string",
+        label: "Observation ID Dimension (Row De-duplication PK)",
+        section: "Display",
+        order: 4,
+        display: "select",
+        values: [{ "Auto / None (run query to populate choices)": "" }],
+        default: ""
+      },
+      subgroupDimOverride: {
+        type: "string",
+        label: "Subgroup Split Dimension (Optional Color Split)",
+        section: "Display",
+        order: 5,
+        display: "select",
+        values: [{ "Auto / None (run query to populate choices)": "" }],
+        default: ""
+      },
       bandwidthFactor: {
         type: "string",
         label: "Kernel Smoothing Bandwidth",
@@ -364,7 +415,7 @@
           { "Ultra Fine (0.4x Bandwidth)": "fine" }
         ],
         section: "Display",
-        order: 2
+        order: 6
       },
       scalingMode: {
         type: "string",
@@ -376,11 +427,11 @@
           { "Independent Scale (Maximize Lane Width per Category)": "independent" }
         ],
         section: "Display",
-        order: 3
+        order: 7
       },
       yAxisScope: {
         type: "string",
-        label: "Y-Axis Range",
+        label: "Y-Axis Zoom Scope",
         default: "robust",
         display: "select",
         values: [
@@ -389,42 +440,144 @@
           { "Full Range (Include All Extreme Values)": "full" }
         ],
         section: "Display",
-        order: 4
+        order: 8
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Benchmark Reference Line Mode",
+        section: "Display",
+        order: 9,
+        display: "select",
+        values: [
+          { "Dataset Mean (Overall Average)": "dataset_mean" },
+          { "Dataset Median (Overall P50)": "dataset_median" },
+          { "Top Quartile Benchmark (P75)": "percentile_p75" },
+          { "Top Decile Benchmark (P90)": "percentile_p90" },
+          { "Fixed Target Value": "fixed_value" },
+          { "None (Hide Benchmark Line)": "none" }
+        ],
+        default: "dataset_median"
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Benchmark Target Value",
+        section: "Display",
+        order: 10,
+        default: 0
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Benchmark Reference Line Label",
+        section: "Display",
+        order: 11,
+        default: "Target Benchmark"
+      },
+      anomalyAlertThreshold: {
+        type: "number",
+        label: "Outlier Alert Threshold %",
+        section: "Display",
+        order: 12,
+        default: 15
+      },
+      sortOrder: {
+        type: "string",
+        label: "Category Sorting & Ordering",
+        section: "Display",
+        order: 13,
+        display: "select",
+        values: [
+          { "Median Metric Descending (Highest First)": "metric_desc" },
+          { "Median Metric Ascending (Lowest First)": "metric_asc" },
+          { "Sample Count Descending": "count_desc" },
+          { "Spread / IQR Spread Descending": "spread_iqr_desc" },
+          { "Alphabetical by Category Name": "alphabetical" },
+          { "Natural / Query Order": "natural" }
+        ],
+        default: "metric_desc"
+      },
+      topN: {
+        type: "string",
+        label: "Top-N Category Focus Limit",
+        section: "Display",
+        order: 14,
+        display: "select",
+        values: [
+          { "All Categories (No Limit)": "all" },
+          { "Top 5 Categories Only": "5" },
+          { "Top 8 Categories Only": "8" },
+          { "Top 10 Categories Only": "10" },
+          { "Top 15 Categories Only": "15" },
+          { "Top 20 Categories Only": "20" }
+        ],
+        default: "all"
+      },
+      rollupOther: {
+        type: "boolean",
+        label: "Rollup Excluded Categories into 'Other'",
+        section: "Display",
+        order: 15,
+        default: false
+      },
+      suppressNulls: {
+        type: "boolean",
+        label: "Suppress Empty & Null Observation Categories",
+        section: "Display",
+        order: 16,
+        default: true
       },
       showOutliers: {
         type: "boolean",
-        label: "Show Outlier Points (>1.5x IQR)",
+        label: "Show Outlier Scatter Points (>1.5x IQR)",
         default: true,
         section: "Display",
-        order: 5
+        order: 17
       },
-      showSummaryStats: {
-        type: "boolean",
-        label: "Show Executive KPI Summary HUD",
-        default: true,
+      hudMode: {
+        type: "string",
+        label: "Executive KPI HUD Mode",
         section: "Display",
-        order: 6
+        order: 18,
+        display: "select",
+        values: [
+          { "Full Scorecard Strip": "full" },
+          { "Compact Metric Pill": "compact" },
+          { "Hidden (Maximum Canvas)": "hidden" }
+        ],
+        default: "full"
+      },
+      dataLabelDensity: {
+        type: "string",
+        label: "Distribution Data Value Labels",
+        section: "Display",
+        order: 19,
+        display: "select",
+        values: [
+          { "All Key Quartiles (Min, Q1, Median, Q3, Max)": "all" },
+          { "Extreme Peaks Only (Min & Max Bounds)": "peaks_only" },
+          { "Hidden (Hover Only)": "hidden" }
+        ],
+        default: "peaks_only"
       },
       showSearch: {
         type: "boolean",
         label: "Enable Category Search Bar",
         default: true,
         section: "Display",
-        order: 7
+        order: 20
       },
-      valueFormat: {
+      chartTitleOverride: {
         type: "string",
-        label: "Value Formatting",
-        default: "compact_currency",
-        display: "select",
-        values: [
-          { "Compact Currency ($1.2k, $4.5M)": "compact_currency" },
-          { "Compact Number (1.2k, 4.5M)": "compact_num" },
-          { "Decimal (0.00)": "decimal_2" },
-          { "Integer (0)": "integer" }
-        ],
+        label: "Custom Chart Title Override",
         section: "Display",
-        order: 8
+        order: 21,
+        default: ""
+      },
+      chartSubtitleOverride: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        section: "Display",
+        order: 22,
+        default: ""
       },
 
       // ==========================================
@@ -436,15 +589,41 @@
         default: "google_modern",
         display: "select",
         values: [
-          { "Google Modern": "google_modern" },
+          { "Google Modern (Enterprise Blue, Red, Amber, Green)": "google_modern" },
           { "Looker Classic Navy & Cyan": "looker_classic" },
-          { "Sunset Ember": "sunset_ember" },
-          { "Emerald & Mint": "emerald_forest" },
+          { "Modern Executive Slate (Indigo & Charcoal)": "monochrome_slate" },
           { "Cyber Indigo & Violet": "cyber_indigo" },
-          { "Monochrome Executive Slate": "monochrome_slate" }
+          { "Emerald & Mint (FinOps Green)": "emerald_forest" },
+          { "Sunset Ember (Orange & Crimson)": "sunset_ember" },
+          { "Wellverse Healthcare (Teal & Coral)": "wellverse" },
+          { "Custom Primary Hex Accent": "custom" }
         ],
         section: "Style",
         order: 1
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Primary Accent Hex",
+        section: "Style",
+        order: 2,
+        display: "color",
+        default: ""
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Positive Benchmark Hex",
+        section: "Style",
+        order: 3,
+        display: "color",
+        default: ""
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Warning / Alert Hex",
+        section: "Style",
+        order: 4,
+        display: "color",
+        default: ""
       },
       fillOpacity: {
         type: "string",
@@ -458,7 +637,7 @@
           { "30% Minimal Outline Tint": "0.30" }
         ],
         section: "Style",
-        order: 2
+        order: 5
       },
       boxPlotWidth: {
         type: "string",
@@ -471,22 +650,118 @@
           { "Wide Width (22px)": "wide" }
         ],
         section: "Style",
-        order: 3
+        order: 6
       },
       showGridlines: {
         type: "boolean",
         label: "Show Horizontal Gridlines",
         default: true,
         section: "Style",
-        order: 4
+        order: 7
       },
       showMeanMarker: {
         type: "boolean",
         label: "Show Mean Diamond Marker",
         default: true,
         section: "Style",
-        order: 5
+        order: 8
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity (Goal Direction)",
+        section: "Style",
+        order: 9,
+        display: "select",
+        values: [
+          { "Higher is Better (Revenue, Margin, Volume, Accuracy)": "higher_is_better" },
+          { "Lower is Better (Latency, Churn, Cost, Defect Rate)": "lower_is_better" }
+        ],
+        default: "higher_is_better"
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & UI Scale",
+        section: "Style",
+        order: 10,
+        display: "select",
+        values: [
+          { "Compact (Dense Multi-Tile Dashboard)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (EBC / Large Monitors)": "large" }
+        ],
+        default: "standard"
+      },
+      valueFormat: {
+        type: "string",
+        label: "Value Formatting",
+        default: "auto",
+        display: "select",
+        values: [
+          { "Auto Detect by Metric Name": "auto" },
+          { "Compact Currency ($1.2k, $4.5M)": "compact_currency" },
+          { "Compact Number (1.2k, 4.5M)": "compact_num" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal (0.00)": "decimal_2" },
+          { "Integer (0)": "integer" },
+          { "Raw Numeric": "raw" }
+        ],
+        section: "Style",
+        order: 11
       }
+    },
+
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        categoryDimOverride: { role: "dimension", defaultIdx: 0 },
+        metricMeasureOverride: { role: "measure", defaultIdx: 0 },
+        observationDimOverride: { role: "dimension", defaultIdx: -1 },
+        subgroupDimOverride: { role: "dimension", defaultIdx: -1 }
+      };
+
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : dims;
+        var autoField = (spec.defaultIdx >= 0 && spec.defaultIdx < list.length) ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto → " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].values = values;
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (err) {}
     },
 
     create: function (element, config) {
@@ -494,9 +769,8 @@
       element.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
       element.style.overflow = "hidden";
       element.style.position = "relative";
-      element.style.width = "100%";
-      element.style.height = "100%";
       element.style.boxSizing = "border-box";
+      element.style.padding = "0";
 
       var container = document.createElement("div");
       container.className = "violin-root-container";
@@ -506,6 +780,7 @@
       container.style.flexDirection = "column";
       container.style.boxSizing = "border-box";
       element.appendChild(container);
+      this._container = container;
 
       // Create floating tooltip
       var tooltip = document.createElement("div");
@@ -524,11 +799,37 @@
       document.body.appendChild(tooltip);
       this._tooltip = tooltip;
       this._searchTerm = "";
-      this._sortOption = "median_desc";
+
+      var self = this;
+      if (window.ResizeObserver) {
+        var roTimeout;
+        var lastH = 0;
+        var lastW = 0;
+        this._resizeObserver = new ResizeObserver(function (entries) {
+          if (!self._lastData || !self._lastQueryResponse) return;
+          var entry = entries[0];
+          if (!entry) return;
+          var cr = entry.contentRect;
+          if (Math.abs(cr.height - lastH) < 4 && Math.abs(cr.width - lastW) < 4) return;
+          lastH = cr.height;
+          lastW = cr.width;
+          clearTimeout(roTimeout);
+          roTimeout = setTimeout(function () {
+            self.updateAsync(self._lastData, element, self._lastConfig, self._lastQueryResponse, self._lastDetails, self._lastDone || function(){});
+          }, 150);
+        });
+        this._resizeObserver.observe(element);
+      }
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
-      this.clearErrors();
+      if (this.clearErrors) try { this.clearErrors(); } catch(e) {}
+      this._registerDynamicFieldOptions(queryResponse);
+      this._lastData = data;
+      this._lastConfig = config;
+      this._lastQueryResponse = queryResponse;
+      this._lastDetails = details;
+      this._lastDone = done;
 
       var container = element.querySelector(".violin-root-container");
       if (!container) {
@@ -540,13 +841,13 @@
         container.style.display = "flex";
         container.style.flexDirection = "column";
         element.appendChild(container);
+        this._container = container;
       }
 
-      // Check fields
       var fields = queryResponse && queryResponse.fields;
       if (!fields || !data || data.length === 0) {
-        container.innerHTML = "<div style=\"display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;\">Awaiting query results...</div>";
-        done();
+        container.innerHTML = "<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;">Awaiting query results...</div>";
+        if (done) done();
         return;
       }
 
@@ -554,11 +855,13 @@
       var measures = fields.measure_like || [];
 
       if (dimensions.length === 0 && measures.length === 0) {
-        this.addError({
-          title: "Missing Fields",
-          message: "Violin Plot requires at least 1 Category Dimension and 1 Numeric Measure or Dimension."
-        });
-        done();
+        if (this.addError) {
+          this.addError({
+            title: "Missing Fields",
+            message: "Violin Plot requires at least 1 Category Dimension and 1 Numeric Measure or Dimension."
+          });
+        }
+        if (done) done();
         return;
       }
 
@@ -568,9 +871,9 @@
           self.renderChart(d3, container, data, config, queryResponse);
         } catch (err) {
           console.error("Violin Plot Render Error:", err);
-          container.innerHTML = "<div style=\"padding:20px;color:#ef4444;\">Render Error: " + err.message + "</div>";
+          container.innerHTML = "<div style="padding:20px;color:#ef4444;">Render Error: " + err.message + "</div>";
         }
-        done();
+        if (done) done();
       });
     },
 
@@ -580,15 +883,7 @@
       var dimensions = fields.dimension_like || [];
       var measures = fields.measure_like || [];
 
-      // Identify category and value fields
-      var catField = dimensions[0] ? dimensions[0].name : "Category";
-      var catLabel = dimensions[0] ? (dimensions[0].label_short || dimensions[0].label) : "Category";
-
-      // Numeric value field resolution.
-      // Raw-observation queries usually carry a primary-key dimension (order_items.id)
-      // purely to defeat SQL de-duplication; blindly grabbing dimensions[1] would plot
-      // row IDs. Score every candidate on whether it actually holds numeric values,
-      // deprioritizing obvious identifier fields.
+      // Field Resolution with Dynamic Overrides
       function isIdentifier(name) {
         return /(^|[._])id$/i.test(name) || /(^|[._]).*_id$/i.test(name);
       }
@@ -603,44 +898,89 @@
         return hits;
       }
 
-      var candidates = [];
-      for (var m = 0; m < measures.length; m++) candidates.push(measures[m]);
-      // Skip dimensions[0] (the category lane) and push the rest, identifiers last
-      var dimCandidates = dimensions.slice(1);
-      dimCandidates.sort(function (a, b) {
-        return (isIdentifier(a.name) ? 1 : 0) - (isIdentifier(b.name) ? 1 : 0);
-      });
-      candidates = candidates.concat(dimCandidates);
-
-      var valField = null;
-      var valLabel = "Value";
-      for (var cd = 0; cd < candidates.length; cd++) {
-        if (numericCount(candidates[cd].name) > 0) {
-          valField = candidates[cd].name;
-          valLabel = candidates[cd].label_short || candidates[cd].label;
+      var catField = (config.categoryDimOverride && config.categoryDimOverride !== "") ? config.categoryDimOverride : (dimensions[0] ? dimensions[0].name : "Category");
+      var catLabel = "Category";
+      for (var d = 0; d < dimensions.length; d++) {
+        if (dimensions[d].name === catField) {
+          catLabel = dimensions[d].label_short || dimensions[d].label || catField;
           break;
         }
       }
 
+      var valField = (config.metricMeasureOverride && config.metricMeasureOverride !== "") ? config.metricMeasureOverride : null;
+      var valLabel = "Value";
+
       if (!valField) {
-        container.innerHTML = "<div style=\"padding:20px;color:#64748b;\">Please add a numeric measure or dimension to plot distributions.</div>";
+        var candidates = [];
+        for (var m = 0; m < measures.length; m++) candidates.push(measures[m]);
+        var dimCandidates = dimensions.filter(function (dm) { return dm.name !== catField; });
+        dimCandidates.sort(function (a, b) {
+          return (isIdentifier(a.name) ? 1 : 0) - (isIdentifier(b.name) ? 1 : 0);
+        });
+        candidates = candidates.concat(dimCandidates);
+        for (var cd = 0; cd < candidates.length; cd++) {
+          if (numericCount(candidates[cd].name) > 0) {
+            valField = candidates[cd].name;
+            valLabel = candidates[cd].label_short || candidates[cd].label || candidates[cd].name;
+            break;
+          }
+        }
+      } else {
+        var allFields = dimensions.concat(measures);
+        for (var af = 0; af < allFields.length; af++) {
+          if (allFields[af].name === valField) {
+            valLabel = allFields[af].label_short || allFields[af].label || valField;
+            break;
+          }
+        }
+      }
+
+      if (!valField) {
+        container.innerHTML = "<div style="padding:20px;color:#64748b;">Please add a numeric measure or dimension to plot distributions.</div>";
         return;
       }
 
+      // Configuration settings
       var themeKey = config.colorPalette || "google_modern";
-      var theme = PALETTES[themeKey] || PALETTES.google_modern;
-      var valueFormat = config.valueFormat || "compact_currency";
+      var theme = Object.assign({}, PALETTES[themeKey] || PALETTES.google_modern);
+      if (config.customPrimaryColor) theme.medianColor = config.customPrimaryColor;
+      var posColor = config.customPositiveColor || "#059669";
+      var negColor = config.customNegativeColor || "#e11d48";
+
       var displayMode = config.displayMode || "violin_box";
       var bandwidthFactor = config.bandwidthFactor || "auto";
       var scalingMode = config.scalingMode || "shared";
       var yAxisScope = config.yAxisScope || "robust";
       var showOutliers = config.showOutliers !== false;
-      var showSummaryStats = config.showSummaryStats !== false;
+      var hudMode = config.hudMode || "full";
       var showSearch = config.showSearch !== false;
       var fillOpacity = parseFloat(config.fillOpacity || "0.75");
       var boxPlotWidthSetting = config.boxPlotWidth || "medium";
       var showGridlines = config.showGridlines !== false;
       var showMeanMarker = config.showMeanMarker !== false;
+      var polarity = config.metricPolarity || "higher_is_better";
+      var fontScale = config.fontScale || "standard";
+      var labelDensity = config.dataLabelDensity || "peaks_only";
+      var targetMode = config.targetCalculationMode || "dataset_median";
+      var refLineLabel = config.referenceLineLabel || "Benchmark Target";
+      var alertThreshold = config.anomalyAlertThreshold !== undefined ? Number(config.anomalyAlertThreshold) : 15;
+      var sortOrder = config.sortOrder || "metric_desc";
+      var topN = config.topN || "all";
+      var rollupOther = config.rollupOther === true;
+      var suppressNulls = config.suppressNulls !== false;
+
+      var valueFormatSetting = config.valueFormat || "auto";
+      var effectiveFormat = valueFormatSetting;
+      if (effectiveFormat === "auto") {
+        var lowerValName = (valField + " " + valLabel).toLowerCase();
+        if (/price|cost|revenue|sales|spend|margin|arr|mrr|usd|\$/i.test(lowerValName)) {
+          effectiveFormat = "compact_currency";
+        } else if (/pct|percent|ratio|rate|share|penetration/i.test(lowerValName)) {
+          effectiveFormat = "percentage";
+        } else {
+          effectiveFormat = "compact_num";
+        }
+      }
 
       var boxWidth = boxPlotWidthSetting === "slim" ? 8 : (boxPlotWidthSetting === "wide" ? 22 : 14);
 
@@ -652,11 +992,17 @@
       for (var r = 0; r < data.length; r++) {
         var row = data[r];
         var catVal = row[catField] ? (row[catField].rendered || row[catField].value) : "Unknown";
-        if (catVal === null || catVal === undefined || catVal === "") catVal = "Unknown";
+        if (catVal === null || catVal === undefined || catVal === "") {
+          if (suppressNulls) continue;
+          catVal = "Unknown";
+        }
         catVal = String(catVal);
 
         var rawNum = row[valField] ? row[valField].value : null;
-        if (rawNum === null || rawNum === undefined || isNaN(Number(rawNum))) continue;
+        if (rawNum === null || rawNum === undefined || isNaN(Number(rawNum))) {
+          if (suppressNulls) continue;
+          continue;
+        }
         var num = Number(rawNum);
 
         if (!groupsMap[catVal]) {
@@ -672,231 +1018,262 @@
 
       var categories = Object.keys(groupsMap);
       if (categories.length === 0 || allNumericValues.length === 0) {
-        container.innerHTML = "<div style=\"padding:20px;color:#64748b;\">No numeric data points found to plot distribution.</div>";
+        container.innerHTML = "<div style="padding:20px;color:#64748b;">No numeric data points found to plot.</div>";
         return;
       }
 
-      // Compute statistics for each category
-      var globalMin = Infinity;
-      var globalMax = -Infinity;
-      var categoryStats = [];
-      var globalMaxDensity = 0;
-
-      for (var c = 0; c < categories.length; c++) {
-        var cName = categories[c];
-        var grp = groupsMap[cName];
-        var stats = computeStats(grp.values, bandwidthFactor);
-        if (stats) {
-          if (stats.min < globalMin) globalMin = stats.min;
-          if (stats.max > globalMax) globalMax = stats.max;
-          categoryStats.push({
-            category: cName,
-            stats: stats,
-            links: grp.links
-          });
-        }
-      }
-
-      if (categoryStats.length === 0) {
-        container.innerHTML = "<div style=\"padding:20px;color:#64748b;\">Insufficient data points to compute distributions.</div>";
-        return;
-      }
-
-      // --- Y DOMAIN SCOPE ---
-      // Heavily skewed business data (a handful of $1M whale transactions against
-      // a $50 median) collapses every violin into a flat needle when the axis is
-      // forced to the absolute max. Robust scoping zooms the axis to the bulk of
-      // the distribution and flags clipped extremes on each lane instead.
-      var sortedAll = allNumericValues.slice().sort(function (a, b) { return a - b; });
-      function quantileOf(p) {
-        if (sortedAll.length === 0) return 0;
-        var pos = (sortedAll.length - 1) * p;
-        var lo = Math.floor(pos);
-        var hi = Math.ceil(pos);
-        if (lo === hi) return sortedAll[lo];
-        return sortedAll[lo] + (sortedAll[hi] - sortedAll[lo]) * (pos - lo);
-      }
-
-      var scopeMin = globalMin;
-      var scopeMax = globalMax;
-
-      if (yAxisScope === "robust") {
-        // Widest Tukey whisker across categories, so every box and violin body fits
-        var whiskerTop = -Infinity;
-        var whiskerBottom = Infinity;
-        for (var w = 0; w < categoryStats.length; w++) {
-          var ws = categoryStats[w].stats;
-          if (ws.whiskerHigh > whiskerTop) whiskerTop = ws.whiskerHigh;
-          if (ws.whiskerLow < whiskerBottom) whiskerBottom = ws.whiskerLow;
-        }
-        if (isFinite(whiskerTop) && isFinite(whiskerBottom) && whiskerTop > whiskerBottom) {
-          // Allow a little headroom so near-threshold outliers stay visible
-          var wSpan = whiskerTop - whiskerBottom;
-          scopeMax = Math.min(globalMax, whiskerTop + wSpan * 0.18);
-          scopeMin = Math.max(globalMin, whiskerBottom - wSpan * 0.08);
-        }
-      } else if (yAxisScope === "p99") {
-        scopeMin = quantileOf(0.01);
-        scopeMax = quantileOf(0.99);
-      }
-
-      if (!(scopeMax > scopeMin)) {
-        scopeMin = globalMin;
-        scopeMax = globalMax;
-      }
-
-      var rangeSpan = scopeMax - scopeMin;
-      if (rangeSpan === 0) rangeSpan = Math.abs(scopeMax) || 1;
-      var yDomainMin = scopeMin - rangeSpan * 0.05;
-      if (globalMin >= 0 && yDomainMin < 0) yDomainMin = 0;
-      var yDomainMax = scopeMax + rangeSpan * 0.05;
-      var yRange = [yDomainMin, yDomainMax];
-      var isClipped = yAxisScope !== "full" && (globalMax > yDomainMax || globalMin < yDomainMin);
-
-      // Compute KDE for all categories locally
-      for (var k = 0; k < categoryStats.length; k++) {
-        var kde = computeKDE(categoryStats[k].stats, 60, yRange);
-        categoryStats[k].kde = kde;
-        if (kde.maxDensity > globalMaxDensity) {
-          globalMaxDensity = kde.maxDensity;
-        }
-      }
-      if (globalMaxDensity === 0) globalMaxDensity = 1;
-
-      // Global Summary Stats for HUD
-      var globalStats = computeStats(allNumericValues, "auto");
-      var globalOutlierCount = 0;
-      for (var g = 0; g < categoryStats.length; g++) {
-        globalOutlierCount += categoryStats[g].stats.outliers.length;
-      }
-      var outlierPct = ((globalOutlierCount / totalRows) * 100).toFixed(1) + "%";
-
-      // Filter by search term
-      var filteredCategories = categoryStats;
-      if (self._searchTerm && self._searchTerm.trim() !== "") {
-        var query = self._searchTerm.toLowerCase().trim();
-        filteredCategories = categoryStats.filter(function (d) {
-          return d.category.toLowerCase().indexOf(query) !== -1;
+      // Compute stats for all groups
+      var categoryStatsList = [];
+      categories.forEach(function (cat) {
+        var vals = groupsMap[cat].values;
+        if (vals.length === 0) return;
+        var st = computeStats(vals, bandwidthFactor);
+        categoryStatsList.push({
+          category: cat,
+          values: vals,
+          links: groupsMap[cat].links,
+          stats: st
         });
+      });
+
+      // Dataset-wide statistics & Benchmark Target calculation
+      var datasetStats = computeStats(allNumericValues, bandwidthFactor);
+      var benchmarkTarget = null;
+      if (targetMode === "dataset_mean") benchmarkTarget = datasetStats.mean;
+      else if (targetMode === "dataset_median") benchmarkTarget = datasetStats.median;
+      else if (targetMode === "percentile_p75") benchmarkTarget = datasetStats.q3;
+      else if (targetMode === "percentile_p90") {
+        var sortedAll = allNumericValues.slice().sort(function(a,b){return a-b;});
+        var p90Idx = Math.floor(sortedAll.length * 0.90);
+        benchmarkTarget = sortedAll[Math.min(p90Idx, sortedAll.length - 1)];
+      } else if (targetMode === "fixed_value") {
+        benchmarkTarget = Number(config.fixedTargetValue || 0);
       }
 
-      // Sort categories
-      var sortMode = self._sortOption || "median_desc";
-      filteredCategories.sort(function (a, b) {
-        if (sortMode === "median_desc") return b.stats.median - a.stats.median;
-        if (sortMode === "median_asc") return a.stats.median - b.stats.median;
-        if (sortMode === "mean_desc") return b.stats.mean - a.stats.mean;
-        if (sortMode === "count_desc") return b.stats.n - a.stats.n;
-        if (sortMode === "iqr_desc") return b.stats.iqr - a.stats.iqr;
-        if (sortMode === "name_asc") return a.category.localeCompare(b.category);
-        return 0;
+      // Sorting
+      if (sortOrder === "metric_desc") {
+        categoryStatsList.sort(function (a, b) { return b.stats.median - a.stats.median; });
+      } else if (sortOrder === "metric_asc") {
+        categoryStatsList.sort(function (a, b) { return a.stats.median - b.stats.median; });
+      } else if (sortOrder === "count_desc") {
+        categoryStatsList.sort(function (a, b) { return b.stats.n - a.stats.n; });
+      } else if (sortOrder === "spread_iqr_desc") {
+        categoryStatsList.sort(function (a, b) { return b.stats.iqr - a.stats.iqr; });
+      } else if (sortOrder === "alphabetical") {
+        categoryStatsList.sort(function (a, b) { return a.category.localeCompare(b.category); });
+      }
+
+      // Top-N & Rollup Other
+      var topNLimit = topN !== "all" ? parseInt(topN, 10) : Infinity;
+      if (categoryStatsList.length > topNLimit) {
+        if (rollupOther) {
+          var keep = categoryStatsList.slice(0, topNLimit);
+          var other = categoryStatsList.slice(topNLimit);
+          var otherVals = [];
+          var otherLinks = [];
+          other.forEach(function (o) {
+            otherVals = otherVals.concat(o.values);
+            if (o.links && o.links.length) otherLinks = otherLinks.concat(o.links);
+          });
+          var otherStats = computeStats(otherVals, bandwidthFactor);
+          keep.push({
+            category: "Other (" + other.length + " groups)",
+            values: otherVals,
+            links: otherLinks,
+            stats: otherStats
+          });
+          categoryStatsList = keep;
+        } else {
+          categoryStatsList = categoryStatsList.slice(0, topNLimit);
+        }
+      }
+
+      // Search Filtering
+      var searchTerm = (self._searchTerm || "").trim().toLowerCase();
+      var filteredCategories = categoryStatsList.filter(function (cs) {
+        if (!searchTerm) return true;
+        return cs.category.toLowerCase().indexOf(searchTerm) !== -1;
+      });
+
+      if (filteredCategories.length === 0) {
+        container.innerHTML = "<div style="padding:20px;color:#64748b;">No categories match search filter: \"" + searchTerm + "\".</div>";
+        return;
+      }
+
+      // Compute Y-Axis Range across visible categories
+      var yMin = Infinity;
+      var yMax = -Infinity;
+      filteredCategories.forEach(function (c) {
+        if (yAxisScope === "robust") {
+          if (c.stats.whiskerLow < yMin) yMin = c.stats.whiskerLow;
+          if (c.stats.whiskerHigh > yMax) yMax = c.stats.whiskerHigh;
+        } else if (yAxisScope === "p99") {
+          var p01 = c.stats.sorted[Math.floor(c.stats.n * 0.01)];
+          var p99 = c.stats.sorted[Math.floor(c.stats.n * 0.99)];
+          if (p01 < yMin) yMin = p01;
+          if (p99 > yMax) yMax = p99;
+        } else {
+          if (c.stats.min < yMin) yMin = c.stats.min;
+          if (c.stats.max > yMax) yMax = c.stats.max;
+        }
+      });
+
+      if (benchmarkTarget !== null) {
+        if (benchmarkTarget < yMin) yMin = benchmarkTarget;
+        if (benchmarkTarget > yMax) yMax = benchmarkTarget;
+      }
+
+      var yPadding = (yMax - yMin) * 0.08 || 1;
+      var yRange = [yMin - yPadding, yMax + yPadding];
+
+      // Compute KDE for each lane
+      var globalMaxDensity = 0;
+      filteredCategories.forEach(function (c) {
+        c.kde = computeKDE(c.stats, 60, yRange);
+        if (c.kde.maxDensity > globalMaxDensity) globalMaxDensity = c.kde.maxDensity;
       });
 
       // Clear container DOM
       container.innerHTML = "";
       container.style.background = theme.bg;
 
-      // --- HEADER & CONTROLS TOOLBAR ---
-      var headerEl = document.createElement("div");
-      headerEl.style.padding = "10px 18px";
-      headerEl.style.borderBottom = "1px solid " + theme.border;
-      headerEl.style.display = "flex";
-      headerEl.style.flexWrap = "wrap";
-      headerEl.style.alignItems = "center";
-      headerEl.style.justifyContent = "space-between";
-      headerEl.style.gap = "12px";
-      headerEl.style.background = theme.bg;
-      headerEl.style.flexShrink = "0";
+      // --- RENDER EXECUTIVE HUD & SEARCH BAR ---
+      if (hudMode !== "hidden") {
+        var headerEl = document.createElement("div");
+        headerEl.style.padding = fontScale === "compact" ? "6px 12px" : "10px 18px";
+        headerEl.style.borderBottom = "1px solid " + theme.border;
+        headerEl.style.display = "flex";
+        headerEl.style.flexWrap = "wrap";
+        headerEl.style.alignItems = "center";
+        headerEl.style.justifyContent = "space-between";
+        headerEl.style.gap = "10px";
+        headerEl.style.background = theme.bg;
+        headerEl.style.flexShrink = "0";
 
-      // Left controls: Search & Sort
-      var leftControls = document.createElement("div");
-      leftControls.style.display = "flex";
-      leftControls.style.alignItems = "center";
-      leftControls.style.gap = "10px";
+        var leftControls = document.createElement("div");
+        leftControls.style.display = "flex";
+        leftControls.style.alignItems = "center";
+        leftControls.style.gap = "10px";
+        leftControls.style.flexWrap = "wrap";
 
-      if (showSearch) {
-        var searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.placeholder = "🔍 Search categories...";
-        searchInput.value = self._searchTerm || "";
-        searchInput.style.padding = "5px 10px";
-        searchInput.style.fontSize = "12px";
-        searchInput.style.borderRadius = "6px";
-        searchInput.style.border = "1px solid " + theme.border;
-        searchInput.style.outline = "none";
-        searchInput.style.width = "170px";
-        searchInput.style.color = theme.text;
-        searchInput.style.background = theme.hudBg;
-        searchInput.oninput = function (e) {
-          self._searchTerm = e.target.value;
-          self.renderChart(d3, container, data, config, queryResponse);
-        };
-        leftControls.appendChild(searchInput);
+        if (config.chartTitleOverride) {
+          var titleEl = document.createElement("div");
+          titleEl.style.fontWeight = "700";
+          titleEl.style.fontSize = fontScale === "compact" ? "12px" : "14px";
+          titleEl.style.color = theme.text;
+          titleEl.textContent = config.chartTitleOverride;
+          leftControls.appendChild(titleEl);
+        }
+
+        if (showSearch) {
+          var searchInput = document.createElement("input");
+          searchInput.type = "text";
+          searchInput.placeholder = "🔍 Filter categories...";
+          searchInput.value = self._searchTerm || "";
+          searchInput.style.padding = "4px 8px";
+          searchInput.style.fontSize = "11px";
+          searchInput.style.borderRadius = "6px";
+          searchInput.style.border = "1px solid " + theme.border;
+          searchInput.style.outline = "none";
+          searchInput.style.width = "140px";
+          searchInput.style.color = theme.text;
+          searchInput.style.background = theme.hudBg;
+          searchInput.oninput = function (e) {
+            self._searchTerm = e.target.value;
+            self.renderChart(d3, container, data, config, queryResponse);
+          };
+          leftControls.appendChild(searchInput);
+        }
+        headerEl.appendChild(leftControls);
+
+        // Scorecard KPIs
+        var hudEl = document.createElement("div");
+        hudEl.style.display = "flex";
+        hudEl.style.alignItems = "center";
+        hudEl.style.gap = "8px";
+        hudEl.style.flexWrap = "wrap";
+
+        function createHudCard(label, val, badge, badgeColor) {
+          var card = document.createElement("div");
+          card.style.background = theme.hudBg;
+          card.style.border = "1px solid " + theme.border;
+          card.style.borderRadius = "6px";
+          card.style.padding = fontScale === "compact" ? "3px 8px" : "5px 12px";
+          card.style.display = "flex";
+          card.style.flexDirection = "column";
+
+          var lbl = document.createElement("span");
+          lbl.style.fontSize = "10px";
+          lbl.style.fontWeight = "600";
+          lbl.style.color = theme.subtext;
+          lbl.style.textTransform = "uppercase";
+          lbl.textContent = label;
+          card.appendChild(lbl);
+
+          var valRow = document.createElement("div");
+          valRow.style.display = "flex";
+          valRow.style.alignItems = "baseline";
+          valRow.style.gap = "6px";
+
+          var numSpan = document.createElement("span");
+          numSpan.style.fontSize = fontScale === "compact" ? "12px" : "14px";
+          numSpan.style.fontWeight = "700";
+          numSpan.style.color = theme.text;
+          numSpan.textContent = val;
+          valRow.appendChild(numSpan);
+
+          if (badge) {
+            var bd = document.createElement("span");
+            bd.style.fontSize = "10px";
+            bd.style.fontWeight = "700";
+            bd.style.padding = "1px 5px";
+            bd.style.borderRadius = "4px";
+            bd.style.background = badgeColor || theme.medianColor;
+            bd.style.color = "#ffffff";
+            bd.textContent = badge;
+            valRow.appendChild(bd);
+          }
+          card.appendChild(valRow);
+          return card;
+        }
+
+        if (hudMode === "full") {
+          hudEl.appendChild(createHudCard("Categories", filteredCategories.length));
+          hudEl.appendChild(createHudCard("Observations", datasetStats.n.toLocaleString()));
+          hudEl.appendChild(createHudCard("Median " + valLabel, formatValue(datasetStats.median, effectiveFormat)));
+
+          if (benchmarkTarget !== null) {
+            var isGood = polarity === "higher_is_better" ? (datasetStats.median >= benchmarkTarget) : (datasetStats.median <= benchmarkTarget);
+            var badgeText = isGood ? "✓ Met" : "! Gap";
+            var badgeColor = isGood ? posColor : negColor;
+            hudEl.appendChild(createHudCard(refLineLabel, formatValue(benchmarkTarget, effectiveFormat), badgeText, badgeColor));
+          }
+
+          var totalOutliers = 0;
+          filteredCategories.forEach(function (c) { totalOutliers += c.stats.outliers.length; });
+          var outlierPct = (totalOutliers / datasetStats.n) * 100;
+          var outlierAlert = outlierPct >= alertThreshold;
+          hudEl.appendChild(createHudCard("Outliers", totalOutliers + " (" + outlierPct.toFixed(1) + "%)", outlierAlert ? "Alert" : null, negColor));
+        } else {
+          // Compact HUD Pill
+          var pill = document.createElement("div");
+          pill.style.padding = "3px 10px";
+          pill.style.borderRadius = "12px";
+          pill.style.background = theme.hudBg;
+          pill.style.border = "1px solid " + theme.border;
+          pill.style.fontSize = "11px";
+          pill.style.color = theme.text;
+          pill.innerHTML = "<b>" + filteredCategories.length + "</b> lanes · <b>" + datasetStats.n.toLocaleString() + "</b> obs · Median: <b>" + formatValue(datasetStats.median, effectiveFormat) + "</b>";
+          hudEl.appendChild(pill);
+        }
+        headerEl.appendChild(hudEl);
+        container.appendChild(headerEl);
       }
-
-      // Sort Selector
-      var sortSelect = document.createElement("select");
-      sortSelect.style.padding = "5px 8px";
-      sortSelect.style.fontSize = "12px";
-      sortSelect.style.borderRadius = "6px";
-      sortSelect.style.border = "1px solid " + theme.border;
-      sortSelect.style.background = theme.hudBg;
-      sortSelect.style.color = theme.text;
-      sortSelect.style.outline = "none";
-      sortSelect.style.cursor = "pointer";
-
-      var sortOptions = [
-        { label: "Sort: Median ↓", value: "median_desc" },
-        { label: "Sort: Median ↑", value: "median_asc" },
-        { label: "Sort: Mean ↓", value: "mean_desc" },
-        { label: "Sort: Count (N) ↓", value: "count_desc" },
-        { label: "Sort: Spread (IQR) ↓", value: "iqr_desc" },
-        { label: "Sort: Category Name", value: "name_asc" }
-      ];
-
-      for (var s = 0; s < sortOptions.length; s++) {
-        var opt = document.createElement("option");
-        opt.value = sortOptions[s].value;
-        opt.textContent = sortOptions[s].label;
-        if (sortOptions[s].value === sortMode) opt.selected = true;
-        sortSelect.appendChild(opt);
-      }
-
-      sortSelect.onchange = function (e) {
-        self._sortOption = e.target.value;
-        self.renderChart(d3, container, data, config, queryResponse);
-      };
-      leftControls.appendChild(sortSelect);
-
-      headerEl.appendChild(leftControls);
-
-      // Right Stats Summary HUD
-      if (showSummaryStats && globalStats) {
-        var hud = document.createElement("div");
-        hud.style.display = "flex";
-        hud.style.alignItems = "center";
-        hud.style.gap = "14px";
-        hud.style.fontSize = "11.5px";
-        hud.style.color = theme.subtext;
-
-        hud.innerHTML = "" +
-          "<div><strong>Rows (N):</strong> <span style=\"color:" + theme.text + ";font-weight:600;\">" + totalRows.toLocaleString() + "</span></div>" +
-          "<div><strong>Categories:</strong> <span style=\"color:" + theme.text + ";font-weight:600;\">" + filteredCategories.length + " / " + categories.length + "</span></div>" +
-          "<div><strong>Global Median:</strong> <span style=\"color:" + theme.medianColor + ";font-weight:700;\">" + formatValue(globalStats.median, valueFormat) + "</span></div>" +
-          "<div><strong>Global IQR:</strong> <span style=\"color:" + theme.text + ";font-weight:600;\">" + formatValue(globalStats.iqr, valueFormat) + "</span></div>" +
-          "<div><strong>Outliers:</strong> <span style=\"color:" + theme.outlierColor + ";font-weight:600;\">" + globalOutlierCount + " (" + outlierPct + ")</span></div>" +
-          (isClipped
-            ? "<div title=\"Extreme values beyond the zoomed axis are marked ▲/▼ on their lane. Switch Y-Axis Range to 'Full Range' to include them.\" style=\"background:" + theme.outlierColor + "1a;color:" + theme.outlierColor + ";border-radius:20px;padding:2px 9px;font-weight:700;\">🔍 Axis zoomed to " + formatValue(yDomainMax, valueFormat) + "</div>"
-            : "");
-
-        headerEl.appendChild(hud);
-      }
-
-      container.appendChild(headerEl);
 
       // --- SVG CHART CANVAS ---
       var chartWrapper = document.createElement("div");
-      chartWrapper.style.flex = "1";
+      chartWrapper.style.flex = "1 1 0";
+      chartWrapper.style.minHeight = "0";
       chartWrapper.style.width = "100%";
       chartWrapper.style.position = "relative";
       chartWrapper.style.overflowX = "auto";
@@ -905,15 +1282,12 @@
 
       var containerWidth = chartWrapper.clientWidth || container.clientWidth || 800;
       var containerHeight = chartWrapper.clientHeight || 450;
-
-      // Ensure minimum lane width so violins don't overlap when many categories are plotted
       var minLaneWidth = 72;
       var calculatedWidth = Math.max(containerWidth, filteredCategories.length * minLaneWidth + 120);
 
-      var margin = { top: 25, right: 30, bottom: 65, left: 70 };
+      var margin = { top: 25, right: 80, bottom: 65, left: 70 };
       var width = calculatedWidth - margin.left - margin.right;
       var height = containerHeight - margin.top - margin.bottom;
-
       if (height < 150) height = 150;
 
       var svg = d3.select(chartWrapper)
@@ -925,121 +1299,73 @@
       var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      // Y Scale (Numeric observations). Clamped so that a zoomed (robust) domain
-      // can never paint marks outside the plotting area.
       var yScale = d3.scaleLinear()
         .domain(yRange)
         .range([height, 0])
         .clamp(true);
 
-      // X Scale (Categories band)
-      var catNames = filteredCategories.map(function (d) { return d.category; });
       var xScale = d3.scaleBand()
-        .domain(catNames)
+        .domain(filteredCategories.map(function (d) { return d.category; }))
         .range([0, width])
         .padding(0.18);
 
       var laneWidth = xScale.bandwidth();
 
+      var colorScale = d3.scaleOrdinal()
+        .domain(filteredCategories.map(function (d) { return d.category; }))
+        .range(theme.colors);
+
       // Horizontal Gridlines
       if (showGridlines) {
+        var yAxisGrid = d3.axisLeft(yScale)
+          .ticks(6)
+          .tickSize(-width)
+          .tickFormat("");
+
         g.append("g")
-          .attr("class", "grid")
-          .call(d3.axisLeft(yScale)
-            .ticks(6)
-            .tickSize(-width)
-            .tickFormat("")
-          )
+          .attr("class", "y-grid")
+          .call(yAxisGrid)
           .selectAll("line")
           .attr("stroke", theme.grid)
           .attr("stroke-dasharray", "3,3");
 
-        g.selectAll(".grid .domain").remove();
+        g.select(".y-grid .domain").remove();
       }
 
-      // Y Axis
-      var yAxis = d3.axisLeft(yScale)
-        .ticks(6)
-        .tickFormat(function (d) { return formatValue(d, valueFormat); });
+      // Benchmark Reference Line across all lanes
+      if (benchmarkTarget !== null) {
+        var targetY = yScale(benchmarkTarget);
+        var refLineGroup = g.append("g").attr("class", "benchmark-reference-group");
+        refLineGroup.append("line")
+          .attr("x1", 0)
+          .attr("x2", width)
+          .attr("y1", targetY)
+          .attr("y2", targetY)
+          .attr("stroke", theme.medianColor)
+          .attr("stroke-width", 1.8)
+          .attr("stroke-dasharray", "5,4")
+          .attr("opacity", 0.85);
 
-      var yAxisGroup = g.append("g")
-        .attr("class", "y-axis")
-        .call(yAxis);
+        // Right margin label badge
+        var badgeGroup = refLineGroup.append("g")
+          .attr("transform", "translate(" + (width + 6) + "," + (targetY - 10) + ")");
+        badgeGroup.append("rect")
+          .attr("rx", 4)
+          .attr("width", 70)
+          .attr("height", 18)
+          .attr("fill", theme.medianColor)
+          .attr("opacity", 0.9);
+        badgeGroup.append("text")
+          .attr("x", 35)
+          .attr("y", 12)
+          .attr("text-anchor", "middle")
+          .attr("fill", "#ffffff")
+          .attr("font-size", "9px")
+          .attr("font-weight", "700")
+          .text(refLineLabel.substring(0, 8) + ": " + formatValue(benchmarkTarget, effectiveFormat));
+      }
 
-      yAxisGroup.selectAll("text")
-        .attr("fill", theme.subtext)
-        .attr("font-size", "11px");
-
-      yAxisGroup.selectAll("line, path")
-        .attr("stroke", theme.border);
-
-      // Y Axis Label
-      g.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -margin.left + 16)
-        .attr("x", -height / 2)
-        .attr("text-anchor", "middle")
-        .attr("fill", theme.subtext)
-        .attr("font-size", "11.5px")
-        .attr("font-weight", "600")
-        .text(valLabel);
-
-      // X Axis
-      var xAxis = d3.axisBottom(xScale);
-      var xAxisGroup = g.append("g")
-        .attr("class", "x-axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-      xAxisGroup.selectAll("line, path")
-        .attr("stroke", theme.border);
-
-      xAxisGroup.selectAll("text")
-        .attr("fill", theme.text)
-        .attr("font-size", "11px")
-        .attr("font-weight", "600")
-        .style("text-anchor", "end")
-        .attr("dx", "-0.6em")
-        .attr("dy", "0.2em")
-        .attr("transform", "rotate(-30)")
-        .text(function (d) {
-          return d.length > 16 ? d.substring(0, 15) + "…" : d;
-        });
-
-      // Synchronized Scrubber Crosshair Line (Horizontal)
-      var crosshair = g.append("g")
-        .attr("class", "crosshair-group")
-        .style("display", "none")
-        .style("pointer-events", "none");
-
-      var crosshairLine = crosshair.append("line")
-        .attr("x1", 0)
-        .attr("x2", width)
-        .attr("stroke", theme.subtext)
-        .attr("stroke-width", 1)
-        .attr("stroke-dasharray", "4,4")
-        .attr("opacity", 0.6);
-
-      var crosshairBadge = crosshair.append("rect")
-        .attr("x", -margin.left + 4)
-        .attr("width", margin.left - 8)
-        .attr("height", 18)
-        .attr("rx", 4)
-        .attr("fill", theme.text);
-
-      var crosshairText = crosshair.append("text")
-        .attr("x", -margin.left + (margin.left - 8) / 2 + 4)
-        .attr("dy", "12px")
-        .attr("text-anchor", "middle")
-        .attr("fill", theme.bg)
-        .attr("font-size", "10px")
-        .attr("font-weight", "700");
-
-      // --- RENDER VIOLIN LANES ---
-      var colorScale = d3.scaleOrdinal()
-        .domain(catNames)
-        .range(theme.colors);
-
+      // Render Lanes
       var lanes = g.selectAll(".violin-lane")
         .data(filteredCategories)
         .enter()
@@ -1050,7 +1376,7 @@
         })
         .style("cursor", "pointer");
 
-      // Background hover highlight rect
+      // Hover background
       lanes.append("rect")
         .attr("class", "lane-hover-bg")
         .attr("x", -xScale.padding() * laneWidth / 2)
@@ -1060,7 +1386,7 @@
         .attr("fill", "transparent")
         .attr("rx", 6);
 
-      lanes.each(function (d, idx) {
+      lanes.each(function (d) {
         var lane = d3.select(this);
         var stats = d.stats;
         var kde = d.kde;
@@ -1070,25 +1396,20 @@
         if (maxDensityForLane === 0) maxDensityForLane = 1;
 
         var halfMaxViolinWidth = (laneWidth * 0.44);
-
-        // Density horizontal width scale
         var densityScale = d3.scaleLinear()
           .domain([0, maxDensityForLane])
           .range([0, halfMaxViolinWidth]);
 
-        // 1. VIOLIN ENVELOPE (Modes: violin_box, split_violin, density_silhouette)
+        // 1. VIOLIN ENVELOPE
         if (displayMode !== "box_jitter") {
           var areaGenerator;
-
           if (displayMode === "split_violin") {
-            // Asymmetric half violin (right side only)
             areaGenerator = d3.area()
               .x0(center)
               .x1(function (pt) { return center + densityScale(pt.density); })
               .y(function (pt) { return yScale(pt.y); })
               .curve(d3.curveCatmullRom);
           } else {
-            // Symmetrical full violin
             areaGenerator = d3.area()
               .x0(function (pt) { return center - densityScale(pt.density); })
               .x1(function (pt) { return center + densityScale(pt.density); })
@@ -1107,11 +1428,11 @@
             .attr("stroke-linejoin", "round");
         }
 
-        // 2. BOX PLOT & QUARTILES (Modes: violin_box, split_violin, box_jitter)
+        // 2. BOX PLOT & QUARTILES
         if (displayMode !== "density_silhouette") {
           var boxCenter = displayMode === "split_violin" ? center - (boxWidth / 2) - 2 : center;
 
-          // Stem / Whisker Line
+          // Whisker Line
           lane.append("line")
             .attr("class", "whisker-stem")
             .attr("x1", boxCenter)
@@ -1120,10 +1441,10 @@
             .attr("y2", yScale(stats.whiskerHigh))
             .attr("stroke", theme.boxStroke)
             .attr("stroke-width", 1.5)
-            .attr("stroke-dasharray", displayMode === "box_jitter" ? "none" : "3,2");
+            .attr("stroke-linecap", "round");
 
-          // Whisker Caps (Horizontals at whiskerLow and whiskerHigh)
-          var capWidth = boxWidth * 0.6;
+          // Whisker Caps
+          var capWidth = boxWidth * 0.7;
           lane.append("line")
             .attr("class", "whisker-cap-low")
             .attr("x1", boxCenter - capWidth / 2)
@@ -1142,223 +1463,190 @@
             .attr("stroke", theme.boxStroke)
             .attr("stroke-width", 1.5);
 
-          // Interquartile Range (IQR) Rect (Q1 to Q3)
-          var yQ3 = yScale(stats.q3);
-          var yQ1 = yScale(stats.q1);
-          var boxHeight = Math.max(2, yQ1 - yQ3);
-
+          // IQR Box
           lane.append("rect")
             .attr("class", "iqr-box")
             .attr("x", boxCenter - boxWidth / 2)
-            .attr("y", yQ3)
+            .attr("y", yScale(stats.q3))
             .attr("width", boxWidth)
-            .attr("height", boxHeight)
+            .attr("height", Math.max(2, yScale(stats.q1) - yScale(stats.q3)))
             .attr("fill", theme.boxFill)
             .attr("stroke", theme.boxStroke)
-            .attr("stroke-width", 1.8)
+            .attr("stroke-width", 1.5)
             .attr("rx", 2);
 
-          // Median Indicator (Crisp circle or horizontal line)
-          var yMed = yScale(stats.median);
+          // Median Marker
           lane.append("circle")
-            .attr("class", "median-marker")
+            .attr("class", "median-dot")
             .attr("cx", boxCenter)
-            .attr("cy", yMed)
-            .attr("r", Math.min(boxWidth / 2 - 1, 3.5))
+            .attr("cy", yScale(stats.median))
+            .attr("r", Math.max(3, boxWidth / 3.5))
             .attr("fill", theme.medianColor)
             .attr("stroke", "#ffffff")
-            .attr("stroke-width", 1.2);
+            .attr("stroke-width", 1.5);
 
-          // Mean Marker (Optional Diamond)
+          // Mean Marker
           if (showMeanMarker) {
-            var yMean = yScale(stats.mean);
-            var dSize = 3;
-            lane.append("polygon")
+            var meanY = yScale(stats.mean);
+            var diamondSize = 4;
+            var diamondPath = "M " + boxCenter + " " + (meanY - diamondSize) +
+                              " L " + (boxCenter + diamondSize) + " " + meanY +
+                              " L " + boxCenter + " " + (meanY + diamondSize) +
+                              " L " + (boxCenter - diamondSize) + " " + meanY + " Z";
+            lane.append("path")
               .attr("class", "mean-marker")
-              .attr("points", "" +
-                boxCenter + "," + (yMean - dSize) + " " +
-                (boxCenter + dSize) + "," + yMean + " " +
-                boxCenter + "," + (yMean + dSize) + " " +
-                (boxCenter - dSize) + "," + yMean
-              )
+              .attr("d", diamondPath)
               .attr("fill", "#f59e0b")
-              .attr("stroke", "#78350f")
-              .attr("stroke-width", 0.8);
+              .attr("stroke", "#ffffff")
+              .attr("stroke-width", 1);
           }
         }
 
-        // 3. JITTERED SCATTER POINTS (For box_jitter mode, or outlier points in other modes)
-        // Points outside the visible Y domain (robust zoom) are excluded and summarized
-        // as a chevron badge so the axis stays readable without hiding their existence.
-        function inDomain(v) { return v >= yDomainMin && v <= yDomainMax; }
-        var clippedAbove = 0;
-        var clippedBelow = 0;
-        for (var cp = 0; cp < stats.sorted.length; cp++) {
-          if (stats.sorted[cp] > yDomainMax) clippedAbove++;
-          else if (stats.sorted[cp] < yDomainMin) clippedBelow++;
-        }
+        // 3. JITTER SCATTER POINTS
+        if (displayMode === "box_jitter" || showOutliers) {
+          var ptsToPlot = displayMode === "box_jitter" ? stats.sorted : stats.outliers;
+          var scatterCenter = displayMode === "split_violin" ? center + 12 : center;
+          var maxJitter = displayMode === "box_jitter" ? (laneWidth * 0.32) : 6;
 
-        if (displayMode === "box_jitter") {
-          // Render all sample points with pseudo-random jitter
-          var jitterWidth = laneWidth * 0.45;
-          lane.selectAll(".jitter-dot")
-            .data(stats.sorted.filter(inDomain))
+          lane.selectAll(".point-dot")
+            .data(ptsToPlot)
             .enter()
             .append("circle")
-            .attr("class", "jitter-dot")
-            .attr("cx", function (_, pIdx) {
-              // Deterministic pseudo-jitter based on index
-              var seed = Math.sin(pIdx * 12.9898 + idx * 78.233) * 43758.5453;
-              var pseudoRand = seed - Math.floor(seed);
-              return center + (pseudoRand - 0.5) * jitterWidth;
+            .attr("class", "point-dot")
+            .attr("cx", function (v, i) {
+              var pseudoRand = Math.sin(i * 12.9898 + v) * 43758.5453;
+              var jitter = ((pseudoRand - Math.floor(pseudoRand)) - 0.5) * 2 * maxJitter;
+              return scatterCenter + jitter;
             })
-            .attr("cy", function (val) { return yScale(val); })
-            .attr("r", 2.5)
-            .attr("fill", catColor)
-            .attr("fill-opacity", 0.45)
-            .attr("stroke", catColor)
-            .attr("stroke-width", 0.5);
-        } else if (showOutliers && stats.outliers.length > 0) {
-          // Render only extreme outliers beyond Tukey whiskers
-          var outlierJitter = Math.min(16, boxWidth * 0.8);
-          lane.selectAll(".outlier-dot")
-            .data(stats.outliers.filter(inDomain))
-            .enter()
-            .append("circle")
-            .attr("class", "outlier-dot")
-            .attr("cx", function (_, oIdx) {
-              var seed = Math.sin(oIdx * 45.12 + idx * 91.3) * 1000;
-              var r = seed - Math.floor(seed);
-              return center + (r - 0.5) * outlierJitter;
+            .attr("cy", function (v) { return yScale(v); })
+            .attr("r", displayMode === "box_jitter" ? 2.5 : 3.5)
+            .attr("fill", function () {
+              return displayMode === "box_jitter" ? catColor : theme.outlierColor;
             })
-            .attr("cy", function (val) { return yScale(val); })
-            .attr("r", 3)
-            .attr("fill", theme.outlierColor)
-            .attr("fill-opacity", 0.75)
+            .attr("fill-opacity", displayMode === "box_jitter" ? 0.45 : 0.85)
             .attr("stroke", "#ffffff")
-            .attr("stroke-width", 1);
+            .attr("stroke-width", 0.6);
         }
 
-        // Clipped extremes badges (only appear when the axis is zoomed)
-        if (clippedAbove > 0) {
-          lane.append("text")
-            .attr("class", "clipped-badge")
-            .attr("x", center)
-            .attr("y", 27)
-            .attr("text-anchor", "middle")
-            .attr("fill", theme.outlierColor)
-            .attr("font-size", "9.5px")
-            .attr("font-weight", "700")
-            .text("▲ " + clippedAbove)
-            .append("title")
-            .text(clippedAbove + " value(s) above " + formatValue(yDomainMax, valueFormat) +
-              " clipped by the zoomed axis (category max " + formatValue(stats.max, valueFormat) + ")");
-        }
-        if (clippedBelow > 0) {
-          lane.append("text")
-            .attr("class", "clipped-badge")
-            .attr("x", center)
-            .attr("y", height - 5)
-            .attr("text-anchor", "middle")
-            .attr("fill", theme.outlierColor)
-            .attr("font-size", "9.5px")
-            .attr("font-weight", "700")
-            .text("▼ " + clippedBelow)
-            .append("title")
-            .text(clippedBelow + " value(s) below " + formatValue(yDomainMin, valueFormat) +
-              " clipped by the zoomed axis (category min " + formatValue(stats.min, valueFormat) + ")");
-        }
+        // 4. DATA VALUE LABELS
+        if (labelDensity !== "hidden") {
+          var labelX = center + (boxWidth / 2) + 6;
+          function addValLabel(yVal, txt, color, isBold) {
+            lane.append("text")
+              .attr("x", labelX)
+              .attr("y", yScale(yVal) + 3)
+              .attr("fill", color || theme.text)
+              .attr("font-size", fontScale === "compact" ? "9px" : "10px")
+              .attr("font-weight", isBold ? "700" : "500")
+              .text(txt);
+          }
 
-        // Sample Size (N) Label at top of lane
-        lane.append("text")
-          .attr("x", center)
-          .attr("y", 12)
-          .attr("text-anchor", "middle")
-          .attr("fill", theme.subtext)
-          .attr("font-size", "10px")
-          .attr("font-weight", "600")
-          .text("n=" + stats.n);
+          if (labelDensity === "all") {
+            addValLabel(stats.whiskerHigh, "Max: " + formatValue(stats.whiskerHigh, effectiveFormat), theme.subtext, false);
+            addValLabel(stats.q3, "Q3: " + formatValue(stats.q3, effectiveFormat), theme.subtext, false);
+            addValLabel(stats.median, formatValue(stats.median, effectiveFormat), theme.medianColor, true);
+            addValLabel(stats.q1, "Q1: " + formatValue(stats.q1, effectiveFormat), theme.subtext, false);
+            addValLabel(stats.whiskerLow, "Min: " + formatValue(stats.whiskerLow, effectiveFormat), theme.subtext, false);
+          } else if (labelDensity === "peaks_only") {
+            addValLabel(stats.whiskerHigh, formatValue(stats.whiskerHigh, effectiveFormat), theme.subtext, false);
+            addValLabel(stats.median, formatValue(stats.median, effectiveFormat), theme.medianColor, true);
+            addValLabel(stats.whiskerLow, formatValue(stats.whiskerLow, effectiveFormat), theme.subtext, false);
+          }
+        }
       });
 
-      // --- INTERACTION & HOVER TOOLTIP ---
-      var tooltip = self._tooltip;
+      // X Axis
+      var xAxis = d3.axisBottom(xScale);
+      var xAxisG = g.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
-      lanes.on("mouseenter", function (event, d) {
-        d3.select(this).select(".lane-hover-bg").attr("fill", "rgba(0, 0, 0, 0.035)");
-        crosshair.style("display", null);
-      });
+      xAxisG.select(".domain").attr("stroke", theme.border);
+      xAxisG.selectAll(".tick line").attr("stroke", theme.border);
+      xAxisG.selectAll(".tick text")
+        .attr("fill", theme.text)
+        .attr("font-size", fontScale === "compact" ? "10px" : "11px")
+        .attr("font-weight", "600")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-32)");
 
+      // Y Axis
+      var yAxis = d3.axisLeft(yScale)
+        .ticks(7)
+        .tickFormat(function (d) { return formatValue(d, effectiveFormat); });
+
+      var yAxisG = g.append("g")
+        .attr("class", "y-axis")
+        .call(yAxis);
+
+      yAxisG.select(".domain").attr("stroke", theme.border);
+      yAxisG.selectAll(".tick line").attr("stroke", theme.border);
+      yAxisG.selectAll(".tick text")
+        .attr("fill", theme.subtext)
+        .attr("font-size", fontScale === "compact" ? "10px" : "11px");
+
+      // Y Axis Title
+      g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -50)
+        .attr("x", -height / 2)
+        .attr("text-anchor", "middle")
+        .attr("fill", theme.subtext)
+        .attr("font-size", "11px")
+        .attr("font-weight", "600")
+        .text(valLabel);
+
+      // Tooltip Interactions
       lanes.on("mousemove", function (event, d) {
-        var pointerCoords = d3.pointer(event, g.node());
-        var currY = pointerCoords[1];
-        var currVal = yScale.invert(currY);
+        var s = d.stats;
+        var tip = self._tooltip;
+        if (!tip) return;
+        tip.style.display = "block";
+        tip.style.background = theme.bg;
+        tip.style.color = theme.text;
+        tip.style.border = "1px solid " + theme.border;
 
-        // Update horizontal scrubber crosshair
-        crosshair.attr("transform", "translate(0, " + currY + ")");
-        crosshairText.text(formatValue(currVal, valueFormat));
+        var html = "<div style='font-weight:700;font-size:13px;margin-bottom:6px;color:" + theme.text + ";'>" + d.category + "</div>" +
+                   "<div style='display:grid;grid-template-columns:auto auto;gap:3px 12px;font-size:11px;'>" +
+                   "<span style='color:" + theme.subtext + ";'>Sample Size:</span><span style='font-weight:600;text-align:right;'>" + s.n.toLocaleString() + "</span>" +
+                   "<span style='color:" + theme.subtext + ";'>Median:</span><span style='font-weight:700;color:" + theme.medianColor + ";text-align:right;'>" + formatValue(s.median, effectiveFormat) + "</span>" +
+                   "<span style='color:" + theme.subtext + ";'>Mean:</span><span style='font-weight:600;text-align:right;'>" + formatValue(s.mean, effectiveFormat) + "</span>" +
+                   "<span style='color:" + theme.subtext + ";'>IQR (Q1–Q3):</span><span style='font-weight:600;text-align:right;'>" + formatValue(s.q1, effectiveFormat) + " – " + formatValue(s.q3, effectiveFormat) + "</span>" +
+                   "<span style='color:" + theme.subtext + ";'>Tukey Whiskers:</span><span style='font-weight:600;text-align:right;'>" + formatValue(s.whiskerLow, effectiveFormat) + " – " + formatValue(s.whiskerHigh, effectiveFormat) + "</span>" +
+                   "<span style='color:" + theme.subtext + ";'>Outliers:</span><span style='font-weight:600;color:" + theme.outlierColor + ";text-align:right;'>" + s.outliers.length + " (" + ((s.outliers.length / s.n) * 100).toFixed(1) + "%)</span>";
 
-        if (!tooltip) return;
-
-        var stats = d.stats;
-        var catColor = colorScale(d.category);
-        var q1Fmt = formatValue(stats.q1, valueFormat);
-        var medFmt = formatValue(stats.median, valueFormat);
-        var meanFmt = formatValue(stats.mean, valueFormat);
-        var q3Fmt = formatValue(stats.q3, valueFormat);
-        var iqrFmt = formatValue(stats.iqr, valueFormat);
-        var minFmt = formatValue(stats.min, valueFormat);
-        var maxFmt = formatValue(stats.max, valueFormat);
-        var lowWhiskerFmt = formatValue(stats.whiskerLow, valueFormat);
-        var highWhiskerFmt = formatValue(stats.whiskerHigh, valueFormat);
-
-        tooltip.innerHTML = "" +
-          "<div style=\"display:flex;align-items:center;gap:6px;margin-bottom:8px;\">" +
-          "  <span style=\"display:inline-block;width:10px;height:10px;border-radius:50%;background:" + catColor + ";\"></span>" +
-          "  <span style=\"font-weight:700;font-size:13px;color:" + theme.text + ";\">" + d.category + "</span>" +
-          "  <span style=\"margin-left:auto;font-size:10.5px;padding:2px 6px;border-radius:4px;background:" + theme.hudBg + ";color:" + theme.subtext + ";font-weight:600;\">N = " + stats.n.toLocaleString() + "</span>" +
-          "</div>" +
-          "<div style=\"display:grid;grid-template-columns:auto auto;gap:4px 16px;color:" + theme.subtext + ";font-size:11.5px;\">" +
-          "  <span><strong>Median (50th):</strong></span><span style=\"color:" + theme.medianColor + ";font-weight:700;text-align:right;\">" + medFmt + "</span>" +
-          "  <span><strong>Mean (Avg):</strong></span><span style=\"color:" + theme.text + ";font-weight:600;text-align:right;\">" + meanFmt + "</span>" +
-          "  <span><strong>Interquartile (IQR):</strong></span><span style=\"color:" + theme.text + ";font-weight:600;text-align:right;\">" + iqrFmt + " (" + q1Fmt + " – " + q3Fmt + ")</span>" +
-          "  <span><strong>Tukey Whiskers:</strong></span><span style=\"color:" + theme.subtext + ";text-align:right;\">[" + lowWhiskerFmt + " … " + highWhiskerFmt + "]</span>" +
-          "  <span><strong>Data Range:</strong></span><span style=\"color:" + theme.subtext + ";text-align:right;\">" + minFmt + " to " + maxFmt + "</span>" +
-          "  <span><strong>Std Deviation:</strong></span><span style=\"color:" + theme.subtext + ";text-align:right;\">±" + formatValue(stats.stdDev, valueFormat) + "</span>" +
-          "  <span><strong>Outliers:</strong></span><span style=\"color:" + (stats.outliers.length > 0 ? theme.outlierColor : theme.subtext) + ";font-weight:600;text-align:right;\">" + stats.outliers.length + " (" + ((stats.outliers.length / stats.n) * 100).toFixed(1) + "%)</span>" +
-          "</div>" +
-          (d.links && d.links.length > 0 ? "<div style=\"margin-top:8px;font-size:10.5px;color:#2563eb;font-weight:600;text-align:center;border-top:1px solid " + theme.border + ";padding-top:5px;\">Click category to drill down &rarr;</div>" : "");
-
-        tooltip.style.backgroundColor = "rgba(255, 255, 255, 0.96)";
-        tooltip.style.border = "1px solid " + theme.border;
-        tooltip.style.color = theme.text;
-        tooltip.style.display = "block";
-
-        var mouseX = event.clientX;
-        var mouseY = event.clientY;
-        var ttWidth = tooltip.offsetWidth || 230;
-        var ttHeight = tooltip.offsetHeight || 160;
-
-        var left = mouseX + 16;
-        var top = mouseY - 20;
-
-        if (left + ttWidth > window.innerWidth - 10) {
-          left = mouseX - ttWidth - 16;
+        if (benchmarkTarget !== null) {
+          var delta = s.median - benchmarkTarget;
+          var deltaPct = (delta / benchmarkTarget) * 100;
+          var sign = delta >= 0 ? "+" : "";
+          var isFavorable = polarity === "higher_is_better" ? (delta >= 0) : (delta <= 0);
+          var deltaColor = isFavorable ? posColor : negColor;
+          html += "<span style='color:" + theme.subtext + ";'>Vs Benchmark:</span><span style='font-weight:700;color:" + deltaColor + ";text-align:right;'>" + sign + deltaPct.toFixed(1) + "% (" + formatValue(delta, effectiveFormat) + ")</span>";
         }
-        if (top + ttHeight > window.innerHeight - 10) {
-          top = window.innerHeight - ttHeight - 10;
+        html += "</div>";
+
+        if (d.links && d.links.length > 0) {
+          html += "<div style='margin-top:6px;font-size:10px;color:" + theme.medianColor + ";border-top:1px solid " + theme.border + ";padding-top:4px;'>🔎 Click to open Looker drill menu</div>";
         }
 
-        tooltip.style.left = left + "px";
-        tooltip.style.top = top + "px";
+        tip.innerHTML = html;
+        var tipW = 240;
+        var tipH = tip.offsetHeight || 160;
+        var x = event.clientX + 14;
+        var y = event.clientY + 14;
+        if (x + tipW > window.innerWidth) x = event.clientX - tipW - 14;
+        if (y + tipH > window.innerHeight) y = event.clientY - tipH - 14;
+        tip.style.left = x + "px";
+        tip.style.top = y + "px";
+      })
+      .on("mouseleave", function () {
+        if (self._tooltip) self._tooltip.style.display = "none";
       });
 
-      lanes.on("mouseleave", function () {
-        d3.select(this).select(".lane-hover-bg").attr("fill", "transparent");
-        crosshair.style("display", "none");
-        if (tooltip) tooltip.style.display = "none";
-      });
-
-      // Handle Looker drill down on click
+      // Drilldown click
       lanes.on("click", function (event, d) {
         if (d.links && d.links.length > 0 && window.LookerCharts && window.LookerCharts.Utils) {
           window.LookerCharts.Utils.openDrillMenu({

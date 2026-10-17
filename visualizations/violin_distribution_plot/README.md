@@ -48,22 +48,42 @@ Designed to address Looker Cloud Blockers **`b/249062272`** (visualizations pari
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `displayMode` | Select | `Violin + Box Plot` | Layout mode: `violin_box`, `split_violin`, `box_jitter`, `density_silhouette` |
+| `categoryDimOverride` | Select | `Auto` | Dynamic dropdown to remap Category Dimension from query |
+| `metricMeasureOverride` | Select | `Auto` | Dynamic dropdown to remap Observation Value Measure / Numeric Field |
+| `observationDimOverride` | Select | `Auto / None` | Dynamic dropdown to specify Row De-duplication PK dimension |
+| `subgroupDimOverride` | Select | `Auto / None` | Dynamic dropdown to specify Subgroup Split dimension |
 | `bandwidthFactor` | Select | `Auto (Silverman)` | KDE smoothing bandwidth: `auto`, `smooth` (1.6x), `detailed` (0.7x), `fine` (0.4x) |
 | `scalingMode` | Select | `Shared Global` | Violin width scaling: `shared` (equal density) or `independent` (maximize lane width) |
-| `yAxisScope` | Select | `Robust Zoom` | Y-axis window: `robust` (zoom to Tukey fences, clip extremes), `p99` (1st–99th percentile), `full` (absolute min/max). Clipped values are flagged with ▲/▼ badges on their lane. |
+| `yAxisScope` | Select | `Robust Zoom` | Y-axis window: `robust` (zoom to Tukey fences, clip extremes), `p99` (1st–99th percentile), `full` (absolute min/max). |
+| `targetCalculationMode` | Select | `Dataset Median` | Benchmark target calculation mode: `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`, `fixed_value`, `none` |
+| `fixedTargetValue` | Number | `0` | Numeric value when target mode is `fixed_value` |
+| `referenceLineLabel` | String | `Target Benchmark` | Custom label for benchmark target line and badge |
+| `anomalyAlertThreshold` | Number | `15` | Outlier alert threshold % above which categories/cards flag warnings |
+| `sortOrder` | Select | `Median Metric Descending` | Sorting: `metric_desc`, `metric_asc`, `count_desc`, `spread_iqr_desc`, `alphabetical`, `natural` |
+| `topN` | Select | `All Categories` | Focus limit: `all`, `5`, `8`, `10`, `15`, `20` |
+| `rollupOther` | Boolean | `false` | Automatically roll up excluded categories into a synthesized `'Other'` distribution |
+| `suppressNulls` | Boolean | `true` | Suppress empty and null observation categories |
 | `showOutliers` | Boolean | `true` | Toggle outlier scatter dots beyond Tukey whiskers |
-| `showSummaryStats`| Boolean | `true` | Show top executive KPI summary HUD banner |
+| `hudMode` | Select | `Full Scorecard Strip` | Executive HUD density: `full`, `compact`, `hidden` |
+| `dataLabelDensity` | Select | `Extreme Peaks Only` | Distribution data value labels: `all`, `peaks_only`, `hidden` |
 | `showSearch` | Boolean | `true` | Enable search-as-you-type filter input |
-| `valueFormat` | Select | `Compact Currency` | Value formatting: `compact_currency`, `compact_num`, `decimal_2`, `integer` |
+| `chartTitleOverride` | String | `""` | Custom chart title override |
+| `chartSubtitleOverride` | String | `""` | Custom subtitle override |
 
 ### Section 2: Style
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `colorPalette` | Select | `Google Modern` | Palettes: `google_modern`, `looker_classic`, `sunset_ember`, `emerald_forest`, `cyber_indigo`, `monochrome_slate` |
+| `colorPalette` | Select | `Google Modern` | Palettes: `google_modern`, `looker_classic`, `monochrome_slate`, `cyber_indigo`, `emerald_forest`, `sunset_ember`, `wellverse`, `custom` |
+| `customPrimaryColor` | Color | `""` | Custom primary accent hex override |
+| `customPositiveColor`| Color | `""` | Custom positive benchmark hex override |
+| `customNegativeColor`| Color | `""` | Custom warning/alert hex override |
 | `fillOpacity` | Select | `75% Soft Fill` | Opacity of the violin envelope fill (`0.90`, `0.75`, `0.50`, `0.30`) |
 | `boxPlotWidth` | Select | `Medium (14px)` | Width of the internal IQR box (`slim` = 8px, `medium` = 14px, `wide` = 22px) |
 | `showGridlines` | Boolean | `true` | Show horizontal reference grid lines |
 | `showMeanMarker`| Boolean | `true` | Show diamond marker for arithmetic mean |
+| `metricPolarity` | Select | `Higher is Better` | Polarity toggle: `higher_is_better` vs `lower_is_better` |
+| `fontScale` | Select | `Standard` | Typography & UI scale: `compact`, `standard`, `large` |
+| `valueFormat` | Select | `Auto Detect` | Numeric format: `auto`, `compact_currency`, `compact_num`, `percentage`, `decimal_2`, `integer`, `raw` |
 
 ---
 

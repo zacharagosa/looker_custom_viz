@@ -1,0 +1,28 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "cortex_security_incidents",
+  "fields": [
+    "cortex_security_incidents.mitre_tactic",
+    "cortex_security_incidents.mitre_technique",
+    "cortex_security_incidents.severity",
+    "cortex_security_incidents.avg_mttr_minutes",
+    "cortex_security_incidents.total_alerts"
+  ],
+  "sorts": [
+    "cortex_security_incidents.total_alerts desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "distributed_trace_flamegraph",
+    "layoutMode": "topdown_icicle",
+    "sortOrder": "duration_desc",
+    "topN": "all",
+    "targetCalculationMode": "dataset_median",
+    "referenceLineLabel": "SLA MTTR Target",
+    "latencyThresholdAlert": 45,
+    "hudMode": "full",
+    "colorTheme": "google_cloud_trace",
+    "fontScale": "standard",
+    "valueFormat": "auto"
+  }
+}
