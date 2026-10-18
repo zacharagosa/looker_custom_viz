@@ -20,11 +20,20 @@
   "vis_config": {
     "type": "dynamic_pivot_matrix",
     "renderMode": "matrix_bars",
-    "colorTheme": "google_modern",
+    "colorPalette": "google_modern",
+    "hudMode": "full",
+    "targetMode": "dataset_mean",
+    "targetLabel": "Overall Mean",
+    "highlightTargetBreaches": true,
+    "anomalyThreshold": 20,
+    "sortOrder": "metric_desc",
+    "dataLabelDensity": "all",
     "showRowTotals": true,
     "showColTotals": true,
     "showSearch": true,
     "pageSize": "10",
-    "valueFormat": "compact_currency"
+    "valueFormat": "compact_currency",
+    "highlightMaxCell": true,
+    "fontSize": "standard"
   }
 }

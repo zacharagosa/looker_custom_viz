@@ -161,6 +161,8 @@ VIZ_EMOJI_MAP = {
     "content_genre_affinity_network": "🌐",
     "upset_affinity_grid": "🛒",
     "parallel_coordinates_profiler": "📐",
+    "distributed_trace_flamegraph": "🔥",
+    "candlestick_bollinger_bands": "🕯️",
 }
 
 

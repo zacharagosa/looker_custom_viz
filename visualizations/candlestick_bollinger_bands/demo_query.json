@@ -1,0 +1,33 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "virtual_currency_candlestick",
+  "fields": [
+    "virtual_currency_candlestick.trading_date",
+    "virtual_currency_candlestick.open_price",
+    "virtual_currency_candlestick.high_price",
+    "virtual_currency_candlestick.low_price",
+    "virtual_currency_candlestick.close_price",
+    "virtual_currency_candlestick.trading_volume"
+  ],
+  "filters": {
+    "virtual_currency_candlestick.currency_pair": "GLD/USDC"
+  },
+  "sorts": [
+    "virtual_currency_candlestick.trading_date asc"
+  ],
+  "limit": "90",
+  "vis_config": {
+    "type": "candlestick_bollinger_bands",
+    "layoutMode": "candlestick_bollinger",
+    "bollingerPeriod": 20,
+    "bollingerStdDev": "2.0",
+    "showMovingAverage": true,
+    "showBollingerEnvelope": true,
+    "showVolumeSubchart": true,
+    "hudMode": "full",
+    "targetMode": "dataset_mean",
+    "targetLabel": "90D Mean Price",
+    "colorPalette": "google_modern",
+    "valueFormat": "currency_precise"
+  }
+}

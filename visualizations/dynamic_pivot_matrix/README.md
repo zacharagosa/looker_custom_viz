@@ -11,33 +11,45 @@ Designed to directly resolve high-priority customer escalations and Google-inter
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Features & Options Upgrades
 
 1. **4 Multi-Modal Rendering Modes (`renderMode`)**:
-   - **Micro-Bars & Volume (`matrix_bars`)**: In-cell proportional mini-progress bars showing relative volume magnitude alongside numeric values, with automatic row peak cell star indicators.
+   - **Micro-Bars & Volume (`matrix_bars`)**: In-cell proportional mini-progress bars showing relative volume magnitude alongside numeric values, with automatic row peak cell star indicators and anomaly breach warning badges.
    - **Color Heatmap Grid (`heatmap_grid`)**: Quantile/linear color gradient intensity across all pivot periods to immediately spot hot and cold performance pockets.
    - **Period Growth Deltas (`growth_delta`)**: Computes period-over-period percentage growth (`+14.2%`, `-8.5%`) rendered as emerald/crimson executive badges.
    - **Executive Compact KPI (`compact_kpi`)**: High-density executive scorecard with bold typography and minimal footprint.
 
-2. **Client-Side Dynamic Pivot Column Sorting**:
-   - Click **any** pivot header (e.g. `2024`, `2025`, `2026`) to dynamically sort rows by that period's measure value in descending or ascending order.
-   - Click the **Total** column to rank entities by aggregate volume.
-   - Click the dimension header to sort alphabetically.
+2. **Dynamic Field-Role Mapping (`Display`)**:
+   - **Primary Row Dimension (`rowDimOverride`)**: Select which query dimension forms table rows directly from dynamic select dropdown populated via Looker's `registerOptions`.
+   - **Pivot Column Dimension (`pivotDimOverride`)**: Remap temporal/categorical column pivots on the fly.
+   - **Primary Metric Measure (`metricMeasureOverride`)**: Switch which metric populates matrix values.
+   - **Target / Benchmark Measure (`targetMeasureOverride`)**: Map a comparison/target measure column for row-level attainment tracking.
 
-3. **Expanded Row Limit Scalability (5,000+ Rows)**:
-   - High-performance client-side pagination (`10`, `25`, `50`, `100`, or `All`) ensuring instantaneous DOM rendering and zero UI stuttering on large corporate datasets.
-   - Real-time client-side search-as-you-type filter across entity dimensions.
+3. **Configurable Reference Lines, Targets & Thresholds (`Display`)**:
+   - **Benchmark Mode (`targetMode`)**: Supports `Measure Column`, `Fixed Value`, `Dataset Mean`, `Dataset Median`, `Percentile P75`, and `Percentile P90`.
+   - **Custom Fixed Target Value (`targetValue`)**: Numeric target for static SLA or revenue goals.
+   - **Anomaly Threshold % (`anomalyThreshold`)**: Flags out-of-spec cells that deviate by more than the threshold.
+   - **Flag Out-of-Spec Cells (`highlightTargetBreaches`)**: Visual warning badges and colored indicators for underperforming cells.
 
-4. **Marginal Rollups & Totals**:
-   - Sticky row total column calculating row sums on the fly.
-   - Sticky column total footer row calculating period sums and overall grand volume total.
-   - Executive HUD displaying grand total, entity counts, and active pivot periods.
+4. **Sorting, Top-N Bucketing & Null Suppression (`Display`)**:
+   - **Default Sort Order (`sortOrder`)**: Choose between `Total Volume Descending`, `Total Volume Ascending`, `Alphabetical`, or `Natural Query Order`.
+   - **Interactive Column Sorting**: Click any pivot header, dimension header, or total column to toggle client-side sort dynamically.
+   - **Top-N Row Limit (`topNLimit`)**: Isolate Top 5, 10, 15, 25, or 50 entities.
+   - **'Other' Rollup (`showOtherRollup`)**: Automatically bundles excluded lower-ranked entities into an aggregate 'Other (N entities)' row.
+   - **Suppress Zero/Empty Rows (`suppressNulls`)**: Cleanly filters out inactive rows.
 
-5. **Looker Drill-Down Menus**:
-   - Full integration with Looker's native drill-down actions (`LookerCharts.Utils.openDrillMenu`) for both dimension entities and pivoted measure cells.
+5. **Executive KPI HUD & Label Density (`Display`)**:
+   - **HUD Mode (`hudMode`)**: Choose between `Full Scorecard Strip` (Grand Volume, Entities, Periods, Benchmark Target & Attainment %), `Compact Strip`, or `Hidden`.
+   - **Data Value Labels Density (`dataLabelDensity`)**: Choose `All Values`, `Extreme Peaks Only`, or `Hidden (Hover Only)`.
+   - **Custom Chart Title & Subtitle (`chartTitleOverride`, `chartSubtitleOverride`)**: Embed clean executive headers directly on the card.
+   - **Instant Search Filter (`showSearch`)**: Real-time client-side search-as-you-type filter across entity dimensions.
 
-6. **Clean 2-Tab Edit Modal**:
-   - Strict adherence to the 2-tab configuration layout (`Display` and `Style`) to prevent header tab wrapping or crowding in Looker's Edit Viz modal.
+6. **Custom Brand Palettes, Polarity & Typography (`Style`)**:
+   - **Theme Palettes (`colorPalette`)**: `Google Modern Blue`, `Executive Slate`, `Cyberpunk Dark`, `Emerald FinOps`, `Sunset Media`, `Wellverse Healthcare`, or `Custom Hex Overrides`.
+   - **Custom Color Overrides**: `customPrimaryColor`, `customPositiveColor`, and `customNegativeColor`.
+   - **Metric Polarity (`metricPolarity`)**: Toggle between `Higher is Better` (Revenue, Volume) and `Lower is Better` (Latency, Churn, Cost, Error Rate) to invert color signaling.
+   - **Font Scale (`fontSize`)**: `Compact (11px)`, `Standard (12.5px)`, `Spacious (14px)`.
+   - **Value Format (`valueFormat`)**: `Auto Detect`, `Compact Currency ($1.2M)`, `Compact Number (1.2M)`, `Percentage (45.2%)`, `Decimal (0.00)`, `Integer (1,234)`, or `Raw`.
 
 ---
 
@@ -52,17 +64,5 @@ Designed to directly resolve high-priority customer escalations and Google-inter
 
 ---
 
-## 🎨 Configuration Options
-
-### Section: `Display`
-- **Table Render Mode**: Choose between `Micro-Bars & Volume`, `Color Heatmap Grid`, `Period Growth Deltas (% PoP)`, or `Executive Compact KPI`.
-- **Show Row Total Column**: Toggle row-level total rollup column (Default: `true`).
-- **Show Column Total Summary Footer**: Toggle sticky footer row with column totals (Default: `true`).
-- **Enable Instant Search Filter**: Search-as-you-type text input in toolbar (Default: `true`).
-- **Rows Per Page**: Pagination selector (`10`, `25`, `50`, `100`, `All`).
-- **Metric Number Format**: Choose compact currency (`$1.2M`), compact number (`1.2M`), precise currency (`$1,234.56`), integer, or percentage.
-
-### Section: `Style`
-- **Color Palette & Theme**: `Google Modern Blue`, `Executive Slate`, `Emerald Forest`, `Zayo Telecom Orange`.
-- **Highlight Peak Cell in Row**: Highlights the highest period in each row with accent color and star badge.
-- **Font Size & Density**: `Compact (11px)`, `Standard (12.5px)`, `Spacious (14px)`.
+## 🚀 Deployment & Registration
+Deploys instance-wide to Looker via `POST /api/4.0/vis_manifest` and syncs with the Showcase Dashboards.
