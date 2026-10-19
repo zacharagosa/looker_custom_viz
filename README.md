@@ -79,6 +79,8 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Distributed Trace & Span Waterfall Flamegraph**](visualizations/distributed_trace_flamegraph/)<br>`distributed_trace_flamegraph` | Telecom, Cloud & SecOps | 1 Parent dim + 1 Child dim + 1–2 meas | [📸 View](assets/screenshots/distributed_trace_flamegraph.png) |
 | [**FinOps CUD Attribution & Waste Waterfall Bridge**](visualizations/finops_cud_attribution_bridge/)<br>`finops_cud_attribution_bridge` | Telecom, Cloud & SecOps | 1 SKU/Account dim + 1–2 measures | [📸 View](visualizations/finops_cud_attribution_bridge/screenshot.png) |
 | [**Candlestick / OHLC & Bollinger Volatility Envelope**](visualizations/candlestick_bollinger_bands/)<br>`candlestick_bollinger_bands` | Time Series & Schedules | 1 Date dim + 4 Price measures (Open, High, Low, Close) + 1 Volume meas | [📸 View](visualizations/candlestick_bollinger_bands/screenshot.png) |
+| [**Correlation & Covariance Splom Matrix**](visualizations/correlation_splom_matrix/)<br>`correlation_splom_matrix` | Statistical, ML & Forecasting | 1 Entity dim + 2–8 Continuous measures | [📸 View](assets/screenshots/correlation_splom_matrix.png) |
+
 
 ---
 

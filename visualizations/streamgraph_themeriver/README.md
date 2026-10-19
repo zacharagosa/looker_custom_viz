@@ -6,30 +6,35 @@ Designed to resolve long-standing Google Cloud Customer Requirements and Buganiz
 
 ---
 
-## 🌟 Key Capabilities & Enterprise Features
+## 🌟 Key Capabilities & Enterprise Flexibility
 
 1. **Multi-Modal Baseline Geometry**:
    - **ThemeRiver / Silhouette (Centered Flow)**: Symmetrical centered baseline creating an organic river shape representing relative and aggregate category momentum.
    - **Wattenberg Stream (Organic Wiggle)**: Lee Byron & Martin Wattenberg algorithmic stream minimizing slope variance across curves.
-   - **Stacked Area Flow (Zero Baseline)**: Traditional zero-pinned stacked area chart displaying cumulative baseline volume.
+   - **Stacked Area Flow (Zero Baseline)**: Traditional zero-pinned stacked area chart displaying cumulative baseline volume with reference benchmark lines.
    - **100% Proportional Share Ribbon**: Normalized 0–100% proportional area stream revealing dynamic category market share changes over time.
    - **Joyplot / Staggered Ridges**: Vertically spaced individual ridge curves for isolated waveform and distribution shape comparisons.
 
 2. **Expanded Row Limit Scalability (5,000+ Rows)**:
    - High-speed client-side matrix aggregation of high-density timestamps (hourly, daily, monthly) into uniform time slices.
    - Cubic spline curve smoothing options (**Catmull-Rom**, **MonotoneX**, **Basis Spline**, and **Linear**).
-   - Automated **Top-N Dynamic Consolidation** with automatic tail aggregation into "+N Other Categories".
+   - Automated **Top-N Dynamic Consolidation** with automatic tail aggregation into "+N Other Categories" and zero/null suppression.
 
-3. **Interactive Timeline Scrubber HUD & Exploration**:
+3. **Dynamic Field-Role Mapping & Reference Targets**:
+   - **Dynamic Field-Role Mapping**: Re-map Date/Timeline, Category/Stream, Volume Measure, and Target Measure directly in the Looker UI without modifying Explore order.
+   - **Configurable Reference Lines & Targets**: Benchmark against Dataset Mean, Dataset Median, P75/P90 Percentiles, Fixed Target Value, or a dedicated Target Measure column.
+   - **Anomaly & Peak Detection**: Visual variance threshold flagging and peak stream surge badges in the Executive HUD.
+
+4. **Interactive Timeline Scrubber HUD & Exploration**:
    - **Vertical Crosshair Scrubber**: Tracks mouse movement across the continuous timeline with dynamic bisecting.
-   - **Real-Time Slice HUD Tooltip**: Instant breakdown of total slice volume, top streams sorted descending, category color badges, and exact market share percentages.
+   - **Real-Time Slice HUD Tooltip**: Instant breakdown of total slice volume, top streams sorted descending, category color badges, anomaly badges, and exact market share percentages.
    - **Stream Isolation / Solo Click**: Click any stream layer to spotlight its trend while dimming others.
    - **Live Filter & Search Bar**: Real-time category keyword search bar with reactive stream dimming.
    - **Looker Drill-Down Menus**: Native right-click / context menu integration with `LookerCharts.Utils.openDrillMenu`.
 
-4. **Strictly 2-Tab Options Hierarchy**:
-   - **Display**: Stream Flow Mode, Curve Smoothing, Stream Stacking Order, Top Streams to Display, Timeline Scrubber, Peak Anomaly Badges, Search Bar, Executive Summary HUD.
-   - **Style**: Color Palette, Stream Fill Opacity, Stream Border Separator, In-Stream Category Labels, Label Font Size.
+5. **Strictly 2-Tab Options Hierarchy**:
+   - **Display**: Stream Flow Mode, Curve Smoothing, Date/Category/Volume/Target Overrides, Target Mode/Value/Label/Threshold, Highlight Anomaly Surges, Stream Stacking Order, Top Streams Display Limit, Other Rollup, Null Suppression, Executive HUD Mode, In-Stream Labels Density, Title/Subtitle Overrides, Timeline Scrubber, Search Bar.
+   - **Style**: Color Palette (Google Modern, Executive Slate, Cyberpunk Glow, Nordic Emerald, Sunset Aurora, Wellverse, Pacific Ocean, Custom), Custom Hex Overrides, Metric Polarity, Stream Fill Opacity, Stream Border Separator, Font Size & Density, Metric Number Format.
 
 ---
 

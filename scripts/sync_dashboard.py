@@ -37,7 +37,8 @@ VOL2_TABS = [
     "🎬 Media, Broadcast & Ad-Ops",
     "📡 Telecom, Cloud & SecOps",
     "🔬 Statistical, ML & Forecasting",
-    "🛍️ Retail, Supply Chain & FinOps"
+    "🛍️ Retail, Supply Chain & FinOps",
+    "🧬 Multivariate & Diagnostic Profiling"
 ]
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
@@ -66,7 +67,8 @@ VOL2_VIZ_MAP = {
     "upset_affinity_grid": "🛍️ Retail, Supply Chain & FinOps",
     "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops",
     "content_genre_affinity_network": "🎬 Media, Broadcast & Ad-Ops",
-    "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting"
+    "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting",
+    "correlation_splom_matrix": "🧬 Multivariate & Diagnostic Profiling"
 }
 
 CATEGORY_TAB_MAP = {
@@ -163,6 +165,7 @@ VIZ_EMOJI_MAP = {
     "parallel_coordinates_profiler": "📐",
     "distributed_trace_flamegraph": "🔥",
     "candlestick_bollinger_bands": "🕯️",
+    "correlation_splom_matrix": "🧬",
 }
 
 

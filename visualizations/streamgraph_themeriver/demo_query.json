@@ -19,15 +19,22 @@
     "baselineMode": "silhouette",
     "curveInterpolation": "curveCatmullRom",
     "sortOrder": "insideOut",
-    "topNStreams": 12,
+    "topNLimit": "12",
+    "showOtherRollup": true,
+    "suppressNulls": true,
+    "hudMode": "full",
+    "dataLabelDensity": "all",
+    "targetMode": "dataset_mean",
+    "targetLabel": "Category Mean Volume",
+    "anomalyThreshold": 25,
+    "highlightTargetBreaches": true,
     "showCrosshair": true,
-    "showPeakBadges": true,
     "showSearch": true,
-    "showExecutiveHUD": true,
     "colorPalette": "google_modern",
+    "metricPolarity": "higher_is_better",
     "streamOpacity": "0.85",
     "strokeWidth": "1",
-    "showStreamLabels": true,
-    "labelFontSize": "12"
+    "fontSize": "standard",
+    "valueFormat": "compact_currency"
   }
 }
