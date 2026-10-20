@@ -68,7 +68,8 @@ VOL2_VIZ_MAP = {
     "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops",
     "content_genre_affinity_network": "🎬 Media, Broadcast & Ad-Ops",
     "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting",
-    "correlation_splom_matrix": "🧬 Multivariate & Diagnostic Profiling"
+    "correlation_splom_matrix": "🧬 Multivariate & Diagnostic Profiling",
+    "voronoi_treemap": "🧬 Multivariate & Diagnostic Profiling"
 }
 
 CATEGORY_TAB_MAP = {
@@ -166,6 +167,7 @@ VIZ_EMOJI_MAP = {
     "distributed_trace_flamegraph": "🔥",
     "candlestick_bollinger_bands": "🕯️",
     "correlation_splom_matrix": "🧬",
+    "voronoi_treemap": "⬡",
 }
 
 

@@ -1,0 +1,39 @@
+{
+  "model": "thelook",
+  "view": "events",
+  "fields": [
+    "events.browser",
+    "events.event_type",
+    "events.count"
+  ],
+  "filters": {
+    "events.browser": "Chrome,Safari,Firefox,IE",
+    "events.event_type": "Home,Product,Cart,Purchase,Cancel"
+  },
+  "sorts": [
+    "events.count desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "voronoi_treemap",
+    "hierarchyDepth": "2",
+    "polygonShape": "convex",
+    "colorPalette": "google_enterprise",
+    "hudMode": "full",
+    "dataLabelDensity": "all",
+    "sortOrder": "descending",
+    "topN": "25",
+    "bundleOther": true,
+    "suppressNulls": true,
+    "targetMode": "dataset_mean",
+    "referenceLineLabel": "Event Mean Volume",
+    "anomalyThresholdPct": 130,
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_number",
+    "cellPadding": 2,
+    "cellBorderWidth": 1.5,
+    "cellOpacity": 0.85,
+    "showSearch": true
+  }
+}

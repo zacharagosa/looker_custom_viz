@@ -18,18 +18,25 @@
   "vis_config": {
     "type": "bilateral_chord_diagram",
     "vizMode": "chord",
+    "sortOrder": "descending",
     "topN": "12",
     "bundleOther": true,
+    "suppressNulls": true,
     "showSelfFlow": true,
     "directedFlow": true,
-    "showExecutiveHUD": true,
+    "hudMode": "full",
+    "dataLabelDensity": "all",
+    "targetMode": "dataset_mean",
+    "referenceLineLabel": "Mean Corridor Flow",
+    "anomalyThresholdPct": 130,
     "showSearch": true,
-    "metricFormat": "usd",
-    "colorPalette": "looker",
+    "colorPalette": "google",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency",
     "arcThickness": 18,
     "ribbonOpacity": 0.65,
     "padAngle": 0.03,
-    "labelStyle": "radial",
-    "labelFontSize": 11
+    "labelStyle": "radial"
   }
 }

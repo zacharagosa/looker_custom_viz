@@ -19,66 +19,56 @@ This visualization provides a robust, multi-modal, enterprise-grade solution tha
 
 ---
 
-## 📸 Key Features
+## 🌟 Upgraded Options & Flexibility (Strict 2-Tab Schema)
 
-- **Multi-Modal Display Layouts**:
-  - `Circular Directed Chord Flow` (Default): Circular chord diagram with outer perimeter entity arcs, proportional quadratic Bezier ribbons, and directional gradient shading.
-  - `Bilateral Flow Matrix (Heatmap)`: N x N grid heatmap showing Source-to-Target volume intensities, diagonal self-loop indicators, row outbound subtotals, and column inbound subtotals.
-  - `Bipartite Split Corridor`: Groups source entities on the left and destination entities on the right with smooth bridging flow corridors.
-- **Executive Flow KPI HUD**:
-  - Floating metric banner displaying **Total Bilateral Flow Volume**, **Active Corridors**, **Dominant Corridor** (top pair volume and share), and **Reciprocity Balance Index** (measures bidirectional symmetry vs one-way concentration).
-- **Expanded Row Limit Scalability (5,000+ Rows)**:
-  - In-memory aggregation engine collapses thousands of granular transaction rows into a weighted `N x N` matrix.
-  - Configurable Top-N entity filter (`Top 8`, `Top 10`, `Top 12`, `Top 16`, `Top 20`, or `All`) with automatic remainder bundling into a unified `"Other Entities"` arc, preserving 60 FPS fluid rendering.
-- **Interactive Ribbon Isolation & Pinning**:
-  - Hovering any arc immediately highlights all connected inbound and outbound ribbons while dimming non-connected corridors.
-  - Hovering ribbons reveals a rich glassmorphism tooltip with Forward Flow, Reverse Flow, Net Asymmetry (+/- badge), and global volume share.
-  - Clicking an arc pins the focus and allows unpinning via a top-bar chip.
-- **Real-Time Entity Search Filter**:
-  - Built-in search input in the top bar allows users to instantly search and highlight any entity name across large networks.
-- **Looker Drill-Down Integration**:
-  - Full support for Looker drill links (`LookerCharts.Utils.openDrillMenu`) on arc or matrix cell click, with an automated `🔎 CLICK ANY ARC TO DRILL` header affordance pill.
-- **5 Curated Color Palettes**:
-  - `Looker Modern` (Modern Blue, Teal, Coral, Violet)
-  - `Tech Electric` (Cyan, Purple, Azure, Emerald)
-  - `Sunset Flame` (Amber, Coral, Violet)
-  - `Emerald Forest` (Mint, Teal, Deep Forest)
-  - `Spectral Spectrum` (Full Rainbow)
+The visualization implements a clean 2-tab configuration schema (`Display` and `Style`) to ensure Looker's Edit Viz modal headers never crowd or overlap:
+
+### 📋 Display Tab
+1. **Visualization Layout Mode**: Select between:
+   - `Circular Directed Chord` (Default): Circular chord diagram with outer perimeter entity arcs, proportional quadratic Bezier ribbons, and directional gradient shading.
+   - `Bilateral Flow Matrix (Heatmap)`: N x N grid heatmap showing Source-to-Target volume intensities, diagonal self-loop indicators, row outbound subtotals, and column inbound subtotals.
+   - `Bipartite Split Corridor`: Groups source entities on the left and destination entities on the right with smooth bridging flow corridors.
+2. **Dynamic Field-Role Mapping**:
+   - `Source Entity Dimension`: Map which query dimension represents the origin/source entity.
+   - `Target Entity Dimension`: Map which query dimension represents the destination/target entity.
+   - `Primary Flow Measure`: Select which query measure drives flow volume and ribbon width.
+   - `Comparison / Target Measure`: Select an optional comparison metric for benchmarking.
+3. **Corridor Targets, Reference Lines & Thresholds**:
+   - `Corridor Target & Benchmark Mode`: Benchmark against `Dataset Mean`, `Dataset Median`, `Percentile P75`, `Percentile P90`, `Fixed Target Value`, or a `Target Measure Column`.
+   - `Custom Target Value`: Numeric target override.
+   - `Benchmark Reference Label`: Custom label for reference indicators.
+   - `Anomaly Alert Threshold (%)`: Threshold percentage above benchmark to trigger warning indicators (default 130%).
+4. **Sorting, Capacity Limiter & Null Handling**:
+   - `Entity & Ribbon Sort Order`: `Metric Volume Descending`, `Metric Volume Ascending`, `Alphabetical / Entity Name`, or `Chronological / Natural Order`.
+   - `Entity Capacity Limiter`: Cap rendering to `Top 8`, `Top 10`, `Top 12`, `Top 16`, `Top 20`, `Top 30`, or `All Entities`.
+   - `Bundle Remainder into "Other"`: Roll up long-tail entities into a unified `"+N Other Entities"` arc.
+   - `Suppress Zero & Null Flows`: Filter out inactive corridors automatically.
+   - `Show Self-Flow (Intra-Entity)`: Toggle internal self-loops (e.g. A ➔ A).
+   - `Directional Ribbon Gradients`: Linear gradients indicating source-to-target direction.
+5. **HUD, Search & Density Controls**:
+   - `Executive Flow KPI HUD`: Multi-density options (`Full Scorecard Strip`, `Compact Strip`, or `Hidden`).
+   - `Data Value Labels Density`: `All Visible Entities`, `Peak Corridors Only`, or `Hidden`.
+   - `Custom Chart Title Override` & `Custom Subtitle Override`: Clean dashboard title headers.
+   - `Entity Quick-Search Bar`: Real-time instant search input with interactive corridor dimming.
+
+### 🎨 Style Tab
+1. **Color Palette & Brand Themes**: Select from `Google Enterprise Spectrum`, `Modern Slate (Executive)`, `Cyberpunk Glow`, `Emerald FinOps`, `Sunset Media`, `Wellverse Healthcare`, or `Custom Hex Override`.
+2. **Custom Hex Overrides**: Specify `Custom Primary Accent Hex`, `Custom Positive Benchmark Hex`, and `Custom Negative Anomaly Hex`.
+3. **Metric Polarity**: Toggle between `Higher is Better` (Volume, Sales) and `Lower is Better` (Latency, Churn, Waste).
+4. **Font Scale & Density**: `Compact`, `Standard`, or `Large Presentation`.
+5. **Value Formatting**: Choose between `Auto Detect`, `Compact Number (1.2M)`, `Compact Currency ($1.2M)`, `Percentage (45.2%)`, `Decimal (2 Decimal Places)`, or `Raw Exact Number`.
+6. **Geometry Styling**: `Ribbon Flow Opacity` (0.2–0.9), `Perimeter Arc Thickness` (px), `Arc Gap Spacing`, and `Entity Label Placement` (`Radial`, `Circumference`, or `Hidden`).
 
 ---
 
 ## 📊 Data Shape Requirements
 
-| Field Type | Required Count | Purpose | Example (`order_items`) |
+| Field Type | Required Count | Purpose | Example (`thelook::order_items`) |
 | :--- | :--- | :--- | :--- |
 | **Dimension 1** | `1` *(Required)* | Source Entity (Origin Hub, Starting Tier, Departure Point) | `distribution_centers.name` |
 | **Dimension 2** | `1` *(Required)* | Target Entity (Destination Market, New Tier, Arrival Point) | `users.state` *(or pivoted)* |
 | **Measure 1** | `1` *(Required)* | Primary Flow Volume Metric (Sales, Volume, Bandwidth, Migration Count) | `order_items.total_sale_price` |
-| **Measure 2** | `0 to 1` *(Optional)* | Secondary Transaction Count Metric | `order_items.order_count` |
-
-*Supports unpivoted queries (Dimension 1 + Dimension 2 + Measure) as well as pivoted queries (Dimension 1 + Pivot Dimension + Measure).*
-
----
-
-## ⚙️ Configuration Options
-
-### 📋 Display Tab
-- **Visualization Layout Mode**: Select between `Circular Directed Chord`, `Bilateral Flow Matrix (Heatmap)`, or `Bipartite Split Corridor`.
-- **Entity Capacity Limiter**: Cap rendering to `Top 8`, `Top 10`, `Top 12`, `Top 16`, `Top 20`, or `All Entities`.
-- **Bundle Remainder into "Other"**: Aggregate long-tail tail entities into an `"Other Entities"` arc.
-- **Show Self-Flow (Intra-Entity)**: Toggle display of internal self-loops (e.g. A ➔ A).
-- **Directional Ribbon Gradients**: Enable linear gradient shading along ribbons indicating flow direction.
-- **Executive Flow KPI HUD**: Toggle visibility of the top KPI statistics card.
-- **Entity Quick-Search Bar**: Enable or disable the real-time search box.
-- **Value Formatting**: Choose between Currency (`$ USD`), Compact (`1.2M`), Standard (`1,234`), or Percentage (`%`).
-
-### 🎨 Style Tab
-- **Visual Color Palette**: Select between Looker Modern, Tech Electric, Sunset Flame, Emerald Forest, or Spectral Spectrum.
-- **Ribbon Flow Opacity**: Adjust ribbon opacity (`0.2` to `0.9`, default `0.65`).
-- **Perimeter Arc Thickness**: Outer arc ring width in pixels (`12px` to `32px`, default `18px`).
-- **Arc Gap Spacing**: Gap between entity slices (`0.01` to `0.08`, default `0.03`).
-- **Entity Label Placement**: `Radial (Outward from Arc)`, `Circumference (Along Arc)`, or `Hidden`.
-- **Label Font Size**: Font size for arc entity labels (`9px` to `16px`, default `11px`).
+| **Measure 2** | `0 to 1` *(Optional)* | Secondary Transaction Count / Target Metric | `order_items.order_count` |
 
 ---
 
