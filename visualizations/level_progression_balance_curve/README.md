@@ -22,19 +22,23 @@ Traditional business intelligence Cartesian charts force game developers and pro
   1. **Progression & Choke Points (`dual_axis_spikes`)**: Left axis smooth cubic spline/area for Cumulative Active Players; Right axis dual-scale marginal churn hazard % spikes with red warning badges on anomalous choke points.
   2. **Survival Decay Model (`survival_decay`)**: Compares empirical player retention curve against a mathematically fitted exponential/power-law benchmark baseline, with P50 half-life milestone indicator.
   3. **Milestone Step Waterfall (`milestone_waterfall`)**: Stepped progression cascade tracking surviving players passing each checkpoint paired with downward drop-off loss bars.
-  4. **Difficulty & Pacing Envelope (`difficulty_pacing`)**: Correlates player attrition against secondary telemetry measures (attempts, retries, completion time, or in-game currency sinks).
+  4. **Difficulty & Pacing Envelope (`difficulty_pacing`)**: Correlates player attrition against secondary telemetry measures (attempts, retries, completion time, boss party wipes, or in-game currency sinks).
 - **Automated Choke-Point Anomaly Engine**:
   - Calculates marginal step hazard rate $h_i = \frac{V_{i-1} - V_i}{V_{i-1}} \times 100\%$.
   - Computes dynamic population mean ($\mu$) and standard deviation ($\sigma$) across all progression stages.
-  - Flags levels with $Z > 1.5$ or $Z > 2.0$ with pulsing badges (`⚠️ CHOKE POINT: -X%`).
+  - Flags levels with $Z > 1.5$ or $Z > 2.0$ with pulsing badges (`⚠️ CHOKE: -X%`).
+- **Configurable Benchmark Reference Lines**:
+  - Dynamic reference benchmarks supporting `Fixed Benchmark Value`, `Measure Column`, `Dataset Mean`, `Dataset Median`, and `Percentile P75/P90` milestone thresholds.
+- **Dynamic Field-Role Mapping**:
+  - Dropdowns dynamically populated via `registerOptions` allow users to freely remap Primary Stage Dimension, Optional Zone/Category Dimension, Survivor Volume Measure, Secondary Telemetry Measure, and Target Benchmark Measure without reordering query fields.
 - **Strict Dual-Axis Architecture**:
   - Left Y-Axis: Survivor Volume / Retention % with clean formatted numbers.
   - Right Y-Axis: Step Hazard Churn Rate % or Secondary Telemetry Measure.
-  - Adheres to Looker best practices: dual Y-axes with clean uncluttered labels.
+  - Clean, uncluttered axes respecting Looker visualization guidelines.
 - **Client-Side Scalability (5,000+ Rows)**:
-  - Aggregates raw row-level session or event logs into level summaries in-browser using $O(N)$ Map rollups with instant sub-millisecond execution.
+  - Aggregates raw row-level session or event logs into level summaries in-browser using $O(N)$ Map rollups with sub-millisecond execution.
 - **Executive Telemetry HUD**:
-  - 4 real-time KPI tiles: **Intake Entrants (L1)**, **Final Stage Survival %**, **Worst Choke Point (with Z-Score)**, and **Half-Life Milestone (P50)**.
+  - 3 density modes (`Full Scorecard`, `Compact Strip`, `Hidden`) displaying: **Intake Entrants (L1)**, **Final Stage Survival %**, **Worst Choke Point (with Z-Score)**, and **Half-Life / Retention Target Milestone**.
 - **Instant Client-Side Filtering**:
   - Search-as-you-type filter to isolate specific stages, chapters, or difficulty tiers.
 - **Streamlined 2-Tab Options Modal**:
@@ -44,12 +48,10 @@ Traditional business intelligence Cartesian charts force game developers and pro
 
 ## 📊 Data Shape & Query Requirements
 
-The visualization supports flexible data shapes:
-
 ### Recommended Setup (Single Dimension + 1-2 Measures)
-- **Dimension 1 (Level / Milestone / Stage)**: e.g. `levels.level_number`, `order_items.status`, `events.event_name`
-- **Measure 1 (Active Survivors / Volume)**: e.g. `events.player_count`, `order_items.order_count`
-- **Measure 2 (Optional Secondary Pacing Metric)**: e.g. `levels.avg_attempts`, `order_items.total_sale_price`, `events.playtime_seconds`
+- **Dimension 1 (Level / Milestone / Stage)**: e.g. `level_progression_telemetry.campaign_level`
+- **Measure 1 (Active Survivors / Volume)**: e.g. `level_progression_telemetry.surviving_players`
+- **Measure 2 (Secondary Telemetry Pacing Metric)**: e.g. `level_progression_telemetry.total_boss_wipes`
 
 ### Multi-Measure Mode (No Dimension)
 - **2 to 12 Measures representing sequential milestones**: e.g. `Tutorial Completed`, `Level 5 Cleared`, `Boss Defeated`, `Endgame Reached`.
@@ -60,15 +62,25 @@ The visualization supports flexible data shapes:
 
 ### Section 1: Display
 - **Progression Layout Mode**: `Progression & Choke Points`, `Survival Decay Model`, `Milestone Step Waterfall`, `Difficulty & Pacing Envelope`
-- **Choke Point Anomaly Sensitivity**: `High Sensitivity (> 1.5σ Churn)`, `Medium Sensitivity (> 2.0σ Churn)`, `Fixed Threshold (> 25% Churn)`
-- **Show Executive Telemetry HUD**: Toggle top KPI summary tiles.
-- **Flag Difficulty Choke Points**: Toggle visual warning flags on anomalous stages.
-- **Show Value & Retention Labels**: Toggle data labels on points and bars.
-- **Enable Instant Stage Search**: Toggle interactive search filter box.
+- **Field-Role Overrides**: Dynamic dropdowns for Primary Stage Dimension, Secondary Dimension, Survivor Volume Measure, Secondary Telemetry Measure, and Target Measure
+- **Target Benchmark Mode**: `None`, `Target Measure Column`, `Fixed Benchmark Value`, `Dataset Mean`, `Dataset Median`, `P75 Target`, `P90 Target`
+- **Target Value & Reference Label**: Custom fixed value and text label
+- **Choke Point Anomaly Sensitivity**: `High Sensitivity (> 1.5σ Churn)`, `Medium Sensitivity (> 2.0σ Churn)`, `Fixed Cutoff Threshold`
+- **Fixed Churn Cutoff %**: Numeric threshold for fixed anomaly detection
+- **Stage Progression Order**: `Natural / Chronological`, `Highest Volume First`, `Lowest Volume First`, `Alphabetical`
+- **Top N Stages & 'Other' Rollup**: Limit displayed stages with optional aggregation
+- **Suppress Nulls / Zeros**: Automatically hide empty or zero stages
+- **Executive Telemetry HUD**: `Full Scorecard (4 KPI Cards)`, `Compact Metrics Strip`, `Hidden / Minimal`
+- **Data Label Density**: `All Stages`, `Choke Points & Milestone Peaks Only`, `Hidden`
+- **Custom Title & Subtitle Override**: User-defined header text
+- **Enable Instant Stage Search**: Interactive search bar toggle
+- **Highlight Peak Bottleneck Level**: Visual flag on worst drop-off stage
 
 ### Section 2: Style
-- **Color Theme**: `Executive Slate (Light - Default)`, `Cyber Teal (Dark)`, `Neon Violet (Dark)`, `Emerald Pulse (Light)`, `Sunset Amber (Light)`
+- **Color Palette & Theme**: `Google Enterprise Spectrum`, `Modern Slate (Executive)`, `Cyberpunk Glow (Dark)`, `Neon Violet (Dark)`, `Emerald FinOps (Light)`, `Sunset Media (Light)`, `Wellverse Healthcare`, `Custom Hex Override`
+- **Custom Hex Overrides**: Primary Accent, Milestone / Pass, and Choke / Spike color pickers
+- **Metric Polarity**: `Higher is Better` vs `Lower is Better`
 - **Curve Interpolation**: `Smooth Spline (Catmull-Rom)`, `Linear (Direct Segment)`, `Monotone (Preserve Peaks)`
 - **Area Shading Opacity**: `Subtle Fill (15%)`, `Medium Fill (30%)`, `Solid Fill (50%)`
-- **Value Number Format**: `Compact Numbers (1.2M, 45K)`, `Currency Format ($1.2M)`, `Percentage Only`, `Exact Raw Integers`
-- **Highlight Peak Bottleneck Level**: Automatically highlights the single worst drop-off stage.
+- **Font Scale & Density**: `Compact (11px)`, `Standard (13px)`, `Large (15px)`
+- **Value Number Formatting**: `Auto Detect`, `Compact Number (1.2M)`, `Compact Currency ($1.2M)`, `Percentage (45.2%)`, `Decimal (2dp)`, `Exact Raw Integers`

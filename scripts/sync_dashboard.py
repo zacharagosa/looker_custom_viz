@@ -69,7 +69,8 @@ VOL2_VIZ_MAP = {
     "content_genre_affinity_network": "🎬 Media, Broadcast & Ad-Ops",
     "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting",
     "correlation_splom_matrix": "🧬 Multivariate & Diagnostic Profiling",
-    "voronoi_treemap": "🧬 Multivariate & Diagnostic Profiling"
+    "voronoi_treemap": "🧬 Multivariate & Diagnostic Profiling",
+    "horizon_small_multiples": "🧬 Multivariate & Diagnostic Profiling"
 }
 
 CATEGORY_TAB_MAP = {
@@ -114,6 +115,9 @@ CATEGORY_TAB_MAP = {
 
     "Retail, Supply Chain & FinOps": ("vol2", "🛍️ Retail, Supply Chain & FinOps"),
     "Financial & Pricing": ("vol2", "🛍️ Retail, Supply Chain & FinOps"),
+
+    "Multivariate & Diagnostic Profiling": ("vol2", "🧬 Multivariate & Diagnostic Profiling"),
+    "Multivariate & Profiling": ("vol2", "🧬 Multivariate & Diagnostic Profiling"),
 }
 
 VIZ_EMOJI_MAP = {
@@ -168,6 +172,7 @@ VIZ_EMOJI_MAP = {
     "candlestick_bollinger_bands": "🕯️",
     "correlation_splom_matrix": "🧬",
     "voronoi_treemap": "⬡",
+    "horizon_small_multiples": "🌅",
 }
 
 

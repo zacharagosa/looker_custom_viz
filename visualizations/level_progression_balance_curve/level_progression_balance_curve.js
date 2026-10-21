@@ -2,24 +2,28 @@
  * Level Progression & Balancing Curve - Looker Custom Visualization
  * Built with D3.js v7
  *
- * Game Balancing & Telemetry Drop-off Visualizer:
- * - 4 Multi-Modal Layout Modes:
- *     1. "dual_axis_spikes": Progression & Choke Points (Left axis: smooth cumulative survivor curve; Right axis: marginal churn % spike columns with automated anomaly badges)
- *     2. "survival_decay": Survival Decay Model (Empirical survivor retention curve against theoretical power-law/exponential benchmark baseline with P50 half-life indicator)
- *     3. "milestone_waterfall": Milestone Step Waterfall (Stepped progression cascade tracking surviving players vs drop-off loss at each stage)
- *     4. "difficulty_pacing": Difficulty & Pacing Envelope (Dual-axis correlation of survivor attrition with secondary telemetry measures: retries, playtime, or resource sinks)
- * - Automated Choke-Point / Difficulty Spike Anomaly Engine:
- *     - Computes step-to-step hazard rate h_i = (V_{i-1} - V_i) / V_{i-1}
- *     - Calculates mean and standard deviation of hazard rates across the progression
- *     - Flags levels deviating > 1.5σ or 2.0σ with visual pulsing warning badges and delta impact
- * - Dual-Axis Architecture:
- *     - Strictly separates Survivor Volume (Left Y-Axis) from Churn % / Secondary Metric (Right Y-Axis)
- *     - Clean axes with empty labels when legends or badges are enabled
- * - High-Density 5,000+ Row Telemetry Aggregation:
- *     - Ingests raw session or event rows and aggregates client-side in O(N) time with Map rollups
- * - Strict 2-Tab Options Modal: "Display" and "Style" to avoid Looker header tab crowding
- * - Light & Dark Theme Support (Executive Slate default, Cyber Teal, Neon Violet, Emerald Pulse, Sunset Amber)
- * - Interactive Controls: Executive HUD, real-time level search, crosshairs, tooltips, Looker drill-down menu
+ * Game Balancing & Telemetry Drop-off Visualizer solving Buganizer Cloud Blockers:
+ * - b/341928091: "Telemetry progression curve with automated difficulty choke-point anomaly detection"
+ * - b/490547912: "Dual-axis survival hazard rates alongside cumulative stage completion"
+ * - b/530822261: "Multi-modal level balancing visualization with theoretical benchmark decay overlays"
+ *
+ * 4 Multi-Modal Layout Modes:
+ * 1. "dual_axis_spikes": Progression & Choke Points (Left axis: smooth cumulative survivor curve; Right axis: marginal churn % spike columns with automated anomaly badges)
+ * 2. "survival_decay": Survival Decay Model (Empirical survivor retention curve against theoretical power-law/exponential benchmark baseline with P50 half-life indicator)
+ * 3. "milestone_waterfall": Milestone Step Waterfall (Stepped progression cascade tracking surviving players vs drop-off loss at each stage)
+ * 4. "difficulty_pacing": Difficulty & Pacing Envelope (Dual-axis correlation of survivor attrition with secondary telemetry measures: boss wipes, retries, playtime, or resource sinks)
+ *
+ * Automated Choke-Point / Difficulty Spike Anomaly Engine:
+ * - Computes step-to-step hazard rate h_i = (V_{i-1} - V_i) / V_{i-1}
+ * - Calculates mean and standard deviation of hazard rates across the progression
+ * - Flags levels deviating > 1.5σ or 2.0σ with visual warning badges and delta impact
+ *
+ * Enterprise Looker Standards:
+ * - Strictly 2 clean tabs in Edit Viz Modal: "Display" and "Style"
+ * - Dynamic field-role overrides via registerOptions dropdowns
+ * - Client-side high-density aggregation for 5,000+ rows
+ * - Debounced ResizeObserver (<4px threshold guard, never set width:100%/height:100% on element)
+ * - Native Looker drill-down menu support (LookerCharts.Utils.openDrillMenu)
  */
 
 (function () {
@@ -47,6 +51,31 @@
   }
 
   var THEMES = {
+    google_enterprise: {
+      name: "Google Enterprise Spectrum",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8f9fa",
+      border: "#dadce0",
+      text: "#202124",
+      subtext: "#5f6368",
+      hudBg: "rgba(248, 249, 250, 0.95)",
+      hudBorder: "#dadce0",
+      hudText: "#202124",
+      hudSubtext: "#5f6368",
+      accent: "#1a73e8",
+      curveColor: "#1a73e8",
+      curveFill: "rgba(26, 115, 232, 0.20)",
+      spikeFill: "rgba(217, 48, 37, 0.75)",
+      spikeBorder: "#d93025",
+      benchmarkColor: "#5f6368",
+      secondaryColor: "#1e8e3e",
+      chokePointBg: "#fce8e6",
+      chokePointText: "#c5221f",
+      chokePointBorder: "#ea4335",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#1a73e8"
+    },
     executive_slate: {
       name: "Executive Slate (Light)",
       isDark: false,
@@ -73,7 +102,7 @@
       tooltipBorder: "#2563eb"
     },
     cyber_teal: {
-      name: "Cyber Teal (Dark)",
+      name: "Cyberpunk Glow (Dark)",
       isDark: true,
       bg: "#0b0f19",
       cardBg: "rgba(17, 24, 39, 0.85)",
@@ -100,21 +129,21 @@
     neon_violet: {
       name: "Neon Violet (Dark)",
       isDark: true,
-      bg: "#0d0b18",
-      cardBg: "rgba(23, 15, 38, 0.85)",
+      bg: "#0d0714",
+      cardBg: "rgba(26, 16, 37, 0.85)",
       border: "#2e1065",
-      text: "#f8fafc",
-      subtext: "#a78bfa",
-      hudBg: "rgba(19, 11, 36, 0.90)",
-      hudBorder: "rgba(91, 33, 182, 0.8)",
-      hudText: "#f8fafc",
-      hudSubtext: "#c4b5fd",
+      text: "#faf5ff",
+      subtext: "#c084fc",
+      hudBg: "rgba(26, 16, 37, 0.90)",
+      hudBorder: "rgba(147, 51, 234, 0.6)",
+      hudText: "#faf5ff",
+      hudSubtext: "#c084fc",
       accent: "#a855f7",
       curveColor: "#a855f7",
       curveFill: "rgba(168, 85, 247, 0.25)",
       spikeFill: "rgba(244, 63, 94, 0.85)",
       spikeBorder: "#f43f5e",
-      benchmarkColor: "#7c3aed",
+      benchmarkColor: "#7e22ce",
       secondaryColor: "#38bdf8",
       chokePointBg: "rgba(244, 63, 94, 0.25)",
       chokePointText: "#fbcfe8",
@@ -123,7 +152,7 @@
       tooltipBorder: "#a855f7"
     },
     emerald_pulse: {
-      name: "Emerald Pulse (Light)",
+      name: "Emerald FinOps (Light)",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f0fdf4",
@@ -148,7 +177,7 @@
       tooltipBorder: "#059669"
     },
     sunset_amber: {
-      name: "Sunset Amber (Light)",
+      name: "Sunset Media (Light)",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#fffbeb",
@@ -171,34 +200,93 @@
       chokePointBorder: "#e11d48",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#d97706"
+    },
+    wellverse: {
+      name: "Wellverse Healthcare (Light)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      hudSubtext: "#64748b",
+      accent: "#2e7cf6",
+      curveColor: "#2e7cf6",
+      curveFill: "rgba(46, 124, 246, 0.20)",
+      spikeFill: "rgba(229, 72, 77, 0.80)",
+      spikeBorder: "#e5484d",
+      benchmarkColor: "#94a3b8",
+      secondaryColor: "#00af68",
+      chokePointBg: "#fee2e2",
+      chokePointText: "#b91c1c",
+      chokePointBorder: "#ef4444",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#2e7cf6"
+    },
+    custom: {
+      name: "Custom Hex Override",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      hudSubtext: "#64748b",
+      accent: "#2563eb",
+      curveColor: "#2563eb",
+      curveFill: "rgba(37, 99, 235, 0.20)",
+      spikeFill: "rgba(225, 29, 72, 0.75)",
+      spikeBorder: "#e11d48",
+      benchmarkColor: "#94a3b8",
+      secondaryColor: "#16a34a",
+      chokePointBg: "#fee2e2",
+      chokePointText: "#b91c1c",
+      chokePointBorder: "#ef4444",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#2563eb"
     }
   };
 
   function formatValue(val, fmt) {
-    if (val === null || val === undefined || isNaN(val)) return "N/A";
+    if (val === null || val === undefined || isNaN(val)) return "-";
     var num = Number(val);
+    var abs = Math.abs(num);
+    var sign = num < 0 ? "-" : "";
+
     if (fmt === "compact_currency") {
-      if (Math.abs(num) >= 1e9) return "$" + (num / 1e9).toFixed(2) + "B";
-      if (Math.abs(num) >= 1e6) return "$" + (num / 1e6).toFixed(2) + "M";
-      if (Math.abs(num) >= 1e3) return "$" + (num / 1e3).toFixed(1) + "K";
-      return "$" + num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      if (abs >= 1e9) return sign + "$" + (abs / 1e9).toFixed(2) + "B";
+      if (abs >= 1e6) return sign + "$" + (abs / 1e6).toFixed(2) + "M";
+      if (abs >= 1e3) return sign + "$" + (abs / 1e3).toFixed(1) + "K";
+      return sign + "$" + abs.toFixed(2);
     } else if (fmt === "percentage") {
-      return num.toFixed(1) + "%";
+      var p = (num <= 1 && num >= -1) ? num * 100 : num;
+      return (p >= 0 ? "" : "-") + Math.abs(p).toFixed(1) + "%";
+    } else if (fmt === "decimal_2") {
+      return sign + abs.toFixed(2);
     } else if (fmt === "raw") {
       return String(num);
     }
-    // compact_num default
-    if (Math.abs(num) >= 1e9) return (num / 1e9).toFixed(2) + "B";
-    if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M";
-    if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "K";
-    return num.toLocaleString();
+    // compact_num / auto default
+    if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
+    if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
+    if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+    if (abs < 10 && abs > 0 && Math.floor(abs) !== abs) return sign + abs.toFixed(2);
+    return sign + Math.round(abs).toLocaleString();
   }
 
   looker.plugins.visualizations.add({
     id: "level_progression_balance_curve",
     label: "Level Progression & Balancing Curve",
     options: {
-      // SECTION 1: DISPLAY
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       curveLayout: {
         type: "string",
         label: "Progression Layout Mode",
@@ -213,6 +301,82 @@
         section: "Display",
         order: 1
       },
+      dimLevelOverride: {
+        type: "string",
+        label: "Primary Stage / Level Dimension",
+        display: "select",
+        values: [{ "Auto / Default Order": "" }],
+        default: "",
+        section: "Display",
+        order: 2
+      },
+      dimGroupOverride: {
+        type: "string",
+        label: "Secondary / Zone Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      measureVolumeOverride: {
+        type: "string",
+        label: "Primary Survivor Volume Measure",
+        display: "select",
+        values: [{ "Auto / Default Order": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      measureSecondaryOverride: {
+        type: "string",
+        label: "Secondary Telemetry Measure (Pacing)",
+        display: "select",
+        values: [{ "Auto / Default Order": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      measureTargetOverride: {
+        type: "string",
+        label: "Target Benchmark Measure (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
+      targetMode: {
+        type: "string",
+        label: "Target Benchmark Mode",
+        display: "select",
+        values: [
+          { "None / Standard Curve": "none" },
+          { "Target Measure Column": "measure" },
+          { "Fixed Benchmark Value": "fixed" },
+          { "Dataset Mean Survivor Volume": "dataset_mean" },
+          { "Dataset Median Survivor Volume": "dataset_median" },
+          { "P75 Milestone Target": "percentile_p75" },
+          { "P90 Milestone Target": "percentile_p90" }
+        ],
+        default: "dataset_mean",
+        section: "Display",
+        order: 7
+      },
+      targetFixedValue: {
+        type: "number",
+        label: "Custom Target Fixed Value",
+        default: 50000,
+        section: "Display",
+        order: 8
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Benchmark Reference Label",
+        default: "Retention Target",
+        section: "Display",
+        order: 9
+      },
       chokePointSensitivity: {
         type: "string",
         label: "Choke Point Anomaly Sensitivity",
@@ -220,56 +384,175 @@
         values: [
           { "High Sensitivity (> 1.5σ Churn)": "high" },
           { "Medium Sensitivity (> 2.0σ Churn)": "medium" },
-          { "Fixed Threshold (> 25% Churn)": "fixed" }
+          { "Fixed Cutoff Threshold": "fixed" }
         ],
         default: "medium",
         section: "Display",
-        order: 2
+        order: 10
       },
-      showExecutiveHUD: {
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Fixed Churn Anomaly Cutoff %",
+        default: 25.0,
+        section: "Display",
+        order: 11
+      },
+      sortOrder: {
+        type: "string",
+        label: "Stage Progression Order",
+        display: "select",
+        values: [
+          { "Query Natural / Chronological Order": "natural" },
+          { "Highest Survivor Volume First": "metric_desc" },
+          { "Lowest Survivor Volume First": "metric_asc" },
+          { "Alphabetical (A - Z)": "alphabetical" }
+        ],
+        default: "natural",
+        section: "Display",
+        order: 12
+      },
+      topN: {
+        type: "string",
+        label: "Top N Stages Displayed",
+        display: "select",
+        values: [
+          { "All Stages": "all" },
+          { "Top 10 Stages": "10" },
+          { "Top 15 Stages": "15" },
+          { "Top 20 Stages": "20" },
+          { "Top 25 Stages": "25" },
+          { "Top 30 Stages": "30" },
+          { "Top 50 Stages": "50" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 13
+      },
+      bundleOther: {
         type: "boolean",
-        label: "Show Executive Telemetry HUD",
+        label: "Group Trailing Stages into 'Other'",
+        default: false,
+        section: "Display",
+        order: 14
+      },
+      suppressNulls: {
+        type: "boolean",
+        label: "Filter Zero / Empty Stages",
         default: true,
         section: "Display",
-        order: 3
+        order: 15
       },
-      showChokePointBadges: {
-        type: "boolean",
-        label: "Flag Difficulty Choke Points",
-        default: true,
+      hudMode: {
+        type: "string",
+        label: "Executive Telemetry HUD",
+        display: "select",
+        values: [
+          { "Full Scorecard (4 KPI Cards)": "full" },
+          { "Compact Metrics Strip": "compact" },
+          { "Hidden / Minimal": "hidden" }
+        ],
+        default: "full",
         section: "Display",
-        order: 4
+        order: 16
       },
-      showDataLabels: {
-        type: "boolean",
-        label: "Show Value & Retention Labels",
-        default: true,
+      dataLabelDensity: {
+        type: "string",
+        label: "Data Value & Retention Labels",
+        display: "select",
+        values: [
+          { "All Stages": "all" },
+          { "Choke Points & Milestone Peaks Only": "peaks" },
+          { "Hidden": "hidden" }
+        ],
+        default: "all",
         section: "Display",
-        order: 5
+        order: 17
+      },
+      chartTitle: {
+        type: "string",
+        label: "Custom Title Override",
+        default: "",
+        section: "Display",
+        order: 18
+      },
+      chartSubtitle: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 19
       },
       showSearch: {
         type: "boolean",
         label: "Enable Instant Stage Search",
         default: true,
         section: "Display",
-        order: 6
+        order: 20
+      },
+      highlightWorstChoke: {
+        type: "boolean",
+        label: "Highlight Peak Bottleneck Level",
+        default: true,
+        section: "Display",
+        order: 21
       },
 
-      // SECTION 2: STYLE
-      colorTheme: {
+      // ==========================================
+      // SECTION 2: STYLE (Strictly 2 clean tabs)
+      // ==========================================
+      colorPalette: {
         type: "string",
-        label: "Color Theme",
+        label: "Color Palette & Theme",
         display: "select",
         values: [
-          { "Executive Slate (Light)": "executive_slate" },
-          { "Cyber Teal (Dark)": "cyber_teal" },
+          { "Google Enterprise Spectrum": "google_enterprise" },
+          { "Modern Slate (Executive)": "executive_slate" },
+          { "Cyberpunk Glow (Dark)": "cyber_teal" },
           { "Neon Violet (Dark)": "neon_violet" },
-          { "Emerald Pulse (Light)": "emerald_pulse" },
-          { "Sunset Amber (Light)": "sunset_amber" }
+          { "Emerald FinOps (Light)": "emerald_pulse" },
+          { "Sunset Media (Light)": "sunset_amber" },
+          { "Wellverse Healthcare": "wellverse" },
+          { "Custom Hex Override": "custom" }
         ],
         default: "executive_slate",
         section: "Style",
         order: 1
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Primary Accent Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Milestone / Pass Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Choke / Spike Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity",
+        display: "select",
+        values: [
+          { "Higher is Better (Survivors, Clears, Retention)": "higher_is_better" },
+          { "Lower is Better (Wipes, Churn, Deaths, Latency)": "lower_is_better" }
+        ],
+        default: "higher_is_better",
+        section: "Style",
+        order: 5
       },
       curveSmoothing: {
         type: "string",
@@ -282,7 +565,7 @@
         ],
         default: "catmull_rom",
         section: "Style",
-        order: 2
+        order: 6
       },
       areaOpacity: {
         type: "string",
@@ -295,28 +578,36 @@
         ],
         default: "medium",
         section: "Style",
-        order: 3
+        order: 7
+      },
+      fontScale: {
+        type: "string",
+        label: "Font Scale & Density",
+        display: "select",
+        values: [
+          { "Compact (Dense Dashboard)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 8
       },
       valueFormat: {
         type: "string",
-        label: "Value Number Format",
+        label: "Value Number Formatting",
         display: "select",
         values: [
-          { "Compact Numbers (1.2M, 45K)": "compact_num" },
-          { "Currency Format ($1.2M)": "compact_currency" },
-          { "Percentage Only": "percentage" },
+          { "Auto Detect": "auto" },
+          { "Compact Number (1.2M, 45K)": "compact_num" },
+          { "Compact Currency ($1.2M)": "compact_currency" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal (2 Decimal Places)": "decimal_2" },
           { "Exact Raw Integers": "raw" }
         ],
         default: "compact_num",
         section: "Style",
-        order: 4
-      },
-      highlightWorstChoke: {
-        type: "boolean",
-        label: "Highlight Peak Bottleneck Level",
-        default: true,
-        section: "Style",
-        order: 5
+        order: 9
       }
     },
 
@@ -341,11 +632,23 @@
       this._root = root;
       this._searchQuery = "";
       this._hoverIndex = null;
+      this._lastWidth = 0;
+      this._lastHeight = 0;
 
       var self = this;
       var resizeTimeout = null;
       if (window.ResizeObserver) {
-        this._resizeObserver = new ResizeObserver(function () {
+        this._resizeObserver = new ResizeObserver(function (entries) {
+          if (!entries || entries.length === 0) return;
+          var entry = entries[0];
+          var w = entry.contentRect.width;
+          var h = entry.contentRect.height;
+          if (Math.abs(w - self._lastWidth) < 4 && Math.abs(h - self._lastHeight) < 4) {
+            return;
+          }
+          self._lastWidth = w;
+          self._lastHeight = h;
+
           if (resizeTimeout) clearTimeout(resizeTimeout);
           resizeTimeout = setTimeout(function () {
             if (self._lastData && self._lastQueryResponse) {
@@ -381,6 +684,33 @@
         return;
       }
 
+      // Dynamic Dropdowns registration
+      var dimOptions = [{ "Auto / Default Order": "" }];
+      dims.forEach(function (d) {
+        var opt = {};
+        opt[d.label_short || d.label || d.name] = d.name;
+        dimOptions.push(opt);
+      });
+
+      var measOptions = [{ "Auto / Default Order": "" }];
+      meas.forEach(function (m) {
+        var opt = {};
+        opt[m.label_short || m.label || m.name] = m.name;
+        measOptions.push(opt);
+      });
+
+      if (this.trigger) {
+        try {
+          this.trigger("registerOptions", {
+            dimLevelOverride: { values: dimOptions },
+            dimGroupOverride: { values: [{ "Auto / None": "" }].concat(dimOptions.slice(1)) },
+            measureVolumeOverride: { values: measOptions },
+            measureSecondaryOverride: { values: [{ "Auto / None": "" }].concat(measOptions.slice(1)) },
+            measureTargetOverride: { values: [{ "Auto / None": "" }].concat(measOptions.slice(1)) }
+          });
+        } catch (e) {}
+      }
+
       var self = this;
       ensureD3(function () {
         try {
@@ -400,36 +730,63 @@
 
       var dims = (queryResponse.fields && queryResponse.fields.dimensions) || [];
       var meas = (queryResponse.fields && queryResponse.fields.measures) || [];
-      var themeKey = config.colorTheme || "executive_slate";
-      var theme = THEMES[themeKey] || THEMES.executive_slate;
+      var themeKey = config.colorPalette || config.colorTheme || "executive_slate";
+      var theme = Object.assign({}, THEMES[themeKey] || THEMES.executive_slate);
+
+      // Custom Hex Overrides
+      if (themeKey === "custom" || config.customPrimaryColor) {
+        if (config.customPrimaryColor) {
+          theme.accent = config.customPrimaryColor;
+          theme.curveColor = config.customPrimaryColor;
+          theme.curveFill = config.customPrimaryColor + "33";
+          theme.tooltipBorder = config.customPrimaryColor;
+        }
+        if (config.customPositiveColor) {
+          theme.secondaryColor = config.customPositiveColor;
+        }
+        if (config.customNegativeColor) {
+          theme.spikeBorder = config.customNegativeColor;
+          theme.spikeFill = config.customNegativeColor + "bb";
+          theme.chokePointBorder = config.customNegativeColor;
+          theme.chokePointText = config.customNegativeColor;
+        }
+      }
 
       root.style.backgroundColor = theme.bg;
       root.style.color = theme.text;
 
-      // Extract & Aggregate Data
-      var stageDim = dims.length > 0 ? dims[0].name : null;
-      var cohortDim = dims.length > 1 ? dims[1].name : null;
-      var primaryMeasure = meas.length > 0 ? meas[0].name : null;
-      var secondaryMeasure = meas.length > 1 ? meas[1].name : null;
+      // Font scaling
+      var fScale = config.fontScale || "standard";
+      var baseFontSize = fScale === "compact" ? 11 : (fScale === "large" ? 15 : 13);
+      root.style.fontSize = baseFontSize + "px";
 
-      // Aggregation: Roll up high-density rows (5,000+) by Stage
+      // Field Mapping with Overrides
+      var stageDim = config.dimLevelOverride || (dims.length > 0 ? dims[0].name : null);
+      var groupDim = config.dimGroupOverride || (dims.length > 1 ? dims[1].name : null);
+      var primaryMeasure = config.measureVolumeOverride || (meas.length > 0 ? meas[0].name : null);
+      var secondaryMeasure = config.measureSecondaryOverride || (meas.length > 1 ? meas[1].name : null);
+      var targetMeasure = config.measureTargetOverride || (meas.length > 2 ? meas[2].name : null);
+
+      // Aggregation: Roll up rows (5,000+) by Stage
       var stageMap = new Map();
       var stageOrder = [];
 
       if (stageDim && primaryMeasure) {
         for (var i = 0; i < data.length; i++) {
           var row = data[i];
-          var rawLabel = row[stageDim] ? (row[stageDim].value !== undefined ? row[stageDim].value : row[stageDim]) : "Level " + (i + 1);
-          var stageKey = String(rawLabel);
+          var rawVal = row[stageDim] ? (row[stageDim].value !== undefined ? row[stageDim].value : row[stageDim]) : "Level " + (i + 1);
+          var stageKey = String(rawVal);
           var v1 = row[primaryMeasure] ? Number(row[primaryMeasure].value || 0) : 0;
           var v2 = secondaryMeasure && row[secondaryMeasure] ? Number(row[secondaryMeasure].value || 0) : 0;
+          var vt = targetMeasure && row[targetMeasure] ? Number(row[targetMeasure].value || 0) : 0;
 
           if (!stageMap.has(stageKey)) {
             stageMap.set(stageKey, {
               label: stageKey,
-              rawLabel: rawLabel,
+              rawLabel: rawVal,
               volume: 0,
               secondary: 0,
+              targetVal: 0,
               firstRow: row,
               count: 0
             });
@@ -438,10 +795,10 @@
           var entry = stageMap.get(stageKey);
           entry.volume += v1;
           entry.secondary += v2;
+          entry.targetVal += vt;
           entry.count += 1;
         }
       } else if (meas.length >= 2) {
-        // Multi-measure mode without dimension
         for (var m = 0; m < meas.length; m++) {
           var mKey = meas[m].name;
           var mLabel = meas[m].label_short || meas[m].label || mKey;
@@ -454,6 +811,7 @@
             rawLabel: mLabel,
             volume: sum,
             secondary: 0,
+            targetVal: 0,
             firstRow: data[0],
             count: data.length
           });
@@ -466,9 +824,50 @@
         stages.push(stageMap.get(stageOrder[s]));
       }
 
+      // Suppress Nulls / Zeros
+      if (config.suppressNulls !== false) {
+        stages = stages.filter(function (st) {
+          return st.volume > 0 || (st.secondary > 0);
+        });
+      }
+
       if (stages.length === 0) {
-        root.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:" + theme.subtext + ";'>No data available for the selected progression.</div>";
+        root.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:" + theme.subtext + ";'>No non-zero stages found for progression curve.</div>";
         return;
+      }
+
+      // Sorting
+      var sortOrder = config.sortOrder || "natural";
+      if (sortOrder === "metric_desc") {
+        stages.sort(function (a, b) { return b.volume - a.volume; });
+      } else if (sortOrder === "metric_asc") {
+        stages.sort(function (a, b) { return a.volume - b.volume; });
+      } else if (sortOrder === "alphabetical") {
+        stages.sort(function (a, b) { return String(a.label).localeCompare(String(b.label)); });
+      }
+
+      // Top-N & Bundle Other
+      var topNLimit = config.topN || "all";
+      if (topNLimit !== "all") {
+        var n = parseInt(topNLimit, 10);
+        if (!isNaN(n) && n > 0 && stages.length > n) {
+          var topSlice = stages.slice(0, n);
+          if (config.bundleOther) {
+            var otherSlice = stages.slice(n);
+            var otherVol = otherSlice.reduce(function (acc, x) { return acc + x.volume; }, 0);
+            var otherSec = otherSlice.reduce(function (acc, x) { return acc + x.secondary; }, 0);
+            topSlice.push({
+              label: "Other Stages (" + otherSlice.length + ")",
+              rawLabel: "Other",
+              volume: otherVol,
+              secondary: otherSec,
+              targetVal: 0,
+              firstRow: otherSlice[0].firstRow,
+              count: otherSlice.length
+            });
+          }
+          stages = topSlice;
+        }
       }
 
       // Filter via instant search
@@ -481,7 +880,7 @@
       }
 
       if (displayStages.length === 0) {
-        displayStages = stages; // fallback if search yields empty
+        displayStages = stages;
       }
 
       // Progression Analytics: Compute Survivors %, Step Hazard Drop-off %, and Anomaly Z-scores
@@ -506,6 +905,30 @@
         }
       }
 
+      // Target Benchmark Line Calculation
+      var targetMode = config.targetMode || "dataset_mean";
+      var targetValue = null;
+      var volumes = displayStages.map(function (d) { return d.volume; }).sort(function (a, b) { return a - b; });
+
+      if (targetMode === "fixed") {
+        targetValue = Number(config.targetFixedValue || 50000);
+      } else if (targetMode === "dataset_mean") {
+        var sumV = volumes.reduce(function (a, b) { return a + b; }, 0);
+        targetValue = volumes.length > 0 ? sumV / volumes.length : 0;
+      } else if (targetMode === "dataset_median") {
+        var mid = Math.floor(volumes.length / 2);
+        targetValue = volumes.length % 2 !== 0 ? volumes[mid] : (volumes[mid - 1] + volumes[mid]) / 2;
+      } else if (targetMode === "percentile_p75") {
+        var p75Idx = Math.floor(volumes.length * 0.75);
+        targetValue = volumes[Math.min(p75Idx, volumes.length - 1)];
+      } else if (targetMode === "percentile_p90") {
+        var p90Idx = Math.floor(volumes.length * 0.90);
+        targetValue = volumes[Math.min(p90Idx, volumes.length - 1)];
+      } else if (targetMode === "measure" && targetMeasure) {
+        var tSum = displayStages.reduce(function (acc, d) { return acc + d.targetVal; }, 0);
+        targetValue = displayStages.length > 0 ? tSum / displayStages.length : 0;
+      }
+
       // Calculate Hazard Statistics for Anomaly Detection
       var avgHazard = 0;
       var stdHazard = 0;
@@ -518,7 +941,7 @@
 
       var sensitivity = config.chokePointSensitivity || "medium";
       var sigmaThreshold = sensitivity === "high" ? 1.5 : (sensitivity === "medium" ? 2.0 : 999);
-      var fixedThreshold = 25.0;
+      var fixedThreshold = Number(config.anomalyThresholdPct || 25.0);
 
       var worstChokeIndex = -1;
       var maxHazard = -1;
@@ -546,7 +969,7 @@
 
       var worstChokeStage = worstChokeIndex >= 0 ? displayStages[worstChokeIndex] : null;
 
-      // Find P50 Half-Life Level (Level where survivor % first drops below 50%)
+      // Find P50 Half-Life Level
       var p50Level = "N/A";
       for (var p = 0; p < displayStages.length; p++) {
         if (displayStages[p].survivorPct <= 50) {
@@ -575,10 +998,16 @@
 
       var titleDiv = document.createElement("div");
       titleDiv.style.display = "flex";
-      titleDiv.style.alignItems = "center";
-      titleDiv.style.gap = "8px";
-      titleDiv.innerHTML = "<span style='font-size:16px;'>🕹️</span><span style='font-size:14px;font-weight:600;letter-spacing:-0.2px;color:" + theme.text + ";'>Level Progression & Difficulty Balancing</span>" +
-        "<span style='font-size:11px;padding:2px 8px;border-radius:12px;background:" + theme.cardBg + ";border:1px solid " + theme.border + ";color:" + theme.subtext + ";font-weight:500;'>" + displayStages.length + " Stages (" + formatValue(stages.length, "compact_num") + " Total Rows)</span>";
+      titleDiv.style.flexDirection = "column";
+      titleDiv.style.gap = "2px";
+
+      var displayTitle = config.chartTitle || "Level Progression & Balancing Curve";
+      var displaySubtitle = config.chartSubtitle || (displayStages.length + " Progression Stages • " + formatValue(stages.length, "compact_num") + " Total Entities");
+
+      titleDiv.innerHTML = "<div style='display:flex;align-items:center;gap:8px;'>" +
+        "<span style='font-size:16px;'>🕹️</span><span style='font-size:" + (baseFontSize + 2) + "px;font-weight:600;letter-spacing:-0.2px;color:" + theme.text + ";'>" + displayTitle + "</span>" +
+        "<span style='font-size:10px;padding:2px 8px;border-radius:12px;background:" + theme.cardBg + ";border:1px solid " + theme.border + ";color:" + theme.subtext + ";font-weight:500;'>" + displayStages.length + " Stages</span></div>" +
+        (displaySubtitle ? "<div style='font-size:11px;color:" + theme.subtext + ";margin-left:24px;'>" + displaySubtitle + "</div>" : "");
       controlsRow.appendChild(titleDiv);
 
       var rightControls = document.createElement("div");
@@ -610,7 +1039,8 @@
       }
 
       // Executive HUD KPI Cards
-      if (config.showExecutiveHUD !== false) {
+      var hudMode = config.hudMode || "full";
+      if (hudMode === "full") {
         var hudRow = document.createElement("div");
         hudRow.style.display = "grid";
         hudRow.style.gridTemplateColumns = "repeat(4, minmax(0, 1fr))";
@@ -624,7 +1054,7 @@
           { label: "Intake Entrants (L1)", value: formatValue(initialVolume, config.valueFormat || "compact_num"), subtext: "Starting Cohort", icon: "🚀" },
           { label: "Final Stage Survival", value: finalRetention, subtext: "End-of-Funnel Completion", icon: "🎯" },
           { label: "Worst Choke Point", value: worstChokeText, subtext: worstChokeStage ? "Z-Score: +" + worstChokeStage.zScore.toFixed(1) + "σ" : "Normal Decay", icon: "⚠️", alert: !!worstChokeStage },
-          { label: "Half-Life Milestone", value: p50Level, subtext: "50% Survivor Benchmark", icon: "⏳" }
+          { label: targetValue !== null ? (config.referenceLineLabel || "Retention Target") : "Half-Life Milestone", value: targetValue !== null ? formatValue(targetValue, config.valueFormat || "compact_num") : p50Level, subtext: targetValue !== null ? (targetMode.replace(/_/g, " ").toUpperCase()) : "50% Survivor Benchmark", icon: targetValue !== null ? "📐" : "⏳" }
         ];
 
         for (var c = 0; c < kpiCards.length; c++) {
@@ -643,6 +1073,23 @@
             "<div style='font-size:10px;color:" + (card.alert ? theme.chokePointText : theme.subtext) + ";opacity:0.85;'>" + card.subtext + "</div>";
           hudRow.appendChild(cardEl);
         }
+      } else if (hudMode === "compact") {
+        var compactRow = document.createElement("div");
+        compactRow.style.display = "flex";
+        compactRow.style.alignItems = "center";
+        compactRow.style.gap = "16px";
+        compactRow.style.fontSize = "11px";
+        compactRow.style.color = theme.subtext;
+        compactRow.style.padding = "4px 8px";
+        compactRow.style.background = theme.cardBg;
+        compactRow.style.borderRadius = "4px";
+
+        var finalRet = displayStages.length > 0 ? displayStages[displayStages.length - 1].survivorPct.toFixed(1) + "%" : "0%";
+        compactRow.innerHTML = "<span><b>Entrants:</b> " + formatValue(initialVolume, config.valueFormat || "compact_num") + "</span>" +
+          "<span>•</span><span><b>Final Retention:</b> " + finalRet + "</span>" +
+          "<span>•</span><span><b>Peak Choke:</b> " + (worstChokeStage ? worstChokeStage.label + " (-" + worstChokeStage.hazardRate.toFixed(1) + "%)" : "None") + "</span>" +
+          (targetValue !== null ? "<span>•</span><span><b>Target:</b> " + formatValue(targetValue, config.valueFormat || "compact_num") + "</span>" : "");
+        headerContainer.appendChild(compactRow);
       }
 
       // 2. MAIN VISUALIZATION CANVAS (SVG)
@@ -697,6 +1144,8 @@
 
       // Left Y-Scale: Survivor Volume / Retention %
       var maxVol = d3.max(displayStages, function (d) { return d.volume; }) || 1;
+      if (targetValue !== null && targetValue > maxVol) maxVol = targetValue;
+
       var yLeft = d3.scaleLinear()
         .domain([0, maxVol * 1.1])
         .nice()
@@ -716,7 +1165,7 @@
         .nice()
         .range([innerHeight, 0]);
 
-      // Gridlines (Horizontal across left scale)
+      // Gridlines
       g.append("g")
         .attr("class", "grid")
         .call(d3.axisLeft(yLeft)
@@ -729,19 +1178,39 @@
         .attr("stroke-opacity", 0.6);
       g.select(".grid .domain").remove();
 
+      // Reference Line / Benchmark Target
+      if (targetValue !== null && targetMode !== "none") {
+        g.append("line")
+          .attr("x1", 0)
+          .attr("x2", innerWidth)
+          .attr("y1", yLeft(targetValue))
+          .attr("y2", yLeft(targetValue))
+          .attr("stroke", theme.secondaryColor)
+          .attr("stroke-width", 2)
+          .attr("stroke-dasharray", "6,3");
+
+        g.append("text")
+          .attr("x", innerWidth - 6)
+          .attr("y", yLeft(targetValue) - 6)
+          .attr("text-anchor", "end")
+          .attr("font-size", "11px")
+          .attr("font-weight", "600")
+          .attr("fill", theme.secondaryColor)
+          .text((config.referenceLineLabel || "Target") + ": " + formatValue(targetValue, config.valueFormat || "compact_num"));
+      }
+
       var layoutMode = config.curveLayout || "dual_axis_spikes";
 
       // -------------------------------------------------------------
       // MODE 1 & MODE 2 & MODE 4: Progression Curve & Dual Axis
       // -------------------------------------------------------------
       if (layoutMode === "dual_axis_spikes" || layoutMode === "survival_decay" || layoutMode === "difficulty_pacing") {
-        // Curve Interpolator
         var smoothing = config.curveSmoothing || "catmull_rom";
         var curveFunc = d3.curveCatmullRom.alpha(0.5);
         if (smoothing === "linear") curveFunc = d3.curveLinear;
         if (smoothing === "monotone_x") curveFunc = d3.curveMonotoneX;
 
-        // Render Spikes / Hazard Bars on Right Axis (underneath area curve)
+        // Render Spikes / Hazard Bars on Right Axis
         if (layoutMode === "dual_axis_spikes") {
           var barW = Math.max(6, Math.min(28, (innerWidth / displayStages.length) * 0.35));
           g.selectAll(".hazard-bar")
@@ -761,7 +1230,6 @@
 
         // Render Theoretical Benchmark Line (Survival Decay Mode)
         if (layoutMode === "survival_decay") {
-          // Model exponential decay: y = V0 * exp(-lambda * x)
           var decayConst = displayStages.length > 1 ? Math.log(displayStages[0].volume / Math.max(1, displayStages[displayStages.length - 1].volume)) / (displayStages.length - 1) : 0.1;
           var benchmarkLine = d3.line()
             .curve(d3.curveBasis)
@@ -779,7 +1247,6 @@
             .attr("stroke-dasharray", "6,4")
             .attr("d", benchmarkLine);
 
-          // Benchmark annotation
           g.append("text")
             .attr("x", innerWidth - 10)
             .attr("y", yLeft(displayStages[0].volume * Math.exp(-decayConst * (displayStages.length - 1))) - 8)
@@ -787,7 +1254,7 @@
             .attr("font-size", "11px")
             .attr("font-weight", "500")
             .attr("fill", theme.benchmarkColor)
-            .text("Ideal Power-Law Benchmark");
+            .text("Theoretical Power-Law Benchmark");
         }
 
         // Area Generator
@@ -802,10 +1269,13 @@
           .x(function (d) { return xScale(d.label); })
           .y(function (d) { return yLeft(d.volume); });
 
+        var areaOpacityVal = config.areaOpacity === "subtle" ? 0.15 : (config.areaOpacity === "solid" ? 0.50 : 0.30);
+
         // Area Shading
         g.append("path")
           .datum(displayStages)
           .attr("fill", "url(#progressionAreaGrad)")
+          .attr("fill-opacity", areaOpacityVal)
           .attr("d", areaGen);
 
         // Progression Spline Stroke
@@ -858,10 +1328,10 @@
           .attr("r", function (d) { return d.isChokePoint ? 7 : 5; })
           .attr("fill", function (d) { return d.isChokePoint ? theme.spikeBorder : theme.bg; })
           .attr("stroke", function (d) { return d.isChokePoint ? "#ffffff" : theme.curveColor; })
-          .attr("stroke-width", function (d) { return d.isChokePoint ? 2.5 : 2.5; });
+          .attr("stroke-width", 2.5);
 
         // Choke Point Badges / Anomaly Flags
-        if (config.showChokePointBadges !== false) {
+        if (config.highlightWorstChoke !== false) {
           var chokeNodes = nodes.filter(function (d) { return d.isChokePoint; });
 
           chokeNodes.append("rect")
@@ -884,9 +1354,16 @@
         }
 
         // Data Value & Retention Labels
-        if (config.showDataLabels !== false) {
-          nodes.filter(function (d) { return !d.isChokePoint || config.showChokePointBadges === false; })
-            .append("text")
+        var labelDensity = config.dataLabelDensity || "all";
+        if (labelDensity !== "hidden") {
+          var targetNodes = nodes;
+          if (labelDensity === "peaks") {
+            targetNodes = nodes.filter(function (d) { return d.isChokePoint || d.index === 0 || d.index === displayStages.length - 1; });
+          } else {
+            targetNodes = nodes.filter(function (d) { return !d.isChokePoint || config.highlightWorstChoke === false; });
+          }
+
+          targetNodes.append("text")
             .attr("x", 0)
             .attr("y", -10)
             .attr("text-anchor", "middle")
@@ -912,7 +1389,6 @@
           .attr("class", "waterfall-step")
           .attr("transform", function (d) { return "translate(" + (xScale(d.label) - stepW / 2) + ",0)"; });
 
-        // Retained Survivor Column
         waterfallG.append("rect")
           .attr("x", 0)
           .attr("y", function (d) { return yLeft(d.volume); })
@@ -922,7 +1398,6 @@
           .attr("fill", theme.curveColor)
           .attr("opacity", 0.85);
 
-        // Downward Drop-off Red Column (shows volume lost from prior step)
         waterfallG.filter(function (d) { return d.index > 0 && d.stepDropoff > 0; })
           .append("rect")
           .attr("x", 0)
@@ -939,7 +1414,6 @@
           .attr("fill", theme.spikeBorder)
           .attr("opacity", 0.7);
 
-        // Connector step line
         waterfallG.filter(function (d) { return d.index > 0; })
           .append("line")
           .attr("x1", -((innerWidth / displayStages.length) - stepW) / 2)
@@ -949,7 +1423,8 @@
           .attr("stroke", theme.subtext)
           .attr("stroke-dasharray", "2,2");
 
-        if (config.showDataLabels !== false) {
+        var labelDensityWF = config.dataLabelDensity || "all";
+        if (labelDensityWF !== "hidden") {
           waterfallG.append("text")
             .attr("x", stepW / 2)
             .attr("y", function (d) { return yLeft(d.volume) - 6; })
@@ -974,7 +1449,6 @@
         .attr("fill", theme.text)
         .attr("dy", "10px");
 
-      // Rotate X labels if stages exceed 8
       if (displayStages.length > 8) {
         xAxis.selectAll(".tick text")
           .attr("transform", "rotate(-25)")
@@ -983,16 +1457,13 @@
           .attr("dy", "6px");
       }
 
-      // DUAL Y-AXES (Following User Preference: "charts with two measures must put each on their own axis (dual Y-axis)")
-      // User Preference: "do not label axes if legends are enabled (use showLabels: false / clean empty label)"
-      // Left Y-Axis (Survivor Volume)
+      // DUAL Y-AXES
       var yAxisLeft = g.append("g")
         .call(d3.axisLeft(yLeft).ticks(5).tickFormat(function (d) { return formatValue(d, config.valueFormat || "compact_num"); }));
       yAxisLeft.select(".domain").attr("stroke", theme.border);
       yAxisLeft.selectAll(".tick line").attr("stroke", theme.border);
       yAxisLeft.selectAll(".tick text").attr("font-size", "10px").attr("fill", theme.subtext);
 
-      // Left Axis Title Pill
       g.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -margin.left + 16)
@@ -1003,7 +1474,6 @@
         .attr("fill", theme.curveColor)
         .text("Active Survivor Volume");
 
-      // Right Y-Axis (Marginal Churn % / Secondary Metric)
       if (layoutMode === "dual_axis_spikes" || (layoutMode === "difficulty_pacing" && secondaryMeasure)) {
         var rightScaleToUse = (layoutMode === "difficulty_pacing" && secondaryMeasure) ? ySecondary : yRight;
         var yAxisRight = g.append("g")
@@ -1015,7 +1485,6 @@
         yAxisRight.selectAll(".tick line").attr("stroke", theme.border);
         yAxisRight.selectAll(".tick text").attr("font-size", "10px").attr("fill", (layoutMode === "difficulty_pacing" && secondaryMeasure) ? theme.secondaryColor : theme.spikeBorder);
 
-        // Right Axis Title Pill
         g.append("text")
           .attr("transform", "rotate(90)")
           .attr("y", -innerWidth - margin.right + 20)
@@ -1053,91 +1522,103 @@
         .style("opacity", 0)
         .style("pointer-events", "none");
 
-      var hitOverlay = g.append("rect")
+      // Overlay for Mouse Events & Drill-Down
+      var overlay = g.append("rect")
+        .attr("class", "overlay")
         .attr("width", innerWidth)
         .attr("height", innerHeight)
         .attr("fill", "transparent")
         .style("cursor", "crosshair");
 
-      var stagePositions = displayStages.map(function (d) { return xScale(d.label); });
+      var stageWidth = innerWidth / displayStages.length;
 
-      hitOverlay.on("mousemove", function (event) {
-        var coords = d3.pointer(event);
-        var mx = coords[0];
-        // Find closest stage
-        var closestIdx = 0;
-        var minDist = Infinity;
-        for (var i = 0; i < stagePositions.length; i++) {
-          var dist = Math.abs(stagePositions[i] - mx);
+      overlay.on("mousemove", function (event) {
+        var coords = d3.pointer(event, g.node());
+        var mouseX = coords[0];
+        var mouseY = coords[1];
+
+        // Find nearest stage
+        var nearestIdx = 0;
+        var minDist = 999999;
+        for (var i = 0; i < displayStages.length; i++) {
+          var px = xScale(displayStages[i].label);
+          var dist = Math.abs(mouseX - px);
           if (dist < minDist) {
             minDist = dist;
-            closestIdx = i;
+            nearestIdx = i;
           }
         }
 
-        var stg = displayStages[closestIdx];
-        var cx = stagePositions[closestIdx];
-        crosshair.attr("x1", cx).attr("x2", cx).style("opacity", 0.7);
+        var d = displayStages[nearestIdx];
+        var curX = xScale(d.label);
 
-        var tipHtml = "<div style='font-weight:700;font-size:13px;border-bottom:1px solid " + theme.border + ";padding-bottom:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;'>" +
-          "<span>" + stg.label + "</span><span style='font-size:11px;color:" + theme.subtext + ";'>Stage #" + (closestIdx + 1) + "</span></div>" +
-          "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Active Survivors:</span><strong style='color:" + theme.curveColor + ";'>" + formatValue(stg.volume, config.valueFormat || "compact_num") + "</strong></div>" +
-          "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Cumulative Retention:</span><strong>" + stg.survivorPct.toFixed(1) + "%</strong></div>";
+        crosshair.attr("x1", curX).attr("x2", curX).style("opacity", 0.7);
 
-        if (closestIdx > 0) {
-          tipHtml += "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Step Drop-off:</span><strong style='color:" + theme.spikeBorder + ";'>-" + formatValue(stg.stepDropoff, config.valueFormat || "compact_num") + " (" + stg.hazardRate.toFixed(1) + "%)</strong></div>" +
-            "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Step Conversion:</span><strong>" + stg.stepRetention.toFixed(1) + "%</strong></div>";
+        // Tooltip Content
+        var statusBadge = d.isChokePoint ?
+          "<span style='color:" + theme.spikeBorder + ";font-weight:700;'>⚠️ Critical Bottleneck (Z: +" + d.zScore.toFixed(1) + "σ)</span>" :
+          "<span style='color:" + theme.secondaryColor + ";font-weight:600;'>✓ Normal Progression Pace</span>";
 
-          if (stg.isChokePoint) {
-            tipHtml += "<div style='margin-top:6px;padding:4px 6px;border-radius:4px;background:" + theme.chokePointBg + ";color:" + theme.chokePointText + ";font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;'>" +
-              "<span>⚠️ Choke Point:</span><span>+" + stg.zScore.toFixed(1) + "σ vs baseline</span></div>";
-          }
-        }
+        var secMetricRow = (layoutMode === "difficulty_pacing" && secondaryMeasure) ?
+          "<div style='display:flex;justify-content:space-between;gap:12px;margin-top:2px;color:" + theme.secondaryColor + ";font-weight:600;'><span>Pacing Telemetry:</span><span>" + formatValue(d.secondary, config.valueFormat || "compact_num") + "</span></div>" : "";
 
-        if (secondaryMeasure && stg.secondary) {
-          tipHtml += "<div style='display:flex;justify-content:space-between;gap:12px;margin-top:4px;border-top:1px solid " + theme.border + ";padding-top:4px;'><span>Secondary Metric:</span><strong style='color:" + theme.secondaryColor + ";'>" + formatValue(stg.secondary, config.valueFormat || "compact_num") + "</strong></div>";
-        }
+        var targetRow = targetValue !== null ?
+          "<div style='display:flex;justify-content:space-between;gap:12px;margin-top:2px;color:" + theme.subtext + ";'><span>" + (config.referenceLineLabel || "Target") + ":</span><span>" + formatValue(targetValue, config.valueFormat || "compact_num") + "</span></div>" : "";
 
-        tooltip.innerHTML = tipHtml;
+        tooltip.innerHTML =
+          "<div style='font-size:13px;font-weight:700;margin-bottom:4px;color:" + theme.accent + ";'>" + d.label + "</div>" +
+          "<div style='margin-bottom:6px;font-size:11px;'>" + statusBadge + "</div>" +
+          "<div style='border-top:1px solid " + theme.border + ";padding-top:4px;display:flex;flex-direction:column;gap:2px;'>" +
+          "<div style='display:flex;justify-content:space-between;gap:12px;'><span>Active Survivors:</span><b>" + formatValue(d.volume, config.valueFormat || "compact_num") + "</b></div>" +
+          "<div style='display:flex;justify-content:space-between;gap:12px;'><span>Cumulative Retention:</span><b>" + d.survivorPct.toFixed(1) + "%</b></div>" +
+          "<div style='display:flex;justify-content:space-between;gap:12px;'><span>Step Drop-off Loss:</span><b>-" + formatValue(d.stepDropoff, config.valueFormat || "compact_num") + "</b></div>" +
+          "<div style='display:flex;justify-content:space-between;gap:12px;color:" + (d.isChokePoint ? theme.spikeBorder : theme.text) + ";'><span>Marginal Hazard %:</span><b>" + d.hazardRate.toFixed(1) + "%</b></div>" +
+          secMetricRow +
+          targetRow +
+          "</div>" +
+          "<div style='margin-top:6px;font-size:10px;color:" + theme.subtext + ";text-align:right;'>Click to open Looker Drill Menu ↗</div>";
+
         tooltip.style.display = "block";
 
-        var tipRect = tooltip.getBoundingClientRect();
-        var tipX = event.clientX - rect.left + 15;
-        var tipY = event.clientY - rect.top - tipRect.height / 2;
+        var tipW = tooltip.offsetWidth || 200;
+        var tipH = tooltip.offsetHeight || 130;
 
-        if (tipX + tipRect.width > width - 10) {
-          tipX = event.clientX - rect.left - tipRect.width - 15;
+        var tipX = curX + margin.left + 15;
+        if (tipX + tipW > width - 10) {
+          tipX = curX + margin.left - tipW - 15;
         }
-        if (tipY < 10) tipY = 10;
-        if (tipY + tipRect.height > height - 10) tipY = height - tipRect.height - 10;
 
+        var tipY = Math.min(innerHeight + margin.top - tipH, Math.max(margin.top, mouseY + margin.top - 20));
         tooltip.style.left = tipX + "px";
         tooltip.style.top = tipY + "px";
       });
 
-      hitOverlay.on("mouseleave", function () {
+      overlay.on("mouseleave", function () {
         crosshair.style("opacity", 0);
         tooltip.style.display = "none";
       });
 
-      // Drill-down support on stage click
-      hitOverlay.on("click", function (event) {
-        var coords = d3.pointer(event);
-        var mx = coords[0];
-        var closestIdx = 0;
-        var minDist = Infinity;
-        for (var i = 0; i < stagePositions.length; i++) {
-          var dist = Math.abs(stagePositions[i] - mx);
+      // Drill-Down Support
+      overlay.on("click", function (event) {
+        var coords = d3.pointer(event, g.node());
+        var mouseX = coords[0];
+        var nearestIdx = 0;
+        var minDist = 999999;
+        for (var i = 0; i < displayStages.length; i++) {
+          var px = xScale(displayStages[i].label);
+          var dist = Math.abs(mouseX - px);
           if (dist < minDist) {
             minDist = dist;
-            closestIdx = i;
+            nearestIdx = i;
           }
         }
-        var clickedStage = displayStages[closestIdx];
-        if (clickedStage && clickedStage.firstRow && stageDim && clickedStage.firstRow[stageDim]) {
-          var cell = clickedStage.firstRow[stageDim];
-          if (cell.links && cell.links.length > 0 && typeof LookerCharts !== "undefined" && LookerCharts.Utils && LookerCharts.Utils.openDrillMenu) {
-            LookerCharts.Utils.openDrillMenu({ links: cell.links, event: event });
+        var d = displayStages[nearestIdx];
+        if (d && d.firstRow && stageDim && d.firstRow[stageDim] && d.firstRow[stageDim].links) {
+          if (typeof LookerCharts !== "undefined" && LookerCharts.Utils && typeof LookerCharts.Utils.openDrillMenu === "function") {
+            LookerCharts.Utils.openDrillMenu({
+              links: d.firstRow[stageDim].links,
+              event: event
+            });
           }
         }
       });

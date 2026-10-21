@@ -1,0 +1,38 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.created_month",
+    "order_items.total_sale_price",
+    "order_items.order_count"
+  ],
+  "filters": {
+    "order_items.created_date": "12 months"
+  },
+  "sorts": [
+    "products.category asc",
+    "order_items.created_month asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "horizon_small_multiples",
+    "layoutMode": "horizon_4band",
+    "horizonBands": 4,
+    "hudMode": "full",
+    "dataLabelDensity": "peaks",
+    "sortOrder": "metric_desc",
+    "topN": "20",
+    "bundleOther": false,
+    "suppressNulls": true,
+    "targetMode": "dataset_mean",
+    "referenceLineLabel": "Category Mean Sales",
+    "anomalyThresholdPct": 135,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency",
+    "bandHeight": 36,
+    "showSearch": true
+  }
+}
