@@ -32,19 +32,23 @@ Standard multi-series line charts and grouped bar charts fail when comparing ent
 
 ---
 
+## Demo Dataset
+
+The live demo is bound to `void_weaver_analytics::title_quarterly_leaderboard`: quarterly gross bookings for a 14-title game publishing portfolio (2025-Q4 to 2026-Q3), with the LiveOps driver behind each quarter. Comparing 2026-Q2 to 2026-Q3 surfaces a real rank reshuffle: *Void Weaver: Eternal* takes #1 on its Season 7 launch, *Star Forge Tactics* jumps #14 to #7 on its global launch, *Gridiron Manager 26* rebounds #12 to #6 with football season, while *Hollow Crown Chronicles* (sunset announced) and *Rift Raiders Co-op* (9-day server outage) fall sharply.
+
 ## Data Shape & Query Requirements
 
 The visualization supports two flexible data shapes:
 
 ### Format A: Multi-Row Period Format (Recommended)
-- **Dimension 1 (Entity/Category)**: e.g. `products.category`, `sales_reps.name`, `marketing_channels.channel`
-- **Dimension 2 (Period/Milestone)**: e.g. `order_items.created_year`, `quarters.quarter_name`, `campaign.stage` (filtered to 2 periods, e.g. 2023 and 2024)
-- **Measure 1 (Primary Value)**: e.g. `order_items.total_sale_price`, `deals.closed_won_arr`, `conversions.total_count`
+- **Dimension 1 (Entity/Category)**: e.g. `title_quarterly_leaderboard.game_title`, `qbr_rep_roster.rep_name`, `marketing_channels.channel`
+- **Dimension 2 (Period/Milestone)**: e.g. `title_quarterly_leaderboard.fiscal_quarter`, `qbr_rep_quota.fiscal_quarter_label`, `campaign.stage` (filtered to exactly 2 periods, e.g. 2026-Q2 and 2026-Q3)
+- **Measure 1 (Primary Value)**: e.g. `title_quarterly_leaderboard.gross_bookings_usd`, `deals.closed_won_arr`, `conversions.total_count`
 
 ### Format B: Dual-Measure Column Format
-- **Dimension 1 (Entity/Category)**: e.g. `products.category`
-- **Measure 1 (Baseline Period Metric)**: e.g. `order_items.sales_2023`
-- **Measure 2 (Comparison Period Metric)**: e.g. `order_items.sales_2024`
+- **Dimension 1 (Entity/Category)**: e.g. `title_quarterly_leaderboard.game_title`
+- **Measure 1 (Baseline Period Metric)**: e.g. `bookings_q2`
+- **Measure 2 (Comparison Period Metric)**: e.g. `bookings_q3`
 
 ---
 

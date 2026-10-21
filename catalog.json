@@ -1454,12 +1454,12 @@
       "measures": "1 Primary Metric Measure (e.g. Total Sales, Orders, Closed ARR)"
     },
     "suggested_dataset": {
-      "model": "thelook",
-      "explore": "order_items",
+      "model": "void_weaver_analytics",
+      "explore": "title_quarterly_leaderboard",
       "fields": [
-        "products.category",
-        "order_items.created_year",
-        "order_items.total_sale_price"
+        "title_quarterly_leaderboard.game_title",
+        "title_quarterly_leaderboard.fiscal_quarter",
+        "title_quarterly_leaderboard.gross_bookings_usd"
       ]
     },
     "deployed": true,
@@ -1467,7 +1467,7 @@
     "screenshot": "visualizations/slopegraph/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-13",
-    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.created_year,order_items.total_sale_price&f[order_items.created_year]=2023%2C2024&sorts=products.category+asc,order_items.created_year+asc&limit=500&vis=%7B%22type%22%3A%22slopegraph%22%2C%22layoutMode%22%3A%22dual_axis_value%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Mean+Annual+Category+Sales%22%2C%22sortOrder%22%3A%22delta_desc%22%2C%22topEntities%22%3A%22all%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Atrue%2C%22hudDensity%22%3A%22full%22%2C%22labelDensity%22%3A%22all%22%2C%22showRankBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22lineCurve%22%3A%22straight%22%2C%22lineWidth%22%3A2.5%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22axisPadding%22%3A180%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/title_quarterly_leaderboard?fields=title_quarterly_leaderboard.game_title,title_quarterly_leaderboard.fiscal_quarter,title_quarterly_leaderboard.gross_bookings_usd&f[title_quarterly_leaderboard.fiscal_quarter]=2026-Q2%2C2026-Q3&sorts=title_quarterly_leaderboard.game_title+asc,title_quarterly_leaderboard.fiscal_quarter+asc&limit=500&vis=%7B%22type%22%3A%22slopegraph%22%2C%22layoutMode%22%3A%22dual_axis_value%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Portfolio+Mean+Bookings%22%2C%22sortOrder%22%3A%22delta_desc%22%2C%22topEntities%22%3A%22all%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Atrue%2C%22hudDensity%22%3A%22full%22%2C%22labelDensity%22%3A%22all%22%2C%22showRankBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22lineCurve%22%3A%22straight%22%2C%22lineWidth%22%3A2.5%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22axisPadding%22%3A180%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "content_genre_affinity_network",

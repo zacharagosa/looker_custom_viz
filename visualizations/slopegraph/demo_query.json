@@ -1,24 +1,24 @@
 {
-  "model": "thelook",
-  "view": "order_items",
+  "model": "void_weaver_analytics",
+  "view": "title_quarterly_leaderboard",
   "fields": [
-    "products.category",
-    "order_items.created_year",
-    "order_items.total_sale_price"
+    "title_quarterly_leaderboard.game_title",
+    "title_quarterly_leaderboard.fiscal_quarter",
+    "title_quarterly_leaderboard.gross_bookings_usd"
   ],
   "filters": {
-    "order_items.created_year": "2023,2024"
+    "title_quarterly_leaderboard.fiscal_quarter": "2026-Q2,2026-Q3"
   },
   "sorts": [
-    "products.category asc",
-    "order_items.created_year asc"
+    "title_quarterly_leaderboard.game_title asc",
+    "title_quarterly_leaderboard.fiscal_quarter asc"
   ],
   "limit": "500",
   "vis_config": {
     "type": "slopegraph",
     "layoutMode": "dual_axis_value",
     "targetCalculationMode": "dataset_mean",
-    "referenceLineLabel": "Mean Annual Category Sales",
+    "referenceLineLabel": "Portfolio Mean Bookings",
     "sortOrder": "delta_desc",
     "topEntities": "all",
     "enableOtherRollup": false,
