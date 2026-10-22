@@ -82,6 +82,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Correlation & Covariance Splom Matrix**](visualizations/correlation_splom_matrix/)<br>`correlation_splom_matrix` | Statistical, ML & Forecasting | 1 Entity dim + 2–8 Continuous measures | [📸 View](assets/screenshots/correlation_splom_matrix.png) |
 | [**Voronoï Hierarchical Tessellation Map**](visualizations/voronoi_treemap/)<br>`voronoi_treemap` | Multivariate & Diagnostic Profiling | 1 Parent dim + 1 Child dim + 1–2 meas | [📸 View](assets/screenshots/voronoi_treemap.png) |
 | [**Horizon Time-Series Small Multiples**](visualizations/horizon_small_multiples/)<br>`horizon_small_multiples` | Multivariate & Diagnostic Profiling | 1 Entity dim + 1 Date dim + 1–2 measures | [📸 View](assets/screenshots/horizon_small_multiples.png) |
+| [**PCA Biplot & Multivariate Diagnostic Projection**](visualizations/pca_biplot_projection/)<br>`pca_biplot_projection` | Multivariate & Diagnostic Profiling | 1 Entity dim + 2–8 Continuous measures | [📸 View](assets/screenshots/pca_biplot_projection.png) |
 
 
 ---

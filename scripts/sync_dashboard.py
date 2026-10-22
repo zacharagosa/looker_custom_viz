@@ -70,7 +70,8 @@ VOL2_VIZ_MAP = {
     "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting",
     "correlation_splom_matrix": "🧬 Multivariate & Diagnostic Profiling",
     "voronoi_treemap": "🧬 Multivariate & Diagnostic Profiling",
-    "horizon_small_multiples": "🧬 Multivariate & Diagnostic Profiling"
+    "horizon_small_multiples": "🧬 Multivariate & Diagnostic Profiling",
+    "pca_biplot_projection": "🧬 Multivariate & Diagnostic Profiling"
 }
 
 CATEGORY_TAB_MAP = {
@@ -173,6 +174,7 @@ VIZ_EMOJI_MAP = {
     "correlation_splom_matrix": "🧬",
     "voronoi_treemap": "⬡",
     "horizon_small_multiples": "🌅",
+    "pca_biplot_projection": "🧬",
 }
 
 

@@ -757,7 +757,7 @@
     "date_added": "2026-09-19",
     "library": "D3.js v7 & TopoJSON",
     "category": "Geospatial Intelligence",
-    "description": "High-performance enterprise Geospatial Hexagonal Binning & Point Density Heatmap custom visualization built with D3.js v7 and TopoJSON. Resolves Buganizer Cloud Blockers b/418217123, b/537254276, b/556359527 (Hexbin Map, Density Heatmaps, Point Density Accumulation) and b/503077532, b/243984441 (Verizon M5 & Map PRD go/prd-looker-map-viz-improvements). Solves native Looker Map DOM lag and visual occlusion ('ink blob' / 'hairball' effect) across 5,000+ coordinates. Features 4 layout modes (Hexagonal Spatial Binning, Continuous Gaussian Density Heatmap, Spatial Bubble Clusters, and Equal-Area US State Cartogram), mathematical O(N) axial/cube coordinate tessellation, executive spatial KPI HUD, real-time live search filter, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "description": "Pure SVG 50-state US choropleth and geospatial hexagonal point density binning suite with dynamic field-role remapping, configurable benchmark targets and anomaly alerts, interactive sorting/Top-N bucketing, executive scorecard HUD, search filter, and enterprise palettes.",
     "dependencies": [
       "https://d3js.org/d3.v7.min.js",
       "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"
@@ -779,7 +779,10 @@
     },
     "deployed": true,
     "instance_wide": true,
-    "screenshot": "visualizations/hexbin_density_map/screenshot.png"
+    "screenshot": "visualizations/hexbin_density_map/screenshot.png",
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.approx_latitude,users.approx_longitude,users.state,order_items.total_sale_price,order_items.order_count&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22hexbin_density_map%22%2C%22layout_mode%22%3A%22hexbin_density%22%2C%22aggregation_type%22%3A%22sum%22%2C%22hex_radius%22%3A20%2C%22proportional_hex_size%22%3Atrue%2C%22min_points_threshold%22%3A1%2C%22show_hud%22%3Atrue%2C%22show_search%22%3Atrue%2C%22show_legend%22%3Atrue%2C%22color_palette%22%3A%22plasma%22%2C%22basemap_theme%22%3A%22light_clean%22%2C%22hex_opacity%22%3A0.85%2C%22hex_stroke%22%3A%22crisp_white%22%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-22"
   },
   {
     "id": "gantt_milestones_timeline",
@@ -1723,5 +1726,40 @@
     "last_upgraded": "2026-10-21",
     "screenshot": "visualizations/horizon_small_multiples/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=12+months&sorts=products.category+asc,order_items.created_month+asc&limit=500&vis=%7B%22type%22%3A%22horizon_small_multiples%22%2C%22layoutMode%22%3A%22horizon_4band%22%2C%22horizonBands%22%3A4%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22peaks%22%2C%22sortOrder%22%3A%22metric_desc%22%2C%22topN%22%3A%2220%22%2C%22bundleOther%22%3Afalse%2C%22suppressNulls%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Category+Mean+Sales%22%2C%22anomalyThresholdPct%22%3A135%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22bandHeight%22%3A36%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "pca_biplot_projection",
+    "name": "PCA Biplot & Multivariate Diagnostic Projection",
+    "date_added": "2026-10-22",
+    "library": "D3.js v7",
+    "category": "Multivariate & Diagnostic Profiling",
+    "description": "High-dimensional multivariate dimensionality reduction and covariance projection visualization solving Buganizer Cloud Blockers b/372910482, b/482910943, and b/510293847. Computes exact client-side SVD and cyclic Jacobi eigendecomposition in O(N) to project complex continuous telemetry into interpretable 2D diagnostic spaces. Features 4 multi-modal layout modes (2D PCA Biplot with directional feature loading eigenvectors and cluster convex hulls, Scree Variance Explained Waterfall, Factor Loading Heatmap, and Hotelling T^2 / Mahalanobis Outlier Inspector with Chi-Square 95%/99% control limits), executive multivariate HUD, dynamic field-role remapping dropdowns, and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Entity Identifier (e.g. cell_towers.site_name) + optional 1 Cluster Dimension (e.g. cell_towers.market)",
+      "measures": "2 or more Continuous Numeric Measures (e.g. avg_throughput, avg_latency, avg_packet_loss, avg_energy_kwh, avg_connected_users, alarm_count)"
+    },
+    "suggested_dataset": {
+      "model": "nokia_network_ops",
+      "explore": "network_operations",
+      "fields": [
+        "cell_towers.site_name",
+        "cell_towers.market",
+        "network_kpi_telemetry.avg_throughput_mbps",
+        "network_kpi_telemetry.avg_latency_ms",
+        "network_kpi_telemetry.avg_packet_loss_pct",
+        "network_kpi_telemetry.avg_energy_kwh",
+        "network_kpi_telemetry.avg_connected_users",
+        "incident_alarms.alarm_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-22",
+    "screenshot": "visualizations/pca_biplot_projection/screenshot.png",
+    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_energy_kwh,network_kpi_telemetry.avg_connected_users,incident_alarms.alarm_count&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=500&vis=%7B%22type%22%3A%22pca_biplot_projection%22%2C%22layout_mode%22%3A%22pca_biplot%22%2C%22target_mode%22%3A%22chi2_95%22%2C%22highlight_anomalies%22%3Atrue%2C%22hud_mode%22%3A%22full%22%2C%22label_density%22%3A%22peaks%22%2C%22show_vector_arrows%22%3Atrue%2C%22show_cluster_hulls%22%3Atrue%2C%22color_palette%22%3A%22google_enterprise%22%2C%22theme_mode%22%3A%22light_clean%22%7D&origin=share-expanded&toggle=vis"
   }
 ]

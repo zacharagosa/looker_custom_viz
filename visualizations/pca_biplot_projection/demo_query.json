@@ -1,0 +1,30 @@
+{
+  "model": "nokia_network_ops",
+  "view": "network_operations",
+  "fields": [
+    "cell_towers.site_name",
+    "cell_towers.market",
+    "network_kpi_telemetry.avg_throughput_mbps",
+    "network_kpi_telemetry.avg_latency_ms",
+    "network_kpi_telemetry.avg_packet_loss_pct",
+    "network_kpi_telemetry.avg_energy_kwh",
+    "network_kpi_telemetry.avg_connected_users",
+    "incident_alarms.alarm_count"
+  ],
+  "sorts": [
+    "network_kpi_telemetry.avg_throughput_mbps desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "pca_biplot_projection",
+    "layout_mode": "pca_biplot",
+    "target_mode": "chi2_95",
+    "highlight_anomalies": true,
+    "hud_mode": "full",
+    "label_density": "peaks",
+    "show_vector_arrows": true,
+    "show_cluster_hulls": true,
+    "color_palette": "google_enterprise",
+    "theme_mode": "light_clean"
+  }
+}
