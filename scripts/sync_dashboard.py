@@ -71,7 +71,8 @@ VOL2_VIZ_MAP = {
     "correlation_splom_matrix": "🧬 Multivariate & Diagnostic Profiling",
     "voronoi_treemap": "🧬 Multivariate & Diagnostic Profiling",
     "horizon_small_multiples": "🧬 Multivariate & Diagnostic Profiling",
-    "pca_biplot_projection": "🧬 Multivariate & Diagnostic Profiling"
+    "pca_biplot_projection": "🧬 Multivariate & Diagnostic Profiling",
+    "hierarchical_cluster_dendrogram": "🧬 Multivariate & Diagnostic Profiling"
 }
 
 CATEGORY_TAB_MAP = {
@@ -175,6 +176,7 @@ VIZ_EMOJI_MAP = {
     "voronoi_treemap": "⬡",
     "horizon_small_multiples": "🌅",
     "pca_biplot_projection": "🧬",
+    "hierarchical_cluster_dendrogram": "🌳",
 }
 
 

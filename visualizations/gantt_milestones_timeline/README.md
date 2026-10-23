@@ -29,67 +29,64 @@ The visualization provides 4 distinct layout modes selectable via Looker's Edit 
 | **Gantt with Progress Fills (%)** | Horizontal task duration bars with rounded corners, internal progress fill percentages, inline task labels, and duration badges. | Engineering sprints, Live-Ops event roadmaps, enterprise product releases. |
 | **Milestone Pin Roadmap** | Key deliverable roadmap featuring diamond milestone pins, target completion dates, and deliverable badges. | Executive steering committee updates, contract delivery milestones, product launches. |
 | **Categorical Swimlanes** | Hierarchical grouping by Phase, Workstream, Owner, or Status with collapsible swimlane headers and task counts. | Cross-functional program management, multi-department initiatives. |
-| **Measure Heatmap (Solves b/449635128)** | Timeline intervals and bars dynamically colored by continuous measure scale or 3-tier threshold rules (Green / Yellow / Red). | SLA risk monitoring, budget variance tracking, vendor cost overruns, duration delay heatmaps. |
+| **Measure Heatmap / Budget Variance** | Timeline intervals and bars dynamically colored by continuous measure scale or 3-tier threshold rules (Green / Yellow / Red). | SLA risk monitoring, budget variance tracking, vendor cost overruns, duration delay heatmaps. |
 
 ---
 
-## ⚡ High-Density & Performance Architecture
+## ⚙️ Enterprise Flexibility Options Upgrade (October 2026)
 
-- **5,000+ Row Scalability**: Client-side date indexing and virtualized scrolling allow rendering thousands of project tasks without DOM lag.
-- **Executive KPI HUD**: Real-time summary metrics floating above the timeline:
-  - Total Tasks
-  - Completion Rate (%)
-  - In-Progress Deliverables
-  - Delayed / At-Risk Tasks
-  - Mean Duration (Days)
-  - Total Budget / Financial Scope
-- **Live Instant Search**: Interactive search-as-you-type filter matching task names, swimlanes, and dates with instant reactivity.
-- **Time Zoom Granularity**: Quick buttons to toggle between Auto-Fit, Day, Week, Month, and Quarter scales with sticky timeline header axes.
-- **Dynamic "Today" Reference Marker**: Prominent current-date indicator with pulsing status dot.
-- **Native Looker Drill Menus**: Full integration with `LookerCharts.Utils.openDrillMenu` on task labels, bars, and milestone pins.
+The visualization options have been updated into strictly **two clean tabs** (`Display` and `Style`) in Looker's Edit Viz modal:
 
----
+### 1. Display Tab
+- **Dynamic Field-Role Mapping**: Dropdowns (`registerOptions`) dynamically populated from query dimensions and measures:
+  - Task / Deliverable Dimension (`dimTaskOverride`)
+  - Start Date Dimension (`dimStartOverride`)
+  - End Date Dimension (`dimEndOverride`)
+  - Swimlane / Workstream Dimension (`dimSwimlaneOverride`)
+  - Status Dimension (`dimStatusOverride`)
+  - Owner / Lead Dimension (`dimOwnerOverride`)
+  - Priority Tier Dimension (`dimPriorityOverride`)
+  - Progress % Measure / Dimension (`measureProgressOverride`)
+  - Primary Budget / Cost Measure (`measureValueOverride`)
+  - Target / Benchmark Measure (`targetMeasureOverride`)
+- **Reference Benchmarks & Anomaly Detection**:
+  - Target modes: None, Measure Column, Fixed Value, Dataset Mean, Dataset Median, Percentile P75, Percentile P90.
+  - Custom target reference lines and labels (`target_reference_label`, `custom_target_value`).
+  - Statistical anomaly detection with configurable sensitivity (1.0, 1.5, 2.0, 2.5 Sigma).
+- **Sorting & Top-N Filtering**:
+  - Sort by Start Date (Earliest / Latest), Duration, Task Name, Progress %, or Metric Value.
+  - Top-N limit (10, 25, 50, 100) with automatic `'Other'` rollup aggregation.
+  - Missing / null date suppression toggle.
+- **HUD & Density Controls**:
+  - Executive KPI HUD display: `Full Scorecard HUD`, `Compact Strip HUD`, or `Hidden`.
+  - Task label density: `All Task Labels`, `Min/Max & Key Milestones Only`, or `Hidden`.
+  - Custom Chart Title & Subtitle overrides.
+  - Interactive live search bar, today line, and milestone pin toggles.
 
-## 🛠️ Configuration Options (Strictly 2 Tabs)
-
-Conforming to Looker UI best practices, options are strictly organized into at most 2 clean tabs:
-
-### 1. `Display` Tab
-- **Layout Mode**: Toggle between Gantt Progress, Milestone Pins, Swimlanes, and Measure Heatmap.
-- **Time Scale Interval**: Auto-Fit Window, Day Granularity, Week Granularity, Month Granularity, Quarter Granularity.
-- **Group Tasks by Swimlane**: Enable collapsible swimlanes grouped by secondary category.
-- **Sort Tasks By**: Start Date Ascending/Descending, Duration (Days), Task Name (A-Z), Progress %, Metric Value.
-- **Render Milestone Diamond Pins**: Highlight zero-duration and key deliverables as diamond pins.
-- **Show Executive KPI HUD Bar**: Toggle top summary KPI metrics card.
-- **Show Live Search & Filter Bar**: Toggle search input.
-- **Show Current Date (Today) Line**: Toggle current date reference line.
-- **Show Inline Task Bar Labels**: Toggle labels and progress percentages directly on bars.
-
-### 2. `Style` Tab
-- **Color Palette**: Google Modern, Executive Navy & Slate, Emerald & Mint, Sunset Orange & Coral, Cyberpunk Neon.
-- **Measure Heatmap Color Rule**: Continuous Sequential Gradient, 3-Tier Threshold (Green/Yellow/Red), or Diverging Variance.
-- **Bar Corner Radius (px)**: Adjustable border radius (0–12px).
-- **Bar Thickness (px)**: Adjustable bar height (16–36px).
-- **Show Vertical Date Gridlines**: Toggle timeline gridlines.
-- **Theme & Surface**: Crisp Clean Light or Modern Glass/Slate.
-
----
-
-## 📋 Required LookML Fields
-
-- **Dimensions**:
-  - `Task Name`: Categorical string dimension (e.g. `products.category` or task title).
-  - `Start Date`: Date or timestamp dimension (e.g. `order_items.created_date`).
-  - `End Date` *(optional)*: Secondary date dimension (e.g. `order_items.shipped_date`). If omitted, defaults to milestone pin or estimated duration.
-  - `Swimlane / Status` *(optional)*: Categorical string dimension for grouping (e.g. `order_items.status`, phase, or owner).
-- **Measures**:
-  - `Primary Metric`: Numeric measure for value, budget, or heatmap coloring (e.g. `order_items.total_sale_price`).
-  - `Progress / Units` *(optional)*: Numeric measure for progress completion % or item volume (e.g. `order_items.order_count`).
+### 2. Style Tab
+- **Color Palettes**:
+  - Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, Custom Hex Override.
+- **Custom Hex Overrides**: Primary, Positive/Done, and Negative/Blocked hex pickers (`display: "color"`).
+- **Metric Polarity**: Higher is Better vs. Lower is Better (for cost/delay metrics).
+- **Typography & Formatting**:
+  - Font scale (Compact 11px, Standard 13px, Large 15px).
+  - Value formatting (Auto, Compact Number, Compact Currency, Percentage, Decimal 2dp, Raw Integer).
+- **Chart Geometry**:
+  - Bar corner radius (0–12px) and bar thickness (16–36px).
+  - Vertical date gridlines toggle.
+  - Surface theme: Crisp Clean Light vs. Subtle Glass / Slate.
 
 ---
 
-## 📦 Instance-Wide Deployment
+## 📊 Domain-Authentic Demo Dataset
 
-```bash
-python3 /usr/local/google/home/aragosa/looker_custom_viz/scripts/deploy_viz.py --viz gantt_milestones_timeline --profile default
-```
+Bound authentically to **Studio Release Roadmap & Live-Ops Schedules** (`void_weaver_analytics::studio_release_roadmap`):
+- `task_name`: Initiative deliverable name
+- `workstream`: Categorical swimlane (Core Engine, Live-Ops, Trust & Safety, Esports)
+- `task_status`: Complete, In Progress, Delayed, Milestone
+- `owner_lead`: Program lead
+- `priority_tier`: P0 - Critical, P1 - High, P2 - Normal
+- `start_date` & `end_date`: Schedule boundaries
+- `completion_pct`: Percentage completion (0–100%)
+- `total_budget_allocated_usd`: Capital budget allocated
+- `projected_revenue_lift_usd`: Projected return / revenue impact
