@@ -51,8 +51,133 @@
   }
 
   var THEMES = {
-    wellverse: {
-      name: "Wellverse",
+    google_enterprise: {
+      name: "Google Enterprise",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafd",
+      border: "#dadce0",
+      text: "#202124",
+      subtext: "#5f6368",
+      hudBg: "rgba(248, 250, 253, 0.95)",
+      hudBorder: "#dadce0",
+      hudText: "#202124",
+      hudSubtext: "#5f6368",
+      classA: "#1a73e8",
+      classAGradient: ["#1a73e8", "#4285f4"],
+      classB: "#34a853",
+      classBGradient: ["#34a853", "#81c995"],
+      classC: "#5f6368",
+      classCGradient: ["#5f6368", "#9aa0a6"],
+      curveColor: "#ea4335",
+      thresholdColor: "#ea4335",
+      benchmarkColor: "#fbbc04",
+      gridColor: "#f1f3f4",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#1a73e8"
+    },
+    modern_slate: {
+      name: "Modern Slate",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#cbd5e1",
+      text: "#0f172a",
+      subtext: "#475569",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#94a3b8",
+      hudText: "#0f172a",
+      hudSubtext: "#475569",
+      classA: "#2563eb",
+      classAGradient: ["#1d4ed8", "#3b82f6"],
+      classB: "#0ea5e9",
+      classBGradient: ["#0284c7", "#38bdf8"],
+      classC: "#94a3b8",
+      classCGradient: ["#64748b", "#cbd5e1"],
+      curveColor: "#f59e0b",
+      thresholdColor: "#ef4444",
+      benchmarkColor: "#10b981",
+      gridColor: "#f1f5f9",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#2563eb"
+    },
+    cyberpunk_dark: {
+      name: "Cyberpunk Dark",
+      isDark: true,
+      bg: "#0b0f19",
+      cardBg: "rgba(17, 24, 39, 0.85)",
+      border: "#1f2937",
+      text: "#f8fafc",
+      subtext: "#94a3b8",
+      hudBg: "rgba(15, 23, 42, 0.90)",
+      hudBorder: "rgba(51, 65, 85, 0.8)",
+      hudText: "#f8fafc",
+      hudSubtext: "#94a3b8",
+      classA: "#06b6d4",
+      classAGradient: ["#0891b2", "#22d3ee"],
+      classB: "#eab308",
+      classBGradient: ["#ca8a04", "#facc15"],
+      classC: "#64748b",
+      classCGradient: ["#475569", "#94a3b8"],
+      curveColor: "#f43f5e",
+      thresholdColor: "#f43f5e",
+      benchmarkColor: "#10b981",
+      gridColor: "#1e293b",
+      tooltipBg: "rgba(15, 23, 42, 0.95)",
+      tooltipBorder: "#06b6d4"
+    },
+    emerald_finops: {
+      name: "Emerald FinOps",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f0fdf4",
+      border: "#bbf7d0",
+      text: "#064e3b",
+      subtext: "#047857",
+      hudBg: "rgba(240, 253, 244, 0.95)",
+      hudBorder: "#86efac",
+      hudText: "#064e3b",
+      hudSubtext: "#047857",
+      classA: "#059669",
+      classAGradient: ["#047857", "#10b981"],
+      classB: "#0d9488",
+      classBGradient: ["#0f766e", "#14b8a6"],
+      classC: "#64748b",
+      classCGradient: ["#475569", "#94a3b8"],
+      curveColor: "#d97706",
+      thresholdColor: "#dc2626",
+      benchmarkColor: "#0284c7",
+      gridColor: "#f1f5f9",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#059669"
+    },
+    sunset_media: {
+      name: "Sunset Media",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#fffbeb",
+      border: "#fde68a",
+      text: "#78350f",
+      subtext: "#92400e",
+      hudBg: "rgba(255, 251, 235, 0.95)",
+      hudBorder: "#fcd34d",
+      hudText: "#78350f",
+      hudSubtext: "#92400e",
+      classA: "#ea580c",
+      classAGradient: ["#c2410c", "#f97316"],
+      classB: "#d97706",
+      classBGradient: ["#b45309", "#f59e0b"],
+      classC: "#71717a",
+      classCGradient: ["#52525b", "#a1a1aa"],
+      curveColor: "#4338ca",
+      thresholdColor: "#dc2626",
+      benchmarkColor: "#059669",
+      gridColor: "#f4f4f5",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#ea580c"
+    },
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#F8FAFC",
@@ -71,33 +196,10 @@
       classCGradient: ["#94A3B8", "#CBD5E1"],
       curveColor: "#FFB500",
       thresholdColor: "#E5484D",
+      benchmarkColor: "#00AF68",
       gridColor: "#EEF2F7",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#143359"
-    },
-    modern_google: {
-      name: "Modern Google",
-      isDark: false,
-      bg: "#ffffff",
-      cardBg: "#f8fafc",
-      border: "#e2e8f0",
-      text: "#1e293b",
-      subtext: "#64748b",
-      hudBg: "rgba(248, 250, 252, 0.95)",
-      hudBorder: "#cbd5e1",
-      hudText: "#0f172a",
-      hudSubtext: "#64748b",
-      classA: "#1a73e8",
-      classAGradient: ["#1a73e8", "#4285f4"],
-      classB: "#f29900",
-      classBGradient: ["#f29900", "#fbbc04"],
-      classC: "#5f6368",
-      classCGradient: ["#5f6368", "#80868b"],
-      curveColor: "#ea4335",
-      thresholdColor: "#ea4335",
-      gridColor: "#f1f5f9",
-      tooltipBg: "rgba(255, 255, 255, 0.98)",
-      tooltipBorder: "#1a73e8"
     },
     looker_analytics: {
       name: "Looker Analytics",
@@ -119,60 +221,64 @@
       classCGradient: ["#6b7280", "#9ca3af"],
       curveColor: "#ec4899",
       thresholdColor: "#ec4899",
+      benchmarkColor: "#10b981",
       gridColor: "#f3f4f6",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#6366f1"
     },
-    emerald_teal: {
-      name: "Emerald Teal",
+    // Backwards compatibility aliases
+    modern_google: {
+      name: "Modern Google",
       isDark: false,
       bg: "#ffffff",
-      cardBg: "#f0fdf4",
-      border: "#bbf7d0",
-      text: "#064e3b",
-      subtext: "#047857",
-      hudBg: "rgba(240, 253, 244, 0.95)",
-      hudBorder: "#86efac",
-      hudText: "#064e3b",
-      hudSubtext: "#047857",
-      classA: "#059669",
-      classAGradient: ["#047857", "#10b981"],
-      classB: "#0d9488",
-      classBGradient: ["#0f766e", "#14b8a6"],
-      classC: "#64748b",
-      classCGradient: ["#475569", "#94a3b8"],
-      curveColor: "#d97706",
-      thresholdColor: "#d97706",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#1e293b",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      hudSubtext: "#64748b",
+      classA: "#1a73e8",
+      classAGradient: ["#1a73e8", "#4285f4"],
+      classB: "#f29900",
+      classBGradient: ["#f29900", "#fbbc04"],
+      classC: "#5f6368",
+      classCGradient: ["#5f6368", "#80868b"],
+      curveColor: "#ea4335",
+      thresholdColor: "#ea4335",
+      benchmarkColor: "#34a853",
       gridColor: "#f1f5f9",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
-      tooltipBorder: "#059669"
+      tooltipBorder: "#1a73e8"
     },
-    sunset_amber: {
-      name: "Sunset Amber",
+    wellverse: {
+      name: "Wellverse Healthcare",
       isDark: false,
       bg: "#ffffff",
-      cardBg: "#fffbeb",
-      border: "#fde68a",
-      text: "#78350f",
-      subtext: "#92400e",
-      hudBg: "rgba(255, 251, 235, 0.95)",
-      hudBorder: "#fcd34d",
-      hudText: "#78350f",
-      hudSubtext: "#92400e",
-      classA: "#ea580c",
-      classAGradient: ["#c2410c", "#f97316"],
-      classB: "#d97706",
-      classBGradient: ["#b45309", "#f59e0b"],
-      classC: "#71717a",
-      classCGradient: ["#52525b", "#a1a1aa"],
-      curveColor: "#4338ca",
-      thresholdColor: "#4338ca",
-      gridColor: "#f4f4f5",
+      cardBg: "#F8FAFC",
+      border: "#E2E8F0",
+      text: "#0F172A",
+      subtext: "#64748B",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#E2E8F0",
+      hudText: "#143359",
+      hudSubtext: "#64748B",
+      classA: "#143359",
+      classAGradient: ["#143359", "#1E467A"],
+      classB: "#00AF68",
+      classBGradient: ["#00AF68", "#5FD3A0"],
+      classC: "#94A3B8",
+      classCGradient: ["#94A3B8", "#CBD5E1"],
+      curveColor: "#FFB500",
+      thresholdColor: "#E5484D",
+      benchmarkColor: "#00AF68",
+      gridColor: "#EEF2F7",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
-      tooltipBorder: "#ea580c"
+      tooltipBorder: "#143359"
     },
     neon_cyber: {
-      name: "Neon Cyber (Dark)",
+      name: "Cyberpunk Dark",
       isDark: true,
       bg: "#0b0f19",
       cardBg: "rgba(17, 24, 39, 0.85)",
@@ -191,12 +297,63 @@
       classCGradient: ["#475569", "#94a3b8"],
       curveColor: "#f43f5e",
       thresholdColor: "#f43f5e",
+      benchmarkColor: "#10b981",
       gridColor: "#1e293b",
       tooltipBg: "rgba(15, 23, 42, 0.95)",
       tooltipBorder: "#06b6d4"
     },
+    emerald_teal: {
+      name: "Emerald FinOps",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f0fdf4",
+      border: "#bbf7d0",
+      text: "#064e3b",
+      subtext: "#047857",
+      hudBg: "rgba(240, 253, 244, 0.95)",
+      hudBorder: "#86efac",
+      hudText: "#064e3b",
+      hudSubtext: "#047857",
+      classA: "#059669",
+      classAGradient: ["#047857", "#10b981"],
+      classB: "#0d9488",
+      classBGradient: ["#0f766e", "#14b8a6"],
+      classC: "#64748b",
+      classCGradient: ["#475569", "#94a3b8"],
+      curveColor: "#d97706",
+      thresholdColor: "#dc2626",
+      benchmarkColor: "#0284c7",
+      gridColor: "#f1f5f9",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#059669"
+    },
+    sunset_amber: {
+      name: "Sunset Media",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#fffbeb",
+      border: "#fde68a",
+      text: "#78350f",
+      subtext: "#92400e",
+      hudBg: "rgba(255, 251, 235, 0.95)",
+      hudBorder: "#fcd34d",
+      hudText: "#78350f",
+      hudSubtext: "#92400e",
+      classA: "#ea580c",
+      classAGradient: ["#c2410c", "#f97316"],
+      classB: "#d97706",
+      classBGradient: ["#b45309", "#f59e0b"],
+      classC: "#71717a",
+      classCGradient: ["#52525b", "#a1a1aa"],
+      curveColor: "#4338ca",
+      thresholdColor: "#dc2626",
+      benchmarkColor: "#059669",
+      gridColor: "#f4f4f5",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#ea580c"
+    },
     monochrome_slate: {
-      name: "Monochrome Slate",
+      name: "Modern Slate",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f8fafc",
@@ -215,6 +372,7 @@
       classCGradient: ["#64748b", "#cbd5e1"],
       curveColor: "#0284c7",
       thresholdColor: "#0284c7",
+      benchmarkColor: "#10b981",
       gridColor: "#f1f5f9",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#1e293b"
@@ -235,13 +393,58 @@
     return val.toFixed(1) + "%";
   }
 
+  function formatValue(val, config, measureField) {
+    if (val === null || val === undefined || isNaN(val)) return "0";
+    var fmt = (config && config.valueFormat) || "auto";
+    if (fmt === "compact_currency") {
+      var abs = Math.abs(val);
+      var sign = val < 0 ? "-$" : "$";
+      if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
+      if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
+      if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+      return sign + abs.toFixed(2);
+    }
+    if (fmt === "percent") {
+      var pVal = val > 1 ? val : val * 100;
+      return pVal.toFixed(1) + "%";
+    }
+    if (fmt === "decimal_2") {
+      return val.toFixed(2);
+    }
+    if (fmt === "raw") {
+      return Math.round(val).toString();
+    }
+    if (fmt === "compact_num") {
+      return formatNumber(val);
+    }
+    if (measureField && measureField.value_format) {
+      if (measureField.value_format.indexOf("$") !== -1) {
+        return formatValue(val, { valueFormat: "compact_currency" }, measureField);
+      }
+      if (measureField.value_format.indexOf("%") !== -1) {
+        return formatValue(val, { valueFormat: "percent" }, measureField);
+      }
+    }
+    return formatNumber(val);
+  }
+ >= 1e9) return (val / 1e9).toFixed(2) + "B";
+    if (abs >= 1e6) return (val / 1e6).toFixed(2) + "M";
+    if (abs >= 1e3) return (val / 1e3).toFixed(1) + "K";
+    return Number.isInteger(val) ? val.toString() : val.toFixed(2);
+  }
+
+  function formatPercent(val) {
+    if (val === null || val === undefined || isNaN(val)) return "0.0%";
+    return val.toFixed(1) + "%";
+  }
+
   looker.plugins.visualizations.add({
     id: "pareto_cumulative_analyzer",
     label: "Pareto 80/20 & ABC Analyzer",
-    options: {
-      // -------------------------------------------------------------
-      // SECTION 1: DISPLAY (Functional, Layout, Thresholds & Filtering)
-      // -------------------------------------------------------------
+        options: {
+      // =============================================================
+      // SECTION 1: DISPLAY (Strictly minimized tab: Layout, Fields, Thresholds)
+      // =============================================================
       layoutMode: {
         type: "string",
         label: "Analysis Layout Mode",
@@ -256,54 +459,181 @@
         section: "Display",
         order: 1
       },
+      dimEntityOverride: {
+        type: "string",
+        label: "Category / Entity Dimension",
+        display: "select",
+        values: [{ "Auto / First Dimension": "" }],
+        default: "",
+        section: "Display",
+        order: 2
+      },
+      measurePrimaryOverride: {
+        type: "string",
+        label: "Primary Volume / Frequency Measure",
+        display: "select",
+        values: [{ "Auto / Primary Measure": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      measureSecondaryOverride: {
+        type: "string",
+        label: "Secondary Comparison Measure (Optional)",
+        display: "select",
+        values: [{ "None / Secondary Measure (Optional)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      dimCategoryOverride: {
+        type: "string",
+        label: "Secondary Grouping Dimension (Optional)",
+        display: "select",
+        values: [{ "None / Optional Group": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      targetMode: {
+        type: "string",
+        label: "Target Benchmark Mode",
+        display: "select",
+        values: [
+          { "None / No Benchmark": "none" },
+          { "Fixed Target Value": "fixed_value" },
+          { "Dataset Mean Average": "dataset_mean" },
+          { "Dataset Median (P50)": "dataset_median" },
+          { "Top Quartile (P75)": "percentile_p75" },
+          { "90th Percentile (P90)": "percentile_p90" }
+        ],
+        default: "none",
+        section: "Display",
+        order: 6
+      },
+      customTargetValue: {
+        type: "number",
+        label: "Custom Target / Threshold Value",
+        default: 0,
+        section: "Display",
+        order: 7
+      },
+      customReferenceLineLabel: {
+        type: "string",
+        label: "Reference Line Label Override",
+        default: "80% Pareto Cutoff",
+        section: "Display",
+        order: 8
+      },
       abcThresholdA: {
         type: "number",
         label: "Class A / Vital Few Cutoff (%)",
         default: 80,
         section: "Display",
-        order: 2
+        order: 9
       },
       abcThresholdB: {
         type: "number",
         label: "Class B / Useful Many Cutoff (%)",
         default: 95,
         section: "Display",
-        order: 3
-      },
-      showKpiHud: {
-        type: "boolean",
-        label: "Show Executive KPI HUD Banner",
-        default: true,
-        section: "Display",
-        order: 4
-      },
-      showSearchFilter: {
-        type: "boolean",
-        label: "Show Live Search Filter",
-        default: true,
-        section: "Display",
-        order: 5
+        order: 10
       },
       showThresholdLine: {
         type: "boolean",
         label: "Show 80% Pareto Reference Line",
         default: true,
         section: "Display",
-        order: 6
+        order: 11
       },
-      showDataLabels: {
+      showBenchmarkLine: {
         type: "boolean",
-        label: "Show Bar & Point Labels",
+        label: "Show Target / Benchmark Line",
         default: false,
         section: "Display",
-        order: 7
+        order: 12
+      },
+      sortOrder: {
+        type: "string",
+        label: "Item Sorting Order",
+        display: "select",
+        values: [
+          { "Metric Descending (Pareto Standard)": "desc" },
+          { "Metric Ascending": "asc" },
+          { "Alphabetical (A-Z)": "alpha" },
+          { "Natural / Query Input Order": "natural" }
+        ],
+        default: "desc",
+        section: "Display",
+        order: 13
       },
       maxItemsDisplay: {
         type: "number",
         label: "Max Visible Items (Tail Rolled Up)",
         default: 35,
         section: "Display",
-        order: 8
+        order: 14
+      },
+      rollupTailOther: {
+        type: "boolean",
+        label: "Rollup Tail into 'Other' Group",
+        default: true,
+        section: "Display",
+        order: 15
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero & Null Values",
+        default: true,
+        section: "Display",
+        order: 16
+      },
+      kpiHudDensity: {
+        type: "string",
+        label: "Executive KPI HUD Display",
+        display: "select",
+        values: [
+          { "Full Scorecard (6 KPIs)": "full" },
+          { "Compact Strip": "compact" },
+          { "Hidden": "hidden" }
+        ],
+        default: "full",
+        section: "Display",
+        order: 17
+      },
+      labelDensity: {
+        type: "string",
+        label: "Data Value Labels",
+        display: "select",
+        values: [
+          { "All Bars & Points": "all" },
+          { "Min / Max Peaks Only": "peaks" },
+          { "Hidden": "hidden" }
+        ],
+        default: "hidden",
+        section: "Display",
+        order: 18
+      },
+      chartTitleOverride: {
+        type: "string",
+        label: "Chart Title Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      chartSubtitleOverride: {
+        type: "string",
+        label: "Chart Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 20
+      },
+      showSearchFilter: {
+        type: "boolean",
+        label: "Show Live Search Filter",
+        default: true,
+        section: "Display",
+        order: 21
       },
       curveInterpolation: {
         type: "string",
@@ -316,25 +646,25 @@
           { "Step After": "step" }
         ],
         section: "Display",
-        order: 9
+        order: 22
       },
 
-      // -------------------------------------------------------------
-      // SECTION 2: STYLE (Color Palettes, Theming & Typography)
-      // -------------------------------------------------------------
+      // =============================================================
+      // SECTION 2: STYLE (Color Palettes, Polarity & Typography)
+      // =============================================================
       colorTheme: {
         type: "string",
-        label: "Color Theme & Palette",
-        default: "modern_google",
+        label: "Color Theme & Brand Palette",
+        default: "google_enterprise",
         display: "select",
         values: [
-          { "Modern Google (Clean Blue/Gold)": "modern_google" },
-          { "Looker Analytics (Indigo/Teal)": "looker_analytics" },
-          { "Emerald Teal (Green/Mint)": "emerald_teal" },
-          { "Sunset Amber (Orange/Amber)": "sunset_amber" },
-          { "Neon Cyber (Dark Mode)": "neon_cyber" },
-          { "Monochrome Slate (Neutral)": "monochrome_slate" },
-          { "Wellverse": "wellverse" }
+          { "Google Enterprise (Clean Blue/Gold)": "google_enterprise" },
+          { "Modern Slate (Neutral Executive)": "modern_slate" },
+          { "Cyberpunk Dark (High Contrast)": "cyberpunk_dark" },
+          { "Emerald FinOps (Green/Teal)": "emerald_finops" },
+          { "Sunset Media (Warm Coral/Amber)": "sunset_media" },
+          { "Wellverse Healthcare (Navy/Emerald)": "wellverse_healthcare" },
+          { "Looker Analytics (Indigo/Pink)": "looker_analytics" }
         ],
         section: "Style",
         order: 1
@@ -371,19 +701,60 @@
         section: "Style",
         order: 5
       },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity",
+        display: "select",
+        values: [
+          { "Higher is Better (Revenue / Volume / Orders)": "higher_better" },
+          { "Lower is Better (Defects / Churn / Latency / Cost)": "lower_better" }
+        ],
+        default: "higher_better",
+        section: "Style",
+        order: 6
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography Font Scale",
+        display: "select",
+        values: [
+          { "Compact (Dense Dashboards)": "compact" },
+          { "Standard (Default)": "standard" },
+          { "Large Presentation": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 7
+      },
+      valueFormat: {
+        type: "string",
+        label: "Metric Value Format",
+        display: "select",
+        values: [
+          { "Auto-Detect from Measure": "auto" },
+          { "Compact Number (1.2M)": "compact_num" },
+          { "Compact Currency ($1.2M)": "compact_currency" },
+          { "Percentage (45.2%)": "percent" },
+          { "Decimal (2dp)": "decimal_2" },
+          { "Raw Integer": "raw" }
+        ],
+        default: "auto",
+        section: "Style",
+        order: 8
+      },
       barPadding: {
         type: "number",
         label: "Bar Spacing Ratio (0.05 - 0.5)",
         default: 0.25,
         section: "Style",
-        order: 6
+        order: 9
       },
       fontFamily: {
         type: "string",
         label: "Typography Font Family",
         default: "Google Sans, Roboto, Inter, system-ui, sans-serif",
         section: "Style",
-        order: 7
+        order: 10
       }
     },
 
@@ -407,8 +778,22 @@
 
       var self = this;
       var resizeTimeout = null;
+      var prevWidth = 0;
+      var prevHeight = 0;
+
       if (window.ResizeObserver) {
-        var ro = new ResizeObserver(function () {
+        var ro = new ResizeObserver(function (entries) {
+          if (!entries || !entries.length) return;
+          var entry = entries[0];
+          var cr = entry.contentRect;
+          var w = Math.round(cr.width);
+          var h = Math.round(cr.height);
+
+          // Guard against redundant renders and <4px subpixel jitter
+          if (Math.abs(w - prevWidth) < 4 && Math.abs(h - prevHeight) < 4) return;
+          prevWidth = w;
+          prevHeight = h;
+
           if (resizeTimeout) clearTimeout(resizeTimeout);
           resizeTimeout = setTimeout(function () {
             if (self._lastData && self._lastQueryResponse) {
@@ -432,8 +817,8 @@
         return;
       }
 
-      var dimensions = queryResponse.fields.dimensions || [];
-      var measures = queryResponse.fields.measures || [];
+      var dimensions = queryResponse.fields.dimensions || queryResponse.fields.dimension_like || [];
+      var measures = queryResponse.fields.measures || queryResponse.fields.measure_like || [];
 
       if (dimensions.length < 1) {
         this.addError({
@@ -453,9 +838,42 @@
         return;
       }
 
+      // Dynamic field-role mapping dropdowns via registerOptions (Display section only)
+      if (this.trigger) {
+        try {
+          var dimOptions = [{ "Auto / First Dimension": "" }];
+          var measOptions = [{ "Auto / Primary Measure": "" }];
+          dimensions.forEach(function (d) {
+            var opt = {};
+            opt[d.label_short || d.label || d.name] = d.name;
+            dimOptions.push(opt);
+          });
+          measures.forEach(function (m) {
+            var opt = {};
+            opt[m.label_short || m.label || m.name] = m.name;
+            measOptions.push(opt);
+          });
+
+          this.trigger("registerOptions", {
+            dimEntityOverride: { values: dimOptions },
+            dimCategoryOverride: { values: [{ "None / Optional Group": "" }].concat(dimOptions.slice(1)) },
+            measurePrimaryOverride: { values: measOptions },
+            measureSecondaryOverride: { values: [{ "None / Secondary Measure (Optional)": "" }].concat(measOptions.slice(1)) }
+          });
+        } catch (e) {}
+      }
+
       var self = this;
       ensureD3(function (d3) {
-        self.render(data, element, config, queryResponse);
+        try {
+          self.render(data, element, config, queryResponse);
+        } catch (err) {
+          console.error("Pareto Analyzer Render Exception:", err);
+          self.addError({
+            title: "Render Error",
+            message: err.message || "An error occurred while rendering the Pareto visualization."
+          });
+        }
         done();
       });
     },
@@ -483,9 +901,12 @@
       container.style.color = theme.text;
       container.style.fontFamily = config.fontFamily || "Google Sans, Roboto, Inter, sans-serif";
 
-      var dimField = queryResponse.fields.dimensions[0];
-      var measureField = queryResponse.fields.measures[0];
-      var secondaryMeasureField = queryResponse.fields.measures.length > 1 ? queryResponse.fields.measures[1] : null;
+      var dimensions = queryResponse.fields.dimensions || queryResponse.fields.dimension_like || [];
+      var measures = queryResponse.fields.measures || queryResponse.fields.measure_like || [];
+
+      var dimField = (config.dimEntityOverride && dimensions.find(function(d){ return d.name === config.dimEntityOverride; })) || dimensions[0];
+      var measureField = (config.measurePrimaryOverride && measures.find(function(m){ return m.name === config.measurePrimaryOverride; })) || measures[0];
+      var secondaryMeasureField = (config.measureSecondaryOverride && measures.find(function(m){ return m.name === config.measureSecondaryOverride; })) || (measures.length > 1 ? measures[1] : null);
 
       var thresholdA = parseFloat(config.abcThresholdA) || 80;
       var thresholdB = parseFloat(config.abcThresholdB) || 95;
@@ -513,6 +934,11 @@
           drillLinks = rawMeasure.links;
         }
 
+        // Zero / null suppression toggle
+        if (config.suppressZeroNull !== false && (val <= 0 || isNaN(val))) {
+          continue;
+        }
+
         if (aggregatedMap.has(dimVal)) {
           var item = aggregatedMap.get(dimVal);
           item.value += val;
@@ -529,10 +955,19 @@
         }
       }
 
-      // Convert to sorted array (descending by value)
-      var sortedItems = Array.from(aggregatedMap.values()).sort(function (a, b) {
-        return b.value - a.value;
-      });
+      // Convert to sorted array based on sortOrder
+      var sortOrder = config.sortOrder || "desc";
+      var sortedItems = Array.from(aggregatedMap.values());
+      if (sortOrder === "asc") {
+        sortedItems.sort(function (a, b) { return a.value - b.value; });
+      } else if (sortOrder === "alpha") {
+        sortedItems.sort(function (a, b) { return a.name.localeCompare(b.name); });
+      } else if (sortOrder === "natural") {
+        // preserve query order
+      } else {
+        // default Pareto descending
+        sortedItems.sort(function (a, b) { return b.value - a.value; });
+      }
 
       if (sortedItems.length === 0) {
         container.innerHTML = '<div style="padding:40px;text-align:center;color:' + theme.subtext + ';">No data available for Pareto analysis.</div>';
@@ -599,6 +1034,27 @@
         giniNumerator += (2 * (g + 1) - n - 1) * ascVal;
       }
       var giniCoeff = n > 1 ? Math.max(0, Math.min(1, giniNumerator / (n * totalSum))) : 0;
+
+      // Target benchmark calculation
+      var targetBenchmark = null;
+      var targetLabel = config.customReferenceLineLabel || "Target Benchmark";
+      if (config.targetMode === "fixed_value") {
+        targetBenchmark = parseFloat(config.customTargetValue) || 0;
+      } else if (config.targetMode === "dataset_mean") {
+        targetBenchmark = totalSum / sortedItems.length;
+      } else if (config.targetMode === "dataset_median") {
+        var mid = Math.floor(sortedItems.length / 2);
+        var valsSorted = sortedItems.map(function(d){ return d.value; }).sort(function(a,b){ return a-b; });
+        targetBenchmark = sortedItems.length % 2 !== 0 ? valsSorted[mid] : (valsSorted[mid - 1] + valsSorted[mid]) / 2;
+      } else if (config.targetMode === "percentile_p75") {
+        var idx75 = Math.floor(sortedItems.length * 0.75);
+        var valsSorted = sortedItems.map(function(d){ return d.value; }).sort(function(a,b){ return a-b; });
+        targetBenchmark = valsSorted[idx75] || 0;
+      } else if (config.targetMode === "percentile_p90") {
+        var idx90 = Math.floor(sortedItems.length * 0.90);
+        var valsSorted = sortedItems.map(function(d){ return d.value; }).sort(function(a,b){ return a-b; });
+        targetBenchmark = valsSorted[idx90] || 0;
+      }
 
       // Apply Search Filter if any
       var query = (this._searchQuery || "").trim().toLowerCase();
@@ -704,7 +1160,26 @@
       // -------------------------------------------------------------
       // 3. EXECUTIVE KPI HUD BANNER
       // -------------------------------------------------------------
-      if (config.showKpiHud) {
+      var hudMode = config.kpiHudDensity || (config.showKpiHud ? "full" : "hidden");
+      if (hudMode !== "hidden" && config.showKpiHud !== false) {
+        if (hudMode === "compact") {
+          var compactHud = document.createElement("div");
+          compactHud.style.display = "flex";
+          compactHud.style.alignItems = "center";
+          compactHud.style.gap = "14px";
+          compactHud.style.padding = "6px 14px";
+          compactHud.style.margin = "4px 16px 8px 16px";
+          compactHud.style.borderRadius = "6px";
+          compactHud.style.background = theme.hudBg;
+          compactHud.style.border = "1px solid " + theme.hudBorder;
+          compactHud.style.fontSize = "11px";
+          compactHud.style.color = theme.hudText;
+          compactHud.innerHTML = '<span><strong>Items:</strong> ' + sortedItems.length + '</span>' +
+            '<span><strong>Volume:</strong> ' + formatValue(totalSum, config, measureField) + '</span>' +
+            '<span><strong style="color:' + theme.classA + ';">Class A (80%):</strong> ' + classACount + ' (' + ((classACount / sortedItems.length) * 100).toFixed(0) + '%)</span>' +
+            '<span><strong>Gini Index:</strong> ' + giniCoeff.toFixed(3) + '</span>';
+          container.appendChild(compactHud);
+        } else {
         var hudDiv = document.createElement("div");
         hudDiv.style.display = "grid";
         hudDiv.style.gridTemplateColumns = "repeat(auto-fit, minmax(130px, 1fr))";
@@ -802,14 +1277,14 @@
       } else if (layoutMode === "cumulative_waterfall") {
         this.renderWaterfall(chartWrapper, displayItems, totalSum, thresholdA, thresholdB, theme, width, height, config, tooltip);
       } else {
-        this.renderClassicPareto(chartWrapper, displayItems, totalSum, thresholdA, thresholdB, cutoffRankA, theme, width, height, config, measureField, dimField, tooltip);
+        this.renderClassicPareto(chartWrapper, displayItems, totalSum, thresholdA, thresholdB, cutoffRankA, theme, width, height, config, measureField, dimField, tooltip, targetBenchmark, targetLabel);
       }
     },
 
     // ---------------------------------------------------------------
     // MODE 1: CLASSIC PARETO & 80/20 DUAL-AXIS CUTOFF
     // ---------------------------------------------------------------
-    renderClassicPareto: function (chartWrapper, items, totalSum, thresholdA, thresholdB, cutoffRankA, theme, width, height, config, measureField, dimField, tooltip) {
+    renderClassicPareto: function (chartWrapper, items, totalSum, thresholdA, thresholdB, cutoffRankA, theme, width, height, config, measureField, dimField, tooltip, targetBenchmark, targetLabel) {
       var d3 = window.d3;
       var margin = { top: 30, right: 60, bottom: 65, left: 65 };
       var innerWidth = Math.max(100, width - margin.left - margin.right);
@@ -898,7 +1373,42 @@
           .attr("fill", "#ffffff")
           .attr("font-size", "10px")
           .attr("font-weight", "700")
-          .text("80% Vital Cutoff");
+          .text(config.customReferenceLineLabel || "80% Vital Cutoff");
+      }
+
+      // Target Benchmark Reference Line (Left Axis)
+      if ((config.showBenchmarkLine || (config.targetMode && config.targetMode !== "none")) && targetBenchmark !== null && targetBenchmark > 0) {
+        var yBench = yLeft(targetBenchmark);
+        var benchLine = g.append("g").attr("class", "benchmark-line");
+
+        benchLine.append("line")
+          .attr("x1", 0)
+          .attr("x2", innerWidth)
+          .attr("y1", yBench)
+          .attr("y2", yBench)
+          .attr("stroke", theme.benchmarkColor || "#fbbc04")
+          .attr("stroke-width", 1.8)
+          .attr("stroke-dasharray", "4,4")
+          .attr("opacity", 0.9);
+
+        var bBadge = benchLine.append("g")
+          .attr("transform", "translate(" + (10) + "," + (yBench - 12) + ")");
+
+        bBadge.append("rect")
+          .attr("width", 140)
+          .attr("height", 20)
+          .attr("rx", 4)
+          .attr("fill", theme.benchmarkColor || "#fbbc04")
+          .attr("opacity", 0.95);
+
+        bBadge.append("text")
+          .attr("x", 70)
+          .attr("y", 13)
+          .attr("text-anchor", "middle")
+          .attr("fill", "#ffffff")
+          .attr("font-size", "10px")
+          .attr("font-weight", "700")
+          .text((targetLabel || "Target") + ": " + formatNumber(targetBenchmark));
       }
 
       // Vital Few Zone Shading (Background of Class A items)
@@ -959,9 +1469,16 @@
         });
 
       // Data Labels on Bars (if enabled)
-      if (config.showDataLabels && x.bandwidth() > 24) {
+      var showLabels = config.labelDensity === "all" || (config.labelDensity === "peaks") || (config.showDataLabels && config.labelDensity !== "hidden");
+      if (showLabels && x.bandwidth() > 18) {
+        var maxItemVal = d3.max(items, function(d) { return d.value; });
+        var minItemVal = d3.min(items, function(d) { return d.value; });
+        var labelData = items;
+        if (config.labelDensity === "peaks") {
+          labelData = items.filter(function(d) { return d.value === maxItemVal || d.value === minItemVal; });
+        }
         g.selectAll(".bar-label")
-          .data(items)
+          .data(labelData)
           .enter()
           .append("text")
           .attr("class", "bar-label")
@@ -971,7 +1488,7 @@
           .attr("font-size", "10px")
           .attr("font-weight", "600")
           .attr("fill", theme.text)
-          .text(function (d) { return formatNumber(d.value); });
+          .text(function (d) { return formatValue(d.value, config, measureField); });
       }
 
       // Cumulative Ogive Curve (Right Axis)

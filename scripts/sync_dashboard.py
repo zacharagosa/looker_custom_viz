@@ -48,9 +48,11 @@ VOL2_VIZ_MAP = {
     "level_progression_balance_curve": "🎮 Gaming & Telemetry",
     "matchmaking_mmr_distribution": "🎮 Gaming & Telemetry",
     "game_economy_faucet_sink": "🎮 Gaming & Telemetry",
-    "broadcast_daypart_grid": "🎬 Media, Broadcast & Ad-Ops",
     "ad_reach_frequency_curve": "🎬 Media, Broadcast & Ad-Ops",
     "multi_touch_attribution_pathway": "🎬 Media, Broadcast & Ad-Ops",
+    "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops",
+    "content_genre_affinity_network": "🎬 Media, Broadcast & Ad-Ops",
+    "episode_binge_dropoff_matrix": "🎬 Media, Broadcast & Ad-Ops",
     "network_topology_graph": "📡 Telecom, Cloud & SecOps",
     "mitre_attack_matrix": "📡 Telecom, Cloud & SecOps",
     "cell_tower_polar_coverage": "📡 Telecom, Cloud & SecOps",
@@ -60,20 +62,19 @@ VOL2_VIZ_MAP = {
     "forecast_confidence_cone": "🔬 Statistical, ML & Forecasting",
     "roc_curve_evaluator": "🔬 Statistical, ML & Forecasting",
     "raincloud_plot": "🔬 Statistical, ML & Forecasting",
+    "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting",
     "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
     "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps",
     "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps",
     "finops_cud_attribution_bridge": "🛍️ Retail, Supply Chain & FinOps",
     "upset_affinity_grid": "🛍️ Retail, Supply Chain & FinOps",
-    "media_audience_overlap_euler": "🎬 Media, Broadcast & Ad-Ops",
-    "content_genre_affinity_network": "🎬 Media, Broadcast & Ad-Ops",
-    "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting",
     "correlation_splom_matrix": "🧬 Multivariate & Diagnostic Profiling",
     "voronoi_treemap": "🧬 Multivariate & Diagnostic Profiling",
     "horizon_small_multiples": "🧬 Multivariate & Diagnostic Profiling",
     "pca_biplot_projection": "🧬 Multivariate & Diagnostic Profiling",
     "hierarchical_cluster_dendrogram": "🧬 Multivariate & Diagnostic Profiling"
 }
+
 
 CATEGORY_TAB_MAP = {
     # Vol. 1 Categories
@@ -163,6 +164,7 @@ VIZ_EMOJI_MAP = {
     "raincloud_plot": "🌧️",
     "pvm_revenue_bridge": "🌉",
     "media_audience_overlap_euler": "⭕",
+    "episode_binge_dropoff_matrix": "🎬",
     "cloud_finops_commit_horizon": "⚡",
     "kaplan_meier_survival_curve": "📉",
     "finops_cud_attribution_bridge": "☁️",

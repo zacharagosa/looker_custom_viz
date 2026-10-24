@@ -8,7 +8,7 @@ This repository is maintained with continuous daily automation that discovers un
 
 ## 📚 Documentation & Guides
 
-- 🖼️ [**Visual Gallery & Previews**](docs/gallery.md): Full visual showcase with high-resolution production screenshots for all 32+ custom visualizations.
+- 🖼️ [**Visual Gallery & Previews**](docs/gallery.md): Full visual showcase with high-resolution production screenshots for all 50+ custom visualizations.
 - 🚀 [**Installation & Integration Guide**](docs/installation.md): Quick-start instructions for instance-wide API deployment, LookML `manifest.lkml` setup, and Looker drill-down menus.
 - 🛠️ [**Automation, Tooling & Showcase Dashboards**](docs/automation.md): Details on CLI deployment scripts, dual-volume showcase dashboards, and autonomous daily generation.
 
@@ -75,6 +75,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Price-Volume-Mix (PVM) Revenue Bridge**](visualizations/pvm_revenue_bridge/)<br>`pvm_revenue_bridge` | Retail, Supply Chain & FinOps | 1 Category dim + 0–1 Period dim + 1–2 measures | [📸 View](assets/screenshots/pvm_revenue_bridge.png) |
 | [**UpSet Set-Intersection & Market Basket Affinity Grid**](visualizations/upset_affinity_grid/)<br>`upset_affinity_grid` | Retail, Supply Chain & FinOps | 1–3 Set dims + 1–2 measures | [📸 View](assets/screenshots/upset_affinity_grid.png) |
 | [**Media Audience Overlap & Co-Viewing Euler Matrix**](visualizations/media_audience_overlap_euler/)<br>`media_audience_overlap_euler` | Media, Broadcast & Ad-Ops | 1 Network dim + 0–2 Segment dims + 1–2 measures | [📸 View](visualizations/media_audience_overlap_euler/screenshot.png) |
+| [**Episode Binge & Stream Drop-Off Matrix**](visualizations/episode_binge_dropoff_matrix/)<br>`episode_binge_dropoff_matrix` | Media, Broadcast & Ad-Ops | 1 Series dim + 1 Episode dim + 1–2 measures (Viewers + Completion Rate) | [📸 View](assets/screenshots/episode_binge_dropoff_matrix.png) |
 | [**Cloud FinOps Commit/CUD Utilization & Waste Horizon Chart**](visualizations/cloud_finops_commit_horizon/)<br>`cloud_finops_commit_horizon` | Telecom, Cloud & SecOps | 2 dims (Commitment + Date) + 1–2 measures (Util + Waste) | [📸 View](visualizations/cloud_finops_commit_horizon/screenshot.png) |
 | [**Distributed Trace & Span Waterfall Flamegraph**](visualizations/distributed_trace_flamegraph/)<br>`distributed_trace_flamegraph` | Telecom, Cloud & SecOps | 1 Parent dim + 1 Child dim + 1–2 meas | [📸 View](assets/screenshots/distributed_trace_flamegraph.png) |
 | [**FinOps CUD Attribution & Waste Waterfall Bridge**](visualizations/finops_cud_attribution_bridge/)<br>`finops_cud_attribution_bridge` | Telecom, Cloud & SecOps | 1 SKU/Account dim + 1–2 measures | [📸 View](visualizations/finops_cud_attribution_bridge/screenshot.png) |

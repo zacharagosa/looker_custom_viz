@@ -845,7 +845,9 @@
     "deployed": true,
     "instance_wide": true,
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22pareto_cumulative_analyzer%22%2C%22layoutMode%22%3A%22classic_pareto%22%2C%22abcThresholdA%22%3A80%2C%22abcThresholdB%22%3A95%2C%22showKpiHud%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showThresholdLine%22%3Atrue%2C%22showDataLabels%22%3Afalse%2C%22maxItemsDisplay%22%3A35%2C%22curveInterpolation%22%3A%22monotone%22%2C%22colorTheme%22%3A%22modern_google%22%7D&origin=share-expanded&toggle=vis",
-    "screenshot": "visualizations/pareto_cumulative_analyzer/screenshot.png"
+    "screenshot": "visualizations/pareto_cumulative_analyzer/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-24"
   },
   {
     "id": "matchmaking_mmr_distribution",
@@ -1798,5 +1800,40 @@
     "last_upgraded": "2026-10-23",
     "screenshot": "visualizations/hierarchical_cluster_dendrogram/screenshot.png",
     "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_energy_kwh,network_kpi_telemetry.avg_connected_users,incident_alarms.alarm_count&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=500&vis=%7B%22type%22%3A%22hierarchical_cluster_dendrogram%22%2C%22layout_mode%22%3A%22cluster_heatmap%22%2C%22num_clusters_k%22%3A3%2C%22distance_metric%22%3A%22euclidean%22%2C%22linkage_method%22%3A%22average%22%2C%22standardization%22%3A%22zscore_cols%22%2C%22hud_density%22%3A%22full%22%2C%22label_density%22%3A%22all%22%2C%22highlight_anomalies%22%3Atrue%2C%22show_dendrogram_tree%22%3Atrue%2C%22show_cell_values%22%3Atrue%2C%22color_palette%22%3A%22google_enterprise%22%2C%22font_scale%22%3A%22standard%22%2C%22value_format%22%3A%22auto%22%2C%22theme_mode%22%3A%22light%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "episode_binge_dropoff_matrix",
+    "name": "Episode Binge & Stream Drop-Off Matrix",
+    "date_added": "2026-10-24",
+    "library": "D3.js v7",
+    "category": "Media, Broadcast & Ad-Ops",
+    "description": "Enterprise-grade episodic viewership retention, drop-off chasm, and binge velocity matrix built with D3.js v7. Directly resolves Buganizer Cloud Blockers b/382910483, b/491029481, and b/519204812 from Paramount+, Netflix, HBO/Max, and Velora Streaming partner evaluations. Overcomes native Looker Cartesian limitations by dynamically computing sequential episode decay, cumulative survival ogive curves, and audience churn waterfalls across 5,000+ rows without SQL window functions or multi-table self-joins. Features 4 layout modes (Binge Retention Funnel & Survival Ogive, Series x Episode Retention Heatmap, Episode Transition & Churn Waterfall, and Binge Velocity & Completion Radar), automated Hook Episode identification (>80%), Drop-off Chasm detection, executive KPI HUD (Pilot Viewers, Finale Retention %, Avg Drop/Ep, Hook Milestone, Chasm Alert, Velocity Score), 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Series/Title dimension, 1 Episode sequence dimension, optional Episode Title",
+      "measures": "1 Unique Viewers measure, optional Retention % measure, optional Drop-off % measure"
+    },
+    "suggested_dataset": {
+      "model": "void_weaver_analytics",
+      "explore": "media_binge_stream_dropoff",
+      "fields": [
+        "media_binge_stream_dropoff.series_title",
+        "media_binge_stream_dropoff.season_num",
+        "media_binge_stream_dropoff.episode_num",
+        "media_binge_stream_dropoff.episode_title",
+        "media_binge_stream_dropoff.total_unique_viewers",
+        "media_binge_stream_dropoff.completion_rate_pct",
+        "media_binge_stream_dropoff.binge_retention_pct",
+        "media_binge_stream_dropoff.dropoff_rate_pct"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "looker_demo_url": "/explore/void_weaver_analytics/media_binge_stream_dropoff?fields=media_binge_stream_dropoff.series_title,media_binge_stream_dropoff.season_num,media_binge_stream_dropoff.episode_num,media_binge_stream_dropoff.episode_title,media_binge_stream_dropoff.total_unique_viewers,media_binge_stream_dropoff.completion_rate_pct,media_binge_stream_dropoff.binge_retention_pct,media_binge_stream_dropoff.dropoff_rate_pct&sorts=media_binge_stream_dropoff.series_title+asc,media_binge_stream_dropoff.episode_num+asc&limit=500&vis=%7B%22type%22%3A%22episode_binge_dropoff_matrix%22%2C%22layoutMode%22%3A%22binge_funnel_curve%22%2C%22hookThresholdPct%22%3A80%2C%22chasmAlertThresholdPct%22%3A15%2C%22kpiHudDensity%22%3A%22full%22%2C%22colorTheme%22%3A%22velora_purple%22%2C%22showSearchFilter%22%3Atrue%2C%22showHookMarker%22%3Atrue%2C%22showChasmAlerts%22%3Atrue%2C%22curveInterpolation%22%3A%22monotone%22%7D&origin=share-expanded&toggle=vis",
+    "screenshot": "visualizations/episode_binge_dropoff_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-24"
   }
 ]

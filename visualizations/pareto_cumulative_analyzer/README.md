@@ -23,16 +23,22 @@ Standard business intelligence Cartesian bar charts force users to view raw volu
   2. **ABC Stratification Matrix (`abc_stratification`)**: 3 executive distribution cards segmenting the population into **Class A (Vital Few)**, **Class B (Useful Many)**, and **Class C (Trivial Many)** with item counts, percentage shares, cumulative metric sums, and ranked entity breakdowns.
   3. **Lorenz Inequality Curve & Gini (`lorenz_inequality`)**: Normalized inequality curve plotting Cumulative Share of Population ($X$-Axis) against Cumulative Share of Metric ($Y$-Axis) compared with the $45^\circ$ Line of Perfect Equality, complete with shaded inequality area and live Gini Index calculation.
   4. **Cumulative Stepped Waterfall (`cumulative_waterfall`)**: Stepped waterfall progression showing the incremental additive contribution of each category building towards the $100\%$ total volume.
-- **Executive KPI HUD Banner**:
-  - 6 real-time KPI tiles: **Total Population (SKUs)**, **Total Volume**, **Vital Few (Class A) Count & %**, **80% Cutoff Rank**, **Gini Concentration Index**, and **Top 1 Entity Concentration %**.
+- **Dynamic Field-Role Mapping via `registerOptions`**:
+  - Dynamically re-map Category/Entity, Primary Volume Measure, Comparison Measure, or Grouping Dimensions without modifying LookML.
+- **Configurable Benchmark Reference Lines**:
+  - Supports customizable Target Benchmark Modes (Fixed Value, Dataset Mean, Dataset Median P50, Top Quartile P75, 90th Percentile P90) alongside the 80% Pareto Cutoff.
+- **Flexible Sorting, Rollup & Zero-Suppression**:
+  - Interactive sort ordering (`Metric Descending`, `Metric Ascending`, `Alphabetical`, `Natural Query Order`), Top-N limit with automatic tail rollup into "Other", and zero/null suppression.
+- **Executive KPI HUD Banner & Density Controls**:
+  - 3 HUD density settings: **Full Scorecard (6 KPIs)**, **Compact Strip**, and **Hidden**.
+  - 3 Data Label density settings: **All Bars & Points**, **Min/Max Peaks Only**, and **Hidden**.
+- **Brand Palettes, Polarity & Formatting**:
+  - Supports 7 themes: Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, Looker Analytics.
+  - Metric Polarity toggle (`Higher is Better` vs `Lower is Better` for defect and cost tracking).
+  - Metric Value Formatting (`Auto`, `Compact Number`, `Compact Currency`, `Percentage`, `Decimal 2dp`, `Raw Integer`).
 - **High-Density Scalability (5,000+ Rows)**:
-  - Ingests high-cardinality datasets with client-side aggregation in $O(N)$ time and fast sorting. Automatically rolls up long tail items beyond the user-configured limit into a consolidated summary group while preserving exact cumulative totals.
-- **Instant Client-Side Search Filter**:
-  - Live search-as-you-type input to highlight and isolate specific categories, brands, or defect types instantly.
-- **Strict 2-Tab Options Modal**:
-  - Strictly organized into `Display` and `Style` sections to guarantee clean, non-wrapping tab navigation in Looker's Edit Viz dialog.
+  - Ingests high-cardinality datasets with client-side aggregation in $O(N)$ time and debounced `ResizeObserver` with `<4px` jitter protection.
 - **Enterprise Looker Integration**:
-  - Supports Looker Modern Themes and Palettes (Modern Google, Looker Analytics, Emerald Teal, Sunset Amber, Neon Cyber, Monochrome Slate).
   - Native Looker Drill-Down Menus via `LookerCharts.Utils.openDrillMenu`.
 
 ---
@@ -49,18 +55,33 @@ Standard business intelligence Cartesian bar charts force users to view raw volu
 
 ### Display Tab
 - **Analysis Layout Mode**: Classic Pareto & 80/20 Cutoff, ABC Stratification Matrix, Lorenz Inequality Curve & Gini, Cumulative Stepped Waterfall.
-- **Class A Cutoff (%)**: Threshold percentage for Class A (default: `80%`).
-- **Class B Cutoff (%)**: Threshold percentage for Class B (default: `95%`).
-- **Show Executive KPI HUD Banner**: Toggle top 6 KPI metric cards.
-- **Show Live Search Filter**: Toggle interactive search bar.
+- **Category / Entity Dimension**: Dynamic dropdown to re-assign the primary dimension.
+- **Primary Volume / Frequency Measure**: Dynamic dropdown to re-assign the primary volume measure.
+- **Secondary Comparison Measure (Optional)**: Dynamic dropdown for secondary comparison measure.
+- **Secondary Grouping Dimension (Optional)**: Dynamic dropdown for optional grouping.
+- **Target Benchmark Mode**: None, Fixed Target Value, Dataset Mean Average, Dataset Median (P50), Top Quartile (P75), 90th Percentile (P90).
+- **Custom Target / Threshold Value**: Numeric input for target reference line.
+- **Reference Line Label Override**: Custom text for benchmark and threshold labels.
+- **Class A / Vital Few Cutoff (%)**: Threshold percentage for Class A (default: `80%`).
+- **Class B / Useful Many Cutoff (%)**: Threshold percentage for Class B (default: `95%`).
 - **Show 80% Pareto Reference Line**: Toggle reference cutoff line on right axis.
-- **Show Bar & Point Labels**: Toggle data value labels.
-- **Max Visible Items**: Maximum bars to render before rolling tail items into summary group.
+- **Show Target / Benchmark Line**: Toggle benchmark reference line on left axis.
+- **Item Sorting Order**: Metric Descending, Metric Ascending, Alphabetical, Natural.
+- **Max Visible Items (Tail Rolled Up)**: Number of bars to render before rolling tail items into summary group (default: 35).
+- **Rollup Tail into 'Other' Group**: Consolidate long-tail entities.
+- **Suppress Zero & Null Values**: Clean data from zero-volume noise.
+- **Executive KPI HUD Display**: Full Scorecard (6 KPIs), Compact Strip, Hidden.
+- **Data Value Labels**: All Bars & Points, Min / Max Peaks Only, Hidden.
+- **Chart Title Override / Subtitle Override**: Custom header titles.
+- **Show Live Search Filter**: Toggle interactive search bar.
 - **Cumulative Curve Smoothing**: Monotone Spline, Linear Polygon, Step After.
 
 ### Style Tab
-- **Color Theme & Palette**: Modern Google, Looker Analytics, Emerald Teal, Sunset Amber, Neon Cyber (Dark), Monochrome Slate.
+- **Color Theme & Brand Palette**: Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, Looker Analytics.
 - **Override Class A / B / C Accents**: Custom color pickers for each stratification tier.
 - **Override Cumulative Curve Color**: Custom color picker for the ogive curve.
+- **Metric Polarity**: Higher is Better vs Lower is Better.
+- **Typography Font Scale**: Compact, Standard, Large Presentation.
+- **Metric Value Format**: Auto-Detect, Compact Number (1.2M), Compact Currency ($1.2M), Percentage (45.2%), Decimal (2dp), Raw Integer.
 - **Bar Spacing Ratio**: Adjust bar thickness and gap padding.
 - **Typography Font Family**: Clean font styling.

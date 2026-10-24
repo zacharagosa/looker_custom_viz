@@ -1,0 +1,31 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "media_binge_stream_dropoff",
+  "fields": [
+    "media_binge_stream_dropoff.series_title",
+    "media_binge_stream_dropoff.season_num",
+    "media_binge_stream_dropoff.episode_num",
+    "media_binge_stream_dropoff.episode_title",
+    "media_binge_stream_dropoff.total_unique_viewers",
+    "media_binge_stream_dropoff.completion_rate_pct",
+    "media_binge_stream_dropoff.binge_retention_pct",
+    "media_binge_stream_dropoff.dropoff_rate_pct"
+  ],
+  "sorts": [
+    "media_binge_stream_dropoff.series_title asc",
+    "media_binge_stream_dropoff.episode_num asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "episode_binge_dropoff_matrix",
+    "layoutMode": "binge_funnel_curve",
+    "hookThresholdPct": 80,
+    "chasmAlertThresholdPct": 15,
+    "kpiHudDensity": "full",
+    "colorTheme": "velora_purple",
+    "showSearchFilter": true,
+    "showHookMarker": true,
+    "showChasmAlerts": true,
+    "curveInterpolation": "monotone"
+  }
+}
