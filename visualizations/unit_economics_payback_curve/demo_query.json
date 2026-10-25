@@ -1,0 +1,37 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.traffic_source",
+    "order_items.created_month",
+    "order_items.total_sale_price",
+    "order_items.order_count",
+    "order_items.count"
+  ],
+  "filters": {
+    "order_items.created_month": "2025-01 to 2026-06",
+    "users.traffic_source": "-EMPTY"
+  },
+  "sorts": [
+    "users.traffic_source asc",
+    "order_items.created_month asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "unit_economics_payback_curve",
+    "layoutMode": "payback_curve",
+    "cacAssumptionMode": "fixed_cac_override",
+    "fixedCacValue": 140,
+    "grossMarginPct": 65,
+    "targetPaybackMonths": 10,
+    "ltvBenchmarkMultiple": 3.0,
+    "hudDensity": "full",
+    "colorTheme": "google_enterprise",
+    "polarity": "higher_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency",
+    "curveSmoothing": "monotone",
+    "showShadedZones": true,
+    "strokeWidth": "2.5"
+  }
+}

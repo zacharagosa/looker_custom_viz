@@ -55,11 +55,131 @@
   }
 
   var COLOR_THEMES = {
+    google_enterprise: {
+      name: "Google Enterprise",
+      isDark: false,
+      colors: ["#1a73e8", "#34a853", "#fbbc04", "#ea4335", "#9334e6", "#00acc1", "#ff7043", "#5c6bc0", "#00897b", "#d81b60"],
+      bg: "#ffffff",
+      cardBg: "#f8fafd",
+      text: "#202124",
+      subtext: "#5f6368",
+      border: "#dadce0",
+      hudBg: "rgba(248, 250, 253, 0.95)",
+      hudBorder: "#dadce0",
+      sliceStroke: "#ffffff",
+      breadcrumbBg: "#e8f0fe",
+      breadcrumbText: "#1a73e8",
+      centerCircleBg: "#ffffff",
+      diverging: ["#ea4335", "#fbbc04", "#34a853"]
+    },
+    modern_slate: {
+      name: "Modern Slate",
+      isDark: false,
+      colors: ["#2563eb", "#0ea5e9", "#10b981", "#f59e0b", "#8b5cf6", "#64748b", "#06b6d4", "#ec4899", "#14b8a6", "#f97316"],
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      text: "#0f172a",
+      subtext: "#475569",
+      border: "#cbd5e1",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      sliceStroke: "#ffffff",
+      breadcrumbBg: "#f1f5f9",
+      breadcrumbText: "#0f172a",
+      centerCircleBg: "#ffffff",
+      diverging: ["#ef4444", "#f59e0b", "#10b981"]
+    },
+    cyberpunk_dark: {
+      name: "Cyberpunk Dark",
+      isDark: true,
+      colors: ["#06b6d4", "#a855f7", "#ec4899", "#3b82f6", "#10b981", "#eab308", "#f97316", "#14b8a6", "#6366f1", "#f43f5e"],
+      bg: "#0b0f19",
+      cardBg: "rgba(17, 24, 39, 0.85)",
+      text: "#f8fafc",
+      subtext: "#94a3b8",
+      border: "#1f2937",
+      hudBg: "rgba(15, 23, 42, 0.90)",
+      hudBorder: "rgba(51, 65, 85, 0.8)",
+      sliceStroke: "#0b0f19",
+      breadcrumbBg: "#1e293b",
+      breadcrumbText: "#38bdf8",
+      centerCircleBg: "#0f172a",
+      diverging: ["#f43f5e", "#eab308", "#06b6d4"]
+    },
+    emerald_finops: {
+      name: "Emerald FinOps",
+      isDark: false,
+      colors: ["#059669", "#10b981", "#0d9488", "#0284c7", "#14b8a6", "#047857", "#3b82f6", "#6366f1", "#f59e0b", "#64748b"],
+      bg: "#ffffff",
+      cardBg: "#f0fdf4",
+      text: "#064e3b",
+      subtext: "#047857",
+      border: "#bbf7d0",
+      hudBg: "rgba(240, 253, 244, 0.95)",
+      hudBorder: "#86efac",
+      sliceStroke: "#ffffff",
+      breadcrumbBg: "#dcfce7",
+      breadcrumbText: "#14532d",
+      centerCircleBg: "#ffffff",
+      diverging: ["#dc2626", "#d97706", "#059669"]
+    },
+    sunset_media: {
+      name: "Sunset Media",
+      isDark: false,
+      colors: ["#ea580c", "#f97316", "#d97706", "#f59e0b", "#e11d48", "#be123c", "#7c3aed", "#4338ca", "#059669", "#71717a"],
+      bg: "#ffffff",
+      cardBg: "#fffbeb",
+      text: "#78350f",
+      subtext: "#92400e",
+      border: "#fde68a",
+      hudBg: "rgba(255, 251, 235, 0.95)",
+      hudBorder: "#fcd34d",
+      sliceStroke: "#ffffff",
+      breadcrumbBg: "#fef3c7",
+      breadcrumbText: "#92400e",
+      centerCircleBg: "#ffffff",
+      diverging: ["#dc2626", "#f59e0b", "#ea580c"]
+    },
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare",
+      isDark: false,
+      colors: ["#143359", "#00af68", "#0284c7", "#ffb500", "#1e467a", "#5fd3a0", "#e5484d", "#64748b", "#0d9488", "#94a3b8"],
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      text: "#0f172a",
+      subtext: "#64748b",
+      border: "#e2e8f0",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#e2e8f0",
+      sliceStroke: "#ffffff",
+      breadcrumbBg: "#e2e8f0",
+      breadcrumbText: "#143359",
+      centerCircleBg: "#ffffff",
+      diverging: ["#e5484d", "#ffb500", "#00af68"]
+    },
+    custom_hex: {
+      name: "Custom Hex Override",
+      isDark: false,
+      colors: ["#1a73e8", "#34a853", "#fbbc04", "#ea4335", "#9334e6", "#00acc1"],
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      text: "#1e293b",
+      subtext: "#64748b",
+      border: "#e2e8f0",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      sliceStroke: "#ffffff",
+      breadcrumbBg: "#f1f5f9",
+      breadcrumbText: "#1e293b",
+      centerCircleBg: "#ffffff",
+      diverging: ["#ea4335", "#fbbc04", "#1a73e8"]
+    },
     modern_google: {
       name: "Looker / Google Modern (Light)",
       isDark: false,
       colors: ["#4285F4", "#34A853", "#FBBC04", "#EA4335", "#9334E6", "#00ACC1", "#FF7043", "#5C6BC0", "#00897B", "#D81B60"],
       bg: "#ffffff",
+      cardBg: "#f8fafc",
       text: "#1f2937",
       subtext: "#6b7280",
       border: "#e5e7eb",
@@ -70,84 +190,54 @@
       breadcrumbText: "#1e293b",
       centerCircleBg: "#ffffff",
       diverging: ["#EA4335", "#FBBC04", "#34A853"]
-    },
-    executive_indigo: {
-      name: "Executive Indigo & Slate",
-      isDark: false,
-      colors: ["#4f46e5", "#0284c7", "#0d9488", "#475569", "#7c3aed", "#2563eb", "#64748b", "#0891b2", "#059669", "#d97706"],
-      bg: "#ffffff",
-      text: "#0f172a",
-      subtext: "#64748b",
-      border: "#cbd5e1",
-      hudBg: "#f8fafc",
-      hudBorder: "#cbd5e1",
-      sliceStroke: "#ffffff",
-      breadcrumbBg: "#e0e7ff",
-      breadcrumbText: "#312e81",
-      centerCircleBg: "#ffffff",
-      diverging: ["#e11d48", "#f59e0b", "#10b981"]
-    },
-    emerald_forest: {
-      name: "Emerald Mint & Forest",
-      isDark: false,
-      colors: ["#059669", "#10b981", "#34d399", "#047857", "#065f46", "#0284c7", "#3b82f6", "#14b8a6", "#6366f1", "#8b5cf6"],
-      bg: "#ffffff",
-      text: "#064e3b",
-      subtext: "#047857",
-      border: "#a7f3d0",
-      hudBg: "#f0fdf4",
-      hudBorder: "#bbf7d0",
-      sliceStroke: "#ffffff",
-      breadcrumbBg: "#dcfce7",
-      breadcrumbText: "#14532d",
-      centerCircleBg: "#ffffff",
-      diverging: ["#f87171", "#fbbf24", "#34d399"]
-    },
-    cyber_neon_dark: {
-      name: "Cyber Neon & Deep Space (Dark)",
-      isDark: true,
-      colors: ["#38bdf8", "#818cf8", "#c084fc", "#f472b6", "#34d399", "#fbbf24", "#fb923c", "#2dd4bf", "#a78bfa", "#f87171"],
-      bg: "#0b0f19",
-      text: "#f8fafc",
-      subtext: "#94a3b8",
-      border: "#1e293b",
-      hudBg: "#0f172a",
-      hudBorder: "#334155",
-      sliceStroke: "#0b0f19",
-      breadcrumbBg: "#1e293b",
-      breadcrumbText: "#38bdf8",
-      centerCircleBg: "#0f172a",
-      diverging: ["#f43f5e", "#eab308", "#10b981"]
     }
   };
-
-  function formatValue(val, fmt) {
+  function formatValue(val, fmt, measureField) {
     if (val === null || val === undefined || isNaN(val)) return "0";
     var num = Number(val);
+    fmt = fmt || "auto";
+
+    if (fmt === "auto") {
+      if (measureField && measureField.value_format) {
+        if (measureField.value_format.indexOf("$") !== -1) fmt = "compact_currency";
+        else if (measureField.value_format.indexOf("%") !== -1) fmt = "percentage";
+      }
+    }
+
     if (fmt === "compact_currency") {
-      if (Math.abs(num) >= 1e9) return "$" + (num / 1e9).toFixed(2) + "B";
-      if (Math.abs(num) >= 1e6) return "$" + (num / 1e6).toFixed(2) + "M";
-      if (Math.abs(num) >= 1e3) return "$" + (num / 1e3).toFixed(1) + "k";
-      return "$" + num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      var abs = Math.abs(num);
+      var sign = num < 0 ? "-$" : "$";
+      if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
+      if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
+      if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+      return sign + abs.toFixed(2);
     } else if (fmt === "compact_num") {
-      if (Math.abs(num) >= 1e9) return (num / 1e9).toFixed(2) + "B";
-      if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M";
-      if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "k";
-      return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      var abs = Math.abs(num);
+      var sign = num < 0 ? "-" : "";
+      if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
+      if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
+      if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
+      return sign + (Number.isInteger(abs) ? abs.toString() : abs.toFixed(2));
     } else if (fmt === "percentage") {
-      return (num * 100).toFixed(1) + "%";
+      var pVal = num > 1 ? num : num * 100;
+      return pVal.toFixed(1) + "%";
+    } else if (fmt === "decimal_2") {
+      return num.toFixed(2);
+    } else if (fmt === "raw") {
+      return Math.round(num).toString();
     }
     return num.toLocaleString();
   }
-
   looker.plugins.visualizations.add({
     id: "sunburst_partition_wheel",
     label: "Sunburst Multi-Level Partition Wheel",
     options: {
-      // SECTION 1: DISPLAY
+      // =============================================================
+      // SECTION 1: DISPLAY (Layout, Dynamic Roles, Targets & Density)
+      // =============================================================
       layoutMode: {
         type: "string",
-        label: "Layout Mode",
+        label: "Layout & Geometry Mode",
         default: "sunburst_wheel",
         display: "select",
         values: [
@@ -160,7 +250,7 @@
       },
       colorMode: {
         type: "string",
-        label: "Color Encoding Mode",
+        label: "Color Encoding Strategy",
         default: "branch_palette",
         display: "select",
         values: [
@@ -171,6 +261,134 @@
         section: "Display",
         order: 2
       },
+      dimLevel1Override: {
+        type: "string",
+        label: "Level 1 Dimension (Root Category)",
+        display: "select",
+        values: [{ "Auto / First Dimension": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      dimLevel2Override: {
+        type: "string",
+        label: "Level 2 Dimension (Sub-Category)",
+        display: "select",
+        values: [{ "Auto / Second Dimension": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      dimLevel3Override: {
+        type: "string",
+        label: "Level 3 Dimension (Detail Level)",
+        display: "select",
+        values: [{ "Auto / Third Dimension": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      dimLevel4Override: {
+        type: "string",
+        label: "Level 4 Dimension (Leaf Entity)",
+        display: "select",
+        values: [{ "Auto / Fourth Dimension": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
+      measurePrimaryOverride: {
+        type: "string",
+        label: "Primary Arc Sizing Measure",
+        display: "select",
+        values: [{ "Auto / Primary Measure": "" }],
+        default: "",
+        section: "Display",
+        order: 7
+      },
+      measureSecondaryOverride: {
+        type: "string",
+        label: "Secondary Color Gradient Measure",
+        display: "select",
+        values: [{ "None / Optional Secondary": "" }],
+        default: "",
+        section: "Display",
+        order: 8
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Benchmark / Target Mode",
+        display: "select",
+        values: [
+          { "None / Disabled": "none" },
+          { "Dataset Mean Average": "dataset_mean" },
+          { "Dataset Median (P50)": "dataset_median" },
+          { "Top Quartile Benchmark (P75)": "percentile_p75" },
+          { "Elite Benchmark (P90)": "percentile_p90" },
+          { "Fixed Custom Target Value": "fixed_value" }
+        ],
+        default: "none",
+        section: "Display",
+        order: 9
+      },
+      targetValue: {
+        type: "number",
+        label: "Fixed Benchmark Target Value",
+        default: 100000,
+        section: "Display",
+        order: 10
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Benchmark Reference Label",
+        default: "Benchmark Target",
+        section: "Display",
+        order: 11
+      },
+      alertThreshold: {
+        type: "number",
+        label: "Anomaly Alert Threshold (%)",
+        default: 20,
+        section: "Display",
+        order: 12
+      },
+      sortOrder: {
+        type: "string",
+        label: "Sibling Node Sort Order",
+        display: "select",
+        values: [
+          { "Metric Descending (Largest First)": "metric_desc" },
+          { "Metric Ascending (Smallest First)": "metric_asc" },
+          { "Alphabetical (A to Z)": "alpha_asc" },
+          { "Natural / Query Order": "natural" }
+        ],
+        default: "metric_desc",
+        section: "Display",
+        order: 13
+      },
+      topNThreshold: {
+        type: "string",
+        label: "Top-N Sibling Consolidation",
+        default: "15",
+        display: "select",
+        values: [
+          { "Top 5 Siblings + 'Others'": "5" },
+          { "Top 8 Siblings + 'Others'": "8" },
+          { "Top 12 Siblings + 'Others'": "12" },
+          { "Top 15 Siblings + 'Others'": "15" },
+          { "Top 25 Siblings + 'Others'": "25" },
+          { "Show All Siblings": "all" }
+        ],
+        section: "Display",
+        order: 14
+      },
+      suppressNulls: {
+        type: "boolean",
+        label: "Suppress Zero / Null Rows",
+        default: true,
+        section: "Display",
+        order: 15
+      },
       innerHoleRadius: {
         type: "number",
         label: "Center Hole Radius (%)",
@@ -180,102 +398,147 @@
         max: 50,
         step: 2,
         section: "Display",
+        order: 16
+      },
+      hudDensity: {
+        type: "string",
+        label: "Executive KPI HUD Scorecard",
+        display: "select",
+        values: [
+          { "Full Scorecard Strip (Detailed Cards)": "full" },
+          { "Compact Summary Badge": "compact" },
+          { "Hidden / Minimalist": "hidden" }
+        ],
+        default: "full",
+        section: "Display",
+        order: 17
+      },
+      labelDensity: {
+        type: "string",
+        label: "Segment Label Density",
+        display: "select",
+        values: [
+          { "All Readable Segments": "all" },
+          { "Major Branches & Peaks Only (>5% Share)": "prominent" },
+          { "Hidden / Tooltips Only": "hidden" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 18
+      },
+      customTitle: {
+        type: "string",
+        label: "Custom Chart Title Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      customSubtitle: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 20
+      },
+      showBreadcrumbTrail: {
+        type: "boolean",
+        label: "Interactive Breadcrumb Trail",
+        default: true,
+        section: "Display",
+        order: 21
+      },
+      showSearchFilter: {
+        type: "boolean",
+        label: "Real-Time Node Search Filter",
+        default: true,
+        section: "Display",
+        order: 22
+      },
+      enableZoomDrill: {
+        type: "boolean",
+        label: "Click-to-Zoom Radial Drilldown",
+        default: true,
+        section: "Display",
+        order: 23
+      },
+
+      // =============================================================
+      // SECTION 2: STYLE (Color Palettes, Overrides, Polarity & Fonts)
+      // =============================================================
+      colorTheme: {
+        type: "string",
+        label: "Color Palette Theme",
+        default: "google_enterprise",
+        display: "select",
+        values: [
+          { "Google Enterprise": "google_enterprise" },
+          { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Dark": "cyberpunk_dark" },
+          { "Emerald FinOps": "emerald_finops" },
+          { "Sunset Media": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Looker / Google Modern (Light)": "modern_google" },
+          { "Custom Hex Override": "custom_hex" }
+        ],
+        section: "Style",
+        order: 1
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Primary / Brand Color Hex",
+        default: "#1a73e8",
+        display: "color",
+        section: "Style",
+        order: 2
+      },
+      customSecondaryColor: {
+        type: "string",
+        label: "Custom Secondary / Accent Color Hex",
+        default: "#34a853",
+        display: "color",
+        section: "Style",
         order: 3
       },
-      maxDepthDisplay: {
+      polarity: {
         type: "string",
-        label: "Maximum Visible Depth Levels",
-        default: "5",
+        label: "Metric Polarity (Higher vs Lower)",
         display: "select",
         values: [
-          { "2 Levels (Root + Children)": "2" },
-          { "3 Levels": "3" },
-          { "4 Levels": "4" },
-          { "5 Levels (Full Hierarchy)": "5" },
-          { "All Levels (Unrestricted)": "99" }
+          { "Higher is Better (Revenue, Retained Users)": "higher_better" },
+          { "Lower is Better (Cost, Latency, Defects, Churn)": "lower_better" }
         ],
-        section: "Display",
+        default: "higher_better",
+        section: "Style",
         order: 4
       },
-      topNThreshold: {
+      fontScale: {
         type: "string",
-        label: "Top-N / Sibling Consolidation",
-        default: "15",
+        label: "Typography Font Scale",
         display: "select",
         values: [
-          { "Top 8 Siblings + 'Others'": "8" },
-          { "Top 12 Siblings + 'Others'": "12" },
-          { "Top 15 Siblings + 'Others'": "15" },
-          { "Top 25 Siblings + 'Others'": "25" },
-          { "Show All Siblings": "all" }
+          { "Compact (Dense Dashboards)": "compact" },
+          { "Standard (Balanced BI)": "standard" },
+          { "Large Presentation (Boardroom / Kiosk)": "large_presentation" }
         ],
-        section: "Display",
+        default: "standard",
+        section: "Style",
         order: 5
       },
       valueMetricFormat: {
         type: "string",
         label: "Primary Metric Value Format",
-        default: "compact_currency",
+        default: "auto",
         display: "select",
         values: [
-          { "Compact Currency ($1.2M)": "compact_currency" },
-          { "Compact Number (1.2M)": "compact_num" },
+          { "Auto (Match LookML Format)": "auto" },
+          { "Compact Currency ($1.2M, $45K)": "compact_currency" },
+          { "Compact Number (1.2M, 45K)": "compact_num" },
           { "Percentage Share (15.2%)": "percentage" },
-          { "Raw Numeric": "raw" }
-        ],
-        section: "Display",
-        order: 6
-      },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive KPI Summary Bar",
-        default: true,
-        section: "Display",
-        order: 7
-      },
-      showBreadcrumbTrail: {
-        type: "boolean",
-        label: "Show Interactive Breadcrumb Trail",
-        default: true,
-        section: "Display",
-        order: 8
-      },
-      showSearchFilter: {
-        type: "boolean",
-        label: "Show Real-Time Node Search Filter",
-        default: true,
-        section: "Display",
-        order: 9
-      },
-      showSliceLabels: {
-        type: "boolean",
-        label: "Show Node Labels on Segments",
-        default: true,
-        section: "Display",
-        order: 10
-      },
-      enableZoomDrill: {
-        type: "boolean",
-        label: "Enable Click-to-Zoom Radial Drilldown",
-        default: true,
-        section: "Display",
-        order: 11
-      },
-
-      // SECTION 2: STYLE
-      colorTheme: {
-        type: "string",
-        label: "Color Palette Theme",
-        default: "modern_google",
-        display: "select",
-        values: [
-          { "Looker / Google Modern (Light)": "modern_google" },
-          { "Executive Indigo & Slate": "executive_indigo" },
-          { "Emerald Mint & Forest": "emerald_forest" },
-          { "Cyber Neon & Deep Space (Dark)": "cyber_neon_dark" }
+          { "Decimal (2 Decimal Places)": "decimal_2" },
+          { "Raw Numeric (Unformatted)": "raw" }
         ],
         section: "Style",
-        order: 1
+        order: 6
       },
       sliceCornerRadius: {
         type: "string",
@@ -289,7 +552,7 @@
           { "Full Pill Rounded (6px)": "6" }
         ],
         section: "Style",
-        order: 2
+        order: 7
       },
       slicePadding: {
         type: "string",
@@ -303,20 +566,7 @@
           { "Distinct Gap (4px)": "4" }
         ],
         section: "Style",
-        order: 3
-      },
-      labelFontSize: {
-        type: "string",
-        label: "Segment Label Font Size",
-        default: "11",
-        display: "select",
-        values: [
-          { "Compact (9px)": "9" },
-          { "Standard (11px)": "11" },
-          { "Prominent (13px)": "13" }
-        ],
-        section: "Style",
-        order: 4
+        order: 8
       },
       labelOrientation: {
         type: "string",
@@ -329,10 +579,9 @@
           { "Horizontal Standard": "horizontal" }
         ],
         section: "Style",
-        order: 5
+        order: 9
       }
     },
-
     create: function (element, config) {
       element.innerHTML = "";
       var container = document.createElement("div");
@@ -359,64 +608,42 @@
       var dimensions = queryResponse.fields.dimension_like || [];
       var measures = queryResponse.fields.measure_like || [];
 
-      if (dimensions.length < 1) {
-        this.addError({
-          title: "Insufficient Dimensions",
-          message: "The Sunburst Partition Wheel requires at least 1 Dimension representing hierarchical levels (e.g. Country > Department > Category)."
-        });
-        done();
-        return;
+      var measMap = {};
+      for (var mIdx = 0; mIdx < measures.length; mIdx++) {
+        measMap[measures[mIdx].name] = measures[mIdx];
+      }
+      var primaryMeas = (config.measurePrimaryOverride && measMap[config.measurePrimaryOverride]) || measures[0];
+      var secondaryMeas = (config.measureSecondaryOverride && measMap[config.measureSecondaryOverride]) || (measures.length > 1 ? measures[1] : null);
+
+      // Handle custom hex colors
+      if (config.colorTheme === "custom_hex" && config.customPrimaryColor) {
+        theme.colors = [config.customPrimaryColor, config.customSecondaryColor || "#34a853", "#fbbc04", "#ea4335", "#9334e6", "#00acc1"];
+        theme.diverging = [config.customSecondaryColor || "#ea4335", "#fbbc04", config.customPrimaryColor];
       }
 
-      if (measures.length < 1) {
-        this.addError({
-          title: "Insufficient Measures",
-          message: "The Sunburst Partition Wheel requires at least 1 Measure (Primary Measure for segment angle sizing, e.g. Total Sale Price)."
-        });
-        done();
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        this.addError({
-          title: "No Data Found",
-          message: "The query returned zero rows. Try adjusting date filters or removing restrictive constraints."
-        });
-        done();
-        return;
-      }
-
-      var self = this;
-      ensureD3(function (d3) {
-        try {
-          self._render(d3, data, element, config, queryResponse, done);
-        } catch (err) {
-          console.error("Error rendering Sunburst Partition Wheel:", err);
-          self.addError({
-            title: "Render Error",
-            message: err.message || "An unexpected error occurred during visualization render."
-          });
-          done();
+      // Title & Subtitle Banner (if configured)
+      if (config.customTitle || config.customSubtitle) {
+        var titleBar = document.createElement("div");
+        titleBar.style.padding = "6px 12px 0px 12px";
+        titleBar.style.display = "flex";
+        titleBar.style.flexDirection = "column";
+        if (config.customTitle) {
+          var tElem = document.createElement("div");
+          tElem.style.fontSize = config.fontScale === "large_presentation" ? "16px" : (config.fontScale === "compact" ? "12px" : "14px");
+          tElem.style.fontWeight = "700";
+          tElem.style.color = theme.text;
+          tElem.textContent = config.customTitle;
+          titleBar.appendChild(tElem);
         }
-      });
-    },
-
-    _render: function (d3, data, element, config, queryResponse, done) {
-      var self = this;
-      var container = this._container;
-      container.innerHTML = "";
-
-      var themeKey = config.colorTheme || "modern_google";
-      var theme = COLOR_THEMES[themeKey] || COLOR_THEMES.modern_google;
-
-      container.style.background = theme.bg;
-      container.style.color = theme.text;
-
-      var dimensions = queryResponse.fields.dimension_like || [];
-      var measures = queryResponse.fields.measure_like || [];
-      var primaryMeas = measures[0];
-      var secondaryMeas = measures.length > 1 ? measures[1] : null;
-
+        if (config.customSubtitle) {
+          var sElem = document.createElement("div");
+          sElem.style.fontSize = "11px";
+          sElem.style.color = theme.subtext;
+          sElem.textContent = config.customSubtitle;
+          titleBar.appendChild(sElem);
+        }
+        container.appendChild(titleBar);
+      }
       // Header controls (HUD + Search + Breadcrumbs)
       var topControls = document.createElement("div");
       topControls.style.display = "flex";
@@ -576,7 +803,7 @@
 
     _buildHierarchy: function (data, dimensions, primaryMeas, secondaryMeas, config) {
       var root = {
-        name: "Total Organization",
+        name: config.customTitle || "Total Organization",
         id: "root",
         depth: 0,
         children: [],
@@ -585,7 +812,24 @@
 
       var topN = config.topNThreshold === "all" ? 9999 : parseInt(config.topNThreshold || "15", 10);
       var maxDepth = parseInt(config.maxDepthDisplay || "5", 10);
-      var effectiveDims = dimensions.slice(0, maxDepth);
+
+      // Resolve effective dimensions with dynamic overrides
+      var dimMap = {};
+      for (var dm = 0; dm < dimensions.length; dm++) {
+        dimMap[dimensions[dm].name] = dimensions[dm];
+      }
+      var effectiveDims = [];
+      var overrides = [config.dimLevel1Override, config.dimLevel2Override, config.dimLevel3Override, config.dimLevel4Override];
+      for (var ov = 0; ov < overrides.length; ov++) {
+        if (overrides[ov] && dimMap[overrides[ov]]) {
+          effectiveDims.push(dimMap[overrides[ov]]);
+        }
+      }
+      if (effectiveDims.length === 0) {
+        effectiveDims = dimensions.slice(0, maxDepth);
+      } else {
+        effectiveDims = effectiveDims.slice(0, maxDepth);
+      }
 
       // Aggregate row-level data into a nested map
       for (var i = 0; i < data.length; i++) {
@@ -595,12 +839,23 @@
         var secVal = secondaryMeas && row[secondaryMeas.name] && row[secondaryMeas.name].value !== undefined ? Number(row[secondaryMeas.name].value) : null;
         var cellLinks = (row[primaryMeas.name] && row[primaryMeas.name].links) || [];
 
+        // Suppress null / zero rows
+        if (config.suppressNulls !== false && val === 0 && (secVal === null || secVal === 0)) {
+          continue;
+        }
+
         var currentNode = root;
         for (var d = 0; d < effectiveDims.length; d++) {
           var dim = effectiveDims[d];
           var cell = row[dim.name];
-          var name = cell && cell.value !== undefined && cell.value !== null ? String(cell.value) : "Unknown";
-          if (name === "") name = "(Blank)";
+          var name = cell && cell.value !== undefined && cell.value !== null ? String(cell.value).trim() : "Unknown";
+          if (name === "" || name === "null" || name === "undefined") {
+            if (config.suppressNulls !== false) {
+              name = "(Unassigned)";
+            } else {
+              name = "(Blank)";
+            }
+          }
 
           var dimLinks = (cell && cell.links) || [];
           var combinedLinks = [].concat(dimLinks, cellLinks);
@@ -638,11 +893,17 @@
         }
       }
 
-      // Consolidate beyond topN into "Others" per level
+      // Consolidate beyond topN into "Others" per level and sort
+      var sortMode = config.sortOrder || "metric_desc";
       function pruneTree(node) {
         if (!node.children || node.children.length === 0) return;
 
-        node.children.sort(function (a, b) { return (b.value || 0) - (a.value || 0); });
+        node.children.sort(function (a, b) {
+          if (sortMode === "metric_asc") return (a.value || 0) - (b.value || 0);
+          if (sortMode === "alpha_asc") return a.name.localeCompare(b.name);
+          if (sortMode === "natural") return 0;
+          return (b.value || 0) - (a.value || 0);
+        });
 
         if (node.children.length > topN) {
           var keep = node.children.slice(0, topN);
@@ -679,32 +940,102 @@
       pruneTree(root);
       return root;
     },
-
     _updateHUD: function (container, activeNode, root, primaryMeas, secMeas, config, theme) {
       container.innerHTML = "";
-      var fmt = config.valueMetricFormat || "compact_currency";
+      if (config.hudDensity === "hidden") {
+        container.style.display = "none";
+        return;
+      }
+      container.style.display = "flex";
 
+      var fmt = config.valueMetricFormat || "auto";
       var totalVal = activeNode.value || 0;
       var rootVal = root.value || 1;
       var shareOfTotal = (totalVal / rootVal) * 100;
+      var childCount = (activeNode.children && activeNode.children.length) || 0;
 
-      // Count total child entities
-      var childCount = 0;
-      activeNode.each(function (n) { if (n !== activeNode) childCount++; });
+      // Benchmark Target calculation
+      var targetMode = config.targetCalculationMode || "none";
+      var targetBenchmark = null;
+      if (targetMode === "fixed_value") {
+        targetBenchmark = Number(config.targetValue) || 100000;
+      } else if (targetMode !== "none" && root.children && root.children.length > 0) {
+        var vals = root.children.map(function (c) { return c.value || 0; }).sort(function (a, b) { return a - b; });
+        if (targetMode === "dataset_mean") {
+          var sum = vals.reduce(function (a, b) { return a + b; }, 0);
+          targetBenchmark = sum / vals.length;
+        } else if (targetMode === "dataset_median") {
+          var mid = Math.floor(vals.length / 2);
+          targetBenchmark = vals.length % 2 !== 0 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2;
+        } else if (targetMode === "percentile_p75") {
+          var idx75 = Math.floor(vals.length * 0.75);
+          targetBenchmark = vals[idx75] || vals[vals.length - 1];
+        } else if (targetMode === "percentile_p90") {
+          var idx90 = Math.floor(vals.length * 0.90);
+          targetBenchmark = vals[idx90] || vals[vals.length - 1];
+        }
+      }
 
-      var items = [
-        { label: "Active Scope", value: activeNode.data.name, color: theme.colors[0] },
-        { label: (primaryMeas.label_short || primaryMeas.label || "Total"), value: formatValue(totalVal, fmt), color: theme.text },
-        { label: "Share of Total", value: shareOfTotal.toFixed(1) + "%", color: "#10b981" },
-        { label: "Sub-Entities", value: childCount.toLocaleString(), color: theme.subtext }
-      ];
+      var variancePct = targetBenchmark && targetBenchmark > 0 ? ((totalVal - targetBenchmark) / targetBenchmark) * 100 : null;
+      var isLowerBetter = config.polarity === "lower_better";
+      var isPositive = variancePct !== null ? (isLowerBetter ? variancePct <= 0 : variancePct >= 0) : true;
+      var statusColor = isPositive ? (theme.diverging ? theme.diverging[2] : "#10b981") : (theme.diverging ? theme.diverging[0] : "#ef4444");
 
-      if (secMeas && activeNode.data.secondaryVal !== undefined && activeNode.data.secondaryVal !== null) {
+      var items = [];
+      if (config.hudDensity === "compact") {
         items.push({
-          label: (secMeas.label_short || secMeas.label || "Avg Secondary"),
-          value: formatValue(activeNode.data.secondaryVal, fmt),
-          color: theme.colors[1]
+          label: activeNode.depth === 0 ? "Global Total" : (activeNode.data.dimName || "Node") + ": " + activeNode.data.name,
+          value: formatValue(totalVal, fmt, primaryMeas),
+          color: theme.colors[0]
         });
+        items.push({
+          label: "Share of Total",
+          value: shareOfTotal.toFixed(1) + "%",
+          color: theme.colors[1] || theme.text
+        });
+      } else {
+        // Full Scorecard
+        items.push({
+          label: activeNode.depth === 0 ? "Total Volume" : (activeNode.data.dimName || "Active Level"),
+          value: activeNode.depth === 0 ? formatValue(totalVal, fmt, primaryMeas) : activeNode.data.name,
+          color: theme.colors[0]
+        });
+        items.push({
+          label: (primaryMeas.label_short || primaryMeas.label || "Volume"),
+          value: formatValue(totalVal, fmt, primaryMeas),
+          color: theme.colors[0]
+        });
+        items.push({
+          label: "Share of Total",
+          value: shareOfTotal.toFixed(1) + "%",
+          color: theme.colors[1] || theme.text
+        });
+        items.push({
+          label: "Sub-Categories",
+          value: childCount.toString() + " branches",
+          color: theme.colors[2] || theme.subtext
+        });
+
+        if (targetBenchmark !== null) {
+          items.push({
+            label: config.referenceLineLabel || "Benchmark Target",
+            value: formatValue(targetBenchmark, fmt, primaryMeas),
+            color: theme.colors[3] || theme.subtext
+          });
+          items.push({
+            label: "Benchmark Var.",
+            value: (variancePct >= 0 ? "+" : "") + variancePct.toFixed(1) + "%",
+            color: statusColor
+          });
+        }
+
+        if (secMeas && activeNode.data.secondaryVal !== undefined && activeNode.data.secondaryVal !== null) {
+          items.push({
+            label: (secMeas.label_short || secMeas.label || "Avg Secondary"),
+            value: formatValue(activeNode.data.secondaryVal, fmt, secMeas),
+            color: theme.colors[4] || theme.text
+          });
+        }
       }
 
       for (var i = 0; i < items.length; i++) {
@@ -735,7 +1066,6 @@
         container.appendChild(card);
       }
     },
-
     _updateBreadcrumbs: function (container, activeNode, root, config, theme, onSelect) {
       container.innerHTML = "";
       var path = [];

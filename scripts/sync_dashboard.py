@@ -28,7 +28,8 @@ VOL1_TABS = [
     "🏆 Leaderboards & Grids",
     "🌊 Flow, Networks & Hierarchy",
     "🗺️ Geospatial Intelligence",
-    "📅 Time Series & Schedules"
+    "📅 Time Series & Schedules",
+    "📊 Strategic & Pareto Analytics"
 ]
 
 # Vol. 2: Industry Verticals, Telemetry & Advanced Data Apps
@@ -63,7 +64,7 @@ VOL2_VIZ_MAP = {
     "roc_curve_evaluator": "🔬 Statistical, ML & Forecasting",
     "raincloud_plot": "🔬 Statistical, ML & Forecasting",
     "kaplan_meier_survival_curve": "🔬 Statistical, ML & Forecasting",
-    "pareto_cumulative_analyzer": "🛍️ Retail, Supply Chain & FinOps",
+    "unit_economics_payback_curve": "🛍️ Retail, Supply Chain & FinOps",
     "inventory_stockout_sawtooth": "🛍️ Retail, Supply Chain & FinOps",
     "pvm_revenue_bridge": "🛍️ Retail, Supply Chain & FinOps",
     "finops_cud_attribution_bridge": "🛍️ Retail, Supply Chain & FinOps",
@@ -77,6 +78,7 @@ VOL2_VIZ_MAP = {
 
 
 CATEGORY_TAB_MAP = {
+    "Strategic & Pareto Analytics": ("vol1", "📊 Strategic & Pareto Analytics"),
     # Vol. 1 Categories
     "Performance & Variance": ("vol1", "🎯 Performance & Variance"),
     "KPI & Performance": ("vol1", "🎯 Performance & Variance"),
