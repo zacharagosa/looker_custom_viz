@@ -181,6 +181,7 @@ VIZ_EMOJI_MAP = {
     "horizon_small_multiples": "🌅",
     "pca_biplot_projection": "🧬",
     "hierarchical_cluster_dendrogram": "🌳",
+    "bcg_growth_share_matrix": "🌟",
 }
 
 

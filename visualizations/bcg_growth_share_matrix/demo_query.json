@@ -1,0 +1,27 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "title_quarterly_leaderboard",
+  "fields": [
+    "title_quarterly_leaderboard.game_title",
+    "title_quarterly_leaderboard.genre",
+    "title_quarterly_leaderboard.avg_dau",
+    "title_quarterly_leaderboard.arpdau_usd",
+    "title_quarterly_leaderboard.gross_bookings_usd"
+  ],
+  "sorts": [
+    "title_quarterly_leaderboard.gross_bookings_usd desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "bcg_growth_share_matrix",
+    "layoutMode": "quadrant_matrix",
+    "xThresholdMode": "median",
+    "yThresholdMode": "median",
+    "showExecutiveHUD": true,
+    "hudDensity": "scorecard",
+    "showQuadrantBadges": true,
+    "showSearch": true,
+    "colorTheme": "google_enterprise",
+    "valueFormat": "compact_currency"
+  }
+}

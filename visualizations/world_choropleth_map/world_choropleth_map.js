@@ -193,7 +193,7 @@
     label: "Interactive World & Regional Choropleth Map",
     options: {
       // ==========================================
-      // SECTION 1: DISPLAY (Display & Functional)
+      // SECTION 1: DISPLAY (Functional & Layout)
       // ==========================================
       layoutMode: {
         type: "string",
@@ -226,48 +226,190 @@
         section: "Display",
         order: 2
       },
+      countryFieldOverride: {
+        type: "string",
+        label: "Country Dimension",
+        display: "select",
+        values: [{ "Auto (run query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      secondaryGroupOverride: {
+        type: "string",
+        label: "Secondary / Group Dimension",
+        display: "select",
+        values: [{ "Auto (run query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      measureFieldOverride: {
+        type: "string",
+        label: "Primary Metric Measure",
+        display: "select",
+        values: [{ "Auto (run query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      secondaryMeasureOverride: {
+        type: "string",
+        label: "Secondary Bubble Pin Measure",
+        display: "select",
+        values: [{ "Auto (run query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
+      targetCalculationMode: {
+        type: "string",
+        label: "Benchmark / Target Mode",
+        display: "select",
+        values: [
+          { "None (No Target Benchmark)": "none" },
+          { "Secondary Measure Column": "second_measure" },
+          { "Dataset Mean (Global Country Average)": "dataset_mean" },
+          { "Dataset Median (Global Median)": "dataset_median" },
+          { "Top Percentile P75 Target": "percentile_p75" },
+          { "Top Percentile P90 Target": "percentile_p90" },
+          { "Fixed Static Target Value": "fixed" }
+        ],
+        default: "dataset_mean",
+        section: "Display",
+        order: 7
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Target / Quota Value (when Mode is Fixed)",
+        default: 0,
+        section: "Display",
+        order: 8
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Benchmark Reference Label",
+        default: "Global Benchmark",
+        section: "Display",
+        order: 9
+      },
+      showReferenceLine: {
+        type: "boolean",
+        label: "Show Benchmark in HUD & Tooltips",
+        default: true,
+        section: "Display",
+        order: 10
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Anomaly Alert Threshold (+/- % vs Benchmark)",
+        default: 30,
+        section: "Display",
+        order: 11
+      },
+      sortBy: {
+        type: "string",
+        label: "Sort Territories By",
+        display: "select",
+        values: [
+          { "Metric Value Descending": "metric_desc" },
+          { "Metric Value Ascending": "metric_asc" },
+          { "Country Name (Alphabetical A-Z)": "country_asc" },
+          { "Variance vs Benchmark Descending": "variance_desc" },
+          { "Natural / Query Order": "natural" }
+        ],
+        default: "metric_desc",
+        section: "Display",
+        order: 12
+      },
+      topNLimit: {
+        type: "number",
+        label: "Top-N Territories Limit (0 = All Countries)",
+        default: 0,
+        section: "Display",
+        order: 13
+      },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Rollup Non-Top-N into Other Summary",
+        default: false,
+        section: "Display",
+        order: 14
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Territories",
+        default: false,
+        section: "Display",
+        order: 15
+      },
       showBubbleOverlay: {
         type: "boolean",
         label: "Secondary Bubble Pin Overlay",
         default: true,
         section: "Display",
-        order: 3
+        order: 16
       },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Executive Spatial KPI HUD",
-        default: true,
+      hudMode: {
+        type: "string",
+        label: "Executive Spatial KPI HUD Mode",
+        display: "select",
+        values: [
+          { "Full Executive Scorecard": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "none" }
+        ],
+        default: "scorecard",
         section: "Display",
-        order: 4
+        order: 17
+      },
+      labelDensity: {
+        type: "string",
+        label: "Country Map Data Labels",
+        display: "select",
+        values: [
+          { "Top 10 Leaders Only": "leaders_only" },
+          { "All Active Reporting Countries": "all" },
+          { "Hidden / Tooltip Only": "hidden" }
+        ],
+        default: "leaders_only",
+        section: "Display",
+        order: 18
+      },
+      customTitle: {
+        type: "string",
+        label: "Custom Map Title Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      customSubtitle: {
+        type: "string",
+        label: "Custom Subtitle / Description Override",
+        default: "",
+        section: "Display",
+        order: 20
       },
       showSearch: {
         type: "boolean",
         label: "Real-Time Country Search Bar",
         default: true,
         section: "Display",
-        order: 5
+        order: 21
+      },
+      showLegend: {
+        type: "boolean",
+        label: "Show Gradient Legend Bar",
+        default: true,
+        section: "Display",
+        order: 22
       },
       globeAutoRotate: {
         type: "boolean",
-        label: "Auto-Rotate 3D Globe (3D Mode Only)",
+        label: "Auto-Rotate 3D Globe (Globe Mode Only)",
         default: false,
         section: "Display",
-        order: 6
-      },
-      valueFormat: {
-        type: "string",
-        label: "Value Metric Format",
-        display: "select",
-        values: [
-          { "Compact Currency ($1.2M, $45K)": "compact_currency" },
-          { "Compact Number (1.2M, 45K)": "compact_num" },
-          { "Standard Currency ($1,234,567)": "currency" },
-          { "Formatted Number (1,234,567)": "number" },
-          { "Percentage (12.3%)": "percentage" }
-        ],
-        default: "compact_currency",
-        section: "Display",
-        order: 7
+        order: 23
       },
 
       // ==========================================
@@ -278,16 +420,84 @@
         label: "Color Theme Palette",
         display: "select",
         values: [
-          { "Google Enterprise Blue": "google_enterprise" },
-          { "Emerald & Teal": "emerald_slate" },
-          { "Sunset Amber & Coral": "sunset_amber" },
-          { "Ocean Breeze & Indigo": "ocean_breeze" },
-          { "Crimson & Rose": "crimson_slate" },
-          { "Monochrome Graphite": "monochrome_slate" }
+          { "Google Enterprise": "google_enterprise" },
+          { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Dark": "cyberpunk_dark" },
+          { "Emerald FinOps": "emerald_finops" },
+          { "Sunset Media": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_health" },
+          { "Custom Hex Override": "custom_override" }
         ],
         default: "google_enterprise",
         section: "Style",
         order: 1
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Primary / High Value Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Positive / Goal Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Negative / Alert Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity (Goal Direction)",
+        display: "select",
+        values: [
+          { "Higher is Better (Revenue, Adoption, Volume)": "higher_better" },
+          { "Lower is Better (Latency, Churn, Risk, CO2)": "lower_better" }
+        ],
+        default: "higher_better",
+        section: "Style",
+        order: 5
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & Font Scale",
+        display: "select",
+        values: [
+          { "Compact (Dense Grid)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (Executive Boardroom)": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 6
+      },
+      valueFormat: {
+        type: "string",
+        label: "Value Metric Format",
+        display: "select",
+        values: [
+          { "Auto (Looker Formatted)": "auto" },
+          { "Compact Currency ($1.2M, $45K)": "compact_currency" },
+          { "Compact Number (1.2M, 45K)": "compact_num" },
+          { "Standard Currency ($1,234,567)": "currency" },
+          { "Formatted Number (1,234,567)": "number" },
+          { "Percentage (12.3%)": "percentage" },
+          { "Decimal (2 Decimal Places)": "decimal_2dp" },
+          { "Raw (Unformatted)": "raw" }
+        ],
+        default: "compact_currency",
+        section: "Style",
+        order: 7
       },
       colorScaleType: {
         type: "string",
@@ -300,21 +510,21 @@
         ],
         default: "quantile",
         section: "Style",
-        order: 2
+        order: 8
       },
       showGraticule: {
         type: "boolean",
         label: "Show Lat/Long Gridlines (Graticule)",
         default: true,
         section: "Style",
-        order: 3
+        order: 9
       },
       showCountryBorders: {
         type: "boolean",
         label: "Crisp Country Borders",
         default: true,
         section: "Style",
-        order: 4
+        order: 10
       },
       unmatchedCountryColor: {
         type: "string",
@@ -322,7 +532,7 @@
         display: "color",
         default: "#eef1f5",
         section: "Style",
-        order: 5
+        order: 11
       },
       bubbleColor: {
         type: "string",
@@ -330,108 +540,189 @@
         display: "color",
         default: "#ea4335",
         section: "Style",
-        order: 6
+        order: 12
+      }
+    },
+
+    // ------------------------------------------------------------------
+    // Dynamic Field-Role Dropdowns
+    // Populates field-role selectors dynamically from the query response
+    // using Looker's `registerOptions` trigger.
+    // ------------------------------------------------------------------
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        countryFieldOverride: { role: "dimension", defaultIdx: 0 },
+        secondaryGroupOverride: { role: "dimension", defaultIdx: 1 },
+        measureFieldOverride: { role: "measure", defaultIdx: 0 },
+        secondaryMeasureOverride: { role: "measure", defaultIdx: 1 }
+      };
+
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : (spec.role === "any" ? dims.concat(meas) : dims);
+        var autoField = (spec.defaultIdx >= 0 && spec.defaultIdx < list.length) ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto → " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].type = "string";
+        newOptions[key].display = "select";
+        newOptions[key].values = values;
+        newOptions[key].default = "";
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        console.warn("registerOptions unavailable in host:", e);
       }
     },
 
     create: function (element, config) {
-      // Safe base styles: Never force 100% width/height on element itself
+      element.innerHTML = "";
       element.style.boxSizing = "border-box";
       element.style.padding = "0";
-      element.style.margin = "0";
       element.style.overflow = "hidden";
-      element.style.position = "relative";
-      element.style.fontFamily = "Google Sans, Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      element.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
-      // Clear container
-      element.innerHTML = "";
+      var container = document.createElement("div");
+      container.className = "wcm-root";
+      container.style.width = "100%";
+      container.style.height = "100%";
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.position = "relative";
+      container.style.overflow = "hidden";
+      container.style.background = "#ffffff";
 
-      var root = document.createElement("div");
-      root.className = "wcm-root";
-      root.style.cssText = "width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#ffffff;box-sizing:border-box;";
-      element.appendChild(root);
+      // 0. Optional Header Title / Subtitle
+      var headerDiv = document.createElement("div");
+      headerDiv.className = "wcm-header-banner";
+      headerDiv.style.display = "none";
+      headerDiv.style.padding = "10px 16px 4px 16px";
+      headerDiv.style.flexShrink = "0";
+      container.appendChild(headerDiv);
 
-      // HUD Container (top)
-      var hud = document.createElement("div");
-      hud.className = "wcm-hud-container";
-      hud.style.cssText = "flex:0 0 auto;padding:10px 14px 6px 14px;box-sizing:border-box;display:none;background:#fafbfc;border-bottom:1px solid #e1e4e8;";
-      root.appendChild(hud);
+      // 1. Executive Spatial KPI HUD Container
+      var hudDiv = document.createElement("div");
+      hudDiv.className = "wcm-hud-container";
+      hudDiv.style.flexShrink = "0";
+      hudDiv.style.padding = "8px 16px";
+      hudDiv.style.background = "linear-gradient(180deg, #ffffff 0%, #f8fafd 100%)";
+      hudDiv.style.borderBottom = "1px solid #e1e4e8";
+      hudDiv.style.display = "flex";
+      hudDiv.style.alignItems = "center";
+      hudDiv.style.justifyContent = "space-between";
+      hudDiv.style.gap = "12px";
+      hudDiv.style.minHeight = "44px";
+      container.appendChild(hudDiv);
 
-      // Search & Control Bar
-      var searchBar = document.createElement("div");
-      searchBar.className = "wcm-search-bar";
-      searchBar.style.cssText = "flex:0 0 auto;padding:6px 14px;display:none;align-items:center;justify-content:space-between;background:#ffffff;border-bottom:1px solid #edf0f2;box-sizing:border-box;";
-      root.appendChild(searchBar);
+      // 2. Search & Controls Bar
+      var searchDiv = document.createElement("div");
+      searchDiv.className = "wcm-search-bar";
+      searchDiv.style.flexShrink = "0";
+      searchDiv.style.padding = "6px 16px";
+      searchDiv.style.background = "#ffffff";
+      searchDiv.style.borderBottom = "1px solid #f0f2f5";
+      searchDiv.style.display = "flex";
+      searchDiv.style.alignItems = "center";
+      searchDiv.style.justifyContent = "space-between";
+      searchDiv.style.gap = "12px";
+      container.appendChild(searchDiv);
 
-      // Main Canvas / Map Wrapper
+      // 3. Map Viewport Canvas
       var mapWrapper = document.createElement("div");
       mapWrapper.className = "wcm-map-wrapper";
-      mapWrapper.style.cssText = "flex:1 1 0;min-height:0;position:relative;width:100%;overflow:hidden;";
-      root.appendChild(mapWrapper);
+      mapWrapper.style.flex = "1";
+      mapWrapper.style.position = "relative";
+      mapWrapper.style.overflow = "hidden";
+      mapWrapper.style.width = "100%";
+      mapWrapper.style.height = "100%";
+      mapWrapper.style.minHeight = "240px";
+      container.appendChild(mapWrapper);
 
-      // Floating Zoom / Reset Controls
-      var controls = document.createElement("div");
-      controls.className = "wcm-controls";
-      controls.style.cssText = "position:absolute;bottom:14px;right:14px;display:flex;flex-direction:column;gap:6px;z-index:10;";
-      mapWrapper.appendChild(controls);
+      // 4. Floating Pan/Zoom Map Controls
+      var controlsDiv = document.createElement("div");
+      controlsDiv.className = "wcm-controls";
+      controlsDiv.style.position = "absolute";
+      controlsDiv.style.bottom = "16px";
+      controlsDiv.style.right = "16px";
+      controlsDiv.style.display = "flex";
+      controlsDiv.style.flexDirection = "column";
+      controlsDiv.style.gap = "4px";
+      controlsDiv.style.zIndex = "10";
+      mapWrapper.appendChild(controlsDiv);
 
-      // Legend Container (bottom left)
-      var legend = document.createElement("div");
-      legend.className = "wcm-legend";
-      legend.style.cssText = "position:absolute;bottom:14px;left:14px;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border:1px solid #d0d7de;border-radius:6px;padding:8px 12px;font-size:11px;color:#24292f;box-shadow:0 2px 8px rgba(0,0,0,0.06);z-index:10;pointer-events:none;";
-      mapWrapper.appendChild(legend);
+      // 5. Floating Legend Bar
+      var legendDiv = document.createElement("div");
+      legendDiv.className = "wcm-legend";
+      legendDiv.style.position = "absolute";
+      legendDiv.style.bottom = "16px";
+      legendDiv.style.left = "16px";
+      legendDiv.style.background = "rgba(255, 255, 255, 0.94)";
+      legendDiv.style.backdropFilter = "blur(6px)";
+      legendDiv.style.border = "1px solid #d0d7de";
+      legendDiv.style.borderRadius = "8px";
+      legendDiv.style.padding = "8px 12px";
+      legendDiv.style.zIndex = "10";
+      legendDiv.style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
+      mapWrapper.appendChild(legendDiv);
 
-      // Shared Global Tooltip
-      var tooltip = d3.select("body").select(".wcm-tooltip");
-      if (tooltip.empty()) {
-        tooltip = d3.select("body")
-          .append("div")
-          .attr("class", "wcm-tooltip")
-          .style("position", "absolute")
-          .style("visibility", "hidden")
-          .style("background", "rgba(255,255,255,0.96)")
-          .style("backdrop-filter", "blur(10px)")
-          .style("border", "1px solid #d0d7de")
-          .style("border-radius", "8px")
-          .style("padding", "10px 14px")
-          .style("font-family", "Google Sans, Roboto, Inter, sans-serif")
-          .style("font-size", "12px")
-          .style("color", "#1f2328")
-          .style("box-shadow", "0 8px 24px rgba(140,149,159,0.25)")
-          .style("pointer-events", "none")
-          .style("z-index", "100000")
-          .style("transition", "opacity 0.12s ease");
-      }
+      element.appendChild(container);
 
-      // Caching variables for ResizeObserver
-      this._lastData = null;
-      this._lastElement = element;
-      this._lastConfig = null;
-      this._lastQueryResponse = null;
-      this._lastDetails = null;
-      this._lastDone = null;
-      this._rotationTimer = null;
-      this._currentZoomTransform = d3.zoomIdentity;
-      this._searchFilter = "";
-
-      // Attach debounced ResizeObserver
+      // ResizeObserver with threshold check (<4px) and debouncing
       var self = this;
-      var resizeTimeout = null;
       if (window.ResizeObserver) {
-        var ro = new ResizeObserver(function () {
-          if (resizeTimeout) clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(function () {
-            if (self._lastData && self._lastQueryResponse && self._lastElement) {
+        var ro = new ResizeObserver(function (entries) {
+          if (!self._lastData || !self._lastElement) return;
+          var entry = entries[0];
+          if (!entry) return;
+          var cr = entry.contentRect;
+          if (!self._lastW || !self._lastH || Math.abs(cr.width - self._lastW) > 4 || Math.abs(cr.height - self._lastH) > 4) {
+            self._lastW = cr.width;
+            self._lastH = cr.height;
+            clearTimeout(self._resizeTimeout);
+            self._resizeTimeout = setTimeout(function () {
               self.updateAsync(
                 self._lastData,
                 self._lastElement,
                 self._lastConfig,
                 self._lastQueryResponse,
                 self._lastDetails,
-                self._lastDone || function () {}
+                self._lastDone
               );
-            }
-          }, 80);
+            }, 120);
+          }
         });
         ro.observe(element);
       }
@@ -445,6 +736,9 @@
       this._lastQueryResponse = queryResponse;
       this._lastDetails = details;
       this._lastDone = done;
+
+      // Register dynamic field options based on current query schema
+      this._registerDynamicFieldOptions(queryResponse);
 
       // Clear any running globe rotation timer
       if (this._rotationTimer) {
@@ -469,30 +763,57 @@
         return;
       }
 
-      // Find the best dimension matching countries
+      // 1. Resolve Country Dimension (with config override fallback)
       var countryDim = dims[0];
-      for (var d = 0; d < dims.length; d++) {
-        var testDim = dims[d];
-        var matchCount = 0;
-        for (var r = 0; r < Math.min(data.length, 15); r++) {
-          var testVal = data[r][testDim.name] ? data[r][testDim.name].value : null;
-          if (resolveCountry(testVal)) matchCount++;
-        }
-        if (matchCount >= 2) {
-          countryDim = testDim;
-          break;
+      if (config.countryFieldOverride) {
+        var cd = dims.find(function (d) { return d.name === config.countryFieldOverride; });
+        if (cd) countryDim = cd;
+      } else {
+        for (var d = 0; d < dims.length; d++) {
+          var testDim = dims[d];
+          var matchCount = 0;
+          for (var r = 0; r < Math.min(data.length, 15); r++) {
+            var testVal = data[r][testDim.name] ? data[r][testDim.name].value : null;
+            if (resolveCountry(testVal)) matchCount++;
+          }
+          if (matchCount >= 2) {
+            countryDim = testDim;
+            break;
+          }
         }
       }
 
-      var primaryMeas = allMeasures[0];
-      var secondaryMeas = allMeasures.length > 1 ? allMeasures[1] : null;
+      // Secondary Group dimension (optional)
+      var secondaryGroupDim = null;
+      if (config.secondaryGroupOverride) {
+        secondaryGroupDim = dims.find(function (d) { return d.name === config.secondaryGroupOverride; }) || null;
+      } else if (dims.length > 1) {
+        secondaryGroupDim = (dims[0].name === countryDim.name) ? dims[1] : dims[0];
+      }
 
-      // Extract options with safe fallbacks
+      // 2. Resolve Primary and Secondary Measures
+      var primaryMeas = allMeasures[0];
+      if (config.measureFieldOverride) {
+        var pm = allMeasures.find(function (m) { return m.name === config.measureFieldOverride; });
+        if (pm) primaryMeas = pm;
+      }
+
+      var secondaryMeas = allMeasures.length > 1 ? allMeasures[1] : null;
+      if (config.secondaryMeasureOverride) {
+        var sm = allMeasures.find(function (m) { return m.name === config.secondaryMeasureOverride; });
+        if (sm) secondaryMeas = sm;
+      } else if (allMeasures.length > 1 && allMeasures[0].name === primaryMeas.name) {
+        secondaryMeas = allMeasures[1];
+      }
+
+      // 3. Extract options with safe defaults
       var layoutMode = config.layoutMode || "natural_earth";
       var continentFocus = config.continentFocus || "all";
       var showBubbleOverlay = config.showBubbleOverlay !== false;
-      var showExecutiveHUD = config.showExecutiveHUD !== false;
+      var hudMode = config.hudMode || "scorecard";
+      var labelDensity = config.labelDensity || "leaders_only";
       var showSearch = config.showSearch !== false;
+      var showLegend = config.showLegend !== false;
       var globeAutoRotate = config.globeAutoRotate === true;
       var valueFormat = config.valueFormat || "compact_currency";
       var colorThemeKey = config.colorTheme || "google_enterprise";
@@ -500,11 +821,48 @@
       var showGraticule = config.showGraticule !== false;
       var showCountryBorders = config.showCountryBorders !== false;
       var unmatchedColor = config.unmatchedCountryColor || "#eef1f5";
-      var bubbleColor = config.bubbleColor || (COLOR_THEMES[colorThemeKey] ? COLOR_THEMES[colorThemeKey].bubble : "#ea4335");
+      var metricPolarity = config.metricPolarity || "higher_better";
+      var fontScale = config.fontScale || "standard";
+      var targetMode = config.targetCalculationMode || "dataset_mean";
+      var fixedTarget = parseFloat(config.fixedTargetValue) || 0;
+      var refLabel = config.referenceLineLabel || "Global Benchmark";
+      var showReferenceLine = config.showReferenceLine !== false;
+      var anomalyThresholdPct = parseFloat(config.anomalyThresholdPct) || 30;
+      var sortBy = config.sortBy || "metric_desc";
+      var topN = parseInt(config.topNLimit, 10) || 0;
+      var enableOtherRollup = config.enableOtherRollup === true;
+      var suppressZeroNull = config.suppressZeroNull === true;
+      var customTitle = config.customTitle || "";
+      var customSubtitle = config.customSubtitle || "";
 
+      // Typography scale multiplier
+      var fontMultiplier = fontScale === "compact" ? 0.88 : (fontScale === "large" ? 1.2 : 1.0);
+
+      // Resolve theme & palette
       var theme = COLOR_THEMES[colorThemeKey] || COLOR_THEMES.google_enterprise;
+      var paletteRamp = theme.ramp.slice();
 
-      // Client-side high-density aggregation across 5,000+ rows
+      if (colorThemeKey === "custom_override" && config.customPrimaryColor) {
+        var baseHex = config.customPrimaryColor;
+        paletteRamp = [
+          d3.interpolateRgb("#ffffff", baseHex)(0.15),
+          d3.interpolateRgb("#ffffff", baseHex)(0.32),
+          d3.interpolateRgb("#ffffff", baseHex)(0.50),
+          d3.interpolateRgb("#ffffff", baseHex)(0.70),
+          baseHex,
+          d3.interpolateRgb(baseHex, "#000000")(0.25)
+        ];
+      }
+
+      // If metric polarity is lower_better, invert color ramp
+      if (metricPolarity === "lower_better") {
+        paletteRamp.reverse();
+      }
+
+      var bubbleColor = config.bubbleColor || theme.bubble || "#ea4335";
+      if (config.customSecondaryColor) bubbleColor = config.customSecondaryColor;
+
+      // 4. Client-side high-density O(N) aggregation across 5,000+ rows
       var countryMap = {};
       var totalPrimaryVolume = 0;
       var totalSecondaryVolume = 0;
@@ -524,9 +882,10 @@
           if (isNaN(sVal)) sVal = 0;
         }
 
+        if (suppressZeroNull && pVal === 0 && sVal === 0) return;
+
         var id = countryObj.id;
         if (!countryMap[id]) {
-          // Collect drill links from cell
           var links = [];
           if (row[countryDim.name] && row[countryDim.name].links) {
             links = row[countryDim.name].links;
@@ -552,96 +911,208 @@
         validRowCount++;
       });
 
-      // Compute ranks and percentages
       var countryList = Object.keys(countryMap).map(function (k) { return countryMap[k]; });
-      countryList.sort(function (a, b) { return b.primaryValue - a.primaryValue; });
 
+      // 5. Calculate Target Benchmark
+      var nonZeroVals = countryList.map(function (c) { return c.primaryValue; }).filter(function (v) { return v > 0; });
+      var targetBenchmark = 0;
+
+      if (targetMode === "fixed") {
+        targetBenchmark = fixedTarget;
+      } else if (targetMode === "second_measure" && secondaryMeas) {
+        targetBenchmark = countryList.length > 0 ? totalSecondaryVolume / countryList.length : 0;
+      } else if (targetMode === "dataset_mean") {
+        targetBenchmark = nonZeroVals.length > 0 ? (totalPrimaryVolume / nonZeroVals.length) : 0;
+      } else if (targetMode === "dataset_median" && nonZeroVals.length > 0) {
+        var srt = nonZeroVals.slice().sort(function (a, b) { return a - b; });
+        var mid = Math.floor(srt.length / 2);
+        targetBenchmark = srt.length % 2 !== 0 ? srt[mid] : (srt[mid - 1] + srt[mid]) / 2;
+      } else if (targetMode === "percentile_p75" && nonZeroVals.length > 0) {
+        var srt75 = nonZeroVals.slice().sort(function (a, b) { return a - b; });
+        targetBenchmark = srt75[Math.floor(srt75.length * 0.75)];
+      } else if (targetMode === "percentile_p90" && nonZeroVals.length > 0) {
+        var srt90 = nonZeroVals.slice().sort(function (a, b) { return a - b; });
+        targetBenchmark = srt90[Math.floor(srt90.length * 0.90)];
+      }
+
+      // Compute variance vs benchmark & anomaly flags
+      countryList.forEach(function (c) {
+        if (targetBenchmark > 0) {
+          c.variancePct = ((c.primaryValue - targetBenchmark) / targetBenchmark) * 100;
+          c.isAnomaly = Math.abs(c.variancePct) >= anomalyThresholdPct;
+        } else {
+          c.variancePct = 0;
+          c.isAnomaly = false;
+        }
+      });
+
+      // 6. Apply Sorting
+      if (sortBy === "metric_desc") {
+        countryList.sort(function (a, b) { return b.primaryValue - a.primaryValue; });
+      } else if (sortBy === "metric_asc") {
+        countryList.sort(function (a, b) { return a.primaryValue - b.primaryValue; });
+      } else if (sortBy === "country_asc") {
+        countryList.sort(function (a, b) { return a.country.name.localeCompare(b.country.name); });
+      } else if (sortBy === "variance_desc") {
+        countryList.sort(function (a, b) { return Math.abs(b.variancePct) - Math.abs(a.variancePct); });
+      }
+
+      // Assign ranks & shares
       countryList.forEach(function (item, idx) {
         item.rank = idx + 1;
         item.sharePct = totalPrimaryVolume > 0 ? (item.primaryValue / totalPrimaryVolume) * 100 : 0;
       });
 
+      // 7. Handle Top-N & Rollup
+      var otherSummary = null;
+      var activeCountryList = countryList;
+      if (topN > 0 && countryList.length > topN) {
+        activeCountryList = countryList.slice(0, topN);
+        if (enableOtherRollup) {
+          var remaining = countryList.slice(topN);
+          var otherPrimary = remaining.reduce(function (acc, r) { return acc + r.primaryValue; }, 0);
+          var otherSec = remaining.reduce(function (acc, r) { return acc + r.secondaryValue; }, 0);
+          otherSummary = {
+            count: remaining.length,
+            primaryValue: otherPrimary,
+            secondaryValue: otherSec,
+            sharePct: totalPrimaryVolume > 0 ? (otherPrimary / totalPrimaryVolume) * 100 : 0
+          };
+        }
+      }
+
       // Number formatting helper
       function formatMetric(val, isSec) {
         if (val === null || val === undefined || isNaN(val)) return "0";
-        if (valueFormat === "compact_currency") {
+        if (valueFormat === "auto") {
+          return d3.format(".3~s")(val).replace(/G$/, "B");
+        } else if (valueFormat === "compact_currency") {
           return "$" + d3.format(".3~s")(val).replace(/G$/, "B");
         } else if (valueFormat === "compact_num") {
           return d3.format(".3~s")(val).replace(/G$/, "B");
         } else if (valueFormat === "currency") {
           return "$" + d3.format(",.0f")(val);
+        } else if (valueFormat === "number") {
+          return d3.format(",.0f")(val);
         } else if (valueFormat === "percentage") {
           return d3.format(".1f")(val) + "%";
+        } else if (valueFormat === "decimal_2dp") {
+          return d3.format(",.2f")(val);
         } else {
-          return d3.format(",.0f")(val);
+          return String(val);
         }
       }
 
-      // Ensure TopoJSON is loaded
+      // 8. TopoJSON and Map Rendering
       function renderVisualization(world) {
         var root = element.querySelector(".wcm-root");
         if (!root) return;
 
+        var headerDiv = root.querySelector(".wcm-header-banner");
         var hud = root.querySelector(".wcm-hud-container");
         var searchBar = root.querySelector(".wcm-search-bar");
         var mapWrapper = root.querySelector(".wcm-map-wrapper");
         var controls = mapWrapper.querySelector(".wcm-controls");
         var legend = mapWrapper.querySelector(".wcm-legend");
 
-        // 1. Render Executive Spatial KPI HUD
-        if (showExecutiveHUD && countryList.length > 0) {
+        // Custom Header Title / Subtitle
+        if (customTitle || customSubtitle) {
+          headerDiv.style.display = "block";
+          var hHtml = "";
+          if (customTitle) {
+            hHtml += '<div style="font-size:' + (15 * fontMultiplier) + 'px;font-weight:700;color:#1f2328;letter-spacing:-0.01em;">' + customTitle + '</div>';
+          }
+          if (customSubtitle) {
+            hHtml += '<div style="font-size:' + (11.5 * fontMultiplier) + 'px;color:#57606a;margin-top:2px;">' + customSubtitle + '</div>';
+          }
+          headerDiv.innerHTML = hHtml;
+        } else {
+          headerDiv.style.display = "none";
+        }
+
+        // Executive Spatial KPI HUD
+        if (hudMode !== "none" && countryList.length > 0) {
           hud.style.display = "flex";
           var topCountry = countryList[0];
-          var secondCountry = countryList.length > 1 ? countryList[1] : null;
 
-          var chipsHtml = countryList.slice(0, 4).map(function (c) {
-            return '<span class="wcm-chip" data-id="' + c.country.id + '" style="display:inline-flex;align-items:center;gap:4px;background:#ffffff;border:1px solid #d0d7de;border-radius:12px;padding:2px 8px;font-size:11px;font-weight:600;color:#24292f;cursor:pointer;transition:all 0.15s ease;">' +
-              c.country.flag + ' ' + c.country.name + ' <span style="color:#57606a;font-weight:400;">' + formatMetric(c.primaryValue) + '</span>' +
-              '</span>';
-          }).join("");
-
-          hud.innerHTML =
-            '<div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:8px;">' +
-              '<div style="display:flex;align-items:center;gap:14px;">' +
-                '<div>' +
-                  '<div style="font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#57606a;">' + (primaryMeas.label || primaryMeas.name) + ' (Global)</div>' +
-                  '<div style="font-size:17px;font-weight:700;color:#1f2328;letter-spacing:-0.02em;">' + formatMetric(totalPrimaryVolume) + '</div>' +
+          if (hudMode === "compact_strip") {
+            hud.style.padding = "4px 16px";
+            hud.style.minHeight = "32px";
+            hud.innerHTML =
+              '<div style="display:flex;align-items:center;justify-content:space-between;width:100%;font-size:' + (11 * fontMultiplier) + 'px;">' +
+                '<div style="display:flex;align-items:center;gap:16px;">' +
+                  '<span><strong>' + (primaryMeas.label || primaryMeas.name) + ':</strong> ' + formatMetric(totalPrimaryVolume) + '</span>' +
+                  '<span><strong>Leader:</strong> ' + topCountry.country.flag + ' ' + topCountry.country.name + ' (' + topCountry.sharePct.toFixed(1) + '%)</span>' +
+                  (targetBenchmark > 0 && showReferenceLine ? '<span><strong>' + refLabel + ':</strong> ' + formatMetric(targetBenchmark) + '</span>' : '') +
+                  '<span><strong>Active:</strong> ' + countryList.length + ' countries</span>' +
                 '</div>' +
+                (otherSummary ? '<span style="color:#57606a;">Other (' + otherSummary.count + '): ' + formatMetric(otherSummary.primaryValue) + ' (' + otherSummary.sharePct.toFixed(1) + '%)</span>' : '') +
+              '</div>';
+          } else {
+            // Full Executive Scorecard HUD
+            hud.style.padding = "8px 16px";
+            hud.style.minHeight = "44px";
+            var chipsHtml = activeCountryList.slice(0, 4).map(function (c) {
+              return '<span class="wcm-chip" data-id="' + c.country.id + '" style="display:inline-flex;align-items:center;gap:4px;background:#ffffff;border:1px solid #d0d7de;border-radius:12px;padding:2px 8px;font-size:' + (11 * fontMultiplier) + 'px;font-weight:600;color:#24292f;cursor:pointer;transition:all 0.15s ease;">' +
+                c.country.flag + ' ' + c.country.name + ' <span style="color:#57606a;font-weight:400;">' + formatMetric(c.primaryValue) + '</span>' +
+                '</span>';
+            }).join("");
+
+            var benchmarkBlock = "";
+            if (targetBenchmark > 0 && showReferenceLine) {
+              var varLeader = topCountry.variancePct;
+              var varColor = varLeader >= 0 ? (metricPolarity === "higher_better" ? "#1e8e3e" : "#d93025") : (metricPolarity === "higher_better" ? "#d93025" : "#1e8e3e");
+              benchmarkBlock =
                 '<div style="border-left:1px solid #d8dee4;height:24px;"></div>' +
                 '<div>' +
-                  '<div style="font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#57606a;">Leading Region (#1)</div>' +
-                  '<div style="font-size:13px;font-weight:600;color:' + theme.accent + ';">' + topCountry.country.flag + ' ' + topCountry.country.name + ' (' + topCountry.sharePct.toFixed(1) + '%)</div>' +
-                '</div>' +
-                '<div style="border-left:1px solid #d8dee4;height:24px;"></div>' +
-                '<div>' +
-                  '<div style="font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#57606a;">Active Countries</div>' +
-                  '<div style="font-size:14px;font-weight:700;color:#24292f;">' + countryList.length + ' <span style="font-size:11px;font-weight:400;color:#57606a;">of ' + (world ? world.objects.countries.geometries.length : 177) + '</span></div>' +
-                '</div>' +
-              '</div>' +
-              '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' + chipsHtml + '</div>' +
-            '</div>';
+                  '<div style="font-size:' + (9.5 * fontMultiplier) + 'px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#57606a;">' + refLabel + '</div>' +
+                  '<div style="font-size:' + (13 * fontMultiplier) + 'px;font-weight:600;color:#24292f;">' + formatMetric(targetBenchmark) + '</div>' +
+                '</div>';
+            }
 
-          // Click chip to highlight country
-          var chips = hud.querySelectorAll(".wcm-chip");
-          chips.forEach(function (chip) {
-            chip.addEventListener("click", function () {
-              var cid = this.getAttribute("data-id");
-              highlightCountry(cid);
+            hud.innerHTML =
+              '<div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:8px;">' +
+                '<div style="display:flex;align-items:center;gap:14px;">' +
+                  '<div>' +
+                    '<div style="font-size:' + (9.5 * fontMultiplier) + 'px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#57606a;">' + (primaryMeas.label || primaryMeas.name) + ' (Global)</div>' +
+                    '<div style="font-size:' + (17 * fontMultiplier) + 'px;font-weight:700;color:#1f2328;letter-spacing:-0.02em;">' + formatMetric(totalPrimaryVolume) + '</div>' +
+                  '</div>' +
+                  '<div style="border-left:1px solid #d8dee4;height:24px;"></div>' +
+                  '<div>' +
+                    '<div style="font-size:' + (9.5 * fontMultiplier) + 'px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#57606a;">Leading Region (#1)</div>' +
+                    '<div style="font-size:' + (13 * fontMultiplier) + 'px;font-weight:600;color:' + theme.accent + ';">' + topCountry.country.flag + ' ' + topCountry.country.name + ' (' + topCountry.sharePct.toFixed(1) + '%)</div>' +
+                  '</div>' +
+                  benchmarkBlock +
+                  '<div style="border-left:1px solid #d8dee4;height:24px;"></div>' +
+                  '<div>' +
+                    '<div style="font-size:' + (9.5 * fontMultiplier) + 'px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#57606a;">Active Countries</div>' +
+                    '<div style="font-size:' + (14 * fontMultiplier) + 'px;font-weight:700;color:#24292f;">' + countryList.length + ' <span style="font-size:' + (10.5 * fontMultiplier) + 'px;font-weight:400;color:#57606a;">of ' + (world ? world.objects.countries.geometries.length : 177) + '</span></div>' +
+                  '</div>' +
+                '</div>' +
+                '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' + chipsHtml + '</div>' +
+              '</div>';
+
+            var chips = hud.querySelectorAll(".wcm-chip");
+            chips.forEach(function (chip) {
+              chip.addEventListener("click", function () {
+                var cid = this.getAttribute("data-id");
+                highlightCountry(cid);
+              });
             });
-          });
+          }
         } else {
           hud.style.display = "none";
         }
 
-        // 2. Render Search Bar
+        // Search Bar
         if (showSearch) {
           searchBar.style.display = "flex";
           searchBar.innerHTML =
             '<div style="display:flex;align-items:center;gap:8px;width:100%;max-width:340px;">' +
               '<svg width="14" height="14" viewBox="0 0 16 16" fill="#57606a"><path d="M11.5 7a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm-.82 4.74a6 6 0 1 0-1.06 1.06l3.65 3.65a.75.75 0 1 0 1.06-1.06l-3.65-3.65Z"></path></svg>' +
-              '<input type="text" class="wcm-search-input" placeholder="Search country, ISO code, or continent..." value="' + (self._searchFilter || "") + '" style="width:100%;border:none;outline:none;font-size:12px;color:#24292f;background:transparent;" />' +
+              '<input type="text" class="wcm-search-input" placeholder="Search country, ISO code, or continent..." value="' + (self._searchFilter || "") + '" style="width:100%;border:none;outline:none;font-size:' + (11.5 * fontMultiplier) + 'px;color:#24292f;background:transparent;" />' +
             '</div>' +
-            '<div style="font-size:11px;color:#57606a;font-weight:500;">' + (secondaryMeas ? '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:' + bubbleColor + ';"></span> Bubble: ' + (secondaryMeas.label || secondaryMeas.name) + '</span>' : '') + '</div>';
+            '<div style="font-size:' + (11 * fontMultiplier) + 'px;color:#57606a;font-weight:500;">' + (secondaryMeas ? '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:' + bubbleColor + ';"></span> Bubble: ' + (secondaryMeas.label || secondaryMeas.name) + '</span>' : '') + '</div>';
 
           var searchInput = searchBar.querySelector(".wcm-search-input");
           searchInput.addEventListener("input", function (e) {
@@ -652,11 +1123,10 @@
           searchBar.style.display = "none";
         }
 
-        // 3. Setup SVG Canvas
+        // Setup SVG Canvas
         var width = mapWrapper.clientWidth || 800;
         var height = mapWrapper.clientHeight || 500;
 
-        // Clean existing SVG
         d3.select(mapWrapper).selectAll("svg").remove();
 
         var svg = d3.select(mapWrapper)
@@ -667,7 +1137,6 @@
           .style("display", "block")
           .style("background", layoutMode === "orthographic_globe" ? "#f8fafc" : "#ffffff");
 
-        // Defs for gradients, dropshadow, and sphere shading
         var defs = svg.append("defs");
 
         // Sphere radial gradient for 3D globe realism
@@ -707,10 +1176,9 @@
         feMerge.append("feMergeNode").attr("in", "coloredBlur");
         feMerge.append("feMergeNode").attr("in", "SourceGraphic");
 
-        // 4. Setup Projection
+        // Setup Projection
         var projection;
         var initialScale = 140;
-        var initialCenter = [0, 15];
 
         if (layoutMode === "orthographic_globe") {
           initialScale = Math.min(width, height) * 0.42;
@@ -729,14 +1197,13 @@
             .scale(initialScale)
             .translate([width / 2, height / 2]);
         } else {
-          // Default: Natural Earth
           initialScale = Math.min(width / 5.4, height / 2.8);
           projection = d3.geoNaturalEarth1()
             .scale(initialScale)
             .translate([width / 2, height / 2]);
         }
 
-        // Continent Drilldown framing
+        // Continent Drilldown
         if (continentFocus !== "all" && CONTINENT_CONFIG[continentFocus]) {
           var cConf = CONTINENT_CONFIG[continentFocus];
           if (layoutMode === "orthographic_globe") {
@@ -748,328 +1215,385 @@
 
         var path = d3.geoPath().projection(projection);
 
-        // Map container <g> with zoom/pan
+        // Map container <g>
         var mapG = svg.append("g").attr("class", "wcm-map-g");
 
-        // Setup Color Scale
-        var primaryValues = countryList.map(function (c) { return c.primaryValue; }).filter(function (v) { return v > 0; });
-        var colorScale;
-
-        if (colorScaleType === "quantile" && primaryValues.length >= theme.ramp.length) {
-          colorScale = d3.scaleQuantile()
-            .domain(primaryValues)
-            .range(theme.ramp);
-        } else if (colorScaleType === "log" && primaryValues.length > 0) {
-          var minP = d3.min(primaryValues) || 1;
-          var maxP = d3.max(primaryValues) || 100;
-          colorScale = d3.scaleLog()
-            .domain([minP, maxP])
-            .range([theme.ramp[0], theme.ramp[theme.ramp.length - 1]])
-            .interpolate(d3.interpolateHcl);
-        } else {
-          var minV = d3.min(primaryValues) || 0;
-          var maxV = d3.max(primaryValues) || 100;
-          colorScale = d3.scaleQuantize()
-            .domain([minV, maxV])
-            .range(theme.ramp);
-        }
-
-        // Secondary Measure Bubble Scale
-        var bubbleScale = null;
-        if (secondaryMeas && showBubbleOverlay) {
-          var secValues = countryList.map(function (c) { return c.secondaryValue; }).filter(function (v) { return v > 0; });
-          var maxSec = d3.max(secValues) || 1;
-          bubbleScale = d3.scaleSqrt().domain([0, maxSec]).range([3, 22]);
-        }
-
-        // Extract GeoJSON features
-        var countriesGeo = topojson.feature(world, world.objects.countries).features;
-
-        // Background Sphere / Ocean
-        if (layoutMode === "orthographic_globe") {
+        // Sphere ocean background for 3D globe or bounded projections
+        if (layoutMode === "orthographic_globe" || layoutMode === "natural_earth" || layoutMode === "equal_earth") {
           mapG.append("path")
             .datum({ type: "Sphere" })
-            .attr("class", "wcm-ocean")
+            .attr("class", "wcm-sphere-bg")
             .attr("d", path)
-            .attr("fill", "#eef4fa")
-            .attr("stroke", "#c5d4e8")
-            .attr("stroke-width", 1.2);
+            .attr("fill", layoutMode === "orthographic_globe" ? "#eef4fb" : "#fbfcfd")
+            .attr("stroke", "#d0d7de")
+            .attr("stroke-width", 0.75);
         }
 
         // Graticule Lat/Long lines
         if (showGraticule) {
-          var graticule = d3.geoGraticule()();
+          var graticule = d3.geoGraticule10();
           mapG.append("path")
             .datum(graticule)
             .attr("class", "wcm-graticule")
             .attr("d", path)
             .attr("fill", "none")
-            .attr("stroke", layoutMode === "orthographic_globe" ? "#dce7f3" : "#edf2f7")
-            .attr("stroke-width", 0.6)
+            .attr("stroke", "#e1e4e8")
+            .attr("stroke-width", 0.5)
             .attr("stroke-dasharray", "2,3")
-            .attr("pointer-events", "none");
+            .attr("opacity", 0.85);
         }
 
-        // Render Country Polygons
+        // Calculate Color Scales
+        var primaryValues = countryList.map(function (c) { return c.primaryValue; }).filter(function (v) { return v > 0; });
+        var colorScale;
+
+        if (colorScaleType === "quantile" && primaryValues.length >= paletteRamp.length) {
+          colorScale = d3.scaleQuantile()
+            .domain(primaryValues)
+            .range(paletteRamp);
+        } else if (colorScaleType === "log" && primaryValues.length > 0) {
+          var minPos = d3.min(primaryValues) || 1;
+          var maxPos = d3.max(primaryValues) || 10;
+          colorScale = d3.scaleLog()
+            .domain([minPos, maxPos])
+            .range([paletteRamp[0], paletteRamp[paletteRamp.length - 1]])
+            .interpolate(d3.interpolateRgb);
+        } else {
+          var maxVal = d3.max(primaryValues) || 1;
+          colorScale = d3.scaleQuantize()
+            .domain([0, maxVal])
+            .range(paletteRamp);
+        }
+
+        // Bubble Sizing Scale (proportional area)
+        var bubbleScale = null;
+        if (secondaryMeas) {
+          var maxSec = d3.max(countryList, function (c) { return c.secondaryValue; }) || 1;
+          bubbleScale = d3.scaleSqrt().domain([0, maxSec]).range([3, 22]);
+        }
+
+        // Draw Countries
+        var countriesGeo = topojson.feature(world, world.objects.countries).features;
         var countriesGroup = mapG.append("g").attr("class", "wcm-countries");
 
-        var countryPaths = countriesGroup.selectAll("path")
+        countriesGroup.selectAll("path")
           .data(countriesGeo)
-          .join("path")
-          .attr("class", "wcm-country")
-          .attr("data-id", function (d) { return d.id || (d.properties ? d.properties.name : ""); })
+          .enter()
+          .append("path")
+          .attr("class", function (d) { return "wcm-country wcm-country-" + d.id; })
           .attr("d", path)
           .attr("fill", function (d) {
-            var id = String(d.id || (d.properties ? d.properties.name : ""));
-            var dataItem = countryMap[id];
-            if (dataItem && dataItem.primaryValue > 0) {
-              return colorScale(dataItem.primaryValue);
-            }
-            return unmatchedColor;
+            var dataItem = countryMap[String(d.id)];
+            if (!dataItem || dataItem.primaryValue === 0) return unmatchedColor;
+            if (colorScaleType === "log") return colorScale(Math.max(1, dataItem.primaryValue));
+            return colorScale(dataItem.primaryValue);
           })
           .attr("stroke", showCountryBorders ? "#ffffff" : "none")
-          .attr("stroke-width", 0.6)
+          .attr("stroke-width", showCountryBorders ? 0.6 : 0)
           .attr("stroke-linejoin", "round")
-          .style("cursor", function (d) {
-            var id = String(d.id || (d.properties ? d.properties.name : ""));
-            return countryMap[id] ? "pointer" : "default";
+          .style("cursor", function (d) { return countryMap[String(d.id)] ? "pointer" : "default"; })
+          .on("mouseenter", function (event, d) {
+            var dataItem = countryMap[String(d.id)];
+            d3.select(this)
+              .attr("stroke", "#1f2328")
+              .attr("stroke-width", 1.5);
+            showTooltip(event, d, dataItem);
           })
-          .style("transition", "fill 0.15s ease, stroke-width 0.15s ease");
+          .on("mousemove", function (event) {
+            positionTooltip(event);
+          })
+          .on("mouseleave", function (event, d) {
+            d3.select(this)
+              .attr("stroke", showCountryBorders ? "#ffffff" : "none")
+              .attr("stroke-width", showCountryBorders ? 0.6 : 0);
+            hideTooltip();
+          })
+          .on("click", function (event, d) {
+            var dataItem = countryMap[String(d.id)];
+            if (!dataItem) return;
+            openDrill(event, dataItem);
+          });
 
-        // Sphere shading overlay for 3D Globe
+        // Sphere shading overlay on 3D globe for lighting realism
         if (layoutMode === "orthographic_globe") {
           mapG.append("path")
             .datum({ type: "Sphere" })
-            .attr("class", "wcm-globe-shade")
+            .attr("class", "wcm-sphere-shading")
             .attr("d", path)
             .attr("fill", "url(#wcm-globe-shading)")
-            .attr("pointer-events", "none");
+            .style("pointer-events", "none");
         }
 
-        // Secondary Bubble Pins Layer
+        // Secondary Proportional Bubble Pin Overlay
         var bubblesGroup = null;
         if (showBubbleOverlay && bubbleScale) {
           bubblesGroup = mapG.append("g").attr("class", "wcm-bubbles");
 
-          countriesGeo.forEach(function (feature) {
-            var id = String(feature.id || (feature.properties ? feature.properties.name : ""));
-            var dataItem = countryMap[id];
-            if (!dataItem || dataItem.secondaryValue <= 0) return;
-
-            var centroid = d3.geoCentroid(feature);
-            if (!centroid || isNaN(centroid[0]) || isNaN(centroid[1])) return;
-
-            dataItem._centroid = centroid;
+          countriesGeo.forEach(function (feat) {
+            var dataItem = countryMap[String(feat.id)];
+            if (dataItem) {
+              var c = d3.geoCentroid(feat);
+              if (c && !isNaN(c[0]) && !isNaN(c[1])) {
+                dataItem._centroid = c;
+              }
+            }
           });
 
           var bubbleData = countryList.filter(function (c) { return c._centroid && c.secondaryValue > 0; });
 
           bubblesGroup.selectAll("circle")
             .data(bubbleData)
-            .join("circle")
+            .enter()
+            .append("circle")
             .attr("class", "wcm-bubble-pin")
-            .attr("data-id", function (d) { return d.country.id; })
+            .attr("cx", function (d) { return projection(d._centroid) ? projection(d._centroid)[0] : -9999; })
+            .attr("cy", function (d) { return projection(d._centroid) ? projection(d._centroid)[1] : -9999; })
             .attr("r", function (d) { return bubbleScale(d.secondaryValue); })
             .attr("fill", bubbleColor)
             .attr("fill-opacity", 0.78)
             .attr("stroke", "#ffffff")
-            .attr("stroke-width", 1.5)
-            .attr("filter", "url(#wcm-bubble-shadow)")
+            .attr("stroke-width", 1.2)
             .style("cursor", "pointer")
-            .style("transition", "all 0.15s ease");
-
-          updateBubblePositions();
-        }
-
-        function updateBubblePositions() {
-          if (!bubblesGroup) return;
-          bubblesGroup.selectAll("circle")
-            .each(function (d) {
-              var pt = projection(d._centroid);
-              var circle = d3.select(this);
-              if (pt && !isNaN(pt[0]) && !isNaN(pt[1])) {
-                // In orthographic mode, check if behind globe horizon
-                if (layoutMode === "orthographic_globe") {
-                  var rot = projection.rotate();
-                  var dist = d3.geoDistance(d._centroid, [-rot[0], -rot[1]]);
-                  if (dist > Math.PI / 2) {
-                    circle.style("display", "none");
-                    return;
-                  }
-                }
-                circle
-                  .style("display", "block")
-                  .attr("cx", pt[0])
-                  .attr("cy", pt[1]);
-              } else {
-                circle.style("display", "none");
-              }
-            });
-        }
-
-        // Tooltip handling
-        var tooltip = d3.select("body").select(".wcm-tooltip");
-
-        function showTooltip(event, countryItem, feature) {
-          var flag = countryItem ? countryItem.country.flag : "🌐";
-          var name = countryItem ? countryItem.country.name : (feature.properties ? feature.properties.name : "Region");
-          var continent = countryItem ? countryItem.country.continent.replace("_", " ").toUpperCase() : "";
-
-          var content =
-            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">' +
-              '<span style="font-size:18px;">' + flag + '</span>' +
-              '<div>' +
-                '<div style="font-weight:700;font-size:13px;color:#1f2328;line-height:1.2;">' + name + '</div>' +
-                (continent ? '<div style="font-size:9px;font-weight:600;letter-spacing:0.04em;color:#57606a;">' + continent + '</div>' : '') +
-              '</div>' +
-            '</div>';
-
-          if (countryItem && countryItem.primaryValue > 0) {
-            content +=
-              '<div style="display:grid;grid-template-columns:auto auto;gap:4px 14px;border-top:1px solid #e1e4e8;padding-top:6px;margin-top:4px;">' +
-                '<span style="color:#57606a;">' + (primaryMeas.label || primaryMeas.name) + ':</span>' +
-                '<span style="font-weight:700;text-align:right;color:#1f2328;">' + (countryItem.renderedPrimary || formatMetric(countryItem.primaryValue)) + '</span>' +
-                '<span style="color:#57606a;">Global Share:</span>' +
-                '<span style="font-weight:600;text-align:right;color:' + theme.accent + ';">' + countryItem.sharePct.toFixed(1) + '%</span>' +
-                '<span style="color:#57606a;">National Rank:</span>' +
-                '<span style="font-weight:600;text-align:right;color:#24292f;">#' + countryItem.rank + ' of ' + countryList.length + '</span>' +
-                (secondaryMeas && countryItem.secondaryValue > 0 ?
-                  '<span style="color:#57606a;">' + (secondaryMeas.label || secondaryMeas.name) + ':</span>' +
-                  '<span style="font-weight:700;text-align:right;color:' + bubbleColor + ';">' + formatMetric(countryItem.secondaryValue, true) + '</span>' : '') +
-              '</div>';
-
-            if (countryItem.links && countryItem.links.length > 0) {
-              content += '<div style="margin-top:8px;padding-top:4px;border-top:1px dashed #e1e4e8;font-size:10px;font-weight:600;color:' + theme.accent + ';display:flex;align-items:center;gap:4px;">🔎 Click country to drill down</div>';
-            }
-          } else {
-            content += '<div style="color:#57606a;font-size:11px;font-style:italic;margin-top:4px;">No data recorded for this region</div>';
-          }
-
-          tooltip
-            .html(content)
-            .style("visibility", "visible")
-            .style("opacity", "1")
-            .style("left", (event.pageX + 14) + "px")
-            .style("top", (event.pageY - 28) + "px");
-        }
-
-        function moveTooltip(event) {
-          tooltip
-            .style("left", (event.pageX + 14) + "px")
-            .style("top", (event.pageY - 28) + "px");
-        }
-
-        function hideTooltip() {
-          tooltip.style("visibility", "hidden").style("opacity", "0");
-        }
-
-        // Country Mouse Events
-        countryPaths
-          .on("mouseover", function (event, d) {
-            var id = String(d.id || (d.properties ? d.properties.name : ""));
-            var dataItem = countryMap[id];
-
-            d3.select(this)
-              .attr("stroke", theme.accent)
-              .attr("stroke-width", 1.8)
-              .raise();
-
-            if (bubblesGroup) bubblesGroup.raise();
-
-            showTooltip(event, dataItem, d);
-          })
-          .on("mousemove", moveTooltip)
-          .on("mouseout", function () {
-            d3.select(this)
-              .attr("stroke", showCountryBorders ? "#ffffff" : "none")
-              .attr("stroke-width", 0.6);
-            hideTooltip();
-          })
-          .on("click", function (event, d) {
-            var id = String(d.id || (d.properties ? d.properties.name : ""));
-            var dataItem = countryMap[id];
-            if (dataItem && dataItem.links && dataItem.links.length > 0 && LookerCharts && LookerCharts.Utils) {
-              LookerCharts.Utils.openDrillMenu({
-                links: dataItem.links,
-                event: event
-              });
-            }
-          });
-
-        // Bubble Mouse Events
-        if (bubblesGroup) {
-          bubblesGroup.selectAll("circle")
-            .on("mouseover", function (event, d) {
-              d3.select(this)
-                .attr("stroke", "#1f2328")
-                .attr("stroke-width", 2.2)
-                .attr("fill-opacity", 1.0)
-                .raise();
-
-              showTooltip(event, d, { properties: { name: d.country.name } });
+            .attr("filter", "url(#wcm-bubble-shadow)")
+            .on("mouseenter", function (event, d) {
+              d3.select(this).attr("fill-opacity", 1.0).attr("stroke", "#1f2328").attr("stroke-width", 2.0);
+              showTooltip(event, { id: d.country.id }, d);
             })
-            .on("mousemove", moveTooltip)
-            .on("mouseout", function () {
-              d3.select(this)
-                .attr("stroke", "#ffffff")
-                .attr("stroke-width", 1.5)
-                .attr("fill-opacity", 0.78);
+            .on("mousemove", function (event) {
+              positionTooltip(event);
+            })
+            .on("mouseleave", function () {
+              d3.select(this).attr("fill-opacity", 0.78).attr("stroke", "#ffffff").attr("stroke-width", 1.2);
               hideTooltip();
             })
             .on("click", function (event, d) {
-              if (d && d.links && d.links.length > 0 && LookerCharts && LookerCharts.Utils) {
-                LookerCharts.Utils.openDrillMenu({
-                  links: d.links,
-                  event: event
-                });
-              }
+              openDrill(event, d);
             });
         }
 
-        // 5. Interactive Pan, Zoom & 3D Drag Rotation
+        // Data Labels (Leaders only or All)
+        if (labelDensity !== "hidden") {
+          var labelsGroup = mapG.append("g").attr("class", "wcm-labels").style("pointer-events", "none");
+          var labelCandidates = labelDensity === "leaders_only" ? activeCountryList.slice(0, 10) : activeCountryList;
+
+          labelsGroup.selectAll("text")
+            .data(labelCandidates.filter(function (d) { return d._centroid; }))
+            .enter()
+            .append("text")
+            .attr("x", function (d) { return projection(d._centroid) ? projection(d._centroid)[0] : -9999; })
+            .attr("y", function (d) { return projection(d._centroid) ? projection(d._centroid)[1] - (bubbleScale && d.secondaryValue > 0 ? bubbleScale(d.secondaryValue) + 3 : 5) : -9999; })
+            .attr("text-anchor", "middle")
+            .attr("font-size", (9.5 * fontMultiplier) + "px")
+            .attr("font-weight", "700")
+            .attr("fill", "#1f2328")
+            .attr("stroke", "#ffffff")
+            .attr("stroke-width", 2.5)
+            .attr("paint-order", "stroke")
+            .text(function (d) { return d.country.iso2 || d.country.name; });
+        }
+
+        function updatePositions() {
+          mapG.selectAll(".wcm-sphere-bg").attr("d", path);
+          mapG.selectAll(".wcm-sphere-shading").attr("d", path);
+          mapG.selectAll(".wcm-graticule").attr("d", path);
+          countriesGroup.selectAll("path").attr("d", path);
+
+          if (bubblesGroup) {
+            bubblesGroup.selectAll("circle")
+              .attr("cx", function (d) {
+                var p = projection(d._centroid);
+                if (!p) return -9999;
+                if (layoutMode === "orthographic_globe") {
+                  var rot = projection.rotate();
+                  var angle = d3.geoDistance(d._centroid, [-rot[0], -rot[1]]);
+                  return angle > Math.PI / 2 ? -9999 : p[0];
+                }
+                return p[0];
+              })
+              .attr("cy", function (d) {
+                var p = projection(d._centroid);
+                if (!p) return -9999;
+                if (layoutMode === "orthographic_globe") {
+                  var rot = projection.rotate();
+                  var angle = d3.geoDistance(d._centroid, [-rot[0], -rot[1]]);
+                  return angle > Math.PI / 2 ? -9999 : p[1];
+                }
+                return p[1];
+              });
+          }
+
+          if (labelDensity !== "hidden") {
+            mapG.selectAll(".wcm-labels text")
+              .attr("x", function (d) {
+                var p = projection(d._centroid);
+                if (!p) return -9999;
+                if (layoutMode === "orthographic_globe") {
+                  var rot = projection.rotate();
+                  var angle = d3.geoDistance(d._centroid, [-rot[0], -rot[1]]);
+                  return angle > Math.PI / 2 ? -9999 : p[0];
+                }
+                return p[0];
+              })
+              .attr("y", function (d) {
+                var p = projection(d._centroid);
+                if (!p) return -9999;
+                if (layoutMode === "orthographic_globe") {
+                  var rot = projection.rotate();
+                  var angle = d3.geoDistance(d._centroid, [-rot[0], -rot[1]]);
+                  return angle > Math.PI / 2 ? -9999 : p[1] - (bubbleScale && d.secondaryValue > 0 ? bubbleScale(d.secondaryValue) + 3 : 5);
+                }
+                return p[1] - (bubbleScale && d.secondaryValue > 0 ? bubbleScale(d.secondaryValue) + 3 : 5);
+              });
+          }
+        }
+
+        // Tooltip Handling
+        var tooltip = d3.select("body").select(".wcm-tooltip");
+        if (tooltip.empty()) {
+          tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "wcm-tooltip")
+            .style("position", "absolute")
+            .style("pointer-events", "none")
+            .style("z-index", "1000")
+            .style("background", "rgba(255, 255, 255, 0.98)")
+            .style("border", "1px solid #d0d7de")
+            .style("border-radius", "8px")
+            .style("padding", "10px 14px")
+            .style("box-shadow", "0 8px 24px rgba(140, 149, 159, 0.28)")
+            .style("font-family", "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif")
+            .style("display", "none")
+            .style("min-width", "180px");
+        }
+
+        function showTooltip(event, geoFeature, dataItem) {
+          var cid = String(geoFeature.id);
+          var meta = COUNTRY_METADATA[cid];
+          var countryName = meta ? meta.name : "Country #" + cid;
+          var flag = meta ? meta.flag : "🌐";
+          var continent = meta ? meta.continent.replace("_", " ").toUpperCase() : "";
+
+          var pValStr = dataItem ? formatMetric(dataItem.primaryValue) : "No Data";
+          var pMeasName = primaryMeas.label || primaryMeas.name;
+          var shareStr = dataItem ? dataItem.sharePct.toFixed(1) + "% of Global" : "";
+          var rankStr = dataItem ? "#" + dataItem.rank + " Globally" : "Unranked";
+
+          var sValHtml = "";
+          if (secondaryMeas && dataItem && dataItem.secondaryValue !== undefined) {
+            sValHtml =
+              '<div style="display:flex;justify-content:space-between;gap:12px;margin-top:4px;padding-top:4px;border-top:1px dashed #e1e4e8;">' +
+                '<span style="color:#57606a;">' + (secondaryMeas.label || secondaryMeas.name) + ':</span>' +
+                '<span style="font-weight:700;text-align:right;color:' + bubbleColor + ';">' + formatMetric(dataItem.secondaryValue, true) + '</span>' +
+              '</div>';
+          }
+
+          var benchmarkHtml = "";
+          if (targetBenchmark > 0 && showReferenceLine && dataItem) {
+            var diff = dataItem.primaryValue - targetBenchmark;
+            var diffPct = dataItem.variancePct;
+            var isGood = metricPolarity === "higher_better" ? diff >= 0 : diff <= 0;
+            var sign = diff >= 0 ? "+" : "";
+            var bColor = isGood ? "#1e8e3e" : "#d93025";
+            var anomalyTag = dataItem.isAnomaly ? ' <span style="background:#fee2e2;color:#991b1b;padding:1px 4px;border-radius:4px;font-size:9.5px;font-weight:700;">ALERT</span>' : '';
+
+            benchmarkHtml =
+              '<div style="display:flex;justify-content:space-between;gap:12px;margin-top:4px;font-size:' + (10.5 * fontMultiplier) + 'px;">' +
+                '<span style="color:#57606a;">vs ' + refLabel + ':</span>' +
+                '<span style="font-weight:600;color:' + bColor + ';">' + sign + diffPct.toFixed(1) + '%' + anomalyTag + '</span>' +
+              '</div>';
+          }
+
+          tooltip
+            .style("display", "block")
+            .html(
+              '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px;">' +
+                '<div style="font-size:' + (13 * fontMultiplier) + 'px;font-weight:700;color:#1f2328;display:flex;align-items:center;gap:6px;">' +
+                  '<span>' + flag + '</span>' +
+                  '<span>' + countryName + '</span>' +
+                '</div>' +
+                '<div style="font-size:' + (10 * fontMultiplier) + 'px;font-weight:700;color:#57606a;background:#f6f8fa;padding:1px 6px;border-radius:10px;">' + rankStr + '</div>' +
+              '</div>' +
+              '<div style="font-size:' + (10 * fontMultiplier) + 'px;color:#57606a;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em;">' + continent + (meta && meta.iso2 ? ' &bull; ' + meta.iso2 : '') + '</div>' +
+              '<div style="display:flex;justify-content:space-between;gap:12px;font-size:' + (11.5 * fontMultiplier) + 'px;">' +
+                '<span style="color:#57606a;">' + pMeasName + ':</span>' +
+                '<span style="font-weight:700;color:#1f2328;">' + pValStr + '</span>' +
+              '</div>' +
+              (shareStr ? '<div style="font-size:' + (10.5 * fontMultiplier) + 'px;color:#57606a;text-align:right;margin-top:1px;">' + shareStr + '</div>' : '') +
+              sValHtml +
+              benchmarkHtml +
+              (dataItem && dataItem.links && dataItem.links.length ? '<div style="font-size:' + (10 * fontMultiplier) + 'px;color:#0969da;margin-top:6px;padding-top:4px;border-top:1px solid #f0f2f5;">Click to drill →</div>' : '')
+            );
+
+          positionTooltip(event);
+        }
+
+        function positionTooltip(event) {
+          var pad = 14;
+          var x = event.pageX + pad;
+          var y = event.pageY + pad;
+          var node = tooltip.node();
+          if (node) {
+            var w = node.offsetWidth || 180;
+            var h = node.offsetHeight || 100;
+            if (x + w > window.innerWidth - 10) x = event.pageX - w - pad;
+            if (y + h > window.innerHeight - 10) y = event.pageY - h - pad;
+          }
+          tooltip.style("left", x + "px").style("top", y + "px");
+        }
+
+        function hideTooltip() {
+          tooltip.style("display", "none");
+        }
+
+        function openDrill(event, dataItem) {
+          if (!dataItem) return;
+          if (dataItem.links && dataItem.links.length && LookerCharts && LookerCharts.Utils && LookerCharts.Utils.openDrillMenu) {
+            LookerCharts.Utils.openDrillMenu({
+              links: dataItem.links,
+              event: event
+            });
+          }
+        }
+
+        // Pan & Zoom with D3 Zoom
         var zoom = d3.zoom()
-          .scaleExtent([0.8, 12])
+          .scaleExtent([0.7, 12])
           .on("zoom", function (event) {
-            self._currentZoomTransform = event.transform;
             mapG.attr("transform", event.transform);
           });
 
         if (layoutMode === "orthographic_globe") {
-          // Spherical Drag Rotation
           var drag = d3.drag()
             .on("drag", function (event) {
               var r = projection.rotate();
               var k = 75 / projection.scale();
               projection.rotate([r[0] + event.dx * k, r[1] - event.dy * k]);
-              mapG.selectAll("path").attr("d", path);
-              updateBubblePositions();
+              updatePositions();
             });
           svg.call(drag);
 
-          // Auto-rotation loop
           if (globeAutoRotate) {
+            var rotSpeed = 0.35;
             self._rotationTimer = d3.timer(function () {
               var r = projection.rotate();
-              projection.rotate([r[0] + 0.25, r[1]]);
-              mapG.selectAll("path").attr("d", path);
-              updateBubblePositions();
+              projection.rotate([r[0] + rotSpeed, r[1]]);
+              updatePositions();
             });
           }
         } else {
           svg.call(zoom);
         }
 
-        // 6. Floating Zoom Controls
+        // Floating Map Controls (Zoom In, Zoom Out, Reset)
         controls.innerHTML =
-          '<button class="wcm-btn-zoom-in" title="Zoom in" style="width:28px;height:28px;background:#ffffff;border:1px solid #d0d7de;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#24292f;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.08);">+</button>' +
-          '<button class="wcm-btn-zoom-out" title="Zoom out" style="width:28px;height:28px;background:#ffffff;border:1px solid #d0d7de;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#24292f;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.08);">−</button>' +
-          '<button class="wcm-btn-reset" title="Reset map view" style="width:28px;height:28px;background:#ffffff;border:1px solid #d0d7de;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#24292f;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.08);">⟲</button>';
+          '<button class="wcm-btn-zoom-in" title="Zoom in" style="width:28px;height:28px;background:#ffffff;border:1px solid #d0d7de;border-radius:6px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#24292f;box-shadow:0 1px 3px rgba(0,0,0,0.06);">+</button>' +
+          '<button class="wcm-btn-zoom-out" title="Zoom out" style="width:28px;height:28px;background:#ffffff;border:1px solid #d0d7de;border-radius:6px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#24292f;box-shadow:0 1px 3px rgba(0,0,0,0.06);">&minus;</button>' +
+          '<button class="wcm-btn-reset" title="Reset View" style="width:28px;height:28px;background:#ffffff;border:1px solid #d0d7de;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#24292f;box-shadow:0 1px 3px rgba(0,0,0,0.06);">&#x21bb;</button>';
 
         controls.querySelector(".wcm-btn-zoom-in").addEventListener("click", function () {
           if (layoutMode === "orthographic_globe") {
             projection.scale(projection.scale() * 1.3);
-            mapG.selectAll("path").attr("d", path);
-            updateBubblePositions();
+            updatePositions();
           } else {
             svg.transition().duration(250).call(zoom.scaleBy, 1.3);
           }
@@ -1078,8 +1602,7 @@
         controls.querySelector(".wcm-btn-zoom-out").addEventListener("click", function () {
           if (layoutMode === "orthographic_globe") {
             projection.scale(projection.scale() / 1.3);
-            mapG.selectAll("path").attr("d", path);
-            updateBubblePositions();
+            updatePositions();
           } else {
             svg.transition().duration(250).call(zoom.scaleBy, 1 / 1.3);
           }
@@ -1088,107 +1611,79 @@
         controls.querySelector(".wcm-btn-reset").addEventListener("click", function () {
           if (layoutMode === "orthographic_globe") {
             projection.scale(initialScale).rotate([0, -15]);
-            mapG.selectAll("path").attr("d", path);
-            updateBubblePositions();
+            updatePositions();
           } else {
             svg.transition().duration(350).call(zoom.transform, d3.zoomIdentity);
           }
         });
 
-        // 7. Render Color Ramp Legend (bottom left)
-        if (primaryValues.length > 0) {
-          var minFmt = formatMetric(d3.min(primaryValues));
-          var maxFmt = formatMetric(d3.max(primaryValues));
+        // Legend Rendering
+        if (showLegend && primaryValues.length > 0) {
+          legend.style.display = "block";
+          var minVal = d3.min(primaryValues) || 0;
+          var maxVal = d3.max(primaryValues) || 1;
 
-          var rampSwatches = theme.ramp.map(function (color) {
-            return '<div style="flex:1;height:8px;background:' + color + ';"></div>';
+          var rampCells = paletteRamp.map(function (c) {
+            return '<div style="flex:1;height:8px;background:' + c + ';"></div>';
           }).join("");
 
           legend.innerHTML =
-            '<div style="font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.04em;color:#57606a;margin-bottom:4px;">' + (primaryMeas.label || primaryMeas.name) + '</div>' +
-            '<div style="display:flex;width:140px;border-radius:2px;overflow:hidden;border:1px solid #d0d7de;margin-bottom:3px;">' + rampSwatches + '</div>' +
-            '<div style="display:flex;justify-content:space-between;width:140px;font-size:10px;color:#57606a;font-weight:600;">' +
-              '<span>' + minFmt + '</span>' +
-              '<span>' + maxFmt + '</span>' +
+            '<div style="font-size:' + (9.5 * fontMultiplier) + 'px;font-weight:700;color:#57606a;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;">' + (primaryMeas.label || primaryMeas.name) + '</div>' +
+            '<div style="display:flex;width:140px;border-radius:3px;overflow:hidden;border:1px solid #d0d7de;">' + rampCells + '</div>' +
+            '<div style="display:flex;justify-content:space-between;margin-top:3px;font-size:' + (9.5 * fontMultiplier) + 'px;color:#57606a;">' +
+              '<span>' + formatMetric(minVal) + '</span>' +
+              (targetBenchmark > 0 && showReferenceLine ? '<span style="font-weight:700;color:#1f2328;" title="' + refLabel + '">' + formatMetric(targetBenchmark) + '</span>' : '') +
+              '<span>' + formatMetric(maxVal) + '</span>' +
             '</div>';
         } else {
           legend.style.display = "none";
         }
 
-        // Helper: Highlight country
+        // Country Highlight and Search Helper
         function highlightCountry(cid) {
-          countryPaths.each(function (d) {
-            var id = String(d.id || (d.properties ? d.properties.name : ""));
-            var isTarget = id === cid || (COUNTRY_METADATA[id] && COUNTRY_METADATA[id].name.toLowerCase() === cid.toLowerCase());
-            var pathEl = d3.select(this);
+          countriesGroup.selectAll(".wcm-country")
+            .attr("stroke", showCountryBorders ? "#ffffff" : "none")
+            .attr("stroke-width", showCountryBorders ? 0.6 : 0)
+            .attr("filter", null);
 
-            if (isTarget) {
-              pathEl
-                .attr("stroke", "#d93025")
-                .attr("stroke-width", 2.4)
-                .attr("filter", "url(#wcm-glow)")
-                .raise();
+          if (!cid) return;
 
-              if (layoutMode === "orthographic_globe") {
-                var center = d3.geoCentroid(d);
-                if (center) {
-                  projection.rotate([-center[0], -center[1]]);
-                  mapG.selectAll("path").attr("d", path);
-                  updateBubblePositions();
-                }
-              }
-            } else {
-              pathEl
-                .attr("stroke", showCountryBorders ? "#ffffff" : "none")
-                .attr("stroke-width", 0.6)
-                .attr("filter", null);
+          var target = countriesGroup.select(".wcm-country-" + cid);
+          if (!target.empty()) {
+            target
+              .attr("stroke", "#1f2328")
+              .attr("stroke-width", 2.2)
+              .attr("filter", "url(#wcm-glow)")
+              .raise();
+
+            var dataItem = countryMap[cid];
+            if (dataItem && dataItem._centroid && layoutMode === "orthographic_globe") {
+              projection.rotate([-dataItem._centroid[0], -dataItem._centroid[1]]);
+              updatePositions();
             }
-          });
-          if (bubblesGroup) bubblesGroup.raise();
+          }
         }
 
-        // Helper: Apply Search Filter
-        function applySearchHighlight(query) {
-          if (!query) {
-            countryPaths
-              .attr("stroke", showCountryBorders ? "#ffffff" : "none")
-              .attr("stroke-width", 0.6)
-              .attr("filter", null)
-              .attr("opacity", 1.0);
+        function applySearchHighlight(term) {
+          if (!term) {
+            highlightCountry(null);
             return;
           }
-
-          countryPaths.each(function (d) {
-            var id = String(d.id || (d.properties ? d.properties.name : ""));
-            var meta = COUNTRY_METADATA[id];
-            var name = meta ? meta.name.toLowerCase() : "";
-            var iso2 = meta ? meta.iso2.toLowerCase() : "";
-            var iso3 = meta ? meta.iso3.toLowerCase() : "";
-            var continent = meta ? meta.continent.toLowerCase() : "";
-
-            var match = name.indexOf(query) !== -1 ||
-                        iso2 === query ||
-                        iso3 === query ||
-                        continent.indexOf(query) !== -1;
-
-            var p = d3.select(this);
-            if (match) {
-              p.attr("opacity", 1.0)
-                .attr("stroke", "#ea4335")
-                .attr("stroke-width", 2.0)
-                .attr("filter", "url(#wcm-glow)")
-                .raise();
-            } else {
-              p.attr("opacity", 0.35)
-                .attr("stroke", showCountryBorders ? "#ffffff" : "none")
-                .attr("stroke-width", 0.4)
-                .attr("filter", null);
-            }
+          var matched = countryList.find(function (c) {
+            var n = c.country.name.toLowerCase();
+            var i2 = (c.country.iso2 || "").toLowerCase();
+            var i3 = (c.country.iso3 || "").toLowerCase();
+            var cont = (c.country.continent || "").toLowerCase();
+            return n.indexOf(term) !== -1 || i2 === term || i3 === term || cont.indexOf(term) !== -1;
           });
-          if (bubblesGroup) bubblesGroup.raise();
+
+          if (matched) {
+            highlightCountry(matched.country.id);
+          } else {
+            highlightCountry(null);
+          }
         }
 
-        // Apply search filter if present from before
         if (self._searchFilter) {
           applySearchHighlight(self._searchFilter);
         }
@@ -1196,20 +1691,15 @@
         if (typeof done === "function") done();
       }
 
-      // Fetch or reuse TopoJSON
+      // TopoJSON Caching & Loading
       if (cachedWorldData) {
         renderVisualization(cachedWorldData);
       } else {
         d3.json(WORLD_TOPOJSON_URL).then(function (world) {
-          // world-atlas ids are zero-padded ISO numeric codes ("036" Australia, "076" Brazil) while the
-          // lookup tables use unpadded codes ("36"); normalize once so every country can be matched.
-          ((world.objects && world.objects.countries && world.objects.countries.geometries) || []).forEach(function (g) {
-            if (g.id !== undefined && /^\d+$/.test(String(g.id))) g.id = String(parseInt(g.id, 10));
-          });
           cachedWorldData = world;
           renderVisualization(world);
         }).catch(function (err) {
-          element.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#d93025;font-size:13px;font-family:sans-serif;">Error loading TopoJSON world atlas: ' + err.message + '</div>';
+          element.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#cf222e;font-size:13px;font-family:sans-serif;">Error loading TopoJSON world atlas map data: ' + err.message + '</div>';
           if (typeof done === "function") done();
         });
       }
