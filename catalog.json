@@ -1193,7 +1193,7 @@
     "screenshot": "visualizations/inventory_stockout_sawtooth/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-05",
-    "looker_demo_url": "/explore/thelook/inventory_snapshot?fields=inventory_snapshot.snapshot_date,distribution_centers.name,inventory_snapshot.total_in_stock,inventory_snapshot.stock_coverage_ratio,inventory_snapshot.eoh_cost_total&f[inventory_snapshot.snapshot_date]=30+days&f[distribution_centers.name]=Memphis+TN&sorts=inventory_snapshot.snapshot_date+asc&limit=35&vis=%7B%22type%22%3A%22inventory_stockout_sawtooth%22%2C%22layoutMode%22%3A%22sawtooth_cycles%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Reorder+Point+%28ROP%29%22%2C%22safetyStockPct%22%3A25%2C%22reorderPointPct%22%3A50%2C%22showSafetyZone%22%3Atrue%2C%22showReorderLine%22%3Atrue%2C%22showReplenishmentPoints%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/inventory_snapshot?fields=inventory_snapshot.snapshot_date,distribution_centers.name,inventory_snapshot.total_in_stock,inventory_snapshot.stock_coverage_ratio,inventory_snapshot.eoh_cost_total&f[inventory_snapshot.snapshot_date]=2026%2F08%2F21+to+2026%2F09%2F21&f[distribution_centers.name]=Memphis+TN&sorts=inventory_snapshot.snapshot_date+asc&limit=35&vis=%7B%22type%22%3A%22inventory_stockout_sawtooth%22%2C%22layoutMode%22%3A%22sawtooth_cycles%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Reorder+Point+%28ROP%29%22%2C%22safetyStockPct%22%3A25%2C%22reorderPointPct%22%3A50%2C%22showSafetyZone%22%3Atrue%2C%22showReorderLine%22%3Atrue%2C%22showReplenishmentPoints%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "multi_touch_attribution_pathway",
@@ -1370,13 +1370,13 @@
       "measures": "1 Utilization Rate Measure (and optional Breakage Waste USD Measure)"
     },
     "suggested_dataset": {
-      "model": "gcp_cost_cud_finops",
-      "explore": "gcp_cud_utilization_daily",
+      "model": "multicloud_focus_finops",
+      "explore": "gcp_focus_export",
       "fields": [
-        "gcp_cud_commitments.commitment_name",
-        "gcp_cud_utilization_daily.usage_date",
-        "gcp_cud_utilization_daily.average_cud_utilization_pct",
-        "gcp_cud_utilization_daily.total_unutilized_commitment_waste_usd"
+        "gcp_focus_export.commitment_discount_name",
+        "gcp_focus_export.charge_period_start_week",
+        "gcp_focus_export.commitment_utilization_rate",
+        "gcp_focus_export.unused_commitment_breakage_cost"
       ]
     },
     "deployed": true,
@@ -1384,7 +1384,7 @@
     "screenshot": "visualizations/cloud_finops_commit_horizon/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-10",
-    "looker_demo_url": "/explore/gcp_cost_cud_finops/gcp_cud_utilization_daily?fields=gcp_cud_commitments.commitment_name,gcp_cud_utilization_daily.usage_date,gcp_cud_utilization_daily.average_cud_utilization_pct,gcp_cud_utilization_daily.total_unutilized_commitment_waste_usd&sorts=gcp_cud_commitments.commitment_name,gcp_cud_utilization_daily.usage_date+asc&limit=500&vis=%7B%22type%22%3A%22cloud_finops_commit_horizon%22%2C%22layoutMode%22%3A%22horizon_2band%22%2C%22horizonBands%22%3A2%2C%22hudMode%22%3A%22scorecard%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22valueFormat%22%3A%22percentage%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22bandHeight%22%3A44%2C%22showZeroBaseline%22%3Atrue%2C%22showCommitmentSummary%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/multicloud_focus_finops/gcp_focus_export?fields=gcp_focus_export.commitment_discount_name,gcp_focus_export.charge_period_start_week,gcp_focus_export.commitment_utilization_rate,gcp_focus_export.unused_commitment_breakage_cost&f[gcp_focus_export.commitment_discount_name]=-NULL%2C-No+Active+Commitment%25&sorts=gcp_focus_export.commitment_discount_name,gcp_focus_export.charge_period_start_week&limit=5000&vis=%7B%22type%22%3A%22cloud_finops_commit_horizon%22%2C%22layoutMode%22%3A%22horizon_2band%22%2C%22horizonBands%22%3A2%2C%22hudMode%22%3A%22scorecard%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22valueFormat%22%3A%22percentage%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22bandHeight%22%3A44%2C%22showZeroBaseline%22%3Atrue%2C%22showCommitmentSummary%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "kaplan_meier_survival_curve",
@@ -1432,17 +1432,16 @@
       "measures": "1-4 Measures (Gross On-Demand Cost, CUD Credit Offset, Allocated CUD Fee, Net Attributed Cost)"
     },
     "suggested_dataset": {
-      "model": "gcp_cost_cud_finops",
-      "explore": "gcp_billing_cud_line_items",
+      "model": "multicloud_focus_finops",
+      "explore": "gcp_focus_export",
       "fields": [
-        "gcp_projects_hierarchy.folder_name",
-        "gcp_billing_cud_line_items.gcp_service",
-        "gcp_billing_cud_line_items.total_gross_on_demand_cost_usd",
-        "gcp_billing_cud_line_items.total_cud_credit_offset_usd",
-        "gcp_billing_cud_line_items.total_allocated_cud_fee_usd",
-        "gcp_billing_cud_line_items.total_net_attributed_cost_usd",
-        "gcp_billing_cud_line_items.total_net_cud_savings_usd",
-        "gcp_billing_cud_line_items.effective_savings_rate_pct"
+        "gcp_focus_export.x_folder_hierarchy",
+        "gcp_focus_export.service_name",
+        "gcp_focus_export.total_list_cost",
+        "gcp_focus_export.total_commitment_discount_savings",
+        "gcp_focus_export.committed_effective_cost",
+        "gcp_focus_export.total_effective_cost",
+        "gcp_focus_export.effective_savings_rate"
       ]
     },
     "deployed": true,
@@ -1450,7 +1449,7 @@
     "screenshot": "visualizations/finops_cud_attribution_bridge/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-12",
-    "looker_demo_url": "/explore/gcp_cost_cud_finops/gcp_billing_cud_line_items?fields=gcp_projects_hierarchy.folder_name,gcp_billing_cud_line_items.gcp_service,gcp_billing_cud_line_items.total_gross_on_demand_cost_usd,gcp_billing_cud_line_items.total_cud_credit_offset_usd,gcp_billing_cud_line_items.total_allocated_cud_fee_usd,gcp_billing_cud_line_items.total_net_attributed_cost_usd,gcp_billing_cud_line_items.total_net_cud_savings_usd,gcp_billing_cud_line_items.effective_savings_rate_pct&sorts=gcp_billing_cud_line_items.total_gross_on_demand_cost_usd+desc&limit=25&vis=%7B%22type%22%3A%22finops_cud_attribution_bridge%22%2C%22layoutMode%22%3A%22waterfall_bridge%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22hudDensity%22%3A%22full%22%2C%22showConnectorLines%22%3Atrue%2C%22showStepLabels%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22sortOrder%22%3A%22metric_desc%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/multicloud_focus_finops/gcp_focus_export?fields=gcp_focus_export.x_folder_hierarchy,gcp_focus_export.service_name,gcp_focus_export.total_list_cost,gcp_focus_export.total_commitment_discount_savings,gcp_focus_export.committed_effective_cost,gcp_focus_export.total_effective_cost,gcp_focus_export.effective_savings_rate&sorts=gcp_focus_export.total_list_cost+desc&limit=25&vis=%7B%22type%22%3A%22finops_cud_attribution_bridge%22%2C%22layoutMode%22%3A%22waterfall_bridge%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22hudDensity%22%3A%22full%22%2C%22showConnectorLines%22%3Atrue%2C%22showStepLabels%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22sortOrder%22%3A%22metric_desc%22%7D&origin=share-expanded&toggle=vis"
   },
   {
     "id": "slopegraph",

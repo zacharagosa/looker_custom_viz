@@ -1,18 +1,17 @@
 {
-  "model": "gcp_cost_cud_finops",
-  "view": "gcp_billing_cud_line_items",
+  "model": "multicloud_focus_finops",
+  "view": "gcp_focus_export",
   "fields": [
-    "gcp_projects_hierarchy.folder_name",
-    "gcp_billing_cud_line_items.gcp_service",
-    "gcp_billing_cud_line_items.total_gross_on_demand_cost_usd",
-    "gcp_billing_cud_line_items.total_cud_credit_offset_usd",
-    "gcp_billing_cud_line_items.total_allocated_cud_fee_usd",
-    "gcp_billing_cud_line_items.total_net_attributed_cost_usd",
-    "gcp_billing_cud_line_items.total_net_cud_savings_usd",
-    "gcp_billing_cud_line_items.effective_savings_rate_pct"
+    "gcp_focus_export.x_folder_hierarchy",
+    "gcp_focus_export.service_name",
+    "gcp_focus_export.total_list_cost",
+    "gcp_focus_export.total_commitment_discount_savings",
+    "gcp_focus_export.committed_effective_cost",
+    "gcp_focus_export.total_effective_cost",
+    "gcp_focus_export.effective_savings_rate"
   ],
   "sorts": [
-    "gcp_billing_cud_line_items.total_gross_on_demand_cost_usd desc"
+    "gcp_focus_export.total_list_cost desc"
   ],
   "limit": "25",
   "vis_config": {

@@ -846,7 +846,7 @@
 
       var fields = queryResponse && queryResponse.fields;
       if (!fields || !data || data.length === 0) {
-        container.innerHTML = "<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;">Awaiting query results...</div>";
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;">Awaiting query results...</div>';
         if (done) done();
         return;
       }
@@ -871,7 +871,7 @@
           self.renderChart(d3, container, data, config, queryResponse);
         } catch (err) {
           console.error("Violin Plot Render Error:", err);
-          container.innerHTML = "<div style="padding:20px;color:#ef4444;">Render Error: " + err.message + "</div>";
+          container.innerHTML = '<div style="padding:20px;color:#ef4444;">Render Error: ' + err.message + '</div>';
         }
         if (done) done();
       });
@@ -936,7 +936,7 @@
       }
 
       if (!valField) {
-        container.innerHTML = "<div style="padding:20px;color:#64748b;">Please add a numeric measure or dimension to plot distributions.</div>";
+        container.innerHTML = '<div style="padding:20px;color:#64748b;">Please add a numeric measure or dimension to plot distributions.</div>';
         return;
       }
 
@@ -1018,7 +1018,7 @@
 
       var categories = Object.keys(groupsMap);
       if (categories.length === 0 || allNumericValues.length === 0) {
-        container.innerHTML = "<div style="padding:20px;color:#64748b;">No numeric data points found to plot.</div>";
+        container.innerHTML = '<div style="padding:20px;color:#64748b;">No numeric data points found to plot.</div>';
         return;
       }
 
@@ -1096,7 +1096,7 @@
       });
 
       if (filteredCategories.length === 0) {
-        container.innerHTML = "<div style="padding:20px;color:#64748b;">No categories match search filter: \"" + searchTerm + "\".</div>";
+        container.innerHTML = '<div style="padding:20px;color:#64748b;">No categories match search filter: \"' + searchTerm + '\".</div>';
         return;
       }
 

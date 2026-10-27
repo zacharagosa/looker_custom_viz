@@ -1,17 +1,17 @@
 {
-  "model": "gcp_cost_cud_finops",
-  "view": "gcp_cud_utilization_daily",
+  "model": "multicloud_focus_finops",
+  "view": "gcp_focus_export",
   "fields": [
-    "gcp_cud_commitments.commitment_name",
-    "gcp_cud_utilization_daily.usage_date",
-    "gcp_cud_utilization_daily.average_cud_utilization_pct",
-    "gcp_cud_utilization_daily.total_unutilized_commitment_waste_usd"
+    "gcp_focus_export.commitment_discount_name",
+    "gcp_focus_export.charge_period_start_week",
+    "gcp_focus_export.commitment_utilization_rate",
+    "gcp_focus_export.unused_commitment_breakage_cost"
   ],
   "sorts": [
-    "gcp_cud_commitments.commitment_name",
-    "gcp_cud_utilization_daily.usage_date asc"
+    "gcp_focus_export.commitment_discount_name",
+    "gcp_focus_export.charge_period_start_week"
   ],
-  "limit": "500",
+  "limit": "5000",
   "vis_config": {
     "type": "cloud_finops_commit_horizon",
     "layoutMode": "horizon_2band",
@@ -26,5 +26,8 @@
     "showCommitmentSummary": true,
     "showDataPoints": true,
     "showSearch": true
+  },
+  "filters": {
+    "gcp_focus_export.commitment_discount_name": "-NULL,-No Active Commitment%"
   }
 }

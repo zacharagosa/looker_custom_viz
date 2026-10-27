@@ -9,7 +9,7 @@
     "inventory_snapshot.eoh_cost_total"
   ],
   "filters": {
-    "inventory_snapshot.snapshot_date": "30 days",
+    "inventory_snapshot.snapshot_date": "2026/08/21 to 2026/09/21",
     "distribution_centers.name": "Memphis TN"
   },
   "sorts": [

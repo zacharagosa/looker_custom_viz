@@ -1066,8 +1066,8 @@
             titleBox.style.background = theme.hudBg;
             titleBox.style.borderBottom = "1px solid " + theme.border;
             titleBox.innerHTML =
-              "<div style="font-size: 15px; font-weight: 700; color: " + theme.text + "; letter-spacing: -0.2px;">" + chartTitle + "</div>" +
-              (chartSubtitle ? "<div style="font-size: 11.5px; color: " + theme.subtext + "; margin-top: 2px;">" + chartSubtitle + "</div>" : "");
+              '<div style="font-size: 15px; font-weight: 700; color: ' + theme.text + '; letter-spacing: -0.2px;">' + chartTitle + '</div>' +
+              (chartSubtitle ? '<div style="font-size: 11.5px; color: ' + theme.subtext + '; margin-top: 2px;">' + chartSubtitle + '</div>' : '');
             wrapper.appendChild(titleBox);
           }
 
@@ -1095,8 +1095,8 @@
               kpiGrandTotal.style.display = "flex";
               kpiGrandTotal.style.flexDirection = "column";
               kpiGrandTotal.innerHTML =
-                "<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: " + theme.subtext + "; letter-spacing: 0.5px;">Grand Volume</span>" +
-                "<span style="font-size: 15px; font-weight: 700; color: " + theme.text + ";">" + formatMetricValue(grandTotalSum, valFormat) + "</span>";
+                '<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: ' + theme.subtext + '; letter-spacing: 0.5px;">Grand Volume</span>' +
+                '<span style="font-size: 15px; font-weight: 700; color: ' + theme.text + ';">' + formatMetricValue(grandTotalSum, valFormat) + '</span>';
               hudLeft.appendChild(kpiGrandTotal);
 
               var kpiRowsCount = document.createElement("div");
@@ -1105,8 +1105,8 @@
               kpiRowsCount.style.borderLeft = "1px solid " + theme.border;
               kpiRowsCount.style.paddingLeft = "14px";
               kpiRowsCount.innerHTML =
-                "<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: " + theme.subtext + "; letter-spacing: 0.5px;">Entities</span>" +
-                "<span style="font-size: 15px; font-weight: 700; color: " + theme.text + ";">" + filteredRows.length + " of " + parsedRows.length + "</span>";
+                '<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: ' + theme.subtext + '; letter-spacing: 0.5px;">Entities</span>' +
+                '<span style="font-size: 15px; font-weight: 700; color: ' + theme.text + ';">' + filteredRows.length + ' of ' + parsedRows.length + '</span>';
               hudLeft.appendChild(kpiRowsCount);
 
               var kpiColsCount = document.createElement("div");
@@ -1115,8 +1115,8 @@
               kpiColsCount.style.borderLeft = "1px solid " + theme.border;
               kpiColsCount.style.paddingLeft = "14px";
               kpiColsCount.innerHTML =
-                "<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: " + theme.subtext + "; letter-spacing: 0.5px;">Pivot Periods</span>" +
-                "<span style="font-size: 15px; font-weight: 700; color: " + theme.primary + ";">" + pivotCols.length + " Columns</span>";
+                '<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: ' + theme.subtext + '; letter-spacing: 0.5px;">Pivot Periods</span>' +
+                '<span style="font-size: 15px; font-weight: 700; color: ' + theme.primary + ';">' + pivotCols.length + ' Columns</span>';
               hudLeft.appendChild(kpiColsCount);
 
               if (benchmarkTarget !== null) {
@@ -1128,8 +1128,8 @@
                 var tLabel = config.targetLabel || "Benchmark";
                 var attainment = grandTotalSum > 0 ? ((grandTotalSum / (benchmarkTarget * Math.max(1, filteredRows.length))) * 100).toFixed(0) + "%" : "-";
                 kpiTarget.innerHTML =
-                  "<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: " + theme.subtext + "; letter-spacing: 0.5px;">" + tLabel + "</span>" +
-                  "<span style="font-size: 15px; font-weight: 700; color: " + theme.primary + ";">" + formatMetricValue(benchmarkTarget, valFormat) + " <span style="font-size: 11px; font-weight: 600; color: " + theme.subtext + ";">(" + attainment + ")</span></span>";
+                  '<span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: ' + theme.subtext + '; letter-spacing: 0.5px;">' + tLabel + '</span>' +
+                  '<span style="font-size: 15px; font-weight: 700; color: ' + theme.primary + ';">' + formatMetricValue(benchmarkTarget, valFormat) + ' <span style="font-size: 11px; font-weight: 600; color: ' + theme.subtext + ';">(' + attainment + ')</span></span>';
                 hudLeft.appendChild(kpiTarget);
               }
 
@@ -1140,9 +1140,9 @@
               hudCompact.style.fontWeight = "600";
               hudCompact.style.color = theme.subtext;
               hudCompact.innerHTML =
-                "Total: <strong style="color:" + theme.text + ";">" + formatMetricValue(grandTotalSum, valFormat) + "</strong> &bull; " +
-                "Rows: <strong style="color:" + theme.text + ";">" + filteredRows.length + "</strong> &bull; " +
-                "Periods: <strong style="color:" + theme.primary + ";">" + pivotCols.length + "</strong>";
+                'Total: <strong style="color:' + theme.text + ';">' + formatMetricValue(grandTotalSum, valFormat) + '</strong> &bull; ' +
+                'Rows: <strong style="color:' + theme.text + ';">' + filteredRows.length + '</strong> &bull; ' +
+                'Periods: <strong style="color:' + theme.primary + ';">' + pivotCols.length + '</strong>';
               toolbar.appendChild(hudCompact);
             }
 
@@ -1237,7 +1237,7 @@
               th.style.color = theme.primary;
             }
 
-            th.innerHTML = "<span>" + label + "</span><span style="font-size: 11px; opacity: 0.8;">" + sortIcon + "</span>";
+            th.innerHTML = '<span>' + label + '</span><span style="font-size: 11px; opacity: 0.8;">' + sortIcon + '</span>';
 
             th.onclick = function () {
               if (vizState.sortKey === sortKeyVal) {
@@ -1313,7 +1313,7 @@
               if (rowObj.dimDrills && rowObj.dimDrills.length > 0) {
                 tdDim.style.cursor = "pointer";
                 tdDim.style.color = theme.primary;
-                tdDim.innerHTML = "<span style="text-decoration: underline; text-underline-offset: 2px;">" + (rowObj.dimVal || "-") + "</span>";
+                tdDim.innerHTML = '<span style="text-decoration: underline; text-underline-offset: 2px;">' + (rowObj.dimVal || '-') + '</span>';
                 tdDim.onclick = function (e) {
                   if (typeof LookerCharts !== "undefined" && LookerCharts.Utils && LookerCharts.Utils.openDrillMenu) {
                     LookerCharts.Utils.openDrillMenu({ links: rowObj.dimDrills, event: e });
@@ -1387,14 +1387,14 @@
                 } else if (renderMode === "matrix_bars") {
                   var barPct = (globalMaxVal > 0) ? Math.min(100, Math.max(0, (val / globalMaxVal) * 100)) : 0;
                   var barHtml =
-                    "<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px;">" +
-                    "  <div style="display: flex; align-items: center; gap: 4px;">" +
-                    (isBreach ? "<span title="Anomaly Breach: " + breachDiffPct.toFixed(1) + "%" style="font-size: 10px; color: " + theme.negBadgeText + ";">⚠️</span>" : "") +
-                    (isMaxInRow ? "<span title="Peak Cell in Row" style="font-size: 10px; color: " + theme.primary + "; font-weight: 700;">★</span>" : "") +
-                    "    <span style="font-weight: " + (isMaxInRow ? "700" : "500") + "; color: " + (isBreach ? theme.negBadgeText : theme.text) + ";">" + (labelDensity === "hidden" ? "" : cellData.rendered) + "</span>" +
+                    '<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px;">' +
+                    '  <div style="display: flex; align-items: center; gap: 4px;">' +
+                    (isBreach ? '<span title="Anomaly Breach: ' + breachDiffPct.toFixed(1) + '%" style="font-size: 10px; color: ' + theme.negBadgeText + ';">⚠️</span>' : '') +
+                    (isMaxInRow ? '<span title="Peak Cell in Row" style="font-size: 10px; color: ' + theme.primary + '; font-weight: 700;">★</span>' : '') +
+                    '    <span style="font-weight: ' + (isMaxInRow ? '700' : '500') + '; color: ' + (isBreach ? theme.negBadgeText : theme.text) + ';">' + (labelDensity === 'hidden' ? '' : cellData.rendered) + '</span>' +
                     "  </div>" +
-                    "  <div style="width: 100%; height: 4px; background: " + theme.barBg + "; border-radius: 2px; overflow: hidden; display: flex; justify-content: flex-end;">" +
-                    "    <div style="width: " + barPct + "%; height: 100%; background: " + (isBreach ? theme.negBadgeText : theme.barFill) + "; border-radius: 2px;"></div>" +
+                    '  <div style="width: 100%; height: 4px; background: ' + theme.barBg + '; border-radius: 2px; overflow: hidden; display: flex; justify-content: flex-end;">' +
+                    '    <div style="width: ' + barPct + '%; height: 100%; background: ' + (isBreach ? theme.negBadgeText : theme.barFill) + '; border-radius: 2px;"></div>' +
                     "  </div>" +
                     "</div>";
                   td.innerHTML = barHtml;
@@ -1410,9 +1410,9 @@
                     }
                     var signChar = isPos ? "+" : "";
                     popHtml =
-                      "<div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px;">" +
-                      "  <span style="font-weight: 500; color: " + theme.text + ";">" + cellData.rendered + "</span>" +
-                      "  <span style="font-size: " + curFont.badge + "; font-weight: 700; padding: 2px 5px; border-radius: 4px; background: " + badgeBg + "; color: " + badgeText + "; white-space: nowrap;">" + signChar + cellData.popPct.toFixed(1) + "%</span>" +
+                      '<div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px;">' +
+                      '  <span style="font-weight: 500; color: ' + theme.text + ';">' + cellData.rendered + '</span>' +
+                      '  <span style="font-size: ' + curFont.badge + '; font-weight: 700; padding: 2px 5px; border-radius: 4px; background: ' + badgeBg + '; color: ' + badgeText + '; white-space: nowrap;">' + signChar + cellData.popPct.toFixed(1) + '%</span>' +
                       "</div>";
                   }
                   td.innerHTML = popHtml;

@@ -680,7 +680,9 @@
       }, 50);
     },
 
-    updateAsync: function (data, element, config, queryResponse, details, done) {\n      this._registerDynamicFieldOptions(queryResponse);\n      this._element = element;
+    updateAsync: function (data, element, config, queryResponse, details, done) {
+      this._registerDynamicFieldOptions(queryResponse);
+      this._element = element;
       this._lastElement = element;
       this._lastData = data;
       this._lastConfig = config;

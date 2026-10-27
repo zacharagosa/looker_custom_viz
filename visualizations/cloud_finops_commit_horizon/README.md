@@ -38,8 +38,8 @@ An executive multi-band **Cloud FinOps Commit/CUD Utilization & Waste Horizon Ch
 ## Data Shape & Query Requirements
 
 1. **Dimensions**:
-   - `Dimension 1 (Commitment)`: Categorical dimension identifying the contract (e.g. `gcp_cud_commitments.commitment_name`, `commitment_id`).
-   - `Dimension 2 (Date)`: Chronological date dimension (e.g. `gcp_cud_utilization_daily.usage_date`).
+   - `Dimension 1 (Commitment)`: Categorical dimension identifying the contract (e.g. `gcp_focus_export.commitment_discount_name`, `commitment_id`).
+   - `Dimension 2 (Date)`: Chronological date dimension (e.g. `gcp_focus_export.charge_period_start_week`).
 2. **Measures**:
    - `Measure 1 (Utilization)`: Utilization rate % or covered capacity units (e.g. `average_cud_utilization_pct`).
    - `Measure 2 (Optional Waste)`: Dollar value of unutilized capacity breakage (e.g. `total_unutilized_commitment_waste_usd`).
@@ -76,8 +76,8 @@ An executive multi-band **Cloud FinOps Commit/CUD Utilization & Waste Horizon Ch
 ## Demo Query Configuration
 
 Run with the preconfigured Explore query:
-- **Model**: `gcp_cost_cud_finops`
-- **Explore**: `gcp_cud_utilization_daily`
-- **Fields**: `gcp_cud_commitments.commitment_name`, `gcp_cud_utilization_daily.usage_date`, `gcp_cud_utilization_daily.average_cud_utilization_pct`, `gcp_cud_utilization_daily.total_unutilized_commitment_waste_usd`
-- **Sorts**: `gcp_cud_commitments.commitment_name`, `gcp_cud_utilization_daily.usage_date asc`
+- **Model**: `multicloud_focus_finops`
+- **Explore**: `gcp_focus_export`
+- **Fields**: `gcp_focus_export.commitment_discount_name`, `gcp_focus_export.charge_period_start_week`, `gcp_focus_export.commitment_utilization_rate`, `gcp_focus_export.unused_commitment_breakage_cost`
+- **Sorts**: `gcp_focus_export.commitment_discount_name`, `gcp_focus_export.charge_period_start_week`
 - **Limit**: `500`

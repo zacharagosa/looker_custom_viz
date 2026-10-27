@@ -41,14 +41,14 @@ This custom visualization delivers a boardroom-grade FinOps reconciliation engin
 
 ## 📊 Data Shape Requirements
 
-| Field Type | Required Count | Purpose | Example (`gcp_cost_cud_finops::gcp_billing_cud_line_items`) |
+| Field Type | Required Count | Purpose | Example (`multicloud_focus_finops::gcp_focus_export`) |
 | :--- | :--- | :--- | :--- |
-| **Dimension 1** | `1` *(Required)* | Organization Folder / GCP Project Dimension | `gcp_projects_hierarchy.folder_name` |
-| **Dimension 2** | `0 to 1` *(Recommended)* | GCP Service / SKU Dimension | `gcp_billing_cud_line_items.gcp_service` |
-| **Measure 1** | `1` *(Required)* | Gross On-Demand Equivalent Cost Measure | `gcp_billing_cud_line_items.total_gross_on_demand_cost_usd` |
-| **Measure 2** | `0 to 1` *(Recommended)* | CUD Usage Credit Offset Measure | `gcp_billing_cud_line_items.total_cud_credit_offset_usd` |
-| **Measure 3** | `0 to 1` *(Recommended)* | Mapped & Allocated CUD Fee Measure | `gcp_billing_cud_line_items.total_allocated_cud_fee_usd` |
-| **Measure 4** | `0 to 1` *(Recommended)* | Net Attributed Chargeback Cost Measure | `gcp_billing_cud_line_items.total_net_attributed_cost_usd` |
+| **Dimension 1** | `1` *(Required)* | Organization Folder / GCP Project Dimension | `gcp_focus_export.x_folder_hierarchy` |
+| **Dimension 2** | `0 to 1` *(Recommended)* | GCP Service / SKU Dimension | `gcp_focus_export.service_name` |
+| **Measure 1** | `1` *(Required)* | Gross On-Demand Equivalent Cost Measure | `gcp_focus_export.total_list_cost` |
+| **Measure 2** | `0 to 1` *(Recommended)* | CUD Usage Credit Offset Measure | `gcp_focus_export.total_commitment_discount_savings` |
+| **Measure 3** | `0 to 1` *(Recommended)* | Mapped & Allocated CUD Fee Measure | `gcp_focus_export.committed_effective_cost` |
+| **Measure 4** | `0 to 1` *(Recommended)* | Net Attributed Chargeback Cost Measure | `gcp_focus_export.total_effective_cost` |
 
 ---
 
