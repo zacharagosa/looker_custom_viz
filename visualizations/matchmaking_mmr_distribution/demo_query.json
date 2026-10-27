@@ -15,13 +15,21 @@
     "type": "matchmaking_mmr_distribution",
     "layoutMode": "gaussian_bell",
     "showExecutiveHUD": true,
+    "hudDensity": "scorecard",
+    "slaThresholdMode": "fixed",
     "latencySlaThreshold": 120,
+    "referenceLineLabel": "Competitive SLA (120s)",
+    "anomalyThresholdPct": 130,
     "showGaussianFit": true,
     "showRankTiers": true,
+    "showParityZones": true,
+    "sortOrder": "natural",
+    "topNLimit": "all",
     "showSearch": true,
     "colorTheme": "modern_slate",
     "curveSmoothing": "monotone",
     "showGridlines": true,
+    "fontScale": "standard",
     "valueFormat": "compact_num"
   }
 }

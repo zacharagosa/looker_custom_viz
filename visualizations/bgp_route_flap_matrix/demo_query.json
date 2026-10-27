@@ -1,0 +1,37 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "bgp_peering_telemetry",
+  "fields": [
+    "bgp_peering_telemetry.origin_pop",
+    "bgp_peering_telemetry.peer_asn",
+    "bgp_peering_telemetry.total_flaps_24h",
+    "bgp_peering_telemetry.total_withdrawals_24h",
+    "bgp_peering_telemetry.avg_dampening_penalty",
+    "bgp_peering_telemetry.avg_rtt_latency_ms",
+    "bgp_peering_telemetry.sla_latency_threshold_ms"
+  ],
+  "sorts": [
+    "bgp_peering_telemetry.total_flaps_24h desc"
+  ],
+  "limit": "64",
+  "vis_config": {
+    "type": "bgp_route_flap_matrix",
+    "layoutMode": "flap_matrix",
+    "showExecutiveHUD": true,
+    "hudDensity": "scorecard",
+    "slaThresholdMode": "fixed",
+    "fixedLatencySla": 45,
+    "referenceLineLabel": "Peering SLA (45ms)",
+    "dampeningThreshold": 2000,
+    "showSlaBadges": true,
+    "showDampenedBorders": true,
+    "sortOrder": "flaps_desc",
+    "topNLimit": "all",
+    "labelDensity": "all",
+    "showSearch": true,
+    "colorTheme": "modern_slate",
+    "fontScale": "standard",
+    "valueFormat": "compact_num",
+    "showGridlines": true
+  }
+}

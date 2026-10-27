@@ -52,7 +52,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (30 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (31 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
@@ -86,6 +86,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Hierarchical Cluster Dendrogram & Heatmap**](visualizations/hierarchical_cluster_dendrogram/)<br>`hierarchical_cluster_dendrogram` | Multivariate & Diagnostic Profiling | 1 Entity Identifier (e.g. cell_towers.site_name) + optional 1 Category/Geography Dimension (e.g. cell_towers.market) + 2 or more Continuous Numeric Measures (e.g. avg_throughput_mbps, avg_latency_ms, avg_packet_loss_pct, avg_energy_kwh, avg_connected_users, alarm_count) | [📸 View](visualizations/hierarchical_cluster_dendrogram/screenshot.png) |
 | [**Episode Binge & Stream Drop-Off Matrix**](visualizations/episode_binge_dropoff_matrix/)<br>`episode_binge_dropoff_matrix` | Media, Broadcast & Ad-Ops | 1 Series/Title dimension, 1 Episode sequence dimension, optional Episode Title + 1 Unique Viewers measure, optional Retention % measure, optional Drop-off % measure | [📸 View](visualizations/episode_binge_dropoff_matrix/screenshot.png) |
 | [**Unit Economics & LTV:CAC Payback Curve**](visualizations/unit_economics_payback_curve/)<br>`unit_economics_payback_curve` | Retail, Supply Chain & FinOps | 1 Acquisition Channel/Cohort Dimension (e.g. users.traffic_source), 1 optional Time Dimension (e.g. order_items.created_month) + 1 Gross Revenue Measure (e.g. order_items.total_sale_price), optional Orders Measure, optional Customer Count | [📸 View](visualizations/unit_economics_payback_curve/screenshot.png) |
+| [**BGP Route Flap & Peering Latency Matrix**](visualizations/bgp_route_flap_matrix/)<br>`bgp_route_flap_matrix` | Telecom & Network Operations | 1 Origin PoP Dimension (e.g. bgp_peering_telemetry.origin_pop), 1 Peer ASN Dimension (e.g. bgp_peering_telemetry.peer_asn) + 1 to 5 Numeric Measures: 24h Route Flaps, Route Withdrawals, Dampening Penalty, RTT Latency ms, and SLA Benchmark | [📸 View](visualizations/bgp_route_flap_matrix/screenshot.png) |
 
 ---
 

@@ -2,18 +2,25 @@
  * Matchmaking Latency & MMR Distribution Analyzer - Looker Custom Visualization
  * Built with D3.js v7
  *
- * Solves Enterprise Cloud Blockers & Game Telemetry PRDs (b/341928091, b/490547912, b/530822261):
+ * Enterprise-Grade Flexibility Upgrade:
  * - 4 Multi-Modal Layout Modes:
- *     1. "gaussian_bell": Skill Bell Curve & Gaussian Fit (Empirical player rating histogram overlaid with smooth normal distribution curve, mean μ, ±1σ, ±2σ, ±3σ confidence bands, and skewness).
- *     2. "latency_envelope": Queue Latency & Wait-Time Envelope (Dual-axis analysis: Skill Rating / MMR on X-axis, Player Volume on Left Y-axis, and Queue Wait Time with p50 median line and p95/p99 latency risk envelope on Right Y-axis, plus SLA warning threshold).
- *     3. "tier_stratification": Competitive Rank Tier Stratification (Partitioned rank tiers: Bronze, Silver, Gold, Platinum, Diamond, Master, Grandmaster with population counts, % share, and cumulative CDF distribution curve).
- *     4. "winrate_parity": Fairness & Win-Rate Parity Matrix (Match quality curve: MMR skill delta vs Win Rate %, showing ideal 50% parity line, fair match band ±5%, and blowout stomping danger zones).
+ *     1. "gaussian_bell": Skill Bell Curve & Gaussian Fit (empirical player rating histogram with fitted normal curve & sigma bands).
+ *     2. "latency_envelope": Queue Latency & Wait-Time Envelope (dual Y-axis with wait-time risk envelope & SLA threshold line).
+ *     3. "tier_stratification": Competitive Rank Tier Stratification (Bronze to Grandmaster cohorts with cumulative CDF distribution).
+ *     4. "winrate_parity": Fairness & Win-Rate Parity Matrix (skill delta vs Win Rate % with 50% parity line & blowout danger zones).
+ * - Dynamic Field-Role Mapping via registerOptions:
+ *     Re-map Skill Rating Dimension, Player Volume Measure, Wait Time Measure, Win Rate Measure, and Target Measure dynamically.
+ * - Configurable Reference Lines, Targets & Thresholds:
+ *     Customizable SLA Goal Mode (Fixed, Dataset Mean, Dataset Median, P75, P90, or Measure Column), SLA threshold value, reference line label, and high-latency risk alert threshold.
+ * - Sorting, Top-N Bucketing & Null Suppression:
+ *     Sort by Natural/Rating Ascending, Volume Descending, Volume Ascending, Alphabetical; Top-N cutoff with automatic 'Other' rollup; zero/null suppression.
+ * - HUD, Legend & Label Density Controls:
+ *     Executive Telemetry HUD (Full Scorecard, Compact Strip, Hidden), data value labels (All, Peaks Only, Hidden), custom title/subtitle override, interactive search bar.
+ * - Custom Brand Palettes, Polarity & Typography:
+ *     7 Brand Palettes (Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, Custom Hex Override), custom color pickers, metric polarity toggle, font scale, value formats.
  * - High-Density 5,000+ Row Scalability:
- *     - Fast client-side O(N) rollup, adaptive binning, and kernel density estimation.
+ *     Fast client-side O(N) rollup, adaptive binning, debounced ResizeObserver (<4px guard), Looker drill-down menu support.
  * - Strict 2-Tab Options Modal: "Display" and "Style" to avoid crowded Looker edit modal headers.
- * - Dual Y-Axis Architecture: Strictly independent left & right Y axes without clutter.
- * - Executive HUD Scorecard: Total Players, Mean Rating (μ), Median Wait Time (p50), Tail Wait (p95), and Fair Match Quality %.
- * - Interactive Features: Tier search & isolation filter, vertical crosshair, floating rich tooltip, Looker drill-down menu.
  */
 
 (function () {
@@ -41,32 +48,32 @@
   }
 
   var THEMES = {
-    cyberpunk_esports: {
-      name: "Cyberpunk Esports (Dark)",
-      isDark: true,
-      bg: "#0b0f19",
-      cardBg: "rgba(17, 24, 39, 0.85)",
-      border: "#1f2937",
-      text: "#f8fafc",
-      subtext: "#94a3b8",
-      hudBg: "rgba(15, 23, 42, 0.90)",
-      hudBorder: "rgba(51, 65, 85, 0.8)",
-      hudText: "#f8fafc",
-      hudSubtext: "#94a3b8",
-      accent: "#38bdf8",
-      barColor: "rgba(56, 189, 248, 0.45)",
-      barBorder: "#38bdf8",
-      gaussianLine: "#f43f5e",
-      gaussianFill: "rgba(244, 63, 94, 0.15)",
-      latencyLine: "#fbbf24",
-      latencyEnvelope: "rgba(251, 191, 36, 0.20)",
-      slaLine: "#ef4444",
-      parityLine: "#10b981",
-      fairZone: "rgba(16, 185, 129, 0.15)",
-      dangerZone: "rgba(239, 68, 68, 0.15)",
-      cdfLine: "#a855f7",
-      tooltipBg: "rgba(15, 23, 42, 0.96)",
-      tooltipBorder: "#38bdf8"
+    google_enterprise: {
+      name: "Google Enterprise (Light)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8f9fa",
+      border: "#dadce0",
+      text: "#202124",
+      subtext: "#5f6368",
+      hudBg: "rgba(248, 249, 250, 0.96)",
+      hudBorder: "#dadce0",
+      hudText: "#202124",
+      hudSubtext: "#5f6368",
+      accent: "#1a73e8",
+      barColor: "rgba(26, 115, 232, 0.40)",
+      barBorder: "#1a73e8",
+      gaussianLine: "#ea4335",
+      gaussianFill: "rgba(234, 67, 53, 0.12)",
+      latencyLine: "#f9ab00",
+      latencyEnvelope: "rgba(249, 171, 0, 0.20)",
+      slaLine: "#d93025",
+      parityLine: "#1e8e3e",
+      fairZone: "rgba(30, 142, 62, 0.12)",
+      dangerZone: "rgba(217, 48, 37, 0.12)",
+      cdfLine: "#9334e6",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#1a73e8"
     },
     modern_slate: {
       name: "Modern Studio Slate (Light)",
@@ -95,35 +102,35 @@
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#2563eb"
     },
-    neon_apex: {
-      name: "Neon Tier Apex (Dark)",
+    cyberpunk_dark: {
+      name: "Cyberpunk Dark (Dark)",
       isDark: true,
-      bg: "#0d0b18",
-      cardBg: "rgba(23, 15, 38, 0.85)",
-      border: "#2e1065",
+      bg: "#0b0f19",
+      cardBg: "rgba(17, 24, 39, 0.85)",
+      border: "#1f2937",
       text: "#f8fafc",
-      subtext: "#a78bfa",
-      hudBg: "rgba(19, 11, 36, 0.90)",
-      hudBorder: "rgba(91, 33, 182, 0.8)",
+      subtext: "#94a3b8",
+      hudBg: "rgba(15, 23, 42, 0.90)",
+      hudBorder: "rgba(51, 65, 85, 0.8)",
       hudText: "#f8fafc",
-      hudSubtext: "#c4b5fd",
-      accent: "#a855f7",
-      barColor: "rgba(168, 85, 247, 0.40)",
-      barBorder: "#a855f7",
-      gaussianLine: "#06b6d4",
-      gaussianFill: "rgba(6, 182, 212, 0.15)",
-      latencyLine: "#f59e0b",
-      latencyEnvelope: "rgba(245, 158, 11, 0.20)",
-      slaLine: "#f43f5e",
+      hudSubtext: "#94a3b8",
+      accent: "#38bdf8",
+      barColor: "rgba(56, 189, 248, 0.45)",
+      barBorder: "#38bdf8",
+      gaussianLine: "#f43f5e",
+      gaussianFill: "rgba(244, 63, 94, 0.15)",
+      latencyLine: "#fbbf24",
+      latencyEnvelope: "rgba(251, 191, 36, 0.20)",
+      slaLine: "#ef4444",
       parityLine: "#10b981",
       fairZone: "rgba(16, 185, 129, 0.15)",
-      dangerZone: "rgba(244, 63, 94, 0.15)",
-      cdfLine: "#38bdf8",
-      tooltipBg: "rgba(19, 11, 36, 0.96)",
-      tooltipBorder: "#a855f7"
+      dangerZone: "rgba(239, 68, 68, 0.15)",
+      cdfLine: "#a855f7",
+      tooltipBg: "rgba(15, 23, 42, 0.96)",
+      tooltipBorder: "#38bdf8"
     },
-    emerald_pulse: {
-      name: "Emerald Pulse (Light)",
+    emerald_finops: {
+      name: "Emerald FinOps (Light)",
       isDark: false,
       bg: "#ffffff",
       cardBg: "#f0fdf4",
@@ -149,32 +156,59 @@
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#059669"
     },
-    crimson_overdrive: {
-      name: "Crimson Overdrive (Dark)",
-      isDark: true,
-      bg: "#180b0e",
-      cardBg: "rgba(38, 15, 20, 0.85)",
-      border: "#4c0519",
-      text: "#fff1f2",
-      subtext: "#fda4af",
-      hudBg: "rgba(30, 10, 15, 0.90)",
-      hudBorder: "rgba(159, 18, 57, 0.8)",
-      hudText: "#fff1f2",
-      hudSubtext: "#fecdd3",
-      accent: "#f43f5e",
-      barColor: "rgba(244, 63, 94, 0.40)",
-      barBorder: "#f43f5e",
-      gaussianLine: "#38bdf8",
-      gaussianFill: "rgba(56, 189, 248, 0.15)",
-      latencyLine: "#fbbf24",
-      latencyEnvelope: "rgba(251, 191, 36, 0.20)",
-      slaLine: "#ff4444",
-      parityLine: "#34d399",
-      fairZone: "rgba(52, 211, 153, 0.15)",
-      dangerZone: "rgba(239, 68, 68, 0.15)",
-      cdfLine: "#fb7185",
-      tooltipBg: "rgba(30, 10, 15, 0.96)",
-      tooltipBorder: "#f43f5e"
+    sunset_media: {
+      name: "Sunset Media (Light)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#fff7ed",
+      border: "#fed7aa",
+      text: "#431407",
+      subtext: "#9a3412",
+      hudBg: "rgba(255, 247, 237, 0.95)",
+      hudBorder: "#fed7aa",
+      hudText: "#431407",
+      hudSubtext: "#9a3412",
+      accent: "#ea580c",
+      barColor: "rgba(234, 88, 12, 0.40)",
+      barBorder: "#ea580c",
+      gaussianLine: "#9333ea",
+      gaussianFill: "rgba(147, 51, 234, 0.12)",
+      latencyLine: "#f59e0b",
+      latencyEnvelope: "rgba(245, 158, 11, 0.18)",
+      slaLine: "#e11d48",
+      parityLine: "#16a34a",
+      fairZone: "rgba(22, 163, 74, 0.12)",
+      dangerZone: "rgba(225, 29, 72, 0.12)",
+      cdfLine: "#c026d3",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#ea580c"
+    },
+    wellverse_health: {
+      name: "Wellverse Healthcare (Light)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f0fdfa",
+      border: "#ccfbf1",
+      text: "#134e4a",
+      subtext: "#0f766e",
+      hudBg: "rgba(240, 253, 250, 0.95)",
+      hudBorder: "#99f6e4",
+      hudText: "#134e4a",
+      hudSubtext: "#0f766e",
+      accent: "#0d9488",
+      barColor: "rgba(13, 148, 136, 0.40)",
+      barBorder: "#0d9488",
+      gaussianLine: "#0284c7",
+      gaussianFill: "rgba(2, 132, 199, 0.12)",
+      latencyLine: "#d97706",
+      latencyEnvelope: "rgba(217, 119, 6, 0.18)",
+      slaLine: "#be123c",
+      parityLine: "#059669",
+      fairZone: "rgba(5, 150, 105, 0.12)",
+      dangerZone: "rgba(190, 18, 60, 0.12)",
+      cdfLine: "#6366f1",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#0d9488"
     }
   };
 
@@ -198,6 +232,8 @@
       return "$" + num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
     } else if (fmt === "percentage") {
       return num.toFixed(1) + "%";
+    } else if (fmt === "decimal_2dp") {
+      return num.toFixed(2);
     } else if (fmt === "raw") {
       return String(num);
     }
@@ -208,11 +244,21 @@
     return num.toLocaleString();
   }
 
+  var FIELD_ROLE_OPTIONS = {
+    ratingDimension: { role: "dimension", defaultIdx: 0 },
+    volumeMeasure: { role: "measure", defaultIdx: 0 },
+    waitTimeMeasure: { role: "measure", defaultIdx: 1 },
+    winRateMeasure: { role: "measure", defaultIdx: 2 },
+    targetMeasure: { role: "measure", defaultIdx: 3 }
+  };
+
   looker.plugins.visualizations.add({
     id: "matchmaking_mmr_distribution",
     label: "Matchmaking Latency & MMR Distribution Analyzer",
     options: {
+      // ==========================================
       // SECTION 1: DISPLAY (Strictly limited to 2 sections: Display and Style)
+      // ==========================================
       layoutMode: {
         type: "string",
         label: "Layout Analysis Mode",
@@ -227,57 +273,297 @@
         section: "Display",
         order: 1
       },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive Telemetry HUD",
-        default: true,
+
+      // Dynamic Field-Role Mapping
+      ratingDimension: {
+        type: "string",
+        label: "Skill Rating / MMR Bucket Dimension",
+        display: "select",
+        values: [{ "Auto (First Dimension)": "" }],
+        default: "",
         section: "Display",
         order: 2
       },
-      latencySlaThreshold: {
-        type: "number",
-        label: "Queue Latency SLA Threshold (sec)",
-        default: 120,
+      volumeMeasure: {
+        type: "string",
+        label: "Player Volume / Matches Measure",
+        display: "select",
+        values: [{ "Auto (First Measure)": "" }],
+        default: "",
         section: "Display",
         order: 3
+      },
+      waitTimeMeasure: {
+        type: "string",
+        label: "Queue Wait Time Measure",
+        display: "select",
+        values: [{ "Auto (Second Measure)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      winRateMeasure: {
+        type: "string",
+        label: "Win Rate % / Parity Measure",
+        display: "select",
+        values: [{ "Auto (Third Measure)": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      targetMeasure: {
+        type: "string",
+        label: "Comparison / SLA Target Measure",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
+
+      // Reference Lines, Targets & Thresholds
+      slaThresholdMode: {
+        type: "string",
+        label: "SLA Target Goal Mode",
+        display: "select",
+        values: [
+          { "Fixed Benchmark Value": "fixed" },
+          { "Dataset Mean Wait Time": "mean" },
+          { "Dataset Median (P50)": "median" },
+          { "Percentile P75 Target": "p75" },
+          { "Percentile P90 SLA": "p90" },
+          { "Target Measure Column": "measure" }
+        ],
+        default: "fixed",
+        section: "Display",
+        order: 7
+      },
+      latencySlaThreshold: {
+        type: "number",
+        label: "Fixed Target / SLA Threshold (sec)",
+        default: 120,
+        section: "Display",
+        order: 8
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Target Reference Line Label",
+        default: "Competitive SLA",
+        section: "Display",
+        order: 9
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "High Latency Risk Threshold (%)",
+        default: 130,
+        section: "Display",
+        order: 10
       },
       showGaussianFit: {
         type: "boolean",
         label: "Show Fitted Gaussian Curve",
         default: true,
         section: "Display",
-        order: 4
+        order: 11
       },
       showRankTiers: {
         type: "boolean",
         label: "Show Competitive Rank Tier Cutoffs",
         default: true,
         section: "Display",
-        order: 5
+        order: 12
+      },
+      showParityZones: {
+        type: "boolean",
+        label: "Show Fair Match Parity Bands (45-55%)",
+        default: true,
+        section: "Display",
+        order: 13
+      },
+
+      // Sorting, Top-N & Null Handling
+      sortOrder: {
+        type: "string",
+        label: "Sort Order",
+        display: "select",
+        values: [
+          { "Natural / Skill Rating Ascending": "natural" },
+          { "Player Volume Descending": "metric_desc" },
+          { "Player Volume Ascending": "metric_asc" },
+          { "Alphabetical / Label Order": "alpha" }
+        ],
+        default: "natural",
+        section: "Display",
+        order: 14
+      },
+      topNLimit: {
+        type: "string",
+        label: "Top-N Skill Buckets",
+        display: "select",
+        values: [
+          { "All Active Buckets": "all" },
+          { "Top 10 Buckets": "10" },
+          { "Top 20 Buckets": "20" },
+          { "Top 50 Buckets": "50" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 15
+      },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Rollup Excluded Buckets as 'Other'",
+        default: false,
+        section: "Display",
+        order: 16
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Player Volumes",
+        default: true,
+        section: "Display",
+        order: 17
+      },
+
+      // HUD, Legend & Label Density Controls
+      showExecutiveHUD: {
+        type: "boolean",
+        label: "Show Executive Telemetry HUD",
+        default: true,
+        section: "Display",
+        order: 18
+      },
+      hudDensity: {
+        type: "string",
+        label: "Executive HUD Display Mode",
+        display: "select",
+        values: [
+          { "Full Telemetry Scorecard": "scorecard" },
+          { "Compact Metric Strip": "compact_strip" },
+          { "Hidden": "hidden" }
+        ],
+        default: "scorecard",
+        section: "Display",
+        order: 19
+      },
+      labelDensity: {
+        type: "string",
+        label: "Data Value Labels",
+        display: "select",
+        values: [
+          { "All Skill Buckets": "all" },
+          { "Min/Max Peaks Only": "peaks" },
+          { "Hidden / Tooltip Only": "hidden" }
+        ],
+        default: "peaks",
+        section: "Display",
+        order: 20
+      },
+      customTitle: {
+        type: "string",
+        label: "Custom Title Override",
+        default: "",
+        section: "Display",
+        order: 21
+      },
+      customSubtitle: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 22
       },
       showSearch: {
         type: "boolean",
         label: "Enable Tier & Rating Search Bar",
         default: true,
         section: "Display",
-        order: 6
+        order: 23
       },
 
-      // SECTION 2: STYLE
+      // ==========================================
+      // SECTION 2: STYLE (Aesthetics & Palettes)
+      // ==========================================
       colorTheme: {
         type: "string",
-        label: "Color Theme",
+        label: "Brand Palette Preset",
         display: "select",
         values: [
-          { "Cyberpunk Esports (Dark)": "cyberpunk_esports" },
-          { "Modern Studio Slate (Light)": "modern_slate" },
-          { "Neon Tier Apex (Dark)": "neon_apex" },
-          { "Emerald Pulse (Light)": "emerald_pulse" },
-          { "Crimson Overdrive (Dark)": "crimson_overdrive" }
+          { "Google Enterprise": "google_enterprise" },
+          { "Modern Studio Slate": "modern_slate" },
+          { "Cyberpunk Dark": "cyberpunk_dark" },
+          { "Emerald FinOps": "emerald_finops" },
+          { "Sunset Media": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_health" },
+          { "Custom Hex Override": "custom_override" }
         ],
         default: "modern_slate",
         section: "Style",
         order: 1
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Primary Accent Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Positive / Fair Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Negative / Alert Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity (Goal Direction)",
+        display: "select",
+        values: [
+          { "Lower is Better (Queue Latency, Churn, Wait)": "lower_better" },
+          { "Higher is Better (Player Volume, Win Rate)": "higher_better" }
+        ],
+        default: "lower_better",
+        section: "Style",
+        order: 5
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & Font Scaling",
+        display: "select",
+        values: [
+          { "Compact (Dense Tiles)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (Executive Boardroom)": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 6
+      },
+      valueFormat: {
+        type: "string",
+        label: "Metric Value Formatting",
+        display: "select",
+        values: [
+          { "Auto (Compact Number 1.2M)": "compact_num" },
+          { "Compact Currency ($1.2M)": "compact_currency" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal (2 Decimal Places)": "decimal_2dp" },
+          { "Raw Unformatted": "raw" }
+        ],
+        default: "compact_num",
+        section: "Style",
+        order: 7
       },
       curveSmoothing: {
         type: "string",
@@ -291,34 +577,71 @@
         ],
         default: "monotone",
         section: "Style",
-        order: 2
+        order: 8
       },
       showGridlines: {
         type: "boolean",
         label: "Show Background Gridlines",
         default: true,
         section: "Style",
-        order: 3
-      },
-      valueFormat: {
-        type: "string",
-        label: "Metric Value Formatting",
-        display: "select",
-        values: [
-          { "Compact Numbers (1.2K, 3.4M)": "compact_num" },
-          { "Currency ($1.2K, $3.4M)": "compact_currency" },
-          { "Percentage (45.2%)": "percentage" },
-          { "Raw Unformatted": "raw" }
-        ],
-        default: "compact_num",
-        section: "Style",
-        order: 4
+        order: 9
+      }
+    },
+
+    _registerDynamicOptions: function (queryResponse) {
+      var self = this;
+      if (!queryResponse || !queryResponse.fields) return;
+      var dims = queryResponse.fields.dimensions || [];
+      var meas = queryResponse.fields.measures || [];
+
+      var sig = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === sig) return;
+      self._dynamicFieldSignature = sig;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(f) { return f.label_short || f.label || f.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (optKey) {
+        var spec = FIELD_ROLE_OPTIONS[optKey];
+        if (!newOptions[optKey]) return;
+        var list = spec.role === "measure" ? meas : dims;
+        var autoField = (spec.defaultIdx >= 0 && spec.defaultIdx < list.length) ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto → " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+
+        newOptions[optKey].type = "string";
+        newOptions[optKey].display = "select";
+        newOptions[optKey].values = values;
+        newOptions[optKey].default = "";
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        console.warn("registerOptions unavailable:", e);
       }
     },
 
     create: function (element, config) {
       element.innerHTML = "";
-      // Clean container styling without forcing width: 100% or height: 100%
       element.style.boxSizing = "border-box";
       element.style.padding = "0";
       element.style.overflow = "hidden";
@@ -347,7 +670,7 @@
       tooltip.style.boxShadow = "0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)";
       tooltip.style.zIndex = "1000";
       tooltip.style.transition = "opacity 0.15s ease";
-      tooltip.style.maxWidth = "280px";
+      tooltip.style.maxWidth = "320px";
       element.appendChild(tooltip);
 
       this._container = container;
@@ -400,6 +723,8 @@
         return;
       }
 
+      this._registerDynamicOptions(queryResponse);
+
       var dims = queryResponse.fields.dimensions || [];
       var meas = queryResponse.fields.measures || [];
 
@@ -410,16 +735,40 @@
         return;
       }
 
-      var ratingDim = dims[0].name;
-      var volumeMeas = meas[0].name;
-      var waitTimeMeas = meas.length > 1 ? meas[1].name : null;
-      var winRateMeas = meas.length > 2 ? meas[2].name : null;
+      // Field resolution with dynamic overrides
+      var ratingDim = (config.ratingDimension && config.ratingDimension.length > 0) ? config.ratingDimension : dims[0].name;
+      var volumeMeas = (config.volumeMeasure && config.volumeMeasure.length > 0) ? config.volumeMeasure : meas[0].name;
+      var waitTimeMeas = (config.waitTimeMeasure && config.waitTimeMeasure.length > 0) ? config.waitTimeMeasure : (meas.length > 1 ? meas[1].name : null);
+      var winRateMeas = (config.winRateMeasure && config.winRateMeasure.length > 0) ? config.winRateMeasure : (meas.length > 2 ? meas[2].name : null);
+      var targetMeas = (config.targetMeasure && config.targetMeasure.length > 0) ? config.targetMeasure : (meas.length > 3 ? meas[3].name : null);
 
       ensureD3(function (d3) {
         var themeKey = config.colorTheme || "modern_slate";
-        var theme = THEMES[themeKey] || THEMES.modern_slate;
+        var theme = Object.assign({}, THEMES[themeKey] || THEMES.modern_slate);
+
+        // Apply Custom Hex Overrides if set
+        if (config.customPrimaryColor) {
+          theme.accent = config.customPrimaryColor;
+          theme.barBorder = config.customPrimaryColor;
+          theme.barColor = config.customPrimaryColor + "66";
+        }
+        if (config.customPositiveColor) {
+          theme.parityLine = config.customPositiveColor;
+          theme.fairZone = config.customPositiveColor + "22";
+        }
+        if (config.customNegativeColor) {
+          theme.slaLine = config.customNegativeColor;
+          theme.dangerZone = config.customNegativeColor + "22";
+        }
+
         var layoutMode = config.layoutMode || "gaussian_bell";
-        var slaSec = Number(config.latencySlaThreshold) || 120;
+        var suppressNulls = config.suppressZeroNull !== false;
+
+        // Font scaling
+        var fontScale = config.fontScale || "standard";
+        var fsTitle = fontScale === "compact" ? "14px" : (fontScale === "large" ? "20px" : "16px");
+        var fsBody = fontScale === "compact" ? "11px" : (fontScale === "large" ? "13px" : "12px");
+        var fsHUDVal = fontScale === "compact" ? "14px" : (fontScale === "large" ? "20px" : "17px");
 
         container.style.backgroundColor = theme.bg;
         container.style.color = theme.text;
@@ -435,7 +784,8 @@
           var row = data[i];
           var rawLabel = row[ratingDim] ? String(row[ratingDim].value) : "Unknown";
           var vol = row[volumeMeas] && row[volumeMeas].value !== null ? Number(row[volumeMeas].value) : 0;
-          if (isNaN(vol) || vol <= 0) continue;
+          if (suppressNulls && (isNaN(vol) || vol <= 0)) continue;
+          if (isNaN(vol)) vol = 0;
 
           // Attempt numeric parse for rating
           var numRating = parseFloat(rawLabel.replace(/[^0-9.-]/g, ""));
@@ -454,6 +804,11 @@
             if (winRate > 1.0) winRate = winRate / 100.0;
           }
 
+          var targetVal = null;
+          if (targetMeas && row[targetMeas] && row[targetMeas].value !== null) {
+            targetVal = Number(row[targetMeas].value);
+          }
+
           parsedPoints.push({
             id: i,
             label: rawLabel,
@@ -461,18 +816,63 @@
             volume: vol,
             rawWaitTime: waitTime,
             rawWinRate: winRate,
+            targetVal: targetVal,
             rowRef: row
           });
           totalPlayers += vol;
         }
 
         if (parsedPoints.length === 0) {
-          container.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;'>No valid positive volume rows found.</div>";
+          container.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;'>No valid player volume rows found.</div>";
           done();
           return;
         }
 
-        // Sort ascending by skill rating
+        // Apply Sorting
+        var sortMode = config.sortOrder || "natural";
+        if (sortMode === "metric_desc") {
+          parsedPoints.sort(function (a, b) { return b.volume - a.volume; });
+        } else if (sortMode === "metric_asc") {
+          parsedPoints.sort(function (a, b) { return a.volume - b.volume; });
+        } else if (sortMode === "alpha") {
+          parsedPoints.sort(function (a, b) { return a.label.localeCompare(b.label); });
+        } else {
+          // natural rating ascending
+          parsedPoints.sort(function (a, b) { return a.rating - b.rating; });
+        }
+
+        // Apply Top-N Cutoff and 'Other' Rollup
+        var topN = config.topNLimit || "all";
+        if (topN !== "all") {
+          var nLimit = parseInt(topN, 10);
+          if (nLimit > 0 && parsedPoints.length > nLimit) {
+            if (config.enableOtherRollup) {
+              var topSlice = parsedPoints.slice(0, nLimit);
+              var remainder = parsedPoints.slice(nLimit);
+              var otherVol = 0;
+              var otherWaitSum = 0;
+              for (var ri = 0; ri < remainder.length; ri++) {
+                otherVol += remainder[ri].volume;
+                otherWaitSum += remainder[ri].rawWaitTime * remainder[ri].volume;
+              }
+              topSlice.push({
+                id: 99999,
+                label: "Other Skill Buckets",
+                rating: topSlice[topSlice.length - 1].rating + 100,
+                volume: otherVol,
+                rawWaitTime: otherVol > 0 ? (otherWaitSum / otherVol) : 0,
+                rawWinRate: 0.50,
+                targetVal: null,
+                rowRef: null
+              });
+              parsedPoints = topSlice;
+            } else {
+              parsedPoints = parsedPoints.slice(0, nLimit);
+            }
+          }
+        }
+
+        // Re-sort ascending by rating for curve/histogram rendering
         parsedPoints.sort(function (a, b) { return a.rating - b.rating; });
 
         // 2. Statistical Computations (Weighted Mean, StdDev, Cumulative CDF, Gaussian Curve)
@@ -480,27 +880,29 @@
         for (var p = 0; p < parsedPoints.length; p++) {
           weightedSum += parsedPoints[p].rating * parsedPoints[p].volume;
         }
-        var meanRating = weightedSum / totalPlayers;
+        var meanRating = totalPlayers > 0 ? (weightedSum / totalPlayers) : 0;
 
         var varianceSum = 0;
         for (var q = 0; q < parsedPoints.length; q++) {
           var diff = parsedPoints[q].rating - meanRating;
           varianceSum += parsedPoints[q].volume * diff * diff;
         }
-        var stdDev = Math.sqrt(varianceSum / totalPlayers);
+        var stdDev = Math.sqrt(totalPlayers > 0 ? (varianceSum / totalPlayers) : 1);
         if (stdDev <= 0) stdDev = 1;
 
-        // Assign Percentiles, Simulated Latencies (if not provided), and Rank Tiers
+        // Assign Percentiles, Latencies, and Rank Tiers
         var runningVolume = 0;
         var totalWaitWeighted = 0;
         var p95Wait = 0;
         var p50Wait = 0;
+        var p75Wait = 0;
+        var p90Wait = 0;
         var fairMatchesCount = 0;
 
         for (var k = 0; k < parsedPoints.length; k++) {
           var pt = parsedPoints[k];
           runningVolume += pt.volume;
-          var cumPct = runningVolume / totalPlayers;
+          var cumPct = totalPlayers > 0 ? (runningVolume / totalPlayers) : 0;
           pt.cumPct = cumPct;
           pt.zScore = (pt.rating - meanRating) / stdDev;
 
@@ -508,30 +910,28 @@
           if (waitTimeMeas && pt.rawWaitTime > 0) {
             pt.waitTime = pt.rawWaitTime;
           } else {
-            // Natural matchmaking bathtub curve: minimum wait at median (e.g. 18s), exponential tail wait up to 180s
             var zAbs = Math.abs(pt.zScore);
             pt.waitTime = 18 + 22 * Math.pow(zAbs, 1.85);
           }
-          // P95 / P50 tracking
+
           totalWaitWeighted += pt.waitTime * pt.volume;
           if (cumPct >= 0.50 && p50Wait === 0) p50Wait = pt.waitTime;
+          if (cumPct >= 0.75 && p75Wait === 0) p75Wait = pt.waitTime;
+          if (cumPct >= 0.90 && p90Wait === 0) p90Wait = pt.waitTime;
           if (cumPct >= 0.95 && p95Wait === 0) p95Wait = pt.waitTime;
 
-          // Win Rate Model: If user has measure use it, otherwise logistic curve
+          // Win Rate Model
           if (winRateMeas && pt.rawWinRate > 0) {
             pt.winRate = pt.rawWinRate;
           } else {
-            // Logistic probability around 0.5
             var delta = (pt.rating - meanRating) / (stdDev * 1.8);
             pt.winRate = 1.0 / (1.0 + Math.exp(-delta));
           }
 
-          // Fair match zone: 45% - 55%
           if (pt.winRate >= 0.45 && pt.winRate <= 0.55) {
             fairMatchesCount += pt.volume;
           }
 
-          // Assign competitive rank tier based on cumulative percentile
           var tierFound = RANK_TIERS[0];
           for (var t = 0; t < RANK_TIERS.length; t++) {
             if (cumPct <= RANK_TIERS[t].maxPct || t === RANK_TIERS.length - 1) {
@@ -541,16 +941,35 @@
           }
           pt.tier = tierFound;
 
-          // Gaussian Theoretical Height
+          // Gaussian Height
           var normExp = Math.exp(-0.5 * pt.zScore * pt.zScore);
           var gaussianHeight = (totalPlayers / (stdDev * Math.sqrt(2 * Math.PI))) * normExp;
           pt.gaussianHeight = gaussianHeight;
         }
 
-        if (p50Wait === 0) p50Wait = totalWaitWeighted / totalPlayers;
+        var avgWaitTime = totalPlayers > 0 ? (totalWaitWeighted / totalPlayers) : 0;
+        if (p50Wait === 0) p50Wait = avgWaitTime;
+        if (p75Wait === 0) p75Wait = p50Wait * 1.5;
+        if (p90Wait === 0) p90Wait = p50Wait * 1.9;
         if (p95Wait === 0) p95Wait = p50Wait * 2.2;
-        var avgWaitTime = totalWaitWeighted / totalPlayers;
-        var fairMatchPct = (fairMatchesCount / totalPlayers) * 100;
+        var fairMatchPct = totalPlayers > 0 ? ((fairMatchesCount / totalPlayers) * 100) : 0;
+
+        // Dynamic SLA Target Computation
+        var slaMode = config.slaThresholdMode || "fixed";
+        var effectiveSla = Number(config.latencySlaThreshold) || 120;
+        if (slaMode === "mean") effectiveSla = avgWaitTime;
+        else if (slaMode === "median") effectiveSla = p50Wait;
+        else if (slaMode === "p75") effectiveSla = p75Wait;
+        else if (slaMode === "p90") effectiveSla = p90Wait;
+        else if (slaMode === "measure" && targetMeas) {
+          var targetVals = parsedPoints.filter(function (x) { return x.targetVal !== null && !isNaN(x.targetVal); });
+          if (targetVals.length > 0) {
+            effectiveSla = d3.mean(targetVals, function (x) { return x.targetVal; });
+          }
+        }
+
+        var refLineLabel = config.referenceLineLabel || "Competitive SLA";
+        var anomalyThreshold = effectiveSla * (Number(config.anomalyThresholdPct || 130) / 100.0);
 
         // 3. Search & Filter State
         var displayPoints = parsedPoints.filter(function (d) {
@@ -570,7 +989,7 @@
         // 4. Render UI Shell (HUD + Controls + Visualization Canvas)
         container.innerHTML = "";
 
-        // TOP HEADER: HUD + Controls Bar
+        // TOP HEADER: Optional Title + HUD + Controls Bar
         var topControls = document.createElement("div");
         topControls.style.padding = "10px 14px";
         topControls.style.borderBottom = "1px solid " + theme.border;
@@ -579,19 +998,47 @@
         topControls.style.gap = "8px";
         topControls.style.flexShrink = "0";
 
+        // Custom Title / Subtitle Override
+        if (config.customTitle || config.customSubtitle) {
+          var titleHeader = document.createElement("div");
+          titleHeader.style.display = "flex";
+          titleHeader.style.flexDirection = "column";
+          titleHeader.style.gap = "2px";
+          titleHeader.style.marginBottom = "4px";
+
+          if (config.customTitle) {
+            var tEl = document.createElement("div");
+            tEl.style.fontSize = fsTitle;
+            tEl.style.fontWeight = "700";
+            tEl.style.color = theme.text;
+            tEl.textContent = config.customTitle;
+            titleHeader.appendChild(tEl);
+          }
+          if (config.customSubtitle) {
+            var stEl = document.createElement("div");
+            stEl.style.fontSize = fsBody;
+            stEl.style.color = theme.subtext;
+            stEl.textContent = config.customSubtitle;
+            titleHeader.appendChild(stEl);
+          }
+          topControls.appendChild(titleHeader);
+        }
+
         // Executive HUD Scorecard
-        if (config.showExecutiveHUD !== false) {
+        var hudMode = config.hudDensity || (config.showExecutiveHUD === false ? "hidden" : "scorecard");
+        if (hudMode !== "hidden" && config.showExecutiveHUD !== false) {
           var hudGrid = document.createElement("div");
           hudGrid.style.display = "grid";
-          hudGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(130px, 1fr))";
-          hudGrid.style.gap = "8px";
+          hudGrid.style.gridTemplateColumns = hudMode === "compact_strip" ? "repeat(auto-fit, minmax(90px, 1fr))" : "repeat(auto-fit, minmax(130px, 1fr))";
+          hudGrid.style.gap = hudMode === "compact_strip" ? "4px" : "8px";
 
+          var isSlaBreached = p95Wait > effectiveSla;
           var hudCards = [
             { label: "Total Players / Matches", val: formatValue(totalPlayers, config.valueFormat || "compact_num"), sub: parsedPoints.length + " skill buckets", color: theme.accent },
-            { label: "Mean Skill Rating (μ)", val: Math.round(meanRating).toLocaleString(), sub: "±" + Math.round(stdDev) + " StdDev (σ)", color: theme.gaussianLine },
-            { label: "Median Queue Wait (P50)", val: p50Wait.toFixed(1) + "s", sub: "Avg: " + avgWaitTime.toFixed(1) + "s", color: theme.latencyLine },
-            { label: "Tail Queue Risk (P95)", val: p95Wait.toFixed(1) + "s", sub: p95Wait > slaSec ? "⚠️ SLA Breach (> " + slaSec + "s)" : "✅ Within " + slaSec + "s SLA", color: p95Wait > slaSec ? theme.slaLine : theme.parityLine },
-            { label: "Fair Match Parity Rate", val: fairMatchPct.toFixed(1) + "%", sub: "Matches in 45-55% zone", color: theme.parityLine }
+            { label: "Mean Rating (μ)", val: Math.round(meanRating).toLocaleString(), sub: "±" + Math.round(stdDev) + " StdDev (σ)", color: theme.gaussianLine },
+            { label: "Median Wait (P50)", val: p50Wait.toFixed(1) + "s", sub: "Avg: " + avgWaitTime.toFixed(1) + "s", color: theme.latencyLine },
+            { label: "Tail Wait (P95)", val: p95Wait.toFixed(1) + "s", sub: isSlaBreached ? ("⚠️ SLA Breach (> " + Math.round(effectiveSla) + "s)") : ("✅ Within " + Math.round(effectiveSla) + "s SLA"), color: isSlaBreached ? theme.slaLine : theme.parityLine },
+            { label: "Fair Parity Rate", val: fairMatchPct.toFixed(1) + "%", sub: "Matches in 45-55% zone", color: theme.parityLine }
           ];
 
           hudCards.forEach(function (c) {
@@ -599,37 +1046,39 @@
             card.style.background = theme.cardBg;
             card.style.border = "1px solid " + theme.border;
             card.style.borderRadius = "6px";
-            card.style.padding = "6px 10px";
+            card.style.padding = hudMode === "compact_strip" ? "4px 8px" : "6px 10px";
             card.style.display = "flex";
             card.style.flexDirection = "column";
 
             var l = document.createElement("div");
-            l.style.fontSize = "10.5px";
+            l.style.fontSize = hudMode === "compact_strip" ? "9.5px" : "10.5px";
             l.style.color = theme.subtext;
             l.style.fontWeight = "600";
             l.textContent = c.label;
 
             var v = document.createElement("div");
-            v.style.fontSize = "16px";
+            v.style.fontSize = hudMode === "compact_strip" ? "13px" : fsHUDVal;
             v.style.fontWeight = "700";
             v.style.color = c.color;
             v.style.margin = "2px 0";
             v.textContent = c.val;
 
-            var s = document.createElement("div");
-            s.style.fontSize = "10px";
-            s.style.color = theme.subtext;
-            s.textContent = c.sub;
-
             card.appendChild(l);
             card.appendChild(v);
-            card.appendChild(s);
+
+            if (hudMode !== "compact_strip") {
+              var s = document.createElement("div");
+              s.style.fontSize = "10px";
+              s.style.color = theme.subtext;
+              s.textContent = c.sub;
+              card.appendChild(s);
+            }
             hudGrid.appendChild(card);
           });
           topControls.appendChild(hudGrid);
         }
 
-        // Secondary Toolbar: Tier Filter Pills + Search + Layout Indicator
+        // Secondary Toolbar: Tier Filter Pills + Search Bar
         var filterRow = document.createElement("div");
         filterRow.style.display = "flex";
         filterRow.style.alignItems = "center";
@@ -726,7 +1175,7 @@
         self._lastWidth = width;
         self._lastHeight = height;
 
-        var margin = { top: 20, right: 60, bottom: 45, left: 55 };
+        var margin = { top: 20, right: 60, bottom: 45, left: 60 };
         var innerWidth = Math.max(width - margin.left - margin.right, 100);
         var innerHeight = Math.max(height - margin.top - margin.bottom, 100);
 
@@ -750,487 +1199,629 @@
           .domain([xMin, xMax])
           .range([0, innerWidth]);
 
-        // Left Y Scale: Player Volume
-        var yMaxVol = d3.max(pts, function (d) { return d.volume; }) || 100;
-        var yScaleLeft = d3.scaleLinear()
-          .domain([0, yMaxVol * 1.15])
-          .nice()
+        // Y1 Scale (Left): Volume / Player Count
+        var y1Max = d3.max(pts, function (d) { return d.volume; }) || 100;
+        if (config.showGaussianFit && layoutMode === "gaussian_bell") {
+          var maxGauss = d3.max(pts, function (d) { return d.gaussianHeight; }) || 0;
+          y1Max = Math.max(y1Max, maxGauss * 1.15);
+        }
+        var y1Scale = d3.scaleLinear()
+          .domain([0, y1Max * 1.1])
           .range([innerHeight, 0]);
 
-        // Right Y Scale: Queue Latency OR Win Rate
-        var yScaleRight;
-        if (layoutMode === "winrate_parity") {
-          yScaleRight = d3.scaleLinear()
+        // Y2 Scale (Right): Latency or CDF %
+        var y2Scale;
+        if (layoutMode === "latency_envelope") {
+          var maxWait = d3.max(pts, function (d) { return d.waitTime; }) || 60;
+          maxWait = Math.max(maxWait, effectiveSla * 1.25);
+          y2Scale = d3.scaleLinear()
+            .domain([0, maxWait])
+            .range([innerHeight, 0]);
+        } else if (layoutMode === "tier_stratification") {
+          y2Scale = d3.scaleLinear()
             .domain([0, 1.0])
             .range([innerHeight, 0]);
-        } else {
-          var yMaxWait = Math.max(d3.max(pts, function (d) { return d.waitTime; }) || 60, slaSec * 1.25);
-          yScaleRight = d3.scaleLinear()
-            .domain([0, yMaxWait])
-            .nice()
+        } else if (layoutMode === "winrate_parity") {
+          y2Scale = d3.scaleLinear()
+            .domain([0.30, 0.70])
             .range([innerHeight, 0]);
         }
 
-        // Interpolator mapping
-        var curveFactory = d3.curveMonotoneX;
-        if (config.curveSmoothing === "catmull_rom") curveFactory = d3.curveCatmullRom;
-        else if (config.curveSmoothing === "basis") curveFactory = d3.curveBasis;
-        else if (config.curveSmoothing === "linear") curveFactory = d3.curveLinear;
-
-        // Gridlines
+        // Background Gridlines
         if (config.showGridlines !== false) {
           g.append("g")
-            .attr("class", "grid y-grid")
-            .call(d3.axisLeft(yScaleLeft).ticks(5).tickSize(-innerWidth).tickFormat(""))
+            .attr("class", "grid")
+            .attr("opacity", 0.15)
+            .call(d3.axisLeft(y1Scale)
+              .tickSize(-innerWidth)
+              .tickFormat("")
+            )
             .selectAll("line")
-            .attr("stroke", theme.border)
-            .attr("stroke-opacity", 0.6)
-            .attr("stroke-dasharray", "3,3");
-
-          g.selectAll(".y-grid .domain").remove();
+            .attr("stroke", theme.subtext);
         }
 
-        // Rank Tier Background Shading (Vertical Zones)
-        if (config.showRankTiers !== false && layoutMode !== "tier_stratification") {
-          var tierBands = [];
-          for (var ti = 0; ti < RANK_TIERS.length; ti++) {
-            var tDef = RANK_TIERS[ti];
-            // Find x positions for minPct and maxPct
-            var subPts = parsedPoints.filter(function (d) {
-              return d.cumPct >= tDef.minPct && d.cumPct <= tDef.maxPct;
-            });
-            if (subPts.length > 0) {
-              tierBands.push({
-                tier: tDef,
-                startX: xScale(d3.min(subPts, function (d) { return d.rating; })),
-                endX: xScale(d3.max(subPts, function (d) { return d.rating; }))
-              });
-            }
-          }
-
-          tierBands.forEach(function (tb) {
-            var wBand = Math.max(tb.endX - tb.startX, 2);
-            g.append("rect")
-              .attr("x", tb.startX)
-              .attr("y", 0)
-              .attr("width", wBand)
-              .attr("height", innerHeight)
-              .attr("fill", tb.tier.color)
-              .attr("opacity", 0.04);
-
-            // Tier label at top
-            g.append("text")
-              .attr("x", tb.startX + wBand / 2)
-              .attr("y", 12)
-              .attr("text-anchor", "middle")
-              .attr("font-size", "10px")
-              .attr("font-weight", "600")
-              .attr("fill", tb.tier.color)
-              .attr("opacity", 0.75)
-              .text(tb.tier.name);
-          });
-        }
+        // Curve Interpolator
+        var interp = d3.curveMonotoneX;
+        var cmode = config.curveSmoothing || "monotone";
+        if (cmode === "catmull_rom") interp = d3.curveCatmullRom;
+        else if (cmode === "basis") interp = d3.curveBasis;
+        else if (cmode === "linear") interp = d3.curveLinear;
 
         // ==========================================
-        // LAYOUT MODE RENDERING
+        // LAYOUT MODE 1: GAUSSIAN BELL CURVE & SKILL HISTOGRAM
         // ==========================================
-
         if (layoutMode === "gaussian_bell") {
-          // MODE 1: Gaussian Bell Curve & Fitted Normal Distribution
-          // Standard Deviation Confidence Bands (±1σ, ±2σ)
-          var sigmaLeft = xScale(meanRating - stdDev);
-          var sigmaRight = xScale(meanRating + stdDev);
-          if (sigmaLeft >= 0 && sigmaRight <= innerWidth) {
-            g.append("rect")
-              .attr("x", Math.max(0, sigmaLeft))
-              .attr("y", 0)
-              .attr("width", Math.min(innerWidth, sigmaRight) - Math.max(0, sigmaLeft))
-              .attr("height", innerHeight)
-              .attr("fill", theme.gaussianFill)
-              .attr("opacity", 0.5);
-
-            // Mean vertical reference line
-            var meanX = xScale(meanRating);
-            g.append("line")
-              .attr("x1", meanX).attr("x2", meanX)
-              .attr("y1", 0).attr("y2", innerHeight)
-              .attr("stroke", theme.gaussianLine)
-              .attr("stroke-dasharray", "4,4")
-              .attr("stroke-width", 1.5);
-
-            g.append("text")
-              .attr("x", meanX + 5)
-              .attr("y", 25)
-              .attr("fill", theme.gaussianLine)
-              .attr("font-size", "10px")
-              .attr("font-weight", "700")
-              .text("μ = " + Math.round(meanRating));
-          }
-
-          // Player Histogram / Volume Bars
-          var barW = Math.max(innerWidth / pts.length - 2, 3);
-          g.selectAll(".volume-bar")
+          // Histogram Bar Columns
+          var barWidth = Math.max(2, (innerWidth / pts.length) * 0.75);
+          g.selectAll(".mmr-bar")
             .data(pts)
             .enter()
             .append("rect")
-            .attr("class", "volume-bar")
-            .attr("x", function (d) { return xScale(d.rating) - barW / 2; })
-            .attr("y", function (d) { return yScaleLeft(d.volume); })
-            .attr("width", barW)
-            .attr("height", function (d) { return innerHeight - yScaleLeft(d.volume); })
-            .attr("fill", function (d) { return d.tier.color; })
-            .attr("opacity", 0.65)
-            .attr("rx", 2);
+            .attr("class", "mmr-bar")
+            .attr("x", function (d) { return xScale(d.rating) - barWidth / 2; })
+            .attr("y", function (d) { return y1Scale(d.volume); })
+            .attr("width", barWidth)
+            .attr("height", function (d) { return Math.max(0, innerHeight - y1Scale(d.volume)); })
+            .attr("fill", function (d) { return d.tier.color + "55"; })
+            .attr("stroke", function (d) { return d.tier.color; })
+            .attr("stroke-width", 1.2)
+            .attr("rx", 2)
+            .on("mouseover", function (event, d) {
+              d3.select(this).attr("fill", d.tier.color + "99").attr("stroke-width", 2);
+              showTooltip(event, d);
+            })
+            .on("mousemove", function (event, d) {
+              moveTooltip(event);
+            })
+            .on("mouseout", function (event, d) {
+              d3.select(this).attr("fill", d.tier.color + "55").attr("stroke-width", 1.2);
+              hideTooltip();
+            })
+            .on("click", function (event, d) {
+              triggerDrill(d, event);
+            });
 
-          // Gaussian Theoretical Curve Overlay
+          // Fitted Gaussian Area & Line
           if (config.showGaussianFit !== false) {
-            // Scale gaussian theoretical height to chart
-            var maxG = d3.max(pts, function (d) { return d.gaussianHeight; }) || 1;
-            var gScale = d3.scaleLinear()
-              .domain([0, maxG])
-              .range([innerHeight, 0]);
+            var gArea = d3.area()
+              .x(function (d) { return xScale(d.rating); })
+              .y0(innerHeight)
+              .y1(function (d) { return y1Scale(d.gaussianHeight); })
+              .curve(interp);
 
             var gLine = d3.line()
               .x(function (d) { return xScale(d.rating); })
-              .y(function (d) { return gScale(d.gaussianHeight); })
-              .curve(curveFactory);
+              .y(function (d) { return y1Scale(d.gaussianHeight); })
+              .curve(interp);
+
+            g.append("path")
+              .datum(pts)
+              .attr("fill", theme.gaussianFill)
+              .attr("d", gArea);
 
             g.append("path")
               .datum(pts)
               .attr("fill", "none")
               .attr("stroke", theme.gaussianLine)
               .attr("stroke-width", 2.5)
+              .attr("stroke-dasharray", "4,3")
               .attr("d", gLine);
           }
 
-        } else if (layoutMode === "latency_envelope") {
-          // MODE 2: Queue Latency & Wait-Time Envelope
-          // Left: Player Volume Area Fill
-          var areaGenerator = d3.area()
+          // Mean μ and Sigma Lines
+          var meanX = xScale(meanRating);
+          if (meanX >= 0 && meanX <= innerWidth) {
+            g.append("line")
+              .attr("x1", meanX)
+              .attr("x2", meanX)
+              .attr("y1", 0)
+              .attr("y2", innerHeight)
+              .attr("stroke", theme.gaussianLine)
+              .attr("stroke-width", 2)
+              .attr("stroke-dasharray", "5,4");
+
+            g.append("text")
+              .attr("x", meanX + 4)
+              .attr("y", 15)
+              .attr("fill", theme.gaussianLine)
+              .attr("font-size", "11px")
+              .attr("font-weight", "700")
+              .text("μ = " + Math.round(meanRating));
+          }
+
+          // ±1σ Standard Deviation Line
+          var sigLeft = xScale(meanRating - stdDev);
+          var sigRight = xScale(meanRating + stdDev);
+          if (sigLeft >= 0 && sigRight <= innerWidth) {
+            g.append("rect")
+              .attr("x", sigLeft)
+              .attr("y", 0)
+              .attr("width", sigRight - sigLeft)
+              .attr("height", innerHeight)
+              .attr("fill", theme.accent)
+              .attr("opacity", 0.05);
+          }
+        }
+
+        // ==========================================
+        // LAYOUT MODE 2: QUEUE LATENCY & WAIT-TIME ENVELOPE (Dual Y-Axis)
+        // ==========================================
+        else if (layoutMode === "latency_envelope") {
+          // Volume Area on Y1 (Left)
+          var volArea = d3.area()
             .x(function (d) { return xScale(d.rating); })
             .y0(innerHeight)
-            .y1(function (d) { return yScaleLeft(d.volume); })
-            .curve(curveFactory);
+            .y1(function (d) { return y1Scale(d.volume); })
+            .curve(interp);
 
           g.append("path")
             .datum(pts)
             .attr("fill", theme.barColor)
-            .attr("d", areaGenerator);
+            .attr("stroke", theme.barBorder)
+            .attr("stroke-width", 1.5)
+            .attr("d", volArea);
 
-          // Latency Envelope Band (p90 - p99 confidence envelope)
-          var envelopeArea = d3.area()
+          // Queue Latency Shaded Risk Zone (Above SLA Threshold)
+          var slaY = y2Scale(effectiveSla);
+          if (slaY >= 0 && slaY <= innerHeight) {
+            g.append("rect")
+              .attr("x", 0)
+              .attr("y", 0)
+              .attr("width", innerWidth)
+              .attr("height", slaY)
+              .attr("fill", theme.dangerZone);
+
+            g.append("line")
+              .attr("x1", 0)
+              .attr("x2", innerWidth)
+              .attr("y1", slaY)
+              .attr("y2", slaY)
+              .attr("stroke", theme.slaLine)
+              .attr("stroke-width", 2)
+              .attr("stroke-dasharray", "6,4");
+
+            g.append("text")
+              .attr("x", innerWidth - 8)
+              .attr("y", slaY - 6)
+              .attr("text-anchor", "end")
+              .attr("fill", theme.slaLine)
+              .attr("font-size", "11px")
+              .attr("font-weight", "700")
+              .text(refLineLabel + " (" + Math.round(effectiveSla) + "s)");
+          }
+
+          // Latency Trend Line on Y2 (Right)
+          var latLine = d3.line()
             .x(function (d) { return xScale(d.rating); })
-            .y0(function (d) { return yScaleRight(d.waitTime * 0.85); })
-            .y1(function (d) { return yScaleRight(d.waitTime * 1.35); })
-            .curve(curveFactory);
-
-          g.append("path")
-            .datum(pts)
-            .attr("fill", theme.latencyEnvelope)
-            .attr("d", envelopeArea);
-
-          // Median Wait Time Line (Right Y-Axis)
-          var waitLine = d3.line()
-            .x(function (d) { return xScale(d.rating); })
-            .y(function (d) { return yScaleRight(d.waitTime); })
-            .curve(curveFactory);
+            .y(function (d) { return y2Scale(d.waitTime); })
+            .curve(interp);
 
           g.append("path")
             .datum(pts)
             .attr("fill", "none")
             .attr("stroke", theme.latencyLine)
             .attr("stroke-width", 3)
-            .attr("d", waitLine);
+            .attr("d", latLine);
 
-          // SLA Threshold Line
-          var slaY = yScaleRight(slaSec);
-          if (slaY >= 0 && slaY <= innerHeight) {
-            g.append("line")
-              .attr("x1", 0).attr("x2", innerWidth)
-              .attr("y1", slaY).attr("y2", slaY)
-              .attr("stroke", theme.slaLine)
-              .attr("stroke-dasharray", "5,5")
-              .attr("stroke-width", 2);
+          // Latency Target Measure Line if provided
+          if (targetMeas) {
+            var targetPoints = pts.filter(function (d) { return d.targetVal !== null && !isNaN(d.targetVal); });
+            if (targetPoints.length > 1) {
+              var tgtLine = d3.line()
+                .x(function (d) { return xScale(d.rating); })
+                .y(function (d) { return y2Scale(d.targetVal); })
+                .curve(interp);
 
-            g.append("text")
-              .attr("x", innerWidth - 5)
-              .attr("y", slaY - 5)
-              .attr("text-anchor", "end")
-              .attr("fill", theme.slaLine)
-              .attr("font-size", "10.5px")
-              .attr("font-weight", "700")
-              .text("SLA Threshold (" + slaSec + "s)");
+              g.append("path")
+                .datum(targetPoints)
+                .attr("fill", "none")
+                .attr("stroke", theme.accent)
+                .attr("stroke-width", 2)
+                .attr("stroke-dasharray", "3,3")
+                .attr("d", tgtLine);
+            }
           }
 
-        } else if (layoutMode === "tier_stratification") {
-          // MODE 3: Competitive Rank Tier Stratification (Population % & Cumulative CDF)
-          // Bar per tier
-          var tierMap = {};
-          RANK_TIERS.forEach(function (t) {
-            tierMap[t.name] = { tier: t, volume: 0, waitSum: 0, count: 0 };
-          });
-          parsedPoints.forEach(function (d) {
-            if (tierMap[d.tier.name]) {
-              tierMap[d.tier.name].volume += d.volume;
-              tierMap[d.tier.name].waitSum += d.waitTime * d.volume;
-              tierMap[d.tier.name].count++;
+          // Points on Latency Line
+          g.selectAll(".lat-point")
+            .data(pts)
+            .enter()
+            .append("circle")
+            .attr("class", "lat-point")
+            .attr("cx", function (d) { return xScale(d.rating); })
+            .attr("cy", function (d) { return y2Scale(d.waitTime); })
+            .attr("r", 4.5)
+            .attr("fill", function (d) { return d.waitTime > effectiveSla ? theme.slaLine : theme.latencyLine; })
+            .attr("stroke", "#ffffff")
+            .attr("stroke-width", 1.5)
+            .on("mouseover", function (event, d) {
+              d3.select(this).attr("r", 7);
+              showTooltip(event, d);
+            })
+            .on("mousemove", function (event, d) {
+              moveTooltip(event);
+            })
+            .on("mouseout", function (event, d) {
+              d3.select(this).attr("r", 4.5);
+              hideTooltip();
+            })
+            .on("click", function (event, d) {
+              triggerDrill(d, event);
+            });
+        }
+
+        // ==========================================
+        // LAYOUT MODE 3: COMPETITIVE RANK TIER STRATIFICATION & CDF
+        // ==========================================
+        else if (layoutMode === "tier_stratification") {
+          // Partition Background Bands for Rank Tiers
+          RANK_TIERS.forEach(function (tr) {
+            var tierPts = pts.filter(function (d) { return d.tier.name === tr.name; });
+            if (tierPts.length > 0) {
+              var tMinX = xScale(tierPts[0].rating);
+              var tMaxX = xScale(tierPts[tierPts.length - 1].rating);
+              var tW = Math.max(tMaxX - tMinX, 10);
+
+              g.append("rect")
+                .attr("x", tMinX)
+                .attr("y", 0)
+                .attr("width", tW)
+                .attr("height", innerHeight)
+                .attr("fill", tr.color)
+                .attr("opacity", 0.08);
+
+              g.append("text")
+                .attr("x", tMinX + tW / 2)
+                .attr("y", 16)
+                .attr("text-anchor", "middle")
+                .attr("fill", tr.color)
+                .attr("font-size", "11px")
+                .attr("font-weight", "700")
+                .text(tr.icon + " " + tr.name);
             }
           });
 
-          var tierData = RANK_TIERS.map(function (t) {
-            var entry = tierMap[t.name];
-            var v = entry.volume;
-            var pct = (v / totalPlayers) * 100;
-            var avgW = v > 0 ? entry.waitSum / v : 0;
-            return { tier: t, volume: v, pct: pct, avgWait: avgW };
-          });
-
-          var xTierScale = d3.scaleBand()
-            .domain(RANK_TIERS.map(function (t) { return t.name; }))
-            .range([0, innerWidth])
-            .padding(0.25);
-
-          var yTierScale = d3.scaleLinear()
-            .domain([0, d3.max(tierData, function (d) { return d.volume; }) * 1.2])
-            .nice()
-            .range([innerHeight, 0]);
-
-          g.selectAll(".tier-rect")
-            .data(tierData)
+          // Volume Bars Colored by Tier
+          var tierBarW = Math.max(2, (innerWidth / pts.length) * 0.7);
+          g.selectAll(".tier-bar")
+            .data(pts)
             .enter()
             .append("rect")
-            .attr("x", function (d) { return xTierScale(d.tier.name); })
-            .attr("y", function (d) { return yTierScale(d.volume); })
-            .attr("width", xTierScale.bandwidth())
-            .attr("height", function (d) { return innerHeight - yTierScale(d.volume); })
-            .attr("fill", function (d) { return d.tier.color; })
-            .attr("rx", 4)
-            .attr("opacity", 0.85);
+            .attr("class", "tier-bar")
+            .attr("x", function (d) { return xScale(d.rating) - tierBarW / 2; })
+            .attr("y", function (d) { return y1Scale(d.volume); })
+            .attr("width", tierBarW)
+            .attr("height", function (d) { return Math.max(0, innerHeight - y1Scale(d.volume)); })
+            .attr("fill", function (d) { return d.tier.color + "77"; })
+            .attr("stroke", function (d) { return d.tier.color; })
+            .attr("stroke-width", 1.2)
+            .attr("rx", 2)
+            .on("mouseover", function (event, d) {
+              d3.select(this).attr("fill", d.tier.color).attr("stroke-width", 2);
+              showTooltip(event, d);
+            })
+            .on("mousemove", function (event, d) {
+              moveTooltip(event);
+            })
+            .on("mouseout", function (event, d) {
+              d3.select(this).attr("fill", d.tier.color + "77").attr("stroke-width", 1.2);
+              hideTooltip();
+            })
+            .on("click", function (event, d) {
+              triggerDrill(d, event);
+            });
 
-          // Tier labels and % values
-          g.selectAll(".tier-val-label")
-            .data(tierData)
-            .enter()
-            .append("text")
-            .attr("x", function (d) { return xTierScale(d.tier.name) + xTierScale.bandwidth() / 2; })
-            .attr("y", function (d) { return yTierScale(d.volume) - 6; })
-            .attr("text-anchor", "middle")
-            .attr("font-size", "11px")
-            .attr("font-weight", "700")
-            .attr("fill", theme.text)
-            .text(function (d) { return d.pct.toFixed(1) + "%"; });
-
-          // Cumulative CDF Line Overlay (Right Y-Axis 0 - 100%)
-          var yCdfScale = d3.scaleLinear().domain([0, 100]).range([innerHeight, 0]);
-          var runningSum = 0;
-          var cdfPoints = tierData.map(function (d) {
-            runningSum += d.pct;
-            return { name: d.tier.name, cdf: runningSum };
-          });
-
+          // Cumulative CDF Line on Y2
           var cdfLine = d3.line()
-            .x(function (d) { return xTierScale(d.name) + xTierScale.bandwidth() / 2; })
-            .y(function (d) { return yCdfScale(d.cdf); })
-            .curve(curveFactory);
+            .x(function (d) { return xScale(d.rating); })
+            .y(function (d) { return y2Scale(d.cumPct); })
+            .curve(interp);
 
           g.append("path")
-            .datum(cdfPoints)
+            .datum(pts)
             .attr("fill", "none")
             .attr("stroke", theme.cdfLine)
-            .attr("stroke-width", 2.5)
+            .attr("stroke-width", 2.8)
             .attr("d", cdfLine);
+        }
 
-        } else if (layoutMode === "winrate_parity") {
-          // MODE 4: Fairness & Win-Rate Parity Matrix
-          // Ideal 50% Balance Parity Line
-          var parityY = yScaleRight(0.5);
+        // ==========================================
+        // LAYOUT MODE 4: FAIRNESS & WIN-RATE PARITY MATRIX
+        // ==========================================
+        else if (layoutMode === "winrate_parity") {
+          // Fair Match Band (45% to 55%)
+          if (config.showParityZones !== false) {
+            var y45 = y2Scale(0.45);
+            var y55 = y2Scale(0.55);
+            g.append("rect")
+              .attr("x", 0)
+              .attr("y", y55)
+              .attr("width", innerWidth)
+              .attr("height", y45 - y55)
+              .attr("fill", theme.fairZone);
+
+            // Stomp Blowout Danger Zones (<45% and >55%)
+            g.append("rect")
+              .attr("x", 0)
+              .attr("y", 0)
+              .attr("width", innerWidth)
+              .attr("height", y55)
+              .attr("fill", theme.dangerZone);
+
+            g.append("rect")
+              .attr("x", 0)
+              .attr("y", y45)
+              .attr("width", innerWidth)
+              .attr("height", innerHeight - y45)
+              .attr("fill", theme.dangerZone);
+          }
+
+          // Ideal 50% Win Rate Parity Baseline
+          var y50 = y2Scale(0.50);
           g.append("line")
-            .attr("x1", 0).attr("x2", innerWidth)
-            .attr("y1", parityY).attr("y2", parityY)
+            .attr("x1", 0)
+            .attr("x2", innerWidth)
+            .attr("y1", y50)
+            .attr("y2", y50)
             .attr("stroke", theme.parityLine)
-            .attr("stroke-width", 2);
-
-          // Fair Match Corridor (45% - 55%)
-          var fairTop = yScaleRight(0.55);
-          var fairBot = yScaleRight(0.45);
-          g.append("rect")
-            .attr("x", 0)
-            .attr("y", fairTop)
-            .attr("width", innerWidth)
-            .attr("height", fairBot - fairTop)
-            .attr("fill", theme.fairZone);
+            .attr("stroke-width", 2.2)
+            .attr("stroke-dasharray", "5,4");
 
           g.append("text")
-            .attr("x", 10)
-            .attr("y", parityY - 6)
+            .attr("x", innerWidth - 8)
+            .attr("y", y50 - 6)
+            .attr("text-anchor", "end")
             .attr("fill", theme.parityLine)
-            .attr("font-size", "10.5px")
+            .attr("font-size", "11px")
             .attr("font-weight", "700")
-            .text("50% Fair Match Win-Rate Parity (±5% Safe Corridor)");
+            .text("50.0% Perfect Parity");
 
-          // Actual Win Rate Curve
-          var winLine = d3.line()
+          // Win Rate Logistic Curve
+          var wrLine = d3.line()
             .x(function (d) { return xScale(d.rating); })
-            .y(function (d) { return yScaleRight(d.winRate); })
-            .curve(curveFactory);
+            .y(function (d) { return y2Scale(d.winRate); })
+            .curve(interp);
 
           g.append("path")
             .datum(pts)
             .attr("fill", "none")
             .attr("stroke", theme.accent)
-            .attr("stroke-width", 3)
-            .attr("d", winLine);
+            .attr("stroke-width", 2.8)
+            .attr("d", wrLine);
 
-          // Player volume bars below
-          var barW4 = Math.max(innerWidth / pts.length - 2, 3);
-          g.selectAll(".volume-bar4")
+          // Win Rate Scatter Points sized by Volume
+          var maxVol = d3.max(pts, function (d) { return d.volume; }) || 1;
+          var rScale = d3.scaleSqrt().domain([0, maxVol]).range([4, 14]);
+
+          g.selectAll(".wr-bubble")
             .data(pts)
             .enter()
-            .append("rect")
-            .attr("x", function (d) { return xScale(d.rating) - barW4 / 2; })
-            .attr("y", function (d) { return yScaleLeft(d.volume); })
-            .attr("width", barW4)
-            .attr("height", function (d) { return innerHeight - yScaleLeft(d.volume); })
-            .attr("fill", theme.barColor)
-            .attr("opacity", 0.35);
+            .append("circle")
+            .attr("class", "wr-bubble")
+            .attr("cx", function (d) { return xScale(d.rating); })
+            .attr("cy", function (d) { return y2Scale(d.winRate); })
+            .attr("r", function (d) { return rScale(d.volume); })
+            .attr("fill", function (d) {
+              return (d.winRate >= 0.45 && d.winRate <= 0.55) ? theme.parityLine + "88" : theme.slaLine + "88";
+            })
+            .attr("stroke", function (d) {
+              return (d.winRate >= 0.45 && d.winRate <= 0.55) ? theme.parityLine : theme.slaLine;
+            })
+            .attr("stroke-width", 1.8)
+            .on("mouseover", function (event, d) {
+              d3.select(this).attr("stroke-width", 3).attr("fill-opacity", 1);
+              showTooltip(event, d);
+            })
+            .on("mousemove", function (event, d) {
+              moveTooltip(event);
+            })
+            .on("mouseout", function (event, d) {
+              d3.select(this).attr("stroke-width", 1.8).attr("fill-opacity", 0.88);
+              hideTooltip();
+            })
+            .on("click", function (event, d) {
+              triggerDrill(d, event);
+            });
         }
 
         // ==========================================
-        // AXES (Adheres to user preference: clean axes without redundant labels)
+        // DATA VALUE LABELS
         // ==========================================
-        // X Axis
-        var xAxis = d3.axisBottom(layoutMode === "tier_stratification" ?
-          d3.scaleBand().domain(RANK_TIERS.map(function (t) { return t.name; })).range([0, innerWidth]) :
-          xScale
-        ).ticks(Math.min(pts.length, 8));
+        var labelMode = config.labelDensity || "peaks";
+        if (labelMode !== "hidden") {
+          var labelPts = [];
+          if (labelMode === "all") {
+            labelPts = pts;
+          } else if (labelMode === "peaks") {
+            // Find min, max, and high latency peak points
+            var maxVolPt = d3.max(pts, function (d) { return d.volume; });
+            var maxVolItem = pts.find(function (d) { return d.volume === maxVolPt; });
+            var maxWaitPt = d3.max(pts, function (d) { return d.waitTime; });
+            var maxWaitItem = pts.find(function (d) { return d.waitTime === maxWaitPt; });
+            if (maxVolItem) labelPts.push(maxVolItem);
+            if (maxWaitItem && maxWaitItem !== maxVolItem) labelPts.push(maxWaitItem);
+            if (pts.length > 0 && pts[0] !== maxVolItem && pts[0] !== maxWaitItem) labelPts.push(pts[0]);
+            if (pts.length > 1 && pts[pts.length - 1] !== maxVolItem && pts[pts.length - 1] !== maxWaitItem) labelPts.push(pts[pts.length - 1]);
+          }
 
-        g.append("g")
-          .attr("class", "x-axis")
+          g.selectAll(".val-label")
+            .data(labelPts)
+            .enter()
+            .append("text")
+            .attr("class", "val-label")
+            .attr("x", function (d) { return xScale(d.rating); })
+            .attr("y", function (d) {
+              if (layoutMode === "winrate_parity") return y2Scale(d.winRate) - 10;
+              if (layoutMode === "latency_envelope") return y2Scale(d.waitTime) - 10;
+              return y1Scale(d.volume) - 6;
+            })
+            .attr("text-anchor", "middle")
+            .attr("fill", theme.text)
+            .attr("font-size", "10px")
+            .attr("font-weight", "600")
+            .text(function (d) {
+              if (layoutMode === "winrate_parity") return (d.winRate * 100).toFixed(1) + "%";
+              if (layoutMode === "latency_envelope") return d.waitTime.toFixed(0) + "s";
+              return formatValue(d.volume, config.valueFormat || "compact_num");
+            });
+        }
+
+        // ==========================================
+        // AXES RENDERING
+        // ==========================================
+        // X-Axis (Skill Rating / MMR)
+        var xAxis = d3.axisBottom(xScale)
+          .ticks(Math.min(pts.length, Math.floor(innerWidth / 80)))
+          .tickFormat(function (d) { return d; });
+
+        var xAxisG = g.append("g")
           .attr("transform", "translate(0," + innerHeight + ")")
-          .call(xAxis)
-          .selectAll("text")
+          .call(xAxis);
+
+        xAxisG.selectAll("text")
           .attr("fill", theme.subtext)
           .attr("font-size", "11px");
+        xAxisG.selectAll("line, path")
+          .attr("stroke", theme.border);
 
-        // Left Y Axis (Volume)
-        var yAxisLeft = d3.axisLeft(yScaleLeft).ticks(5).tickFormat(function (d) {
-          return formatValue(d, config.valueFormat || "compact_num");
-        });
-
-        g.append("g")
-          .attr("class", "y-axis-left")
-          .call(yAxisLeft)
-          .selectAll("text")
+        // X Axis Label
+        g.append("text")
+          .attr("x", innerWidth / 2)
+          .attr("y", innerHeight + 36)
+          .attr("text-anchor", "middle")
           .attr("fill", theme.subtext)
-          .attr("font-size", "10.5px");
+          .attr("font-size", "11.5px")
+          .attr("font-weight", "600")
+          .text("Player Skill Rating (MMR / Rank Tier)");
 
-        // Right Y Axis (Wait Time or Win Rate or CDF)
-        if (layoutMode !== "gaussian_bell") {
-          var yAxisRight = d3.axisRight(yScaleRight).ticks(5).tickFormat(function (d) {
-            if (layoutMode === "winrate_parity") return (d * 100).toFixed(0) + "%";
-            return d.toFixed(0) + "s";
-          });
+        // Left Y-Axis (Player Volume)
+        var y1Axis = d3.axisLeft(y1Scale)
+          .ticks(5)
+          .tickFormat(function (d) { return formatValue(d, config.valueFormat || "compact_num"); });
 
-          g.append("g")
-            .attr("class", "y-axis-right")
-            .attr("transform", "translate(" + innerWidth + ", 0)")
-            .call(yAxisRight)
-            .selectAll("text")
+        var y1AxisG = g.append("g")
+          .call(y1Axis);
+
+        y1AxisG.selectAll("text")
+          .attr("fill", theme.subtext)
+          .attr("font-size", "11px");
+        y1AxisG.selectAll("line, path")
+          .attr("stroke", theme.border);
+
+        // Left Y Label
+        g.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -innerHeight / 2)
+          .attr("y", -42)
+          .attr("text-anchor", "middle")
+          .attr("fill", theme.accent)
+          .attr("font-size", "11.5px")
+          .attr("font-weight", "600")
+          .text("Active Ranked Player Volume");
+
+        // Right Y-Axis (Latency, CDF %, or Win Rate %)
+        if (y2Scale) {
+          var y2Axis = d3.axisRight(y2Scale).ticks(5);
+          var y2LabelText = "";
+          var y2LabelColor = theme.latencyLine;
+
+          if (layoutMode === "latency_envelope") {
+            y2Axis.tickFormat(function (d) { return d + "s"; });
+            y2LabelText = "Queue Wait Time (sec)";
+            y2LabelColor = theme.latencyLine;
+          } else if (layoutMode === "tier_stratification") {
+            y2Axis.tickFormat(function (d) { return (d * 100).toFixed(0) + "%"; });
+            y2LabelText = "Cumulative CDF Distribution (%)";
+            y2LabelColor = theme.cdfLine;
+          } else if (layoutMode === "winrate_parity") {
+            y2Axis.tickFormat(function (d) { return (d * 100).toFixed(0) + "%"; });
+            y2LabelText = "Matchmaking Win Rate Parity (%)";
+            y2LabelColor = theme.parityLine;
+          }
+
+          var y2AxisG = g.append("g")
+            .attr("transform", "translate(" + innerWidth + ",0)")
+            .call(y2Axis);
+
+          y2AxisG.selectAll("text")
             .attr("fill", theme.subtext)
-            .attr("font-size", "10.5px");
+            .attr("font-size", "11px");
+          y2AxisG.selectAll("line, path")
+            .attr("stroke", theme.border);
+
+          g.append("text")
+            .attr("transform", "rotate(90)")
+            .attr("x", innerHeight / 2)
+            .attr("y", -innerWidth - 44)
+            .attr("text-anchor", "middle")
+            .attr("fill", y2LabelColor)
+            .attr("font-size", "11.5px")
+            .attr("font-weight", "600")
+            .text(y2LabelText);
         }
 
-        // ==========================================
-        // INTERACTIVITY: Crosshair, Tooltip, Click Drill
-        // ==========================================
-        var crosshair = g.append("line")
-          .attr("stroke", theme.accent)
-          .attr("stroke-width", 1.5)
-          .attr("stroke-dasharray", "4,4")
-          .attr("y1", 0)
-          .attr("y2", innerHeight)
-          .style("opacity", 0)
-          .style("pointer-events", "none");
+        // Tooltip Helper Functions
+        function showTooltip(event, d) {
+          var pct = totalPlayers > 0 ? ((d.volume / totalPlayers) * 100).toFixed(1) + "%" : "0%";
+          var slaStatus = d.waitTime > effectiveSla
+            ? "<span style='color:" + theme.slaLine + ";font-weight:700;'>⚠️ SLA Breached (" + d.waitTime.toFixed(1) + "s > " + Math.round(effectiveSla) + "s)</span>"
+            : "<span style='color:" + theme.parityLine + ";font-weight:700;'>✅ SLA Nominal (" + d.waitTime.toFixed(1) + "s)</span>";
 
-        var hitOverlay = g.append("rect")
-          .attr("width", innerWidth)
-          .attr("height", innerHeight)
-          .attr("fill", "transparent")
-          .style("cursor", "crosshair");
+          var html = "<div style='font-weight:700;font-size:13px;margin-bottom:6px;color:" + d.tier.color + ";'>" +
+            d.tier.icon + " " + d.label + " (" + d.tier.name + ")</div>" +
+            "<div style='display:flex;justify-content:space-between;margin:3px 0;'><span>Active Players:</span><strong>" + formatValue(d.volume, config.valueFormat || "compact_num") + " (" + pct + ")</strong></div>" +
+            "<div style='display:flex;justify-content:space-between;margin:3px 0;'><span>Avg Queue Wait:</span><strong>" + d.waitTime.toFixed(1) + "s</strong></div>" +
+            "<div style='display:flex;justify-content:space-between;margin:3px 0;'><span>SLA Status:</span>" + slaStatus + "</div>" +
+            "<div style='display:flex;justify-content:space-between;margin:3px 0;'><span>Win Rate Parity:</span><strong>" + (d.winRate * 100).toFixed(1) + "%</strong></div>" +
+            "<div style='display:flex;justify-content:space-between;margin:3px 0;'><span>Cumulative CDF:</span><strong>" + (d.cumPct * 100).toFixed(1) + "%</strong></div>";
 
-        hitOverlay.on("mousemove", function (event) {
-          var coords = d3.pointer(event);
-          var mx = coords[0];
-
-          // Find closest point
-          var closest = pts[0];
-          var minDist = Infinity;
-          for (var i = 0; i < pts.length; i++) {
-            var px = xScale(pts[i].rating);
-            var dist = Math.abs(px - mx);
-            if (dist < minDist) {
-              minDist = dist;
-              closest = pts[i];
-            }
+          if (d.targetVal !== null) {
+            html += "<div style='display:flex;justify-content:space-between;margin:3px 0;'><span>Target Benchmark:</span><strong>" + d.targetVal.toFixed(1) + "</strong></div>";
           }
 
-          var cx = xScale(closest.rating);
-          crosshair.attr("x1", cx).attr("x2", cx).style("opacity", 0.75);
+          html += "<div style='margin-top:6px;font-size:10px;color:" + theme.subtext + ";text-align:right;'>Click to open Looker drill menu ↗</div>";
 
-          var isSlaBreach = closest.waitTime > slaSec;
-          var tipHtml = "<div style='font-weight:700;font-size:13px;border-bottom:1px solid " + theme.border + ";padding-bottom:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;'>" +
-            "<span>" + closest.tier.icon + " " + closest.tier.name + " (" + closest.label + ")</span>" +
-            "<span style='font-size:11px;color:" + theme.subtext + ";'>" + Math.round(closest.rating) + " MMR</span>" +
-            "</div>" +
-            "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Player Volume:</span><strong style='color:" + theme.accent + ";'>" + formatValue(closest.volume, config.valueFormat || "compact_num") + "</strong></div>" +
-            "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Population Share:</span><strong>" + ((closest.volume / totalPlayers) * 100).toFixed(1) + "%</strong></div>" +
-            "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Cumulative Rank:</span><strong>Top " + ((1 - closest.cumPct) * 100).toFixed(1) + "%</strong></div>" +
-            "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Avg Queue Latency:</span><strong style='color:" + (isSlaBreach ? theme.slaLine : theme.latencyLine) + ";'>" + closest.waitTime.toFixed(1) + "s " + (isSlaBreach ? "⚠️" : "") + "</strong></div>" +
-            "<div style='display:flex;justify-content:space-between;gap:12px;margin:3px 0;'><span>Fair Win-Rate:</span><strong>" + (closest.winRate * 100).toFixed(1) + "%</strong></div>";
-
-          tooltip.innerHTML = tipHtml;
+          tooltip.innerHTML = html;
           tooltip.style.display = "block";
+          tooltip.style.opacity = "1";
+          moveTooltip(event);
+        }
 
-          var tipRect = tooltip.getBoundingClientRect();
-          var tipX = event.clientX - rect.left + 15;
-          var tipY = event.clientY - rect.top - tipRect.height / 2;
+        function moveTooltip(event) {
+          var containerRect = container.getBoundingClientRect();
+          var mouseX = event.clientX - containerRect.left;
+          var mouseY = event.clientY - containerRect.top;
 
-          if (tipX + tipRect.width > width - 10) {
-            tipX = event.clientX - rect.left - tipRect.width - 15;
+          var tooltipX = mouseX + 14;
+          var tooltipY = mouseY - 20;
+
+          if (tooltipX + 320 > containerRect.width) {
+            tooltipX = mouseX - 330;
           }
-          if (tipY < 10) tipY = 10;
-          if (tipY + tipRect.height > height - 10) tipY = height - tipRect.height - 10;
+          if (tooltipY + 180 > containerRect.height) {
+            tooltipY = containerRect.height - 190;
+          }
+          if (tooltipY < 10) tooltipY = 10;
 
-          tooltip.style.left = tipX + "px";
-          tooltip.style.top = tipY + "px";
-        });
+          tooltip.style.left = Math.max(10, tooltipX) + "px";
+          tooltip.style.top = Math.max(10, tooltipY) + "px";
+        }
 
-        hitOverlay.on("mouseleave", function () {
-          crosshair.style("opacity", 0);
+        function hideTooltip() {
           tooltip.style.display = "none";
-        });
+          tooltip.style.opacity = "0";
+        }
 
-        // Click-to-Drill Support
-        hitOverlay.on("click", function (event) {
-          var coords = d3.pointer(event);
-          var mx = coords[0];
-          var closest = pts[0];
-          var minDist = Infinity;
-          for (var i = 0; i < pts.length; i++) {
-            var px = xScale(pts[i].rating);
-            var dist = Math.abs(px - mx);
-            if (dist < minDist) {
-              minDist = dist;
-              closest = pts[i];
-            }
+        function triggerDrill(d, event) {
+          if (!d.rowRef) return;
+          var cell = d.rowRef[ratingDim] || d.rowRef[volumeMeas];
+          if (cell && cell.links && cell.links.length > 0 && LookerCharts && LookerCharts.Utils) {
+            LookerCharts.Utils.openDrillMenu({
+              links: cell.links,
+              event: event
+            });
           }
-          if (closest && closest.rowRef && ratingDim && closest.rowRef[ratingDim]) {
-            var cell = closest.rowRef[ratingDim];
-            if (cell.links && cell.links.length > 0 && typeof LookerCharts !== "undefined" && LookerCharts.Utils && LookerCharts.Utils.openDrillMenu) {
-              LookerCharts.Utils.openDrillMenu({ links: cell.links, event: event });
-            }
-          }
-        });
+        }
 
         done();
       });
