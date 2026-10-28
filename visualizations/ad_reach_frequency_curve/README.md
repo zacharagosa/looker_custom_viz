@@ -93,3 +93,48 @@ Provides 5 instant executive metrics calculated directly client-side across the 
 - **Expanded Row Limit (5,000+ rows)**: Aggregates high-cardinality campaign logs in sub-5ms using typed arrays and single-pass reduction.
 - **Zero Memory Leaks**: Clean DOM recycling, unbinding listeners on re-render, and debounced `ResizeObserver` with 4px jitter guard.
 - **Native Looker Drill-Down**: Fully supports clicking any point, bar, or corridor to trigger Looker's native drill-down modal (`LookerCharts.Utils.openDrillMenu`).
+
+---
+
+## 🛠️ Enterprise Flexibility & Configuration Options (Upgraded 2026-10-28)
+
+The visualization implements Looker's strict **2-Tab Options Architecture** (`Display` and `Style`) to avoid crowding Edit Viz modal headers, while providing full customization across enterprise media and marketing use cases:
+
+### Tab 1: `Display`
+- **Dynamic Field-Role Mapping**: Dynamic dropdowns (`_registerDynamicFieldOptions`) for:
+  - `Primary Channel / Dimension`: Select which query column identifies the channel, campaign, or network (e.g., `broadcast_programming.network`).
+  - `Secondary Segment / Group Dimension`: Optional breakdown dimension for dayparts, creative versions, or target demographics.
+  - `Gross Delivery / Impressions Measure`: Select query measure driving delivery volume (e.g., `ad_spot_airings.total_airing_spots`, impressions, or GRPs).
+  - `Spend / Benchmark Measure`: Select comparison measure for financial allocation, budget, or benchmark targets.
+- **Configurable Benchmark Reference Lines**:
+  - `Target Reach Benchmark Mode`: Choose from `Fixed Value Target`, `Spend / Target Measure Column`, `Dataset Mean Reach`, `Dataset Median Reach`, `Top Quintile (P80 Benchmark)`, or `None / Hide Target Line`.
+  - `Target Reach Goal (%)`: Numeric goal (default: `70%`).
+  - `Reference Line Label`: Custom label for the horizontal benchmark line (default: `Target Reach Goal`).
+  - `Effective Frequency Min / Max`: Customize the corridor boundaries (default: `3x` to `6x`).
+- **Sorting & Top-N Bucketing**:
+  - `Channel Sorting & Ordering`: `Metric Volume Descending`, `Metric Volume Ascending`, `Alphabetical by Name`, or `Natural Query Order`.
+  - `Top-N Channel Limit`: Filter to Top 5, 10, 15, 20, 30 channels or show All.
+  - `Rollup Excluded Channels into 'Other'`: Automatic aggregate rollup for long-tail placements.
+  - `Suppress Zero / Null Delivery Channels`: Clean data suppression toggle.
+- **HUD & Label Density**:
+  - `Executive KPI HUD Mode`: Toggle between `Full Scorecard (5 KPI Chips)`, `Compact Metric Strip (3 Core Metrics)`, or `Hidden (Maximum Canvas)`.
+  - `Data Value Label Density`: `Peaks & Inflection Points Only`, `All Data Points`, or `Hidden`.
+  - `Custom Chart Title & Subtitle Override`: Directly override headers inside the visualization.
+  - `Channel & Campaign Search Bar`: Interactive search and real-time filtering bar.
+
+### Tab 2: `Style`
+- **Color Themes & Brand Palettes**:
+  - `Google Enterprise Blue (Light)`
+  - `Modern Executive Slate (Indigo & Charcoal)`
+  - `Cyber Ad-Ops (Dark Mode)`
+  - `Emerald Growth (Light Mode)`
+  - `Nielsen Broadcast (Midnight / Gold)`
+  - `Streaming Crimson (Charcoal / Red)`
+  - `Wellverse Healthcare (Teal & Coral)`
+  - `Custom Primary Hex Accent`
+- **Custom Hex Overrides**: Primary Accent Hex (`display: 'color'`), Positive Benchmark Hex (`display: 'color'`), and Warning / Wearout Hex (`display: 'color'`).
+- **Metric Polarity**: Toggle between `Higher is Better` (Audience Reach & Delivery) and `Lower is Better` (Ad Wearout & Saturation Waste).
+- **Typography & Font Scaling**: `Compact (Dashboard Grid)`, `Standard (Balanced)`, and `Large Presentation (Executive Display)`.
+- **Value Metric Formatting**: `Auto`, `Compact Number (1.2M)`, `Compact Currency ($1.2M)`, `Percentage (12.3%)`, `Standard Integer (1,234)`, `Decimal 2dp (1,234.56)`, or `Raw Unformatted`.
+- **Curve Smoothing**: `Monotone Cubic Spline`, `Catmull-Rom Spline`, `Basis Spline`, or `Linear Segments`.
+- **Gridlines & Markers**: Independent toggles for background gridlines and data point markers.

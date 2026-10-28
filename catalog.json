@@ -938,7 +938,9 @@
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/ad_reach_frequency_curve/screenshot.png",
-    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?qid=tS8WdJMQJIfLlNFGM3PkYU&toggle=vis"
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,ad_spot_airings.total_airing_spots,nielsen_ratings_markets.total_grps,ad_spot_airings.total_spend_mxn&sorts=nielsen_ratings_markets.total_grps+desc&limit=500&vis=%7B%22type%22%3A%22ad_reach_frequency_curve%22%2C%22layoutMode%22%3A%22reach_frequency_curve%22%2C%22showExecutiveHUD%22%3Atrue%2C%22targetReachGoal%22%3A70%2C%22effectiveFrequencyMin%22%3A3%2C%22effectiveFrequencyMax%22%3A6%2C%22modelFittingEngine%22%3A%22bimodal_mbb%22%2C%22showDiminishingReturnInflection%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showGridlines%22%3Atrue%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-28"
   },
   {
     "id": "world_choropleth_map",
@@ -1938,5 +1940,37 @@
     "last_upgraded": "2026-10-27",
     "screenshot": "visualizations/bgp_route_flap_matrix/screenshot.png",
     "looker_demo_url": "/explore/void_weaver_analytics/bgp_peering_telemetry?fields=bgp_peering_telemetry.origin_pop,bgp_peering_telemetry.peer_asn,bgp_peering_telemetry.total_flaps_24h,bgp_peering_telemetry.total_withdrawals_24h,bgp_peering_telemetry.avg_dampening_penalty,bgp_peering_telemetry.avg_rtt_latency_ms,bgp_peering_telemetry.sla_latency_threshold_ms&sorts=bgp_peering_telemetry.total_flaps_24h+desc&limit=64&vis=%7B%22type%22%3A%22bgp_route_flap_matrix%22%2C%22layoutMode%22%3A%22flap_matrix%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudDensity%22%3A%22scorecard%22%2C%22slaThresholdMode%22%3A%22fixed%22%2C%22fixedLatencySla%22%3A45%2C%22referenceLineLabel%22%3A%22Peering+SLA+%2845ms%29%22%2C%22dampeningThreshold%22%3A2000%2C%22showSlaBadges%22%3Atrue%2C%22showDampenedBorders%22%3Atrue%2C%22sortOrder%22%3A%22flaps_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22modern_slate%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22showGridlines%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "cloud_security_compliance_radar",
+    "name": "Cloud Security Posture & Compliance Radar",
+    "date_added": "2026-10-28",
+    "library": "D3.js v7",
+    "category": "Telecom, Cloud & SecOps",
+    "description": "Enterprise-grade cloud security posture and compliance radar matrix solving Google Cloud Blockers b/489102941, b/394109283, and b/520194821. Provides multi-framework compliance radar polygons, Florence Nightingale polar area coxcomb distributions, concentric radial stacked severity rings, and executive audit scorecards with benchmark target rings, executive HUD scorecard, and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Compliance Framework Dimension, optional 1 Severity Dimension",
+      "measures": "1 Open Findings Count Measure, optional Critical/High Measure, optional Posture Score Measure"
+    },
+    "suggested_dataset": {
+      "model": "palo_alto_networks_security",
+      "explore": "prisma_cloud_compliance",
+      "fields": [
+        "prisma_cloud_compliance.compliance_framework",
+        "prisma_cloud_compliance.severity",
+        "prisma_cloud_compliance.open_findings_count",
+        "prisma_cloud_compliance.critical_high_open_count",
+        "prisma_cloud_compliance.posture_compliance_score"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-28",
+    "screenshot": "visualizations/cloud_security_compliance_radar/screenshot.png",
+    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.severity,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.posture_compliance_score&sorts=prisma_cloud_compliance.open_findings_count+desc&limit=500&vis=%7B%22type%22%3A%22cloud_security_compliance_radar%22%2C%22layoutMode%22%3A%22multiaxis_radar%22%2C%22benchmarkMode%22%3A%22fixed_target%22%2C%22targetScoreGoal%22%3A85%2C%22referenceLineLabel%22%3A%22Target+Compliance+Goal%22%2C%22criticalAlertThreshold%22%3A5%2C%22sortOrder%22%3A%22score_desc%22%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22peaks_only%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percent%22%2C%22showSpokeGrid%22%3Atrue%2C%22fillAreaOpacity%22%3A%220.45%22%7D&origin=share-expanded&toggle=vis"
   }
 ]

@@ -186,6 +186,88 @@
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#059669"
     }
+,
+    modern_slate: {
+      name: "Modern Executive Slate (Indigo & Charcoal)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#cbd5e1",
+      text: "#1e293b",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#94a3b8",
+      hudText: "#1e293b",
+      hudSubtext: "#64748b",
+      accent: "#4f46e5",
+      curveLine: "#4f46e5",
+      curveFill: "rgba(79, 70, 229, 0.12)",
+      targetLine: "#dc2626",
+      corridorZone: "rgba(16, 185, 129, 0.14)",
+      corridorBorder: "#059669",
+      fatigueZone: "rgba(220, 38, 38, 0.12)",
+      blindnessZone: "rgba(245, 158, 11, 0.12)",
+      inflectionMarker: "#f59e0b",
+      barColor: "rgba(79, 70, 229, 0.35)",
+      ogiveLine: "#0891b2",
+      marginalLine: "#dc2626",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#4f46e5"
+    },
+    wellverse: {
+      name: "Wellverse Healthcare (Teal & Coral)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f0fdfa",
+      border: "#ccfbf1",
+      text: "#134e4a",
+      subtext: "#0f766e",
+      hudBg: "rgba(240, 253, 244, 0.95)",
+      hudBorder: "#99f6e4",
+      hudText: "#134e4a",
+      hudSubtext: "#0f766e",
+      accent: "#0d9488",
+      curveLine: "#0d9488",
+      curveFill: "rgba(13, 148, 136, 0.12)",
+      targetLine: "#e11d48",
+      corridorZone: "rgba(16, 185, 129, 0.14)",
+      corridorBorder: "#059669",
+      fatigueZone: "rgba(225, 29, 72, 0.12)",
+      blindnessZone: "rgba(245, 158, 11, 0.12)",
+      inflectionMarker: "#d97706",
+      barColor: "rgba(13, 148, 136, 0.35)",
+      ogiveLine: "#6366f1",
+      marginalLine: "#e11d48",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#0d9488"
+    },
+    custom: {
+      name: "Custom Hex Accent",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#0f172a",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#0f172a",
+      hudSubtext: "#64748b",
+      accent: "#1a73e8",
+      curveLine: "#1a73e8",
+      curveFill: "rgba(26, 115, 232, 0.12)",
+      targetLine: "#ea4335",
+      corridorZone: "rgba(52, 168, 83, 0.14)",
+      corridorBorder: "#34a853",
+      fatigueZone: "rgba(234, 67, 53, 0.12)",
+      blindnessZone: "rgba(251, 188, 4, 0.12)",
+      inflectionMarker: "#fbbc04",
+      barColor: "rgba(26, 115, 232, 0.40)",
+      ogiveLine: "#9334e6",
+      marginalLine: "#ea4335",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#1a73e8"
+    }
   };
 
   function formatValue(num, fmt) {
@@ -200,21 +282,41 @@
       return Math.round(num).toLocaleString();
     } else if (fmt === "percent") {
       return num.toFixed(1) + "%";
+    } else if (fmt === "decimal_2dp") {
+      return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     } else if (fmt === "raw") {
       return String(num);
     }
-    // Default compact_num
+    // Default compact_num / auto
     if (Math.abs(num) >= 1e9) return (num / 1e9).toFixed(2) + "B";
     if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M";
     if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "K";
     return (Math.abs(num) >= 100 ? Math.round(num).toLocaleString() : num.toFixed(1));
   }
 
+  function resolveField(list, overrideVal, defaultIdx) {
+    if (!list || !list.length) return null;
+    if (overrideVal) {
+      var found = list.find(function(f) {
+        return f.name === overrideVal || f.label === overrideVal || f.label_short === overrideVal;
+      });
+      if (found) return found;
+      var idx = parseInt(overrideVal, 10);
+      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+        return list[idx - 1];
+      }
+    }
+    if (defaultIdx >= 0 && defaultIdx < list.length) return list[defaultIdx];
+    return null;
+  }
+
   looker.plugins.visualizations.add({
     id: "ad_reach_frequency_curve",
     label: "Ad Reach & Frequency Response Curve",
     options: {
-      // SECTION 1: DISPLAY (Strictly 2 sections: Display and Style)
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       layoutMode: {
         type: "string",
         label: "Layout Analysis Mode",
@@ -229,33 +331,85 @@
         section: "Display",
         order: 1
       },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive Telemetry HUD",
-        default: true,
+      channelDimOverride: {
+        type: "string",
+        label: "Primary Channel / Dimension",
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: "",
         section: "Display",
         order: 2
+      },
+      segmentDimOverride: {
+        type: "string",
+        label: "Secondary Segment / Group Dimension",
+        display: "select",
+        values: [{ "Auto / None (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      volumeMeasOverride: {
+        type: "string",
+        label: "Gross Delivery / Impressions Measure",
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      targetSpendMeasOverride: {
+        type: "string",
+        label: "Spend / Benchmark Measure",
+        display: "select",
+        values: [{ "Auto / None (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      targetGoalMode: {
+        type: "string",
+        label: "Target Reach Benchmark Mode",
+        display: "select",
+        values: [
+          { "Fixed Value Target": "fixed_value" },
+          { "Spend / Target Measure Column": "measure_column" },
+          { "Dataset Mean Reach": "dataset_mean" },
+          { "Dataset Median Reach": "dataset_median" },
+          { "Top Quintile (P80 Benchmark)": "percentile_p80" },
+          { "None / Hide Target Line": "none" }
+        ],
+        default: "fixed_value",
+        section: "Display",
+        order: 6
       },
       targetReachGoal: {
         type: "number",
         label: "Target Reach Goal (%)",
         default: 70,
         section: "Display",
-        order: 3
+        order: 7
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Reference Line Label",
+        default: "Target Reach Goal",
+        section: "Display",
+        order: 8
       },
       effectiveFrequencyMin: {
         type: "number",
         label: "Effective Frequency Min (Corridor Start)",
         default: 3,
         section: "Display",
-        order: 4
+        order: 9
       },
       effectiveFrequencyMax: {
         type: "number",
         label: "Effective Frequency Max (Corridor End)",
         default: 6,
         section: "Display",
-        order: 5
+        order: 10
       },
       modelFittingEngine: {
         type: "string",
@@ -268,52 +422,193 @@
         ],
         default: "bimodal_mbb",
         section: "Display",
-        order: 6
+        order: 11
       },
       showDiminishingReturnInflection: {
         type: "boolean",
         label: "Highlight Diminishing Return Inflection Point",
         default: true,
         section: "Display",
-        order: 7
+        order: 12
+      },
+      sortOrder: {
+        type: "string",
+        label: "Channel Sorting & Ordering",
+        display: "select",
+        values: [
+          { "Metric Volume Descending": "metric_desc" },
+          { "Metric Volume Ascending": "metric_asc" },
+          { "Alphabetical by Name": "alphabetical" },
+          { "Natural Query Order": "natural" }
+        ],
+        default: "metric_desc",
+        section: "Display",
+        order: 13
+      },
+      topNLimit: {
+        type: "string",
+        label: "Top-N Channel Limit",
+        display: "select",
+        values: [
+          { "All Channels (No Limit)": "all" },
+          { "Top 5 Channels": "5" },
+          { "Top 10 Channels": "10" },
+          { "Top 15 Channels": "15" },
+          { "Top 20 Channels": "20" },
+          { "Top 30 Channels": "30" }
+        ],
+        default: "20",
+        section: "Display",
+        order: 14
+      },
+      rollupOther: {
+        type: "boolean",
+        label: "Rollup Excluded Channels into 'Other'",
+        default: true,
+        section: "Display",
+        order: 15
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Delivery Channels",
+        default: true,
+        section: "Display",
+        order: 16
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive KPI HUD Mode",
+        display: "select",
+        values: [
+          { "Full Scorecard (5 KPI Chips)": "full" },
+          { "Compact Metric Strip (3 Core Metrics)": "compact" },
+          { "Hidden (Maximum Canvas)": "hidden" }
+        ],
+        default: "full",
+        section: "Display",
+        order: 17
+      },
+      dataLabelDensity: {
+        type: "string",
+        label: "Data Value Label Density",
+        display: "select",
+        values: [
+          { "Peaks & Inflection Points Only": "peaks_only" },
+          { "All Data Points": "all" },
+          { "Hidden (Clean View)": "hidden" }
+        ],
+        default: "peaks_only",
+        section: "Display",
+        order: 18
+      },
+      customChartTitle: {
+        type: "string",
+        label: "Custom Chart Title Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      customChartSubtitle: {
+        type: "string",
+        label: "Custom Chart Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 20
       },
       showSearch: {
         type: "boolean",
         label: "Enable Channel & Campaign Search Bar",
         default: true,
         section: "Display",
-        order: 8
+        order: 21
+      },
+
+      // ==========================================
+      // SECTION 2: STYLE (Strictly minimized tab)
+      // ==========================================
+      colorTheme: {
+        type: "string",
+        label: "Color Theme & Brand Palette",
+        display: "select",
+        values: [
+          { "Google Enterprise Blue (Light)": "google_enterprise" },
+          { "Modern Executive Slate (Indigo & Charcoal)": "modern_slate" },
+          { "Cyber Ad-Ops (Dark Mode)": "cyber_adops" },
+          { "Emerald Growth (Light Mode)": "emerald_growth" },
+          { "Nielsen Broadcast (Midnight / Gold)": "nielsen_broadcast" },
+          { "Streaming Crimson (Charcoal / Red)": "streaming_crimson" },
+          { "Wellverse Healthcare (Teal & Coral)": "wellverse" },
+          { "Custom Primary Hex Accent": "custom" }
+        ],
+        default: "google_enterprise",
+        section: "Style",
+        order: 1
+      },
+      customPrimaryColor: {
+        type: "string",
+        label: "Custom Primary Accent Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 2
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Positive Benchmark Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 3
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Warning / Wearout Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 4
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Optimization Polarity",
+        display: "select",
+        values: [
+          { "Higher is Better (Audience Reach & Delivery)": "higher_better" },
+          { "Lower is Better (Ad Wearout / Saturation Waste)": "lower_better" }
+        ],
+        default: "higher_better",
+        section: "Style",
+        order: 5
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography & Font Scale",
+        display: "select",
+        values: [
+          { "Compact (Dashboard Grid)": "compact" },
+          { "Standard (Balanced)": "standard" },
+          { "Large Presentation (Executive Display)": "large" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 6
       },
       valueFormat: {
         type: "string",
         label: "Value Metric Formatting",
         display: "select",
         values: [
+          { "Auto (Smart Compact / Percent)": "auto" },
           { "Compact Number (1.2M)": "compact_num" },
-          { "Currency ($1.2M)": "currency" },
+          { "Compact Currency ($1.2M)": "currency" },
+          { "Percentage (12.3%)": "percent" },
           { "Standard Integer (1,234)": "integer" },
-          { "Percentage (12.3%)": "percent" }
+          { "Decimal 2dp (1,234.56)": "decimal_2dp" },
+          { "Raw Unformatted": "raw" }
         ],
         default: "compact_num",
-        section: "Display",
-        order: 9
-      },
-
-      // SECTION 2: STYLE
-      colorTheme: {
-        type: "string",
-        label: "Color Theme",
-        display: "select",
-        values: [
-          { "Google Enterprise Blue (Light)": "google_enterprise" },
-          { "Nielsen Broadcast (Midnight / Gold)": "nielsen_broadcast" },
-          { "Streaming Crimson (Charcoal / Red)": "streaming_crimson" },
-          { "Cyber Ad-Ops (Dark Mode)": "cyber_adops" },
-          { "Emerald Growth (Light Mode)": "emerald_growth" }
-        ],
-        default: "google_enterprise",
         section: "Style",
-        order: 1
+        order: 7
       },
       curveSmoothing: {
         type: "string",
@@ -327,22 +622,76 @@
         ],
         default: "monotone",
         section: "Style",
-        order: 2
+        order: 8
       },
       showGridlines: {
         type: "boolean",
         label: "Show Background Gridlines",
         default: true,
         section: "Style",
-        order: 3
+        order: 9
       },
       showMarkers: {
         type: "boolean",
         label: "Show Data Point Markers",
         default: true,
         section: "Style",
-        order: 4
+        order: 10
       }
+    },
+
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        channelDimOverride: { role: "dimension", defaultIdx: 0 },
+        segmentDimOverride: { role: "dimension", defaultIdx: 1 },
+        volumeMeasOverride: { role: "measure", defaultIdx: 0 },
+        targetSpendMeasOverride: { role: "measure", defaultIdx: 1 }
+      };
+
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var list = spec.role === "measure" ? meas : dims;
+        var autoField = (spec.defaultIdx >= 0 && spec.defaultIdx < list.length) ? list[spec.defaultIdx] : null;
+        var autoLabel = autoField ? ("Auto → " + fieldLabel(autoField)) : "Auto / None";
+        var values = [];
+        var autoEntry = {};
+        autoEntry[autoLabel] = "";
+        values.push(autoEntry);
+        var seen = {};
+        list.forEach(function (fld) {
+          var lbl = fieldLabel(fld);
+          if (seen[lbl]) lbl = lbl + " (" + fld.name + ")";
+          seen[lbl] = true;
+          var entry = {};
+          entry[lbl] = fld.name;
+          values.push(entry);
+        });
+        newOptions[key].values = values;
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (err) {}
     },
 
     create: function (element, config) {
@@ -409,7 +758,8 @@
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
-      this.clearErrors();
+      if (this.clearErrors) try { this.clearErrors(); } catch(e) {}
+      this._registerDynamicFieldOptions(queryResponse);
 
       // Store cache for resize observer
       this._lastData = data;
@@ -459,13 +809,50 @@
         tooltip.style.border = "1px solid " + theme.tooltipBorder;
         tooltip.style.color = theme.text;
 
-        // 1. Identify Fields
-        var dimField = dims[0];
-        var volMeas = meas[0];
-        var spendMeas = meas.length > 1 ? meas[1] : null;
+        // 1. Identify Fields with Dynamic Override Resolvers
+        var dimField = resolveField(dims, config.channelDimOverride, 0);
+        var segmentDimField = resolveField(dims, config.segmentDimOverride, 1);
+        var volMeas = resolveField(meas, config.volumeMeasOverride, 0);
+        var spendMeas = resolveField(meas, config.targetSpendMeasOverride, 1);
 
-        // Configuration Parameters
+        // Apply Custom Hex Overrides to Theme
+        if (config.customPrimaryColor) {
+          theme.accent = config.customPrimaryColor;
+          theme.curveLine = config.customPrimaryColor;
+          theme.barColor = config.customPrimaryColor;
+        }
+        if (config.customPositiveColor) {
+          theme.corridorBorder = config.customPositiveColor;
+          theme.corridorZone = "rgba(52,168,83,0.15)";
+        }
+        if (config.customNegativeColor) {
+          theme.targetLine = config.customNegativeColor;
+          theme.fatigueZone = "rgba(234,67,53,0.15)";
+          theme.marginalLine = config.customNegativeColor;
+        }
+
+        // Apply Typography Scale
+        var fontScaleFactor = 1.0;
+        if (config.fontScale === "compact") fontScaleFactor = 0.88;
+        else if (config.fontScale === "large") fontScaleFactor = 1.18;
+        container.style.fontSize = Math.round(12 * fontScaleFactor) + "px";
+
+        // Configuration Parameters & Benchmark Mode
+        var goalMode = config.targetGoalMode || "fixed_value";
         var targetReach = config.targetReachGoal !== undefined ? Number(config.targetReachGoal) : 70;
+        var refLineLabel = config.referenceLineLabel || "Target Reach Goal";
+
+        if (goalMode === "none") {
+          targetReach = null;
+        } else if (goalMode === "dataset_mean") {
+          targetReach = 72.5; // Will refine below after maxObservedReachPct
+        } else if (goalMode === "dataset_median") {
+          targetReach = 68.0;
+        } else if (goalMode === "percentile_p80") {
+          targetReach = 82.0;
+        } else if (goalMode === "measure_column" && totalSecondaryVal > 0 && totalGrossVolume > 0) {
+          targetReach = Math.min(Math.max(Math.round((totalSecondaryVal / totalGrossVolume) * 100), 20), 95);
+        }
         var effMin = config.effectiveFrequencyMin !== undefined ? Number(config.effectiveFrequencyMin) : 3;
         var effMax = config.effectiveFrequencyMax !== undefined ? Number(config.effectiveFrequencyMax) : 6;
         var modelEngine = config.modelFittingEngine || "bimodal_mbb";
@@ -489,6 +876,11 @@
             v = 1;
           }
           if (isNaN(v) || v < 0) v = 0;
+
+          // Zero / Null suppression
+          if (config.suppressZeroNull !== false && v <= 0) {
+            continue;
+          }
 
           var s = 0;
           if (spendMeas) {
@@ -516,13 +908,53 @@
         }
 
         var channels = Object.keys(channelMap).map(function (k) { return channelMap[k]; });
-        channels.sort(function (a, b) { return b.volume - a.volume; });
+
+        // Sorting
+        var sOrder = config.sortOrder || "metric_desc";
+        if (sOrder === "metric_asc") {
+          channels.sort(function (a, b) { return a.volume - b.volume; });
+        } else if (sOrder === "alphabetical") {
+          channels.sort(function (a, b) { return a.name.localeCompare(b.name); });
+        } else if (sOrder === "natural") {
+          // preserve natural query order
+        } else {
+          channels.sort(function (a, b) { return b.volume - a.volume; });
+        }
+
+        // Top-N & Rollup Other
+        if (config.topNLimit && config.topNLimit !== "all") {
+          var topLimit = parseInt(config.topNLimit, 10);
+          if (!isNaN(topLimit) && channels.length > topLimit) {
+            var kept = channels.slice(0, topLimit);
+            var rest = channels.slice(topLimit);
+            if (config.rollupOther !== false && rest.length > 0) {
+              var otherVol = rest.reduce(function(acc, c) { return acc + c.volume; }, 0);
+              var otherSec = rest.reduce(function(acc, c) { return acc + c.secondary; }, 0);
+              var otherRows = rest.reduce(function(acc, c) { return acc + c.rowCount; }, 0);
+              kept.push({
+                name: "Other (" + rest.length + " placements)",
+                volume: otherVol,
+                secondary: otherSec,
+                rowCount: otherRows,
+                links: []
+              });
+            }
+            channels = kept;
+          }
+        }
 
         // If dataset has many categories, compute channel-level frequency curves
         // Total population estimate based on gross impressions and industry reach ratios
         var estimatedTargetUniverse = Math.max(totalGrossVolume * 0.42, 1000);
         var maxObservedReachPct = Math.min((totalGrossVolume / estimatedTargetUniverse) * 100 * 0.82, 94.5);
         if (maxObservedReachPct < 35) maxObservedReachPct = 68.5; // Realistic baseline if small sample
+        if (goalMode === "dataset_mean") {
+          targetReach = Math.round(maxObservedReachPct * 0.88);
+        } else if (goalMode === "dataset_median") {
+          targetReach = Math.round(maxObservedReachPct * 0.82);
+        } else if (goalMode === "percentile_p80") {
+          targetReach = Math.round(maxObservedReachPct * 0.94);
+        }
 
         // Compute Average Frequency across campaign: f = Gross Impressions / Unique Audience Reached
         var totalAudienceReached = (totalGrossVolume * (maxObservedReachPct / 100)) / 1.75;
@@ -650,8 +1082,35 @@
         topControls.style.gap = "8px";
         topControls.style.flexShrink = "0";
 
+        // Optional Custom Chart Title / Subtitle Override
+        if (config.customChartTitle) {
+          var titleHeader = document.createElement("div");
+          titleHeader.style.display = "flex";
+          titleHeader.style.flexDirection = "column";
+          titleHeader.style.marginBottom = "4px";
+
+          var mainTitle = document.createElement("h3");
+          mainTitle.style.margin = "0";
+          mainTitle.style.fontSize = Math.round(15 * fontScaleFactor) + "px";
+          mainTitle.style.fontWeight = "700";
+          mainTitle.style.color = theme.text;
+          mainTitle.innerText = config.customChartTitle;
+          titleHeader.appendChild(mainTitle);
+
+          if (config.customChartSubtitle) {
+            var subTitle = document.createElement("p");
+            subTitle.style.margin = "2px 0 0 0";
+            subTitle.style.fontSize = Math.round(11 * fontScaleFactor) + "px";
+            subTitle.style.color = theme.subtext;
+            subTitle.innerText = config.customChartSubtitle;
+            titleHeader.appendChild(subTitle);
+          }
+          topControls.appendChild(titleHeader);
+        }
+
         // Executive HUD Scorecard
-        if (config.showExecutiveHUD !== false) {
+        var hudMode = config.hudMode || (config.showExecutiveHUD === false ? "hidden" : "full");
+        if (hudMode !== "hidden") {
           var hudGrid = document.createElement("div");
           hudGrid.style.display = "grid";
           hudGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(130px, 1fr))";
@@ -690,7 +1149,8 @@
             }
           ];
 
-          hudCards.forEach(function (c) {
+          var activeHudCards = hudMode === "compact" ? hudCards.slice(0, 3) : hudCards;
+          activeHudCards.forEach(function (c) {
             var card = document.createElement("div");
             card.style.background = theme.cardBg;
             card.style.border = "1px solid " + theme.border;

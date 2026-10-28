@@ -1,0 +1,32 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "prisma_cloud_compliance",
+  "fields": [
+    "prisma_cloud_compliance.compliance_framework",
+    "prisma_cloud_compliance.severity",
+    "prisma_cloud_compliance.open_findings_count",
+    "prisma_cloud_compliance.critical_high_open_count",
+    "prisma_cloud_compliance.posture_compliance_score"
+  ],
+  "sorts": [
+    "prisma_cloud_compliance.open_findings_count desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "cloud_security_compliance_radar",
+    "layoutMode": "multiaxis_radar",
+    "benchmarkMode": "fixed_target",
+    "targetScoreGoal": 85,
+    "referenceLineLabel": "Target Compliance Goal",
+    "criticalAlertThreshold": 5,
+    "sortOrder": "score_desc",
+    "hudMode": "full",
+    "dataLabelDensity": "peaks_only",
+    "colorTheme": "google_enterprise",
+    "metricPolarity": "higher_better",
+    "fontScale": "standard",
+    "valueFormat": "percent",
+    "showSpokeGrid": true,
+    "fillAreaOpacity": "0.45"
+  }
+}
