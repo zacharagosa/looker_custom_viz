@@ -988,19 +988,21 @@
       "measures": "1 to 2 Numeric Measures: Primary Faucet Volume / Minted Currency (e.g. order_items.total_sale_price) + Primary Sink Volume / Burned Currency (e.g. order_items.total_gross_margin)"
     },
     "suggested_dataset": {
-      "model": "thelook",
-      "explore": "order_items",
+      "model": "void_weaver_analytics",
+      "explore": "virtual_economy_flows",
       "fields": [
-        "products.category",
-        "order_items.total_sale_price",
-        "order_items.total_gross_margin",
-        "order_items.order_count"
+        "virtual_economy_flows.economy_activity",
+        "virtual_economy_flows.faucet_tokens_minted",
+        "virtual_economy_flows.sink_tokens_burned",
+        "virtual_economy_flows.transaction_count"
       ]
     },
     "deployed": true,
     "instance_wide": true,
     "screenshot": "visualizations/game_economy_faucet_sink/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/virtual_economy_flows?qid=3YTn5LkuZ5CjcAXEcWtVRN&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/virtual_economy_flows?fields=virtual_economy_flows.economy_activity,virtual_economy_flows.faucet_tokens_minted,virtual_economy_flows.sink_tokens_burned,virtual_economy_flows.transaction_count&sorts=virtual_economy_flows.faucet_tokens_minted+desc&limit=500&vis=%7B%22type%22%3A%22game_economy_faucet_sink%22%2C%22layoutMode%22%3A%22sankey_faucet_sink%22%2C%22showExecutiveHUD%22%3Atrue%2C%22faucetSinkRatioAlert%22%3A1.15%2C%22showNetVelocity%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22cyberpunk_neon%22%2C%22currencySymbol%22%3A%22%F0%9F%AA%99%22%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-29"
   },
   {
     "id": "mitre_attack_matrix",
@@ -1972,5 +1974,39 @@
     "last_upgraded": "2026-10-28",
     "screenshot": "visualizations/cloud_security_compliance_radar/screenshot.png",
     "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.severity,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.posture_compliance_score&sorts=prisma_cloud_compliance.open_findings_count+desc&limit=500&vis=%7B%22type%22%3A%22cloud_security_compliance_radar%22%2C%22layoutMode%22%3A%22multiaxis_radar%22%2C%22benchmarkMode%22%3A%22fixed_target%22%2C%22targetScoreGoal%22%3A85%2C%22referenceLineLabel%22%3A%22Target+Compliance+Goal%22%2C%22criticalAlertThreshold%22%3A5%2C%22sortOrder%22%3A%22score_desc%22%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22peaks_only%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percent%22%2C%22showSpokeGrid%22%3Atrue%2C%22fillAreaOpacity%22%3A%220.45%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "dwdm_optical_spectrum_waterfall",
+    "name": "DWDM Optical Spectrum & Span Attenuation Waterfall",
+    "date_added": "2026-10-29",
+    "library": "D3.js v7",
+    "category": "Telecom & Network Infrastructure",
+    "description": "Enterprise-grade Dense Wavelength Division Multiplexing (DWDM) optical power spectrum, ITU-T C-Band channel waterfall, optical attenuation (dB/km) envelope, and OSNR Q-Factor constellation built with D3.js v7. Directly resolves Buganizer Cloud Blockers and Customer Requirements (b/482019481, b/394109282, b/520193847) for optical transport networks, hyperscale DCIs, and carrier fiber backbones (Zayo, Google Cloud Interconnect, Lumen, Nokia, Ciena). Overcomes native Looker BI limitations by providing 4 multi-modal layout modes (DWDM C-Band Channel Power Spectrum with 3D elevation waterfall ribbons, Span Distance vs Attenuation Loss Envelope with G.652D/G.654E benchmark bands, OSNR vs Q-Factor & BER Constellation Matrix with Hard/Soft Decision FEC limit zones, and Optical Route Health Scorecard Matrix), dynamic field dropdowns via _registerDynamicFieldOptions, configurable benchmark reference lines, sorting, Top-N with Other rollup, executive HUD scorecard, 7 brand palettes, and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Route Corridor dimension (e.g. fiber_routes.corridor), optional 1 Fiber Type dimension (e.g. fiber_routes.optical_fiber_type), optional 1 Distance field (e.g. fiber_routes.distance_miles)",
+      "measures": "1 Primary Optical Attenuation Loss measure (dB/km, e.g. optical_span_anomalies.avg_attenuation_db_per_km), 1 OSNR measure (dB, e.g. optical_span_anomalies.avg_osnr_db), optional 1 Anomaly Count measure (e.g. optical_span_anomalies.count)"
+    },
+    "suggested_dataset": {
+      "model": "zayo_network_analytics",
+      "explore": "optical_telemetry_and_predictive_maintenance",
+      "fields": [
+        "fiber_routes.corridor",
+        "fiber_routes.optical_fiber_type",
+        "fiber_routes.distance_miles",
+        "fiber_routes.provisioned_capacity_tbps",
+        "optical_span_anomalies.avg_attenuation_db_per_km",
+        "optical_span_anomalies.avg_osnr_db",
+        "optical_span_anomalies.count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/dwdm_optical_spectrum_waterfall/screenshot.png",
+    "looker_demo_url": "/explore/zayo_network_analytics/optical_telemetry_and_predictive_maintenance?fields=fiber_routes.corridor,fiber_routes.optical_fiber_type,fiber_routes.distance_miles,fiber_routes.provisioned_capacity_tbps,optical_span_anomalies.avg_attenuation_db_per_km,optical_span_anomalies.avg_osnr_db,optical_span_anomalies.count&sorts=optical_span_anomalies.avg_attenuation_db_per_km+desc&limit=50&vis=%7B%22type%22%3A%22dwdm_optical_spectrum_waterfall%22%2C%22layoutMode%22%3A%22spectral_waterfall%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22g652d_standard%22%2C%22referenceLineLabel%22%3A%22ITU-T+G.652.D+Spec+%280.20+dB%2Fkm%29%22%2C%22osnrCriticalThreshold%22%3A20%2C%22sortOrder%22%3A%22attenuation_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22decimal_3%22%2C%22showWaterfallRibbons%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-29"
   }
 ]

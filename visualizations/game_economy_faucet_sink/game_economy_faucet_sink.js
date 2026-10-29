@@ -1,22 +1,15 @@
 /**
- * Game Economy Faucet & Sink Analyzer - Looker Custom Visualization
- * Built with D3.js v7
+ * Game Economy Faucet & Sink Analyzer
+ * Enterprise-grade in-game virtual currency flow bridge, sink/faucet velocity monitor, and macro inflation watchdog.
+ * Built with D3.js v7 for Looker Custom Visualizations v2 API.
  *
- * Resolves Enterprise Cloud Blockers & Game Telemetry PRDs (b/341928091, b/490547912, b/530822261, b/567332923):
- * - 4 Multi-Modal Layout Modes:
- *     1. "sankey_faucet_sink": Faucet & Sink Flow Bridge (Left column: Faucets minting currency; Center: In-Game Economy Core; Right column: Sinks draining currency with dynamic ribbons and particle pulses).
- *     2. "divergent_balance": Bilateral Divergence Balance (Horizontal butterfly/tornado chart with centered baseline; Faucets extend right in mint green, Sinks extend left in burn crimson, with net balance delta pills).
- *     3. "velocity_matrix": Net Currency Velocity & Inflation Matrix (Macroeconomic health scorecard plotting category streams with faucet volume, sink volume, net burn/mint velocity, and inflation health status badges).
- *     4. "waterfall_stockpile": Economy Waterfall & Reserve Stockpile (Stepped cumulative cascade displaying Baseline Reserve, Faucet Additions, Sink Deductions, and Net Closing Reserve).
- * - High-Density 5,000+ Row Scalability:
- *     - Fast client-side O(N) map rollup and top-stream aggregation with smooth rendering.
- * - Strict 2-Tab Options Modal: "Display" and "Style" to avoid crowded Looker edit modal header tabs.
- * - Dual Y-Axis Architecture: Strictly independent left & right Y axes without clutter.
- * - Executive HUD Scorecard: Total Minted, Total Burned, Net Velocity, Faucet/Sink Ratio, Active Streams, Inflation Status.
- * - Interactive Features: Stream search & isolation filter, interactive tooltips, Looker drill-down menu.
+ * Fully upgraded to strict 2-tab schema (Display & Style) with dynamic field-role dropdowns,
+ * configurable reference lines, sorting, Top-N with Other rollup, executive HUD modes, brand themes,
+ * custom hex overrides, and Looker drill-down menus.
  */
 
 (function () {
+  // Ensure D3 v7 is loaded
   function ensureD3(callback) {
     if (window.d3 && typeof window.d3.scaleLinear === "function") {
       callback(window.d3);
@@ -40,32 +33,33 @@
     document.head.appendChild(script);
   }
 
+  // Visual Theme Configurations
   var THEMES = {
     cyberpunk_neon: {
       name: "Cyberpunk Neon (Dark)",
       isDark: true,
       bg: "#090d16",
-      cardBg: "rgba(15, 23, 42, 0.85)",
-      border: "#1e293b",
-      text: "#f8fafc",
-      subtext: "#94a3b8",
-      hudBg: "rgba(15, 23, 42, 0.92)",
-      hudBorder: "rgba(51, 65, 85, 0.8)",
-      hudText: "#f8fafc",
-      hudSubtext: "#94a3b8",
-      accent: "#38bdf8",
-      faucetColor: "#10b981",
-      faucetFill: "rgba(16, 185, 129, 0.35)",
-      faucetRibbon: "rgba(16, 185, 129, 0.45)",
-      sinkColor: "#f43f5e",
-      sinkFill: "rgba(244, 63, 94, 0.35)",
-      sinkRibbon: "rgba(244, 63, 94, 0.45)",
-      coreNodeColor: "#8b5cf6",
-      netPositiveColor: "#10b981",
-      netNegativeColor: "#f43f5e",
-      alertColor: "#f59e0b",
+      cardBg: "#111827",
+      border: "#1f293d",
+      text: "#f9fafb",
+      subtext: "#9ca3af",
+      hudBg: "rgba(17, 24, 39, 0.92)",
+      hudBorder: "#374151",
+      hudText: "#ffffff",
+      hudSubtext: "#9ca3af",
+      accent: "#00ffcc",
+      faucetColor: "#00ffcc",
+      faucetFill: "rgba(0, 255, 204, 0.20)",
+      faucetRibbon: "rgba(0, 255, 204, 0.35)",
+      sinkColor: "#ff0055",
+      sinkFill: "rgba(255, 0, 85, 0.18)",
+      sinkRibbon: "rgba(255, 0, 85, 0.35)",
+      coreNodeColor: "#7928ca",
+      netPositiveColor: "#00ffcc",
+      netNegativeColor: "#ff0055",
+      alertColor: "#ffaa00",
       tooltipBg: "rgba(15, 23, 42, 0.96)",
-      tooltipBorder: "#38bdf8"
+      tooltipBorder: "#00ffcc"
     },
     modern_slate: {
       name: "Modern Studio Slate (Light)",
@@ -80,44 +74,44 @@
       hudText: "#0f172a",
       hudSubtext: "#64748b",
       accent: "#2563eb",
-      faucetColor: "#059669",
-      faucetFill: "rgba(5, 150, 105, 0.20)",
-      faucetRibbon: "rgba(5, 150, 105, 0.35)",
-      sinkColor: "#e11d48",
-      sinkFill: "rgba(225, 29, 72, 0.18)",
-      sinkRibbon: "rgba(225, 29, 72, 0.35)",
+      faucetColor: "#10b981",
+      faucetFill: "rgba(16, 185, 129, 0.20)",
+      faucetRibbon: "rgba(16, 185, 129, 0.35)",
+      sinkColor: "#ef4444",
+      sinkFill: "rgba(239, 68, 68, 0.18)",
+      sinkRibbon: "rgba(239, 68, 68, 0.35)",
       coreNodeColor: "#6366f1",
-      netPositiveColor: "#059669",
-      netNegativeColor: "#e11d48",
-      alertColor: "#d97706",
+      netPositiveColor: "#10b981",
+      netNegativeColor: "#ef4444",
+      alertColor: "#f59e0b",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#2563eb"
     },
     golden_forge: {
       name: "Golden Forge (Dark)",
       isDark: true,
-      bg: "#120f0a",
-      cardBg: "rgba(30, 24, 16, 0.85)",
-      border: "#44341c",
-      text: "#fef3c7",
-      subtext: "#d97706",
-      hudBg: "rgba(26, 20, 12, 0.92)",
-      hudBorder: "rgba(180, 83, 9, 0.6)",
-      hudText: "#fef3c7",
-      hudSubtext: "#fde68a",
-      accent: "#fbbf24",
-      faucetColor: "#10b981",
-      faucetFill: "rgba(16, 185, 129, 0.35)",
-      faucetRibbon: "rgba(245, 158, 11, 0.45)",
-      sinkColor: "#ef4444",
-      sinkFill: "rgba(239, 68, 68, 0.35)",
-      sinkRibbon: "rgba(239, 68, 68, 0.45)",
-      coreNodeColor: "#f59e0b",
-      netPositiveColor: "#10b981",
-      netNegativeColor: "#ef4444",
-      alertColor: "#fbbf24",
-      tooltipBg: "rgba(26, 20, 12, 0.96)",
-      tooltipBorder: "#fbbf24"
+      bg: "#0c0a09",
+      cardBg: "#1c1917",
+      border: "#292524",
+      text: "#fafaf9",
+      subtext: "#a8a29e",
+      hudBg: "rgba(28, 25, 23, 0.95)",
+      hudBorder: "#44403c",
+      hudText: "#fafaf9",
+      hudSubtext: "#a8a29e",
+      accent: "#f59e0b",
+      faucetColor: "#fbbf24",
+      faucetFill: "rgba(251, 191, 36, 0.20)",
+      faucetRibbon: "rgba(251, 191, 36, 0.35)",
+      sinkColor: "#ea580c",
+      sinkFill: "rgba(234, 88, 12, 0.18)",
+      sinkRibbon: "rgba(234, 88, 12, 0.35)",
+      coreNodeColor: "#d97706",
+      netPositiveColor: "#fbbf24",
+      netNegativeColor: "#ea580c",
+      alertColor: "#ef4444",
+      tooltipBg: "rgba(28, 25, 23, 0.98)",
+      tooltipBorder: "#f59e0b"
     },
     emerald_reserve: {
       name: "Emerald Reserve (Light)",
@@ -144,6 +138,58 @@
       alertColor: "#ea580c",
       tooltipBg: "rgba(255, 255, 255, 0.98)",
       tooltipBorder: "#059669"
+    },
+    google_enterprise: {
+      name: "Google Enterprise (Light)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f8fafc",
+      border: "#e2e8f0",
+      text: "#1e293b",
+      subtext: "#64748b",
+      hudBg: "rgba(248, 250, 252, 0.95)",
+      hudBorder: "#cbd5e1",
+      hudText: "#1e293b",
+      hudSubtext: "#64748b",
+      accent: "#1a73e8",
+      faucetColor: "#1a73e8",
+      faucetFill: "rgba(26, 115, 232, 0.20)",
+      faucetRibbon: "rgba(26, 115, 232, 0.35)",
+      sinkColor: "#d93025",
+      sinkFill: "rgba(217, 48, 37, 0.18)",
+      sinkRibbon: "rgba(217, 48, 37, 0.35)",
+      coreNodeColor: "#12b5cb",
+      netPositiveColor: "#188038",
+      netNegativeColor: "#d93025",
+      alertColor: "#f29900",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#1a73e8"
+    },
+    wellverse_healthcare: {
+      name: "Wellverse Healthcare (Light)",
+      isDark: false,
+      bg: "#ffffff",
+      cardBg: "#f0f9ff",
+      border: "#bae6fd",
+      text: "#0c4a6e",
+      subtext: "#0369a1",
+      hudBg: "rgba(240, 249, 255, 0.95)",
+      hudBorder: "#7dd3fc",
+      hudText: "#0c4a6e",
+      hudSubtext: "#0369a1",
+      accent: "#0284c7",
+      faucetColor: "#0284c7",
+      faucetFill: "rgba(2, 132, 199, 0.20)",
+      faucetRibbon: "rgba(2, 132, 199, 0.35)",
+      sinkColor: "#e11d48",
+      sinkFill: "rgba(225, 29, 72, 0.18)",
+      sinkRibbon: "rgba(225, 29, 72, 0.35)",
+      coreNodeColor: "#0d9488",
+      netPositiveColor: "#059669",
+      netNegativeColor: "#e11d48",
+      alertColor: "#f59e0b",
+      tooltipBg: "rgba(255, 255, 255, 0.98)",
+      tooltipBorder: "#0284c7"
     }
   };
 
@@ -161,6 +207,8 @@
       return s + num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
     } else if (fmt === "percentage") {
       return num.toFixed(1) + "%";
+    } else if (fmt === "decimal_2") {
+      return sym + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     } else if (fmt === "raw") {
       return sym + String(num);
     }
@@ -175,7 +223,9 @@
     id: "game_economy_faucet_sink",
     label: "Game Economy Faucet & Sink Analyzer",
     options: {
-      // SECTION 1: DISPLAY (Strictly limited to 2 sections: Display and Style)
+      // ==========================================
+      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // ==========================================
       layoutMode: {
         type: "string",
         label: "Economy Layout Mode",
@@ -190,36 +240,199 @@
         section: "Display",
         order: 1
       },
-      showExecutiveHUD: {
-        type: "boolean",
-        label: "Show Executive Economy HUD",
-        default: true,
+      activityDimOverride: {
+        type: "string",
+        label: "Activity / Stream Dimension",
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: "",
         section: "Display",
         order: 2
+      },
+      groupDimOverride: {
+        type: "string",
+        label: "Secondary Group Dimension",
+        display: "select",
+        values: [{ "Auto / None (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
+      faucetMeasOverride: {
+        type: "string",
+        label: "Primary Faucet / Mint Measure",
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
+      sinkMeasOverride: {
+        type: "string",
+        label: "Primary Sink / Burn Measure",
+        display: "select",
+        values: [{ "Auto (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 5
+      },
+      transCountMeasOverride: {
+        type: "string",
+        label: "Transaction Count / Context Measure",
+        display: "select",
+        values: [{ "Auto / None (run query to populate choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
+      targetGoalMode: {
+        type: "string",
+        label: "Benchmark Target Mode",
+        display: "select",
+        values: [
+          { "Inflation Risk Alert Ratio (Faucet / Sink)": "faucet_sink_ratio_alert" },
+          { "Fixed Net Target Volume": "fixed_net_volume" },
+          { "Dataset Mean Faucet Volume": "dataset_mean" },
+          { "Dataset Median Faucet Volume": "dataset_median" },
+          { "Top Quartile (P75 Faucet Volume)": "percentile_p75" },
+          { "None / Hide Target Line": "none" }
+        ],
+        default: "faucet_sink_ratio_alert",
+        section: "Display",
+        order: 7
       },
       faucetSinkRatioAlert: {
         type: "number",
         label: "Inflation Risk Ratio Alert (Faucet/Sink)",
         default: 1.15,
         section: "Display",
-        order: 3
+        order: 8
+      },
+      fixedNetTarget: {
+        type: "number",
+        label: "Fixed Net Target Volume",
+        default: 0,
+        section: "Display",
+        order: 9
+      },
+      referenceLineLabel: {
+        type: "string",
+        label: "Reference Line Label",
+        default: "Macro Inflation Alert (1.15x)",
+        section: "Display",
+        order: 10
+      },
+      deflationThreshold: {
+        type: "number",
+        label: "Deflation Drain Alert Ratio",
+        default: 0.85,
+        section: "Display",
+        order: 11
+      },
+      sortOrder: {
+        type: "string",
+        label: "Stream Sort Order",
+        display: "select",
+        values: [
+          { "Total Faucet Minting (Descending)": "faucet_desc" },
+          { "Total Faucet Minting (Ascending)": "faucet_asc" },
+          { "Total Sink Burning (Descending)": "sink_desc" },
+          { "Net Currency Velocity (Faucet - Sink)": "net_desc" },
+          { "Alphabetical (A to Z)": "alphabetical" },
+          { "Natural / Query Order": "natural" }
+        ],
+        default: "faucet_desc",
+        section: "Display",
+        order: 12
+      },
+      topNLimit: {
+        type: "string",
+        label: "Top-N Stream Entity Limit",
+        display: "select",
+        values: [
+          { "All Streams": "all" },
+          { "Top 5 Streams": "5" },
+          { "Top 8 Streams": "8" },
+          { "Top 10 Streams": "10" },
+          { "Top 15 Streams": "15" },
+          { "Top 20 Streams": "20" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 13
+      },
+      rollupOthers: {
+        type: "boolean",
+        label: "Rollup Remaining Streams as 'Other'",
+        default: true,
+        section: "Display",
+        order: 14
+      },
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero & Null Streams",
+        default: true,
+        section: "Display",
+        order: 15
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive Scorecard HUD",
+        display: "select",
+        values: [
+          { "Full Scorecard (5 Cards)": "scorecard" },
+          { "Compact Metric Strip": "compact" },
+          { "Hidden": "hidden" }
+        ],
+        default: "scorecard",
+        section: "Display",
+        order: 16
       },
       showNetVelocity: {
         type: "boolean",
-        label: "Show Net Currency Velocity Badges",
+        label: "Show Net Velocity Badges",
         default: true,
         section: "Display",
-        order: 4
+        order: 17
+      },
+      labelDensity: {
+        type: "string",
+        label: "Data Value Label Density",
+        display: "select",
+        values: [
+          { "All Stream Labels": "all" },
+          { "High Volume Peaks Only": "peaks_only" },
+          { "Hidden": "hidden" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 18
+      },
+      customTitle: {
+        type: "string",
+        label: "Custom Title Override",
+        default: "",
+        section: "Display",
+        order: 19
+      },
+      customSubtitle: {
+        type: "string",
+        label: "Custom Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 20
       },
       showSearch: {
         type: "boolean",
         label: "Enable Category Search Bar",
         default: true,
         section: "Display",
-        order: 5
+        order: 21
       },
 
-      // SECTION 2: STYLE
+      // ==========================================
+      // SECTION 2: STYLE (Strictly minimized tab)
+      // ==========================================
       colorTheme: {
         type: "string",
         label: "Color Theme",
@@ -228,11 +441,38 @@
           { "Cyberpunk Neon (Dark)": "cyberpunk_neon" },
           { "Modern Studio Slate (Light)": "modern_slate" },
           { "Golden Forge (Dark)": "golden_forge" },
-          { "Emerald Reserve (Light)": "emerald_reserve" }
+          { "Emerald Reserve (Light)": "emerald_reserve" },
+          { "Google Enterprise (Light)": "google_enterprise" },
+          { "Wellverse Healthcare (Light)": "wellverse_healthcare" },
+          { "Custom Hex Colors": "custom" }
         ],
         default: "cyberpunk_neon",
         section: "Style",
         order: 1
+      },
+      customFaucetColor: {
+        type: "string",
+        label: "Custom Faucet / Mint Hex",
+        display: "color",
+        default: "#00ffcc",
+        section: "Style",
+        order: 2
+      },
+      customSinkColor: {
+        type: "string",
+        label: "Custom Sink / Burn Hex",
+        display: "color",
+        default: "#ff0055",
+        section: "Style",
+        order: 3
+      },
+      customAccentColor: {
+        type: "string",
+        label: "Custom Core / Accent Hex",
+        display: "color",
+        default: "#ffcc00",
+        section: "Style",
+        order: 4
       },
       currencySymbol: {
         type: "string",
@@ -244,11 +484,38 @@
           { "Energy Pulse (⚡)": "⚡" },
           { "Star Token (⭐)": "⭐" },
           { "Gold Bag (💰)": "💰" },
-          { "Standard Dollar ($)": "$" }
+          { "Standard Dollar ($)": "$" },
+          { "Credit / Euro (€)": "€" },
+          { "None": "" }
         ],
         default: "🪙",
         section: "Style",
-        order: 2
+        order: 5
+      },
+      metricPolarity: {
+        type: "string",
+        label: "Metric Polarity",
+        display: "select",
+        values: [
+          { "Higher Faucet is Expansion (Surplus)": "faucet_is_expansion" },
+          { "Higher Sink is Favorable (Anti-Inflation)": "sink_is_favorable" }
+        ],
+        default: "faucet_is_expansion",
+        section: "Style",
+        order: 6
+      },
+      fontScale: {
+        type: "string",
+        label: "Typography Scale",
+        display: "select",
+        values: [
+          { "Compact (85%)": "compact" },
+          { "Standard (100%)": "standard" },
+          { "Large Presentation (120%)": "large_presentation" }
+        ],
+        default: "standard",
+        section: "Style",
+        order: 7
       },
       valueFormat: {
         type: "string",
@@ -256,20 +523,21 @@
         display: "select",
         values: [
           { "Compact Numbers (1.2K, 3.4M)": "compact_num" },
-          { "Currency ($1.2K, $3.4M)": "compact_currency" },
+          { "Currency ($1.2M)": "compact_currency" },
           { "Percentage (45.2%)": "percentage" },
+          { "Decimal (2 Decimals)": "decimal_2" },
           { "Raw Unformatted": "raw" }
         ],
         default: "compact_num",
         section: "Style",
-        order: 3
+        order: 8
       },
       showParticleFlow: {
         type: "boolean",
         label: "Show Animated Particle Pulses",
         default: true,
         section: "Style",
-        order: 4
+        order: 9
       }
     },
 
@@ -336,8 +604,76 @@
       }
     },
 
+    _registerDynamicFieldOptions: function (queryResponse) {
+      var self = this;
+      var FIELD_ROLE_OPTIONS = {
+        activityDimOverride: { role: "dimension", defaultIdx: 0 },
+        groupDimOverride: { role: "dimension", defaultIdx: 1 },
+        faucetMeasOverride: { role: "measure", defaultIdx: 0 },
+        sinkMeasOverride: { role: "measure", defaultIdx: 1 },
+        transCountMeasOverride: { role: "measure", defaultIdx: 2 }
+      };
+
+      if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
+      var f = queryResponse.fields;
+      var dims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var meas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!meas.length && f.table_calculations && f.table_calculations.length) meas = f.table_calculations;
+
+      var signature = dims.map(function (d) { return d.name; }).join("|") + "::" + meas.map(function (m) { return m.name; }).join("|");
+      if (self._dynamicFieldSignature === signature) return;
+      self._dynamicFieldSignature = signature;
+
+      if (!self._baseOptions) self._baseOptions = self.options || {};
+      var newOptions = {};
+      Object.keys(self._baseOptions).forEach(function (k) {
+        newOptions[k] = Object.assign({}, self._baseOptions[k]);
+      });
+
+      function fieldLabel(fld) { return fld.label || fld.label_short || fld.name; }
+
+      Object.keys(FIELD_ROLE_OPTIONS).forEach(function (key) {
+        var spec = FIELD_ROLE_OPTIONS[key];
+        if (!newOptions[key]) return;
+        var pool = spec.role === "dimension" ? dims : meas;
+        var optList = [];
+
+        var autoResolved = null;
+        if (spec.defaultIdx >= 0 && pool[spec.defaultIdx]) {
+          autoResolved = pool[spec.defaultIdx];
+        }
+        var autoLabel = autoResolved
+          ? "Auto → " + fieldLabel(autoResolved)
+          : (spec.defaultIdx < 0 ? "Auto / None" : "Auto (first available)");
+        var firstChoice = {};
+        firstChoice[autoLabel] = "";
+        optList.push(firstChoice);
+
+        pool.forEach(function (fld) {
+          var choice = {};
+          choice[fieldLabel(fld) + " (" + fld.name + ")"] = fld.name;
+          optList.push(choice);
+        });
+
+        newOptions[key] = Object.assign({}, newOptions[key], {
+          values: optList,
+          default: ""
+        });
+      });
+
+      try {
+        self.trigger("registerOptions", newOptions);
+      } catch (e) {
+        // Looker chart harness safety
+      }
+    },
+
     updateAsync: function (data, element, config, queryResponse, details, done) {
-      this.clearErrors();
+      if (this.clearErrors) {
+        try { this.clearErrors(); } catch (e) {}
+      }
+
+      this._registerDynamicFieldOptions(queryResponse);
 
       // Store cache for resize observer
       this._lastData = data;
@@ -356,30 +692,76 @@
         return;
       }
 
-      var dims = queryResponse.fields.dimensions || [];
-      var meas = queryResponse.fields.measures || [];
+      var f = queryResponse.fields;
+      var rawDims = (f.dimensions && f.dimensions.length) ? f.dimensions : (f.dimension_like || []);
+      var rawMeas = (f.measures && f.measures.length) ? f.measures : (f.measure_like || []);
+      if (!rawMeas.length && f.table_calculations && f.table_calculations.length) rawMeas = f.table_calculations;
 
-      if (dims.length === 0 || meas.length === 0) {
+      function resolveField(list, overrideVal, defaultIdx) {
+        if (!list || !list.length) return null;
+        if (overrideVal && typeof overrideVal === "string" && overrideVal.trim() !== "") {
+          var trimmed = overrideVal.trim();
+          var match = list.find(function (item) {
+            return item.name === trimmed || item.label === trimmed || item.label_short === trimmed;
+          });
+          if (match) return match.name;
+          var num = parseInt(trimmed, 10);
+          if (!isNaN(num)) {
+            var idx = num > 0 ? num - 1 : 0;
+            if (list[idx]) return list[idx].name;
+          }
+        }
+        if (defaultIdx !== undefined && defaultIdx >= 0 && list[defaultIdx]) {
+          return list[defaultIdx].name;
+        }
+        return null;
+      }
+
+      var categoryDim = resolveField(rawDims, config.activityDimOverride, 0);
+      var groupDim = resolveField(rawDims, config.groupDimOverride, -1);
+      var faucetMeas = resolveField(rawMeas, config.faucetMeasOverride, 0);
+      var sinkMeas = resolveField(rawMeas, config.sinkMeasOverride, 1);
+      var countMeas = resolveField(rawMeas, config.transCountMeasOverride, 2);
+
+      if (!categoryDim || !faucetMeas) {
         container.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:#ef4444;font-size:13px;padding:20px;text-align:center;'>" +
-          "<span>⚠️ <strong>Configuration Required:</strong> Game Economy Analyzer requires at least 1 Dimension (Category / Event / Stream) and 1-2 Measures (Faucet Volume, Sink Volume).</span></div>";
+          "<span>⚠️ <strong>Configuration Required:</strong> Game Economy Analyzer requires at least 1 Dimension (Category / Stream) and 1-2 Measures (Faucet Volume, Sink Volume).</span></div>";
         done();
         return;
       }
 
-      var categoryDim = dims[0].name;
-      var faucetMeas = meas[0].name;
-      var sinkMeas = meas.length > 1 ? meas[1].name : null;
-      var countMeas = meas.length > 2 ? meas[2].name : null;
-
       ensureD3(function (d3) {
         var themeKey = config.colorTheme || "cyberpunk_neon";
-        var theme = THEMES[themeKey] || THEMES.cyberpunk_neon;
+        var baseTheme = THEMES[themeKey] || THEMES.cyberpunk_neon;
+        var theme = Object.assign({}, baseTheme);
+
+        if (themeKey === "custom" || config.customFaucetColor) {
+          if (config.customFaucetColor) {
+            theme.faucetColor = config.customFaucetColor;
+            theme.faucetRibbon = config.customFaucetColor + "59";
+            theme.faucetFill = config.customFaucetColor + "33";
+          }
+          if (config.customSinkColor) {
+            theme.sinkColor = config.customSinkColor;
+            theme.sinkRibbon = config.customSinkColor + "59";
+            theme.sinkFill = config.customSinkColor + "33";
+          }
+          if (config.customAccentColor) {
+            theme.accent = config.customAccentColor;
+            theme.coreNodeColor = config.customAccentColor;
+          }
+        }
+
+        var fontScale = config.fontScale === "compact" ? 0.88 : (config.fontScale === "large_presentation" ? 1.18 : 1.0);
         var layoutMode = config.layoutMode || "sankey_faucet_sink";
         var ratioAlertThreshold = Number(config.faucetSinkRatioAlert) || 1.15;
-        var currencyGlyph = config.currencySymbol || "🪙";
+        var deflationThreshold = Number(config.deflationThreshold) || 0.85;
+        var currencyGlyph = config.currencySymbol !== undefined ? config.currencySymbol : "🪙";
+        var isFaucetExpansion = config.metricPolarity !== "sink_is_favorable";
 
         container.style.backgroundColor = theme.bg;
         container.style.color = theme.text;
+        container.style.fontSize = Math.round(12 * fontScale) + "px";
         tooltip.style.backgroundColor = theme.tooltipBg;
         tooltip.style.color = theme.text;
         tooltip.style.border = "1px solid " + theme.tooltipBorder;
@@ -416,7 +798,7 @@
             }
           }
 
-          if (faucetVal === 0 && sinkVal === 0) continue;
+          if (config.suppressZeroNull !== false && faucetVal === 0 && sinkVal === 0) continue;
 
           var netVelocity = faucetVal - sinkVal;
           var ratio = sinkVal > 0 ? (faucetVal / sinkVal) : (faucetVal > 0 ? 99.0 : 1.0);
@@ -437,52 +819,115 @@
         }
 
         if (parsedStreams.length === 0) {
-          container.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;'>No valid positive currency telemetry rows found.</div>";
+          container.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:#64748b;font-size:14px;'>No valid currency telemetry rows found.</div>";
           done();
           return;
         }
 
-        // Sort streams descending by total volume
-        parsedStreams.sort(function (a, b) {
-          return (b.faucet + b.sink) - (a.faucet + a.sink);
-        });
+        // Apply Sorting
+        var sortOrder = config.sortOrder || "faucet_desc";
+        if (sortOrder === "faucet_desc") {
+          parsedStreams.sort(function (a, b) { return (b.faucet + b.sink) - (a.faucet + a.sink); });
+        } else if (sortOrder === "faucet_asc") {
+          parsedStreams.sort(function (a, b) { return (a.faucet + a.sink) - (b.faucet + b.sink); });
+        } else if (sortOrder === "sink_desc") {
+          parsedStreams.sort(function (a, b) { return b.sink - a.sink; });
+        } else if (sortOrder === "net_desc") {
+          parsedStreams.sort(function (a, b) { return b.netVelocity - a.netVelocity; });
+        } else if (sortOrder === "alphabetical") {
+          parsedStreams.sort(function (a, b) { return a.label.localeCompare(b.label); });
+        }
+
+        // Apply Top-N and Rollup
+        var topN = config.topNLimit;
+        var topNNum = (topN && topN !== "all") ? parseInt(topN, 10) : 0;
+        var displayStreams = parsedStreams;
+        if (topNNum > 0 && parsedStreams.length > topNNum) {
+          var topStreams = parsedStreams.slice(0, topNNum);
+          if (config.rollupOthers !== false) {
+            var otherStreams = parsedStreams.slice(topNNum);
+            var otherFaucet = d3.sum(otherStreams, function (d) { return d.faucet; });
+            var otherSink = d3.sum(otherStreams, function (d) { return d.sink; });
+            var otherTx = d3.sum(otherStreams, function (d) { return d.txCount; });
+            topStreams.push({
+              id: 999999,
+              label: "Other Economy Streams (" + otherStreams.length + ")",
+              faucet: otherFaucet,
+              sink: otherSink,
+              netVelocity: otherFaucet - otherSink,
+              ratio: otherSink > 0 ? (otherFaucet / otherSink) : (otherFaucet > 0 ? 99.0 : 1.0),
+              txCount: otherTx,
+              rowRef: otherStreams[0] ? otherStreams[0].rowRef : null
+            });
+          }
+          displayStreams = topStreams;
+        }
 
         // 2. Macroeconomic Telemetry Computations
         var totalNetVelocity = totalFaucets - totalSinks;
         var macroRatio = totalSinks > 0 ? (totalFaucets / totalSinks) : (totalFaucets > 0 ? 99.0 : 1.0);
         var isInflationAlert = macroRatio >= ratioAlertThreshold;
-        var inflationStatus = isInflationAlert ? "⚠️ Hyperinflation Risk" : (macroRatio > 1.0 ? "🟡 Mild Inflation" : (macroRatio === 1.0 ? "🟢 Equilibrium" : "🔵 Deflationary Burn"));
+        var isDeflationAlert = macroRatio <= deflationThreshold;
+        var inflationStatus = isInflationAlert ? "⚠️ Hyperinflation Risk" : (macroRatio > 1.0 ? "🟡 Mild Inflation" : (macroRatio >= deflationThreshold ? "🟢 Equilibrium" : "🔵 Deflationary Burn"));
 
-        // 3. Search Filter State
-        var displayStreams = parsedStreams.filter(function (d) {
-          if (!self._searchTerm) return true;
-          return d.label.toLowerCase().indexOf(self._searchTerm.toLowerCase()) >= 0;
-        });
+        // Search Filter State
+        if (self._searchTerm) {
+          displayStreams = displayStreams.filter(function (d) {
+            return d.label.toLowerCase().indexOf(self._searchTerm.toLowerCase()) >= 0;
+          });
+        }
 
-        // 4. Render UI Shell
+        // 3. Render UI Shell
         container.innerHTML = "";
 
-        // TOP HEADER: HUD + Controls Bar
+        // TOP HEADER: Title + HUD + Controls Bar
         var topControls = document.createElement("div");
-        topControls.style.padding = "10px 14px";
+        topControls.style.padding = "8px 12px";
         topControls.style.borderBottom = "1px solid " + theme.border;
         topControls.style.display = "flex";
         topControls.style.flexDirection = "column";
-        topControls.style.gap = "8px";
+        topControls.style.gap = "6px";
         topControls.style.flexShrink = "0";
 
+        // Custom Title / Subtitle
+        if (config.customTitle) {
+          var titleBlock = document.createElement("div");
+          titleBlock.style.display = "flex";
+          titleBlock.style.flexDirection = "column";
+          titleBlock.style.gap = "2px";
+          var tSpan = document.createElement("div");
+          tSpan.style.fontSize = Math.round(14 * fontScale) + "px";
+          tSpan.style.fontWeight = "700";
+          tSpan.style.color = theme.text;
+          tSpan.textContent = config.customTitle;
+          titleBlock.appendChild(tSpan);
+          if (config.customSubtitle) {
+            var stSpan = document.createElement("div");
+            stSpan.style.fontSize = Math.round(11 * fontScale) + "px";
+            stSpan.style.color = theme.subtext;
+            stSpan.textContent = config.customSubtitle;
+            titleBlock.appendChild(stSpan);
+          }
+          topControls.appendChild(titleBlock);
+        }
+
+        var hudMode = config.hudMode || (config.showExecutiveHUD === false ? "hidden" : "scorecard");
+        var velocityColor = isFaucetExpansion
+          ? (totalNetVelocity >= 0 ? theme.netPositiveColor : theme.netNegativeColor)
+          : (totalNetVelocity <= 0 ? theme.netPositiveColor : theme.netNegativeColor);
+
         // Executive HUD Scorecard
-        if (config.showExecutiveHUD !== false) {
+        if (hudMode === "scorecard") {
           var hudGrid = document.createElement("div");
           hudGrid.style.display = "grid";
           hudGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(130px, 1fr))";
-          hudGrid.style.gap = "8px";
+          hudGrid.style.gap = "6px";
 
           var hudCards = [
             { label: "Total Minted (Faucets)", val: formatValue(totalFaucets, config.valueFormat || "compact_num", currencyGlyph), sub: "Generation Volume", color: theme.faucetColor },
             { label: "Total Burned (Sinks)", val: formatValue(totalSinks, config.valueFormat || "compact_num", currencyGlyph), sub: "Destruction Volume", color: theme.sinkColor },
-            { label: "Net Currency Velocity", val: (totalNetVelocity >= 0 ? "+" : "") + formatValue(totalNetVelocity, config.valueFormat || "compact_num", currencyGlyph), sub: totalNetVelocity >= 0 ? "Net Liquidity Expansion" : "Net Liquidity Contraction", color: totalNetVelocity >= 0 ? theme.netPositiveColor : theme.netNegativeColor },
-            { label: "Faucet / Sink Ratio", val: macroRatio.toFixed(2) + "x", sub: macroRatio >= ratioAlertThreshold ? "⚠️ Alert (> " + ratioAlertThreshold.toFixed(2) + "x)" : "✅ Equilibrium", color: macroRatio >= ratioAlertThreshold ? theme.alertColor : theme.faucetColor },
+            { label: "Net Currency Velocity", val: (totalNetVelocity >= 0 ? "+" : "") + formatValue(totalNetVelocity, config.valueFormat || "compact_num", currencyGlyph), sub: totalNetVelocity >= 0 ? "Net Liquidity Expansion" : "Net Liquidity Contraction", color: velocityColor },
+            { label: "Faucet / Sink Ratio", val: macroRatio.toFixed(2) + "x", sub: macroRatio >= ratioAlertThreshold ? "⚠️ Alert (> " + ratioAlertThreshold.toFixed(2) + "x)" : (macroRatio <= deflationThreshold ? "🔵 Burn Siphon (< " + deflationThreshold.toFixed(2) + "x)" : "✅ Equilibrium"), color: macroRatio >= ratioAlertThreshold ? theme.alertColor : theme.faucetColor },
             { label: "Economy Health Status", val: inflationStatus, sub: parsedStreams.length + " active streams", color: isInflationAlert ? theme.sinkColor : theme.faucetColor }
           ];
 
@@ -491,19 +936,19 @@
             card.style.background = theme.cardBg;
             card.style.border = "1px solid " + theme.border;
             card.style.borderRadius = "6px";
-            card.style.padding = "8px 10px";
+            card.style.padding = "6px 8px";
             card.style.display = "flex";
             card.style.flexDirection = "column";
             card.style.gap = "2px";
 
             var l = document.createElement("span");
-            l.style.fontSize = "10.5px";
+            l.style.fontSize = Math.round(10 * fontScale) + "px";
             l.style.color = theme.subtext;
             l.style.fontWeight = "600";
             l.textContent = c.label;
 
             var v = document.createElement("span");
-            v.style.fontSize = "15px";
+            v.style.fontSize = Math.round(14 * fontScale) + "px";
             v.style.color = c.color;
             v.style.fontWeight = "700";
             v.style.whiteSpace = "nowrap";
@@ -512,7 +957,7 @@
             v.textContent = c.val;
 
             var s = document.createElement("span");
-            s.style.fontSize = "9.5px";
+            s.style.fontSize = Math.round(9 * fontScale) + "px";
             s.style.color = theme.subtext;
             s.textContent = c.sub;
 
@@ -523,6 +968,33 @@
           });
 
           topControls.appendChild(hudGrid);
+        } else if (hudMode === "compact") {
+          var compactStrip = document.createElement("div");
+          compactStrip.style.display = "flex";
+          compactStrip.style.flexWrap = "wrap";
+          compactStrip.style.gap = "6px";
+          compactStrip.style.alignItems = "center";
+
+          var chips = [
+            { label: "Minted", val: formatValue(totalFaucets, config.valueFormat || "compact_num", currencyGlyph), color: theme.faucetColor },
+            { label: "Burned", val: formatValue(totalSinks, config.valueFormat || "compact_num", currencyGlyph), color: theme.sinkColor },
+            { label: "Net", val: (totalNetVelocity >= 0 ? "+" : "") + formatValue(totalNetVelocity, config.valueFormat || "compact_num", currencyGlyph), color: velocityColor },
+            { label: "Ratio", val: macroRatio.toFixed(2) + "x (" + inflationStatus + ")", color: macroRatio >= ratioAlertThreshold ? theme.alertColor : theme.faucetColor }
+          ];
+
+          chips.forEach(function (ch) {
+            var chip = document.createElement("span");
+            chip.style.padding = "3px 8px";
+            chip.style.background = theme.cardBg;
+            chip.style.border = "1px solid " + theme.border;
+            chip.style.borderRadius = "12px";
+            chip.style.fontSize = Math.round(10.5 * fontScale) + "px";
+            chip.style.display = "inline-flex";
+            chip.style.gap = "4px";
+            chip.innerHTML = "<strong style='color:" + theme.subtext + "'>" + ch.label + ":</strong> <span style='color:" + ch.color + ";font-weight:700'>" + ch.val + "</span>";
+            compactStrip.appendChild(chip);
+          });
+          topControls.appendChild(compactStrip);
         }
 
         // Search Bar & Filter Controls
@@ -530,37 +1002,34 @@
           var searchRow = document.createElement("div");
           searchRow.style.display = "flex";
           searchRow.style.alignItems = "center";
-          searchRow.style.justifyContent = "space-between";
-          searchRow.style.gap = "10px";
+          searchRow.style.gap = "8px";
 
           var searchInput = document.createElement("input");
           searchInput.type = "text";
-          searchInput.placeholder = "🔍 Search stream or category (e.g. Quests, Cosmetics, Upgrades)...";
+          searchInput.placeholder = "🔍 Filter currency activities...";
           searchInput.value = self._searchTerm;
-          searchInput.style.padding = "5px 10px";
-          searchInput.style.borderRadius = "6px";
-          searchInput.style.border = "1px solid " + theme.border;
-          searchInput.style.background = theme.cardBg;
-          searchInput.style.color = theme.text;
-          searchInput.style.fontSize = "12px";
           searchInput.style.flex = "1";
+          searchInput.style.background = theme.cardBg;
+          searchInput.style.border = "1px solid " + theme.border;
+          searchInput.style.borderRadius = "4px";
+          searchInput.style.padding = "5px 9px";
+          searchInput.style.color = theme.text;
+          searchInput.style.fontSize = Math.round(11 * fontScale) + "px";
           searchInput.style.outline = "none";
-          searchInput.oninput = function (e) {
+
+          searchInput.addEventListener("input", function (e) {
             self._searchTerm = e.target.value;
             self.updateAsync(self._lastData, element, self._lastConfig, self._lastQueryResponse, self._lastDetails, function () {});
-          };
+          });
+
           searchRow.appendChild(searchInput);
 
-          var modeBadge = document.createElement("span");
-          modeBadge.style.fontSize = "11px";
-          modeBadge.style.fontWeight = "600";
-          modeBadge.style.color = theme.accent;
-          modeBadge.style.padding = "4px 8px";
-          modeBadge.style.borderRadius = "4px";
-          modeBadge.style.background = theme.cardBg;
-          modeBadge.style.border = "1px solid " + theme.border;
-          modeBadge.textContent = "Mode: " + layoutMode.replace(/_/g, " ").toUpperCase();
-          searchRow.appendChild(modeBadge);
+          var countBadge = document.createElement("span");
+          countBadge.style.fontSize = Math.round(10 * fontScale) + "px";
+          countBadge.style.color = theme.subtext;
+          countBadge.style.whiteSpace = "nowrap";
+          countBadge.textContent = displayStreams.length + " of " + parsedStreams.length + " streams";
+          searchRow.appendChild(countBadge);
 
           topControls.appendChild(searchRow);
         }
@@ -598,7 +1067,7 @@
     }
   });
 
-  // ==========================================
+// ==========================================
   // LAYOUT 1: SANKEY FAUCET & SINK FLOW BRIDGE
   // ==========================================
   function renderSankeyBridge(parent, streams, totalFaucets, totalSinks, totalNet, theme, config, glyph, width, height, self) {

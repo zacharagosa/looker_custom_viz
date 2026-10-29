@@ -1,16 +1,18 @@
 # Game Economy Faucet & Sink Analyzer
 
-An enterprise-grade Looker custom visualization designed for LiveOps game economies, virtual currency telemetry, and in-game token sinks/faucets. Resolves Buganizer Cloud Blockers and Customer Requirements (**b/341928091**, **b/490547912**, **b/530822261**, **b/567332923**) for LiveOps games studios (EA, Epic Games, Riot Games, Blizzard, Sony PlayStation, Ubisoft).
+An enterprise-grade Looker custom visualization designed for LiveOps game economies, virtual currency telemetry, in-game token sinks/faucets, and liquidity reserve monitoring. Built with D3.js v7 for Looker Custom Visualizations API v2.
+
+Directly resolves Buganizer Cloud Blockers and Customer Requirements (**b/341928091**, **b/490547912**, **b/530822261**, **b/567332923**) for LiveOps games studios (EA, Epic Games, Riot Games, Blizzard, Sony PlayStation, Ubisoft).
 
 ---
 
-## 🎮 Overview
+## 🎮 Overview & Problem Statement
 
 In free-to-play (F2P), MMO, and competitive live-service games, managing virtual currency flows (Gold, Gems, Energy, Battle Pass Tokens) is vital to preventing runaway **in-game inflation**, currency hoarding, and economy crashes. Out-of-the-box Looker Cartesian bar and line charts cannot visualize:
-1. **Faucet Sources vs Sink Drains**: Visualizing currency generation (quests, daily logins, level rewards, IAP faucets) versus currency destruction (cosmetics, upgrades, gacha, repair costs, marketplace fees) side-by-side or through a Sankey flow bridge.
+1. **Faucet Sources vs Sink Drains**: Visualizing currency generation (quests, daily logins, level rewards, IAP faucets) versus currency destruction (cosmetics, upgrades, gacha, repair costs, marketplace fees) side-by-side or through a dynamic Sankey flow bridge.
 2. **Net Inflation / Deflation Velocity**: Dynamic tracking of net currency minting velocity:
    $$\text{Net Velocity} = \text{Total Faucets} - \text{Total Sinks}$$
-3. **Faucet-to-Sink Ratio ($\frac{\text{Faucet}}{\text{Sink}}$)**: Critical macro-economic equilibrium indicator. An alert threshold (e.g. $> 1.15$) immediately flags hyperinflation risks where currency is being minted faster than players can spend it.
+3. **Faucet-to-Sink Ratio ($\frac{\text{Faucet}}{\text{Sink}}$)**: Critical macro-economic equilibrium indicator. An alert threshold (e.g. $> 1.15\times$) immediately flags hyperinflation risks where currency is being minted faster than players can spend it, while $< 0.85\times$ flags deflationary drain / player fatigue.
 4. **Reserve Liquidity Stockpile Accumulation**: Step-by-step waterfall tracking of opening balance, active faucets, active sinks, and closing player reserve balance.
 
 ---
@@ -30,39 +32,58 @@ Users can toggle between four specialized layouts in the **Display** tab:
 
 ---
 
-## 🛠️ Required Data Shape
+## 🛠️ Required Data Shape & Domain-Authentic Binding
 
-The visualization adapts automatically to any of the following query structures:
-
-### Option A: Standard Dimension + Measures (e.g. `thelook.order_items`)
-- **Dimensions (1)**: Stream / Category / Activity Name (e.g. `products.category`, or game event type).
-- **Measures (2 or 3)**:
-  - Measure 1: Primary Faucet Volume / Minted Currency (e.g. `order_items.total_sale_price`).
-  - Measure 2: Primary Sink Volume / Burned Currency (e.g. `order_items.total_gross_margin`).
-  - Measure 3 (Optional): Transaction Count / Participant Players (e.g. `order_items.order_count`).
-
-### Option B: Sliced Activity Dimension
-- If only 1 Measure is provided, rows with negative values or labels containing `sink`, `burn`, `spend`, `drain`, `fee`, `cost` are automatically classified as Sinks, and positive values or labels containing `faucet`, `mint`, `reward`, `quest`, `iap` are classified as Faucets.
+The visualization is bound to authentic LiveOps telemetry in `void_weaver_analytics::virtual_economy_flows`:
+- **Dimensions (1 to 2)**:
+  - Primary Activity / Stream Dimension (e.g. `virtual_economy_flows.economy_activity`)
+  - Optional Secondary Group / Segment Dimension
+- **Measures (1 to 3)**:
+  - Measure 1: Primary Faucet Volume / Minted Currency (e.g. `virtual_economy_flows.faucet_tokens_minted`)
+  - Measure 2: Primary Sink Volume / Burned Currency (e.g. `virtual_economy_flows.sink_tokens_burned`)
+  - Measure 3 (Optional): Transaction Count / Active Players (e.g. `virtual_economy_flows.transaction_count`)
 
 ---
 
-## 🎨 Clean 2-Tab Options Modal
+## 🎨 Enterprise Options Suite (Strict 2-Tab Schema)
 
-To avoid crowding Looker's Edit Viz modal headers, all options are grouped into two clean sections:
+All options are strictly organized into 2 clean tabs (`Display` and `Style`) to prevent Looker's Edit Viz modal header clipping:
 
 ### 1. `Display`
-- **Layout Analysis Mode**: Toggle between Sankey Flow Bridge, Bilateral Divergence, Net Velocity Matrix, and Waterfall Stockpile.
-- **Show Executive Economy HUD**: Toggle the 5-metric executive scorecard (Total Minted, Total Burned, Net Velocity, Faucet/Sink Ratio, Active Streams).
-- **Faucet-to-Sink Ratio Alert Threshold**: Custom inflation ratio threshold (default: `1.15`).
-- **Show Net Currency Velocity Badges**: Highlight net surplus (+) and net deficit (-) badges.
-- **Enable Search & Stream Filter**: Real-time interactive instant search bar.
+- **Economy Layout Mode**: Toggle between Sankey Flow Bridge, Bilateral Divergence, Net Velocity Matrix, and Waterfall Stockpile.
+- **Dynamic Field-Role Mapping**: Dropdowns dynamically populated from live query fields via `_registerDynamicFieldOptions` (Activity Dimension, Group Dimension, Faucet Measure, Sink Measure, Transaction Count Measure).
+- **Benchmark Target Mode**: Configurable reference line modes:
+  - `Inflation Risk Alert Ratio (Faucet / Sink)`: Compares aggregate ratio against threshold.
+  - `Fixed Net Target Volume`: Fixed target line.
+  - `Dataset Mean Faucet Volume`: Statistical mean of active minting streams.
+  - `Dataset Median Faucet Volume`: Statistical median of active minting streams.
+  - `Top Quartile (P75 Faucet Volume)`: P75 threshold.
+  - `None / Hide Target Line`.
+- **Inflation Risk Ratio Alert (Faucet/Sink)**: Alert threshold (default: `1.15`).
+- **Deflation Drain Alert Ratio**: Deflation threshold (default: `0.85`).
+- **Reference Line Label**: Customizable benchmark line label.
+- **Stream Sort Order**: Sort by Total Faucet Minting (Desc/Asc), Total Sink Burning (Desc), Net Currency Velocity, Alphabetical, or Query Natural.
+- **Top-N Stream Entity Limit**: Limit rendering to Top 5, 8, 10, 15, 20, or All.
+- **Rollup Remaining Streams as 'Other'**: Automatically aggregates residual streams into an `"Other Economy Streams"` composite row.
+- **Suppress Zero & Null Streams**: Filters out inactive streams with zero flow.
+- **Executive Scorecard HUD**: Toggle between `Full Scorecard (5 Cards)`, `Compact Metric Strip`, or `Hidden`.
+- **Show Net Velocity Badges**: Highlight net surplus (+) and net deficit (-) indicators.
+- **Data Value Label Density**: Toggle between `All Stream Labels`, `High Volume Peaks Only`, or `Hidden`.
+- **Custom Title & Subtitle Override**: Optional executive header banner.
+- **Enable Category Search Bar**: Real-time interactive instant search filter.
 
 ### 2. `Style`
 - **Color Theme**:
-  - `Cyberpunk Neon (Dark)`: High-contrast neon green faucets, crimson sinks, cyan accents on obsidian dark background.
-  - `Modern Studio Slate (Light)`: Clean executive enterprise theme with emerald faucets, rose sinks, and soft slate containers.
-  - `Golden Forge (Dark)`: Rich gold/amber bullion theme for RPG and fantasy in-game economies.
-  - `Emerald Reserve (Light)`: Polished financial institution palette.
-- **Virtual Currency Symbol**: Choose custom in-game currency glyph (`🪙`, `💎`, `⚡`, `⭐`, `💰`, `$`).
-- **Show Particle Pulse Animation**: Toggle animated flow pulses along Sankey ribbons.
-- **Metric Value Formatting**: Compact Numbers (`1.2M`), Currency (`$1.2M`), Percentage, or Raw.
+  - `Cyberpunk Neon (Dark)`: High-contrast neon green faucets, crimson sinks, cyan accents on dark obsidian.
+  - `Modern Studio Slate (Light)`: Clean executive studio theme with emerald faucets, rose sinks, and slate borders.
+  - `Golden Forge (Dark)`: Rich gold/amber bullion theme for RPG and fantasy virtual economies.
+  - `Emerald Reserve (Light)`: Polished institutional financial theme.
+  - `Google Enterprise (Light)`: Google blue, slate, and material emerald/crimson accents.
+  - `Wellverse Healthcare (Light)`: Cyan, teal, and coral clinical wellness palette.
+  - `Custom Hex Colors`: Fully customizable hex overrides.
+- **Custom Hex Overrides**: Color pickers for Custom Faucet/Mint Hex (`customFaucetColor`), Custom Sink/Burn Hex (`customSinkColor`), and Custom Core/Accent Hex (`customAccentColor`).
+- **In-Game Currency Glyph**: Choose custom currency symbol (`🪙`, `💎`, `⚡`, `⭐`, `💰`, `$`, `€`, or None).
+- **Metric Polarity**: Toggle between `Higher Faucet is Expansion (Surplus)` and `Higher Sink is Favorable (Anti-Inflation)`.
+- **Typography Scale**: `Compact (85%)`, `Standard (100%)`, or `Large Presentation (120%)`.
+- **Metric Value Formatting**: Compact Numbers (`1.2M`), Currency (`$1.2M`), Percentage (`45.2%`), Decimal (`2 Decimals`), or Raw.
+- **Show Animated Particle Pulses**: Canvas-based particle animation along active Sankey ribbons.
