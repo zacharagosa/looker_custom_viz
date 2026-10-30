@@ -1,0 +1,34 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "threat_firewall_events",
+  "fields": [
+    "threat_firewall_events.threat_category",
+    "threat_firewall_events.action",
+    "threat_firewall_events.severity",
+    "threat_firewall_events.threat_count",
+    "threat_firewall_events.blocked_threat_count"
+  ],
+  "sorts": [
+    "threat_firewall_events.threat_count desc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "zero_trust_blast_radius",
+    "layoutMode": "blast_radius_rings",
+    "targetMode": "fixed_target",
+    "targetContainmentPct": 95,
+    "referenceLineLabel": "Target Containment SLA (95%)",
+    "criticalAlertThreshold": 100,
+    "sortBy": "threat_desc",
+    "topN": 12,
+    "enableOtherRollup": true,
+    "suppressZeroNull": false,
+    "hudMode": "scorecard",
+    "dataLabels": "all",
+    "showSearch": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "lower_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_num"
+  }
+}
