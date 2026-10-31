@@ -1,0 +1,28 @@
+{
+  "model": "zayo_network_analytics",
+  "view": "network_operations_and_anomalies",
+  "fields": [
+    "fiber_routes.corridor",
+    "fiber_routes.total_route_miles",
+    "fiber_routes.total_provisioned_capacity_tbps"
+  ],
+  "sorts": [
+    "fiber_routes.total_route_miles desc"
+  ],
+  "limit": "10",
+  "vis_config": {
+    "type": "zayo_noc_executive_scorecard",
+    "custom_title": "Total US Optical Fiber Route Miles",
+    "custom_subtitle": "8 Core Backbone Corridors • ITU-T G.652.D",
+    "badge_label": "LIVE NETWORK TELEMETRY",
+    "targetGoalMode": "fixed_value",
+    "fixedTargetValue": 1000,
+    "referenceLineLabel": "Corridor Target (1,000 mi)",
+    "hudMode": "scorecard",
+    "showSparkline": true,
+    "colorPalette": "zayo_telecom",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "miles"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "model": "zayo_network_analytics",
+  "view": "optical_telemetry_and_predictive_maintenance",
+  "fields": [
+    "fiber_routes.corridor",
+    "fiber_routes.optical_fiber_type",
+    "fiber_routes.distance_miles",
+    "fiber_routes.provisioned_capacity_tbps",
+    "optical_span_anomalies.avg_attenuation_db_per_km",
+    "optical_span_anomalies.avg_osnr_db",
+    "optical_span_anomalies.count"
+  ],
+  "sorts": [
+    "optical_span_anomalies.avg_attenuation_db_per_km desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "otdr_fiber_event_analyzer",
+    "layoutMode": "otdr_trace_reflectogram",
+    "showExecutiveHUD": true,
+    "hudMode": "scorecard",
+    "targetGoalMode": "g652d_standard",
+    "referenceLineLabel": "ITU-T G.652.D Spec (0.20 dB/km)",
+    "criticalAttenuationThreshold": 0.25,
+    "sortOrder": "attenuation_desc",
+    "topNLimit": "all",
+    "labelDensity": "peaks_only",
+    "showSearch": true,
+    "colorTheme": "zayo_telecom",
+    "metricPolarity": "lower_is_better",
+    "fontScale": "standard",
+    "valueFormat": "decimal_3",
+    "animateTrace": true
+  }
+}
