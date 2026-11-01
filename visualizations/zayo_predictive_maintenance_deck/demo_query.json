@@ -1,0 +1,39 @@
+{
+  "model": "zayo_network_analytics",
+  "view": "predictive_maintenance_queue",
+  "fields": [
+    "predictive_maintenance_spans.span_id",
+    "predictive_maintenance_spans.span_name",
+    "predictive_maintenance_spans.risk_tier",
+    "predictive_maintenance_spans.failure_timeframe",
+    "predictive_maintenance_spans.primary_anomaly_trigger",
+    "predictive_maintenance_spans.anomaly_metric_value",
+    "predictive_maintenance_spans.recommended_action",
+    "predictive_maintenance_spans.dispatch_priority",
+    "predictive_maintenance_spans.predicted_failure_prob",
+    "predictive_maintenance_spans.sla_financial_risk_usd"
+  ],
+  "sorts": [
+    "predictive_maintenance_spans.predicted_failure_prob desc"
+  ],
+  "limit": "15",
+  "vis_config": {
+    "type": "zayo_predictive_maintenance_deck",
+    "custom_title": "AutoML Optical Span Failure Predictor & OTDR Dispatch Deck",
+    "custom_subtitle": "DWDM Backbone Optical Health & Proactive Dispatch Queue",
+    "hudMode": "scorecard",
+    "defaultFilterTab": "ALL",
+    "show_otdr_trace": true,
+    "showSearchBar": true,
+    "sortOrder": "prob_desc",
+    "topN": "all",
+    "targetGoalMode": "fixed_value",
+    "fixedTargetValue": 75,
+    "referenceLineLabel": "Critical Failure Threshold",
+    "anomalyThreshold": 70,
+    "colorPalette": "zayo_telecom",
+    "metricPolarity": "lower_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency"
+  }
+}

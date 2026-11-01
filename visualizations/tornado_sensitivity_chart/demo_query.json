@@ -1,0 +1,35 @@
+{
+  "model": "saas_qbr",
+  "view": "qbr_customer_risk",
+  "fields": [
+    "qbr_account_risk.account_name",
+    "qbr_account_risk.total_arr_at_risk",
+    "qbr_account_risk.renewal_arr_180d",
+    "qbr_account_risk.total_active_arr"
+  ],
+  "filters": {
+    "qbr_account_risk.risk_band": "High Risk,Watch"
+  },
+  "sorts": [
+    "qbr_account_risk.total_arr_at_risk desc"
+  ],
+  "limit": "10",
+  "vis_config": {
+    "type": "tornado_sensitivity_chart",
+    "chartMode": "tornado_bars",
+    "custom_title": "Enterprise SaaS Account Risk & Renewal Sensitivity",
+    "custom_subtitle": "Downside ARR at Risk vs Upside 180d Renewal Spread",
+    "hudMode": "scorecard",
+    "baselineMode": "measure_column",
+    "baselineLabel": "Active Portfolio ARR",
+    "sortOrder": "swing_desc",
+    "topN": "all",
+    "labelDensity": "all",
+    "showSearchBar": true,
+    "suppressZeroVariance": true,
+    "colorPalette": "modern_slate",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency"
+  }
+}

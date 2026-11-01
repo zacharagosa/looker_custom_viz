@@ -194,6 +194,7 @@ VIZ_EMOJI_MAP = {
     "pca_biplot_projection": "🧬",
     "hierarchical_cluster_dendrogram": "🌳",
     "bcg_growth_share_matrix": "🌟",
+    "tornado_sensitivity_chart": "🌪️",
 }
 
 
