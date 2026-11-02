@@ -1,0 +1,36 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "products.category",
+    "order_items.average_sale_price",
+    "order_items.count",
+    "order_items.total_sale_price",
+    "order_items.total_gross_margin"
+  ],
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "25",
+  "vis_config": {
+    "type": "price_elasticity_revenue_optimizer",
+    "custom_title": "Price Elasticity & Demand Revenue Optimization Schedule",
+    "custom_subtitle": "Empirical Demand P vs Q | Dual-Axis Total Revenue R(P) = P*Q",
+    "layoutMode": "demand_revenue_curve",
+    "hudMode": "scorecard",
+    "targetGoalMode": "optimal_revenue_price",
+    "fixedTargetPrice": 61.67,
+    "referenceLineLabel": "Optimal Revenue Price P*",
+    "elasticityThreshold": 1.25,
+    "sortOrder": "price_asc",
+    "topNLimit": "20",
+    "enableOtherRollup": false,
+    "suppressNulls": true,
+    "labelDensity": "all",
+    "showSearchBar": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "inelastic_favorable",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency"
+  }
+}

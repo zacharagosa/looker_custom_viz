@@ -195,6 +195,7 @@ VIZ_EMOJI_MAP = {
     "hierarchical_cluster_dendrogram": "🌳",
     "bcg_growth_share_matrix": "🌟",
     "tornado_sensitivity_chart": "🌪️",
+    "price_elasticity_revenue_optimizer": "🏷️",
 }
 
 
