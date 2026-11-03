@@ -178,7 +178,6 @@ High-dimensional multivariate exploratory profiling visualization solving Google
 Strategic microeconomic pricing and demand modeling visualization solving Google Cloud Blockers b/492109483, b/398201849, and b/520194830. Features empirical & fitted demand curves, dual-axis total revenue curves, point price elasticity (|Ed|) spectrum, gross profit optimization, and 2D strategic pricing power quadrant matrix.
 ![Price Elasticity & Demand Revenue Optimizer](../assets/screenshots/price_elasticity_revenue_optimizer.png)
 
-
-
-
-
+### 43. RFM Customer Segmentation & Cohort Matrix
+Executive Recency-Frequency-Monetary (RFM) customer segmentation matrix and cohort intelligence suite solving Google Cloud Blockers b/491028472, b/392019481, and b/510294821. Features 4 multi-modal layout topologies (2D 5x5 R vs F Trellis Heatmap, Strategic Customer Value Treemap, Continuous Value Scatter Spectrum, and Executive 4-Quadrant RevOps Playbook), dynamic O(N) client-side quintile binning, executive KPI HUD scorecard, and Looker drill-down menus.
+![RFM Customer Segmentation & Cohort Matrix](../assets/screenshots/rfm_customer_segmentation_matrix.png)

@@ -133,6 +133,7 @@ CATEGORY_TAB_MAP = {
 }
 
 VIZ_EMOJI_MAP = {
+    "rfm_customer_segmentation_matrix": "💎",
     "dumbbell_plot": "📊",
     "bullet_graph": "🎯",
     "calendar_activity_heatmap": "📅",

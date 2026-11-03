@@ -147,6 +147,19 @@
       // ==========================================
       // SECTION 1: DISPLAY (Strictly minimized tab)
       // ==========================================
+      layoutMode: {
+        type: 'string',
+        label: 'Calendar Layout Mode',
+        display: 'select',
+        values: [
+          { '52-Week GitHub Matrix (Horizontal Horizon)': 'github_calendar' },
+          { 'Monthly Calendar Cards (12-Month Multiples)': 'monthly_grid' },
+          { 'Day-of-Week Summary Matrix (Sun-Sat Activity)': 'weekday_strip' }
+        ],
+        default: 'github_calendar',
+        section: 'Display',
+        order: 1
+      },
       dimFieldOverride: {
         type: "string",
         label: "Date Dimension",
@@ -154,7 +167,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 1
+        order: 2
       },
       measureFieldOverride: {
         type: "string",
@@ -163,7 +176,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 2
+        order: 3
       },
       targetMeasureOverride: {
         type: "string",
@@ -172,7 +185,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 3
+        order: 4
       },
       targetMode: {
         type: 'string',
@@ -188,28 +201,28 @@
         ],
         default: 'dataset_mean',
         section: 'Display',
-        order: 4
+        order: 5
       },
       targetValue: {
         type: 'number',
         label: 'Fixed Target Value (when Fixed Mode, 0 = Auto)',
         default: 0,
         section: 'Display',
-        order: 5
+        order: 6
       },
       referenceLineLabel: {
         type: 'string',
         label: 'Target / Baseline Label',
         default: 'Daily Goal',
         section: 'Display',
-        order: 6
+        order: 7
       },
       anomalyThresholdPct: {
         type: 'number',
         label: 'Attainment Anomaly Alert Threshold (%)',
         default: 130,
         section: 'Display',
-        order: 7
+        order: 8
       },
       sortBy: {
         type: 'string',
@@ -217,18 +230,43 @@
         display: 'select',
         values: [
           { 'Chronological / Natural (Oldest to Newest)': 'chronological' },
-          { 'Reverse Chronological (Newest to Oldest)': 'reverse_chrono' }
+          { 'Reverse Chronological (Newest to Oldest)': 'reverse_chrono' },
+          { 'Metric Descending (Highest Activity Days First)': 'metric_desc' },
+          { 'Metric Ascending (Lowest Activity Days First)': 'metric_asc' }
         ],
         default: 'chronological',
         section: 'Display',
-        order: 8
+        order: 9
+      },
+      dateWindow: {
+        type: 'string',
+        label: 'Active Date Window Horizon',
+        display: 'select',
+        values: [
+          { 'Full Available History (365+ Days)': 'all' },
+          { 'Last 30 Days (Trailing Month)': 'last_30' },
+          { 'Last 60 Days (Trailing Bi-Monthly)': 'last_60' },
+          { 'Last 90 Days (Trailing Quarter)': 'last_90' },
+          { 'Last 180 Days (Trailing Half)': 'last_180' },
+          { 'Last 365 Days (Trailing Year)': 'last_365' }
+        ],
+        default: 'all',
+        section: 'Display',
+        order: 10
+      },
+      enableOtherRollup: {
+        type: 'boolean',
+        label: 'Group Excluded / Prior Days into Summary Card',
+        default: false,
+        section: 'Display',
+        order: 11
       },
       suppressZeroNull: {
         type: 'boolean',
         label: 'Treat Zero / Null as Inactive Cells',
         default: true,
         section: 'Display',
-        order: 9
+        order: 12
       },
       hudMode: {
         type: 'string',
@@ -241,54 +279,62 @@
         ],
         default: 'scorecard',
         section: 'Display',
-        order: 10
+        order: 13
       },
       showValueLabels: {
         type: 'string',
-        label: 'Data Value Badges',
+        label: 'Data Value Badges & Hotspots',
         display: 'select',
         values: [
+          { 'All (Values in Badges & Tooltips)': 'all' },
           { 'Min/Max Peaks & Hotspots Only': 'peaks_only' },
           { 'Hidden': 'hidden' }
         ],
         default: 'peaks_only',
         section: 'Display',
-        order: 11
+        order: 14
       },
       summaryTitle: {
         type: 'string',
         label: 'Custom Calendar Title Override',
         default: '',
         section: 'Display',
-        order: 12
+        order: 15
+      },
+      summarySubtitle: {
+        type: 'string',
+        label: 'Custom Subtitle / Caption Override',
+        default: '',
+        section: 'Display',
+        order: 16
       },
       showMonthLabels: {
         type: 'boolean',
         label: 'Show Month Labels',
         default: true,
         section: 'Display',
-        order: 13
+        order: 17
       },
       showDayLabels: {
         type: 'boolean',
         label: 'Show Day Labels',
         default: true,
         section: 'Display',
-        order: 14
+        order: 18
       },
       showLegend: {
         type: 'boolean',
         label: 'Show Intensity Legend',
         default: true,
         section: 'Display',
-        order: 15
+        order: 19
       },
       showSearch: {
         type: 'boolean',
         label: 'Show Date Search / Filter Bar',
         default: true,
         section: 'Display',
-        order: 16
+        order: 20
       },
 
       // ==========================================
@@ -316,6 +362,7 @@
       customPrimaryHex: {
         type: 'string',
         label: 'Custom High-Intensity Hex',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 2
@@ -323,6 +370,7 @@
       customPositiveHex: {
         type: 'string',
         label: 'Custom Target-Met / Success Hex',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 3
@@ -330,6 +378,7 @@
       customNegativeHex: {
         type: 'string',
         label: 'Custom Alert / Deficit Hex',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 4
@@ -786,9 +835,11 @@
 
         // Title chip
         var titleText = config.summaryTitle || ((primaryMeas.label_short || primaryMeas.label || 'Activity') + ' Calendar');
+        var subText = config.summarySubtitle ? ('<span style="font-size:10.5px;color:#64748b;font-weight:500;">' + config.summarySubtitle + '</span>') : '';
         hudHtml += '<div style="display:flex;flex-direction:column;">' +
           '<span style="font-size:10px;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:0.5px;">Metric Calendar</span>' +
           '<span style="font-size:' + valFontSize + ';font-weight:700;color:#0f172a;">' + titleText + '</span>' +
+          subText +
           '</div>';
 
         // Total

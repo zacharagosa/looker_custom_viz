@@ -18,7 +18,7 @@ This repository is maintained with continuous daily automation that discovers un
 
 All visualizations are built with a strict **2-tab option architecture (`Display` and `Style`)** to guarantee clean, uncrowded Looker Edit Viz modals, debounced `ResizeObserver` layout stability, and full Looker drill menu integration.
 
-### Volume 1: Core BI, Geospatial & Executive Grids (29 Visualizations)
+### Volume 1: Core BI, Geospatial & Executive Grids (30 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
@@ -51,6 +51,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 | [**Slopegraph & Multi-Period Rank Comparison**](visualizations/slopegraph/)<br>`slopegraph` | Leaderboards & Grids | 1 Entity Dimension + 1 Period Dimension (or 0 dimensions with 2 period measures) + 1 Primary Metric Measure (e.g. Total Sales, Orders, Closed ARR) | [📸 View](visualizations/slopegraph/screenshot.png) |
 | [**Parallel Coordinates Multivariate Profiler**](visualizations/parallel_coordinates_profiler/)<br>`parallel_coordinates_profiler` | Flow, Networks & Hierarchy | 1 Primary Entity Dimension (e.g. site_name), 1 optional Group/Cluster Dimension (e.g. market) + 2 to 10 Numeric Measures (e.g. throughput_mbps, latency_ms, packet_loss_pct, call_drop_rate, energy_kwh) | [📸 View](visualizations/parallel_coordinates_profiler/screenshot.png) |
 | [**Candlestick / OHLC & Bollinger Volatility Envelope**](visualizations/candlestick_bollinger_bands/)<br>`candlestick_bollinger_bands` | Time Series & Schedules | 1 Date/Time dimension (e.g. trading_date) + 4 Price measures (Open, High, Low, Close), optional 1 Trading Volume measure | [📸 View](visualizations/candlestick_bollinger_bands/screenshot.png) |
+| [**RFM Customer Segmentation & Cohort Matrix**](visualizations/rfm_customer_segmentation_matrix/)<br>`rfm_customer_segmentation_matrix` | Strategic & Pareto Analytics | 1 Customer ID / Name dimension, 1 Recency field (Date or Days) + 2 Numeric measures (Frequency / Order Count, Monetary / Total Spend), optional 1 Cohort dimension | [📸 View](visualizations/rfm_customer_segmentation_matrix/screenshot.png) |
 
 ---
 

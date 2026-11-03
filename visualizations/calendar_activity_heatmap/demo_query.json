@@ -6,7 +6,7 @@
     "order_items.count"
   ],
   "filters": {
-    "order_items.created_date": "365 days"
+    "order_items.created_date": "2024-01-01 to 2024-12-31"
   },
   "sorts": [
     "order_items.created_date asc"
@@ -14,11 +14,11 @@
   "limit": "400",
   "vis_config": {
     "type": "calendar_activity_heatmap",
+    "layoutMode": "github_calendar",
     "colorPalette": "github_green",
     "cellSize": 13,
     "cellRadius": 3,
     "cellSpacing": 3,
-    "showSummary": true,
     "showMonthLabels": true,
     "showDayLabels": true,
     "showLegend": true,

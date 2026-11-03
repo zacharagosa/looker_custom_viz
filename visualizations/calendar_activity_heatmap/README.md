@@ -5,8 +5,13 @@
 A custom Looker visualization built with D3.js v7 that renders an interactive, GitHub-style contribution and daily activity grid across rolling calendar dates.
 
 Upgraded with **Multi-Modal Enterprise Flexibility**:
+- **Multi-Modal Layouts (`Display`)**: Toggle seamlessly between:
+  - `52-Week GitHub Matrix (Horizontal Horizon)`
+  - `Monthly Calendar Cards (12-Month Multiples)`
+  - `Day-of-Week Summary Matrix (Sun-Sat Activity)`
 - **Dynamic Field-Role Mapping (`Display`)**: Remap Date dimension, primary measure, and optional target/goal measure from dropdowns dynamically populated with the query's actual fields.
 - **Configurable Reference Lines & Targets (`Display`)**: Select between Dataset Mean, Dataset Median, Percentiles (P75/P90), Fixed Value, or dedicated Measure Column, with custom baseline label and anomaly spike threshold detection.
+- **Sorting, Windowing & Null Suppression (`Display`)**: Filter active date window (All History, Last 30d, 60d, 90d, 180d, 365d), group excluded/prior dates into an "Other / Prior History" rollup card, and order chronologically, reverse-chronologically, or by metric peak.
 - **Executive KPI Scorecard HUD (`Display`)**: Top metric strip highlighting total volume, active days, goal attainment percentage, and all-time peak day.
 - **Interactive Search & Hotspot Highlighting (`Display`)**: Filter dates dynamically via search bar; automatically pins peak volume days.
 - **Brand Palettes & Value Formatting (`Style`)**: Choose from GitHub Classic, Google Enterprise, Modern Slate, Electric Blue, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, or custom hex overrides; support for metric polarity (higher vs lower is better) and compact number/currency formatting.
@@ -16,7 +21,7 @@ Upgraded with **Multi-Modal Enterprise Flexibility**:
 - **Dimension 1**: A Date field (e.g. `order_items.created_date`, `events.event_date`, `mart_daily_kpis.activity_date`) formatted as `YYYY-MM-DD`.
 - **Measure 1**: Any count or sum measure (e.g. `order_items.count`, `order_items.total_sale_price`).
 - **Measure 2 (Optional)**: Daily target or goal measure.
-- **Filter**: Filter by a relevant timeframe, such as `last 365 days` or `last 90 days`.
+- **Filter**: Filter by a relevant timeframe, such as `2024-01-01 to 2024-12-31`.
 
 ## Setup in Looker (`manifest.lkml`)
 ```lookml

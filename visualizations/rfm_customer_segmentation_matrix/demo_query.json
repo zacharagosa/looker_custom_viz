@@ -1,0 +1,34 @@
+{
+  "model": "thelook",
+  "view": "order_items",
+  "fields": [
+    "users.id",
+    "users.name",
+    "order_items.count",
+    "order_items.total_sale_price",
+    "order_items.created_date",
+    "users.country"
+  ],
+  "filters": {
+    "order_items.status": "Complete"
+  },
+  "sorts": [
+    "order_items.total_sale_price desc"
+  ],
+  "limit": "150",
+  "vis_config": {
+    "type": "rfm_customer_segmentation_matrix",
+    "layoutMode": "rfm_grid_matrix",
+    "colorPalette": "google_enterprise",
+    "hudMode": "scorecard",
+    "targetMode": "dataset_mean",
+    "referenceLineLabel": "Target LTV Quota",
+    "showLegend": true,
+    "showSearch": true,
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency",
+    "bubbleMinRadius": 5,
+    "bubbleMaxRadius": 22
+  }
+}
