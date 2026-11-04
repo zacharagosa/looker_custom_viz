@@ -40,11 +40,13 @@ VOL2_TABS = [
     "🛡️ Cloud Infrastructure & SecOps",
     "🔬 Statistical, ML & Forecasting",
     "🛍️ Retail, Supply Chain & FinOps",
-    "🧬 Multivariate & Diagnostic Profiling"
+    "🧬 Multivariate & Diagnostic Profiling",
+    "🏥 Healthcare & Med-Surg Supply Chain"
 ]
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "surgical_procedure_variance_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "retention_cohort_decay": "🎮 Gaming & Telemetry",
     "telemetry_conversion_funnel": "🎮 Gaming & Telemetry",
     "level_progression_balance_curve": "🎮 Gaming & Telemetry",
@@ -130,9 +132,12 @@ CATEGORY_TAB_MAP = {
 
     "Multivariate & Diagnostic Profiling": ("vol2", "🧬 Multivariate & Diagnostic Profiling"),
     "Multivariate & Profiling": ("vol2", "🧬 Multivariate & Diagnostic Profiling"),
+    "Healthcare & Med-Surg Supply Chain": ("vol2", "🏥 Healthcare & Med-Surg Supply Chain"),
+    "Healthcare & Life Sciences": ("vol2", "🏥 Healthcare & Med-Surg Supply Chain"),
 }
 
 VIZ_EMOJI_MAP = {
+    "surgical_procedure_variance_matrix": "🏥",
     "rfm_customer_segmentation_matrix": "💎",
     "dumbbell_plot": "📊",
     "bullet_graph": "🎯",

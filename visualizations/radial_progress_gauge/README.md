@@ -10,7 +10,7 @@ This visualization features complete multi-modal layout flexibility strictly org
 
 ### 🎯 Display Controls
 - **Multi-Modal Gauge Layouts**: Concentric Rings (Apple Fitness multi-tier), Single Hero Ring with Sub-Gauges, Radial Dial Speedometer, and Small Multiples Grid.
-- **Dynamic Field-Role Mapping**: Remap primary dimension, primary measure, and target measure using dropdowns automatically populated with the dimensions and measures in the live query, without modifying Looker Explore column orders.
+- **Dynamic Field-Role Mapping**: Remap primary dimension, optional secondary/grouping dimension, primary measure, and target measure using dropdowns automatically populated with the dimensions and measures in the live query (`display: 'select'`), without modifying Looker Explore column orders.
 - **Configurable Goals & Thresholds**:
   - `Measure Column`: Use a secondary measure directly from the query.
   - `Fixed Static Target`: Set a manual numeric target.
@@ -19,10 +19,11 @@ This visualization features complete multi-modal layout flexibility strictly org
 - **Attainment Anomaly Alerts**: Highlight metrics exceeding threshold goals (e.g. `>120%`).
 - **Interactive Sorting & Top-N Bucketing**: Sort by Metric Descending, Ascending, Alphabetical, or Natural Query Order. Optionally rollup long tails into an automatic `'Other'` category.
 - **Executive KPI HUD & Search Bar**: Full Scorecard HUD with Average Attainment, Total Active Volume, Leading Driver, and real-time category filter search.
+- **Custom Title & Subtitle Overrides**: Dedicated fields for custom chart title and explanatory subtitle headers.
 
 ### 🎨 Style & Typography
 - **Preset Brand Palettes**: Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, and Custom Hex Override.
-- **Custom Hex Overrides**: Specify primary brand, positive success, and negative alert colors.
+- **Custom Hex Overrides**: Native color picker inputs (`display: 'color'`) to specify primary brand, positive success, and negative alert colors.
 - **Metric Polarity**: Toggle between `Higher is Better` (Sales, Orders, Completion) and `Lower is Better` (Latency, Churn, Defect, Cost).
 - **Typography & Font Scaling**: Switch between `Compact`, `Standard`, and `Large Presentation` scales.
 - **Adaptive Value Formats**: Auto (Looker field formats), Compact Numbers (`1.2M`), Compact Currency (`$1.2M`), Percentage (`45.2%`), Decimal, or Raw.

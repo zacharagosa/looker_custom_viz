@@ -151,6 +151,15 @@
         section: "Display",
         order: 2
       },
+      dimSecondaryOverride: {
+        type: "string",
+        label: "Secondary / Group Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
       measureFieldOverride: {
         type: "string",
         label: "Primary Measure",
@@ -158,7 +167,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 3
+        order: 4
       },
       targetMeasureOverride: {
         type: "string",
@@ -167,7 +176,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 4
+        order: 5
       },
       targetMode: {
         type: 'string',
@@ -183,28 +192,28 @@
         ],
         default: 'fixed_value',
         section: 'Display',
-        order: 5
+        order: 6
       },
       targetValue: {
         type: 'number',
         label: 'Fixed Target Value (when Fixed Mode, 0 = Auto)',
         default: 0,
         section: 'Display',
-        order: 6
+        order: 7
       },
       referenceLineLabel: {
         type: 'string',
         label: 'Custom Reference / Target Label',
         default: 'Quota Goal',
         section: 'Display',
-        order: 7
+        order: 8
       },
       anomalyThresholdPct: {
         type: 'number',
         label: 'Attainment Anomaly Alert Threshold (%)',
         default: 120,
         section: 'Display',
-        order: 8
+        order: 9
       },
       sortBy: {
         type: 'string',
@@ -218,28 +227,28 @@
         ],
         default: 'metric_desc',
         section: 'Display',
-        order: 9
+        order: 10
       },
       topNLimit: {
         type: 'number',
         label: 'Top-N Rings Limit (0 = All, Max 12)',
         default: 6,
         section: 'Display',
-        order: 10
+        order: 11
       },
       enableOtherRollup: {
         type: 'boolean',
         label: 'Group Remaining into "Other" Ring',
         default: false,
         section: 'Display',
-        order: 11
+        order: 12
       },
       suppressZeroNull: {
         type: 'boolean',
         label: 'Suppress Zero / Null Rings',
         default: true,
         section: 'Display',
-        order: 12
+        order: 13
       },
       hudMode: {
         type: 'string',
@@ -252,7 +261,7 @@
         ],
         default: 'scorecard',
         section: 'Display',
-        order: 13
+        order: 14
       },
       showValueLabels: {
         type: 'string',
@@ -265,35 +274,49 @@
         ],
         default: 'all',
         section: 'Display',
-        order: 14
+        order: 15
       },
       showCenterText: {
         type: 'boolean',
         label: 'Show Center Metric & % Summary',
         default: true,
         section: 'Display',
-        order: 15
+        order: 16
       },
       centerTitle: {
         type: 'string',
         label: 'Custom Center Title Override',
         default: '',
         section: 'Display',
-        order: 16
+        order: 17
+      },
+      customTitle: {
+        type: 'string',
+        label: 'Custom Chart Title Override',
+        default: '',
+        section: 'Display',
+        order: 18
+      },
+      customSubtitle: {
+        type: 'string',
+        label: 'Custom Chart Subtitle Override',
+        default: '',
+        section: 'Display',
+        order: 19
       },
       showLegend: {
         type: 'boolean',
         label: 'Show Metric Legend',
         default: true,
         section: 'Display',
-        order: 17
+        order: 20
       },
       showSearch: {
         type: 'boolean',
         label: 'Show Category Search Bar',
         default: true,
         section: 'Display',
-        order: 18
+        order: 21
       },
 
       // ==========================================
@@ -319,6 +342,7 @@
       customPrimaryHex: {
         type: 'string',
         label: 'Custom Primary Brand Hex',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 2
@@ -326,6 +350,7 @@
       customPositiveHex: {
         type: 'string',
         label: 'Custom Positive / Success Hex',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 3
@@ -333,6 +358,7 @@
       customNegativeHex: {
         type: 'string',
         label: 'Custom Negative / Alert Hex',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 4
@@ -423,6 +449,7 @@
       var self = this;
       var FIELD_ROLE_OPTIONS = {
         dimFieldOverride: { role: "dimension", defaultIdx: 0 },
+        dimSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         measureFieldOverride: { role: "measure", defaultIdx: 0 },
         targetMeasureOverride: { role: "measure", defaultIdx: 1 }
       };
@@ -779,6 +806,26 @@
       finalItems.forEach(function (d, i) {
         d.color = colorList[i % colorList.length];
       });
+
+      // Render custom title & subtitle header banner if configured
+      if (config.customTitle || config.customSubtitle) {
+        var titleBar = document.createElement('div');
+        titleBar.className = 'radial-gauge-header-bar';
+        titleBar.style.width = '100%';
+        titleBar.style.padding = '8px 16px 6px 16px';
+        titleBar.style.borderBottom = '1px solid #e2e8f0';
+        titleBar.style.backgroundColor = '#ffffff';
+        titleBar.style.flexShrink = '0';
+        var titleHtml = '';
+        if (config.customTitle) {
+          titleHtml += '<div style="font-size:15px;font-weight:700;color:#0f172a;line-height:1.2;">' + config.customTitle + '</div>';
+        }
+        if (config.customSubtitle) {
+          titleHtml += '<div style="font-size:11.5px;color:#64748b;margin-top:2px;">' + config.customSubtitle + '</div>';
+        }
+        titleBar.innerHTML = titleHtml;
+        root.appendChild(titleBar);
+      }
 
       // --- 6. RENDER EXECUTIVE KPI SCORECARD HUD ---
       var hudMode = config.hudMode || 'scorecard';

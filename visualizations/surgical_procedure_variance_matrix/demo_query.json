@@ -1,0 +1,24 @@
+{
+  "model": "wellverse_mba",
+  "view": "procedure_cases",
+  "fields": [
+    "procedure_cases.service_line",
+    "procedure_cases.procedure_name",
+    "procedure_cases.case_count",
+    "procedure_cases.cost_per_case",
+    "procedure_cases.benchmark_cost_per_case",
+    "procedure_cases.excess_supply_cost",
+    "procedure_cases.cost_variance_pct"
+  ],
+  "sorts": [
+    "procedure_cases.case_count desc"
+  ],
+  "limit": "15",
+  "vis_config": {
+    "type": "surgical_procedure_variance_matrix",
+    "layoutMode": "variance_dumbbell_quadrant",
+    "colorPalette": "wellverse_healthcare",
+    "hudMode": "scorecard",
+    "showSearch": true
+  }
+}

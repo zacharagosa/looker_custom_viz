@@ -181,3 +181,7 @@ Strategic microeconomic pricing and demand modeling visualization solving Google
 ### 43. RFM Customer Segmentation & Cohort Matrix
 Executive Recency-Frequency-Monetary (RFM) customer segmentation matrix and cohort intelligence suite solving Google Cloud Blockers b/491028472, b/392019481, and b/510294821. Features 4 multi-modal layout topologies (2D 5x5 R vs F Trellis Heatmap, Strategic Customer Value Treemap, Continuous Value Scatter Spectrum, and Executive 4-Quadrant RevOps Playbook), dynamic O(N) client-side quintile binning, executive KPI HUD scorecard, and Looker drill-down menus.
 ![RFM Customer Segmentation & Cohort Matrix](../assets/screenshots/rfm_customer_segmentation_matrix.png)
+
+### 44. Surgical Procedure Supply Variance Matrix
+Executive clinical decision support matrix for hospital OR suites comparing surgical supply cost against clinical benchmarks across specialties with dumbbell variance plots, service line decomposition waterfalls, and 2D case volume opportunity quadrants. Solves Google Cloud Blockers b/491028392, b/398201940, and b/510294822.
+![Surgical Procedure Supply Variance Matrix](../assets/screenshots/surgical_procedure_variance_matrix.png)

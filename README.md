@@ -55,10 +55,11 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (35 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (36 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**Surgical Procedure Supply Variance Matrix**](visualizations/surgical_procedure_variance_matrix/)<br>`surgical_procedure_variance_matrix` | Healthcare & Med-Surg Supply Chain | 1 Service Line dimension + 1 Procedure Name dimension + 1 Case Volume measure, 1 Actual Cost/Case measure, 1 Benchmark Cost measure, 1 Excess Supply Cost measure | [📸 View](visualizations/surgical_procedure_variance_matrix/screenshot.png) |
 | [**Player & Customer Retention Cohort Decay**](visualizations/retention_cohort_decay/)<br>`retention_cohort_decay` | Telemetry & Cohort Decay | 1 Cohort Dimension (e.g. users.created_month) + 1 Activity Period Dimension (e.g. order_items.created_month) OR 1 Pivot + 1 Numeric Measure (e.g. order_items.order_count or users count) | [📸 View](visualizations/retention_cohort_decay/screenshot.png) |
 | [**Network Topology & Latency Flow Graph**](visualizations/network_topology_graph/)<br>`network_topology_graph` | Flow, Networks & Hierarchy | 1 to 2 Dimensions: Source Node (e.g. distribution_centers.name) + Target Node (e.g. users.state) + 1 to 3 Measures: Volume/Throughput (e.g. order_items.total_sale_price), Latency/Delay (e.g. order_items.average_shipping_time), Packet Count (e.g. order_items.order_count) | [📸 View](visualizations/network_topology_graph/screenshot.png) |
 | [**Telemetry & Conversion Funnel**](visualizations/telemetry_conversion_funnel/)<br>`telemetry_conversion_funnel` | Telemetry & Cohort Decay | 1 to 2 Dimensions: Stage Dimension (e.g. order_items.status) + optional Segment/Channel (e.g. users.traffic_source) OR 2-8 measures + 1 to 2 Measures: Throughput Volume (e.g. order_items.order_count) + optional Secondary Metric (e.g. order_items.total_sale_price) | [📸 View](visualizations/telemetry_conversion_funnel/screenshot.png) |
