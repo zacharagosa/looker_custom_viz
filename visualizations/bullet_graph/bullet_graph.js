@@ -230,6 +230,15 @@
         section: "Display",
         order: 2
       },
+      dimSecondaryOverride: {
+        type: "string",
+        label: "Secondary / Group Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
       measureFieldOverride: {
         type: "string",
         label: "Actual Performance Measure",
@@ -237,7 +246,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 3
+        order: 4
       },
       targetMeasureOverride: {
         type: "string",
@@ -246,7 +255,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 4
+        order: 5
       },
       baselineMeasureOverride: {
         type: "string",
@@ -255,7 +264,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 5
+        order: 6
       },
       targetCalculationMode: {
         type: 'string',
@@ -405,19 +414,33 @@
         section: 'Display',
         order: 21
       },
-      customTitleOverride: {
+      customTitle: {
         type: 'string',
         label: 'Custom Scorecard Title Override',
         default: '',
         section: 'Display',
         order: 22
       },
+      customSubtitle: {
+        type: 'string',
+        label: 'Custom Scorecard Subtitle Override',
+        default: '',
+        section: 'Display',
+        order: 23
+      },
+      customTitleOverride: {
+        type: 'string',
+        label: 'Custom Scorecard Title (Legacy)',
+        default: '',
+        section: 'Display',
+        order: 24
+      },
       showSearch: {
         type: 'boolean',
         label: 'Show Category Search Bar',
         default: true,
         section: 'Display',
-        order: 23
+        order: 25
       },
       showTargetMarker: {
         type: 'boolean',
@@ -574,6 +597,7 @@
       var self = this;
       var FIELD_ROLE_OPTIONS = {
         dimFieldOverride: { role: "dimension", defaultIdx: 0 },
+        dimSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         measureFieldOverride: { role: "measure", defaultIdx: 0 },
         targetMeasureOverride: { role: "measure", defaultIdx: 1 },
         baselineMeasureOverride: { role: "measure", defaultIdx: 2 }
@@ -779,6 +803,7 @@
 
       // --- 1. RESOLVE FIELD ROLES WITH CONFIG OVERRIDES ---
       var dimField = resolveField(dimensions, config.dimFieldOverride, 0);
+      var secDimField = config.dimSecondaryOverride ? resolveField(dimensions, config.dimSecondaryOverride, -1) : null;
       var actualField = resolveField(measures, config.measureFieldOverride, 0);
       var targetField = config.targetMeasureOverride ? resolveField(measures, config.targetMeasureOverride, 1) : (measures.length > 1 ? measures[1] : null);
       var baselineField = config.baselineMeasureOverride ? resolveField(measures, config.baselineMeasureOverride, 2) : (measures.length > 2 ? measures[2] : null);
@@ -833,7 +858,9 @@
       // --- 3. PARSE RAW ITEMS ---
       var rawItems = [];
       data.forEach(function (row, idx) {
-        var label = dimField ? (row[dimField.name].rendered || row[dimField.name].value || 'Item ' + (idx + 1)) : (actualField.label_short || actualField.label || 'KPI Total');
+        var primLabel = dimField ? (row[dimField.name].rendered || row[dimField.name].value || 'Item ' + (idx + 1)) : (actualField.label_short || actualField.label || 'KPI Total');
+        var secLabel = (secDimField && row[secDimField.name]) ? (row[secDimField.name].rendered || row[secDimField.name].value) : '';
+        var label = secLabel ? (primLabel + ' — ' + secLabel) : primLabel;
         var actualVal = Number(row[actualField.name].value) || 0;
         var actualRendered = row[actualField.name].rendered;
 
@@ -1046,13 +1073,13 @@
         mainTitle.style.fontSize = fSizes.title;
         mainTitle.style.fontWeight = '700';
         mainTitle.style.letterSpacing = '-0.02em';
-        mainTitle.textContent = config.customTitleOverride || ((dimField ? dimField.label_short || dimField.label : 'Executive KPI') + ' — ' + (actualField.label_short || actualField.label) + (targetField ? ' vs ' + (targetField.label_short || targetField.label) : ''));
+        mainTitle.textContent = config.customTitleOverride || config.customTitle || ((dimField ? dimField.label_short || dimField.label : 'Executive KPI') + ' — ' + (actualField.label_short || actualField.label) + (targetField ? ' vs ' + (targetField.label_short || targetField.label) : ''));
 
         var subtitle = document.createElement('div');
         subtitle.style.fontSize = fSizes.subtitle;
         subtitle.style.color = theme.subtext;
         subtitle.style.marginTop = '2px';
-        subtitle.textContent = totalItems + ' Categories Analyzed • ' + metTargetCount + ' of ' + totalItems + ' on track (' + ((metTargetCount / totalItems) * 100).toFixed(0) + '%)';
+        subtitle.textContent = config.customSubtitle ? config.customSubtitle : (totalItems + ' Categories Analyzed • ' + metTargetCount + ' of ' + totalItems + ' on track (' + ((metTargetCount / totalItems) * 100).toFixed(0) + '%)');
         titleBox.appendChild(mainTitle);
         titleBox.appendChild(subtitle);
         header.appendChild(titleBox);

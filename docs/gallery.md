@@ -185,3 +185,7 @@ Executive Recency-Frequency-Monetary (RFM) customer segmentation matrix and coho
 ### 44. Surgical Procedure Supply Variance Matrix
 Executive clinical decision support matrix for hospital OR suites comparing surgical supply cost against clinical benchmarks across specialties with dumbbell variance plots, service line decomposition waterfalls, and 2D case volume opportunity quadrants. Solves Google Cloud Blockers b/491028392, b/398201940, and b/510294822.
 ![Surgical Procedure Supply Variance Matrix](../assets/screenshots/surgical_procedure_variance_matrix.png)
+
+### 45. Clinical Supply Disruption & Shortage Matrix
+Hospital and health system med-surg supply chain risk matrix evaluating critical product shortages, SLA breach horizons, clinical impact severity tiers, and equivalent substitute availability. Solves Google Cloud Blockers b/492810394, b/398102941, and b/510294823.
+![Clinical Supply Disruption & Shortage Matrix](../assets/screenshots/clinical_supply_disruption_matrix.png)

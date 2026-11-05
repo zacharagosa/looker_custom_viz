@@ -1,0 +1,32 @@
+{
+  "model": "wellverse_mba",
+  "view": "supply_disruptions",
+  "fields": [
+    "medical_products.category",
+    "medical_products.product_name",
+    "supply_disruptions.severity",
+    "supply_disruptions.status",
+    "supply_disruptions.disruption_type",
+    "supply_disruptions.wellverse_alternative_available",
+    "medical_products.clinically_critical",
+    "supply_disruptions.avg_days_active",
+    "supply_disruptions.disruption_count"
+  ],
+  "sorts": [
+    "supply_disruptions.avg_days_active desc"
+  ],
+  "limit": "25",
+  "vis_config": {
+    "type": "clinical_supply_disruption_matrix",
+    "layoutMode": "shortage_severity_matrix",
+    "colorPalette": "wellverse_healthcare",
+    "targetMode": "fixed_value",
+    "targetValue": 45,
+    "referenceLineLabel": "SLA Resolution Target (45d)",
+    "anomalyThreshold": 75,
+    "hudMode": "scorecard",
+    "showValueLabels": "all",
+    "showAlternativeBadges": true,
+    "showSearch": true
+  }
+}

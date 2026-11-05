@@ -47,6 +47,7 @@ VOL2_TABS = [
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
     "surgical_procedure_variance_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
+    "clinical_supply_disruption_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "retention_cohort_decay": "🎮 Gaming & Telemetry",
     "telemetry_conversion_funnel": "🎮 Gaming & Telemetry",
     "level_progression_balance_curve": "🎮 Gaming & Telemetry",
@@ -138,6 +139,7 @@ CATEGORY_TAB_MAP = {
 
 VIZ_EMOJI_MAP = {
     "surgical_procedure_variance_matrix": "🏥",
+    "clinical_supply_disruption_matrix": "🏥",
     "rfm_customer_segmentation_matrix": "💎",
     "dumbbell_plot": "📊",
     "bullet_graph": "🎯",
