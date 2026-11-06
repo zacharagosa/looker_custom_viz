@@ -55,11 +55,12 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (37 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (38 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
 | [**Clinical Supply Disruption & Shortage Matrix**](visualizations/clinical_supply_disruption_matrix/)<br>`clinical_supply_disruption_matrix` | Healthcare & Med-Surg Supply Chain | 1 Category dim, 1 Product Name dim, 1 Severity dim, 1 Status dim, 1 Root Cause dim, 1 Alt Available dim, 1 Clinically Critical dim + 1 Days Active measure, 1 Disruption Count measure | [📸 View](visualizations/clinical_supply_disruption_matrix/screenshot.png) |
+| [**Med-Surg Par Level & Inventory Expiration Risk Matrix**](visualizations/med_surg_par_risk_matrix/)<br>`med_surg_par_risk_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Dimension (Care Setting / Facility), 1 Secondary Dimension (Category) + 1 On-Hand Value measure, 1 Par Target measure, 1 Days on Hand measure, 1 Expired Waste measure, 1 Stockout Events measure | [📸 View](visualizations/med_surg_par_risk_matrix/screenshot.png) |
 | [**Surgical Procedure Supply Variance Matrix**](visualizations/surgical_procedure_variance_matrix/)<br>`surgical_procedure_variance_matrix` | Healthcare & Med-Surg Supply Chain | 1 Service Line dimension + 1 Procedure Name dimension + 1 Case Volume measure, 1 Actual Cost/Case measure, 1 Benchmark Cost measure, 1 Excess Supply Cost measure | [📸 View](visualizations/surgical_procedure_variance_matrix/screenshot.png) |
 | [**Player & Customer Retention Cohort Decay**](visualizations/retention_cohort_decay/)<br>`retention_cohort_decay` | Telemetry & Cohort Decay | 1 Cohort Dimension (e.g. users.created_month) + 1 Activity Period Dimension (e.g. order_items.created_month) OR 1 Pivot + 1 Numeric Measure (e.g. order_items.order_count or users count) | [📸 View](visualizations/retention_cohort_decay/screenshot.png) |
 | [**Network Topology & Latency Flow Graph**](visualizations/network_topology_graph/)<br>`network_topology_graph` | Flow, Networks & Hierarchy | 1 to 2 Dimensions: Source Node (e.g. distribution_centers.name) + Target Node (e.g. users.state) + 1 to 3 Measures: Volume/Throughput (e.g. order_items.total_sale_price), Latency/Delay (e.g. order_items.average_shipping_time), Packet Count (e.g. order_items.order_count) | [📸 View](visualizations/network_topology_graph/screenshot.png) |

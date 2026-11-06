@@ -1,0 +1,34 @@
+{
+  "model": "wellverse_mba",
+  "view": "inventory_snapshots",
+  "fields": [
+    "customer_facilities.care_setting",
+    "inventory_snapshots.category",
+    "inventory_snapshots.on_hand_value",
+    "inventory_snapshots.par_value",
+    "inventory_snapshots.excess_inventory",
+    "inventory_snapshots.expired_value",
+    "inventory_snapshots.stockout_events",
+    "inventory_snapshots.avg_days_on_hand"
+  ],
+  "filters": {
+    "inventory_snapshots.is_latest_week": "Yes"
+  },
+  "sorts": [
+    "inventory_snapshots.on_hand_value desc"
+  ],
+  "limit": "25",
+  "vis_config": {
+    "type": "med_surg_par_risk_matrix",
+    "layoutMode": "par_risk_quadrant",
+    "colorPalette": "wellverse_healthcare",
+    "hudMode": "scorecard",
+    "showSearch": true,
+    "showLegend": true,
+    "showGridLines": true,
+    "minSafeDoh": 14,
+    "maxBufferDoh": 30,
+    "referenceLineLabel": "Par Target (100%)",
+    "valueFormat": "compact_currency"
+  }
+}

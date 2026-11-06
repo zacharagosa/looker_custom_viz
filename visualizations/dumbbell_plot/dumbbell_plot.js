@@ -270,6 +270,15 @@
         section: "Display",
         order: 1
       },
+      dimSecondaryOverride: {
+        type: "string",
+        label: "Secondary / Group Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 2
+      },
       measureFieldAOverride: {
         type: "string",
         label: "Point A Baseline Measure",
@@ -277,7 +286,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 2
+        order: 3
       },
       measureFieldBOverride: {
         type: "string",
@@ -286,7 +295,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 3
+        order: 4
       },
       targetCalculationMode: {
         type: 'string',
@@ -403,12 +412,26 @@
         section: 'Display',
         order: 15
       },
-      customTitleOverride: {
+      customTitle: {
         type: 'string',
         label: 'Custom Scorecard Title Override',
         default: '',
         section: 'Display',
         order: 16
+      },
+      customSubtitle: {
+        type: 'string',
+        label: 'Custom Scorecard Subtitle Override',
+        default: '',
+        section: 'Display',
+        order: 17
+      },
+      customTitleOverride: {
+        type: 'string',
+        label: 'Custom Scorecard Title (Legacy)',
+        default: '',
+        section: 'Display',
+        order: 18
       },
       showSearch: {
         type: 'boolean',
@@ -628,6 +651,7 @@
       var self = this;
       var FIELD_ROLE_OPTIONS = {
         dimFieldOverride: { role: "dimension", defaultIdx: 0 },
+        dimSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         measureFieldAOverride: { role: "measure", defaultIdx: 0 },
         measureFieldBOverride: { role: "measure", defaultIdx: 1 }
       };
@@ -852,6 +876,7 @@
 
       // --- 1. DYNAMIC FIELD ROLE RESOLUTION ---
       var dimField = resolveField(dims, config.dimFieldOverride, 0);
+      var secDimField = config.dimSecondaryOverride ? resolveField(dims, config.dimSecondaryOverride, -1) : null;
       var measFieldA = resolveField(measures, config.measureFieldAOverride, 0);
       var measFieldB = config.measureFieldBOverride ? resolveField(measures, config.measureFieldBOverride, 1) : (measures.length > 1 ? measures[1] : null);
 
@@ -921,7 +946,9 @@
       // --- 3. PARSE RAW ITEMS ---
       var rawItems = [];
       data.forEach(function (row, idx) {
-        var catName = dimField && row[dimField.name] ? (row[dimField.name].rendered || row[dimField.name].value) : ('Item ' + (idx + 1));
+        var primName = dimField && row[dimField.name] ? (row[dimField.name].rendered || row[dimField.name].value) : ('Item ' + (idx + 1));
+        var secName = (secDimField && row[secDimField.name]) ? (row[secDimField.name].rendered || row[secDimField.name].value) : '';
+        var catName = secName ? (primName + ' — ' + secName) : primName;
         var valA = 0;
         var valB = 0;
         var cellA = null;
@@ -1084,13 +1111,13 @@
         mainTitle.style.fontSize = fSizes.title;
         mainTitle.style.fontWeight = '700';
         mainTitle.style.color = theme.text;
-        mainTitle.textContent = config.customTitleOverride || ((dimField ? (dimField.label_short || dimField.label) : 'Executive Divergence') + ' — ' + labelA + ' vs ' + labelB);
+        mainTitle.textContent = config.customTitleOverride || config.customTitle || ((dimField ? (dimField.label_short || dimField.label) : 'Executive Divergence') + ' — ' + labelA + ' vs ' + labelB);
 
         var subTitle = document.createElement('div');
         subTitle.style.fontSize = fSizes.subtitle;
         subTitle.style.color = theme.subtext;
         subTitle.style.marginTop = '2px';
-        subTitle.textContent = totalCategories + ' Categories • ' + positiveDeltasCount + ' of ' + totalCategories + ' positive (' + pctPositive.toFixed(0) + '%) • Net Growth: ' + (netGrowthPct >= 0 ? '+' : '') + netGrowthPct.toFixed(1) + '%';
+        subTitle.textContent = config.customSubtitle ? config.customSubtitle : (totalCategories + ' Categories • ' + positiveDeltasCount + ' of ' + totalCategories + ' positive (' + pctPositive.toFixed(0) + '%) • Net Growth: ' + (netGrowthPct >= 0 ? '+' : '') + netGrowthPct.toFixed(1) + '%');
 
         titleBlock.appendChild(mainTitle);
         titleBlock.appendChild(subTitle);

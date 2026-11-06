@@ -189,3 +189,7 @@ Executive clinical decision support matrix for hospital OR suites comparing surg
 ### 45. Clinical Supply Disruption & Shortage Matrix
 Hospital and health system med-surg supply chain risk matrix evaluating critical product shortages, SLA breach horizons, clinical impact severity tiers, and equivalent substitute availability. Solves Google Cloud Blockers b/492810394, b/398102941, and b/510294823.
 ![Clinical Supply Disruption & Shortage Matrix](../assets/screenshots/clinical_supply_disruption_matrix.png)
+
+### 46. Med-Surg Par Level & Inventory Expiration Risk Matrix
+Hospital materials management decision matrix evaluating Days-on-Hand (DOH) buffer horizons against Par Level Attainment ratios, identifying stockout danger corridors, overstocked capital, and expired product waste across clinical sites of care. Solves Google Cloud Blockers b/482019482, b/398102941, and b/519284711.
+![Med-Surg Par Level & Inventory Expiration Risk Matrix](../assets/screenshots/med_surg_par_risk_matrix.png)

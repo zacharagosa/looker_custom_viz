@@ -50,6 +50,7 @@ Dumbbell plots are championed by data visualization leaders (Stephen Few, Edward
 
 ### Section: `Display`
 - `dimFieldOverride`: Category Dimension (dropdown)
+- `dimSecondaryOverride`: Secondary / Group Dimension (optional dropdown)
 - `measureFieldAOverride`: Point A Baseline Measure (dropdown)
 - `measureFieldBOverride`: Point B Comparison Measure (dropdown)
 - `targetCalculationMode`: Comparison Target Calculation Mode (`second_measure`, `multiplier`, `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`)
@@ -64,7 +65,9 @@ Dumbbell plots are championed by data visualization leaders (Stephen Few, Edward
 - `suppressZeroNull`: Suppress Zero / Null Actuals
 - `hudMode`: Executive KPI HUD Mode (`scorecard`, `compact_strip`, `hidden`)
 - `showValueLabels`: Data Value Readouts at Dots (`all`, `peaks_only`, `hidden`)
-- `customTitleOverride`: Custom Scorecard Title Override
+- `customTitle`: Custom Scorecard Title Override
+- `customSubtitle`: Custom Scorecard Subtitle Override
+- `customTitleOverride`: Custom Scorecard Title Override (Legacy)
 - `showSearch`: Show Category Search Bar
 - `showLegend`: Show Top Summary Header & Legend
 - `labelPointA`: Custom Label for Point A
