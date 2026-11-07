@@ -394,6 +394,15 @@
         section: "Display",
         order: 2
       },
+      dimSecondaryOverride: {
+        type: "string",
+        label: "Secondary / Segment Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
       measureFieldOverride: {
         type: "string",
         label: "Primary Metric Measure",
@@ -401,7 +410,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 3
+        order: 4
       },
       secondaryMeasureOverride: {
         type: "string",
@@ -410,7 +419,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 4
+        order: 5
       },
       targetCalculationMode: {
         type: "string",
@@ -428,42 +437,42 @@
         ],
         default: "dataset_mean",
         section: "Display",
-        order: 5
+        order: 6
       },
       targetMultiplier: {
         type: "number",
         label: "Target Multiplier (when Mode is Multiplier)",
         default: 1.15,
         section: "Display",
-        order: 6
+        order: 7
       },
       fixedTargetValue: {
         type: "number",
         label: "Fixed Target Value (when Mode is Fixed, 0 = Auto)",
         default: 0,
         section: "Display",
-        order: 7
+        order: 8
       },
       referenceLineLabel: {
         type: "string",
         label: "Benchmark / Target Label",
         default: "National Benchmark",
         section: "Display",
-        order: 8
+        order: 9
       },
       showReferenceLine: {
         type: "boolean",
         label: "Show Benchmark Target in HUD & Tooltips",
         default: true,
         section: "Display",
-        order: 9
+        order: 10
       },
       anomalyThresholdPct: {
         type: "number",
         label: "Variance Anomaly Alert Threshold (%)",
         default: 30,
         section: "Display",
-        order: 10
+        order: 11
       },
       sortBy: {
         type: "string",
@@ -478,28 +487,28 @@
         ],
         default: "metric_desc",
         section: "Display",
-        order: 11
+        order: 12
       },
       topNLimit: {
         type: "number",
         label: "Top-N Territories Limit (0 = All, Max 50)",
         default: 0,
         section: "Display",
-        order: 12
+        order: 13
       },
       enableOtherRollup: {
         type: "boolean",
         label: "Group Remaining into Other Rollup Summary",
         default: false,
         section: "Display",
-        order: 13
+        order: 14
       },
       suppressZeroNull: {
         type: "boolean",
         label: "Suppress Zero / Null Territories",
         default: false,
         section: "Display",
-        order: 14
+        order: 15
       },
       aggregationType: {
         type: "string",
@@ -513,7 +522,7 @@
         ],
         default: "sum",
         section: "Display",
-        order: 15
+        order: 16
       },
       hudMode: {
         type: "string",
@@ -526,7 +535,7 @@
         ],
         default: "scorecard",
         section: "Display",
-        order: 16
+        order: 17
       },
       labelDensity: {
         type: "string",
@@ -539,42 +548,42 @@
         ],
         default: "all",
         section: "Display",
-        order: 17
+        order: 18
       },
       customTitle: {
         type: "string",
         label: "Custom Map Title Override",
         default: "",
         section: "Display",
-        order: 18
+        order: 19
       },
       customSubtitle: {
         type: "string",
         label: "Custom Subtitle / Description Override",
         default: "",
         section: "Display",
-        order: 19
+        order: 20
       },
       showSearch: {
         type: "boolean",
         label: "Show Interactive State Search Bar",
         default: true,
         section: "Display",
-        order: 20
+        order: 21
       },
       showLegend: {
         type: "boolean",
         label: "Show Gradient Legend Bar",
         default: true,
         section: "Display",
-        order: 21
+        order: 22
       },
       enableZoom: {
         type: "boolean",
         label: "Enable Pan & Zoom Navigation",
         default: true,
         section: "Display",
-        order: 22
+        order: 23
       },
 
       // ==========================================
@@ -707,6 +716,7 @@
       var self = this;
       var FIELD_ROLE_OPTIONS = {
         stateFieldOverride: { role: "dimension", defaultIdx: 0 },
+        dimSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         measureFieldOverride: { role: "measure", defaultIdx: 0 },
         secondaryMeasureOverride: { role: "measure", defaultIdx: 1 }
       };
@@ -971,6 +981,7 @@
       var meas = fields.measures || [];
 
       var dimField = resolveField(dims, config.stateFieldOverride, 0);
+      var secDimField = dims.length > 1 ? resolveField(dims, config.dimSecondaryOverride, -1) : null;
       var measField = resolveField(meas, config.measureFieldOverride, 0);
       var secMeasField = meas.length > 1 ? resolveField(meas, config.secondaryMeasureOverride, 1) : null;
 
@@ -993,6 +1004,11 @@
         var rendered = cellMeas ? cellMeas.rendered : null;
         var links = (cellMeas && cellMeas.links) || (row[dimField.name] && row[dimField.name].links) || [];
 
+        var secDimVal = null;
+        if (secDimField && row[secDimField.name]) {
+          secDimVal = row[secDimField.name].rendered || row[secDimField.name].value;
+        }
+
         var secVal = 0;
         if (secMeasField && row[secMeasField.name] && row[secMeasField.name].value !== null) {
           secVal = Number(row[secMeasField.name].value) || 0;
@@ -1008,6 +1024,7 @@
             max: -Infinity,
             rawValues: [],
             secSum: 0,
+            secDimVal: secDimVal,
             rendered: rendered,
             links: links
           };
@@ -1436,11 +1453,14 @@
           anomalyBadgeHtml = "<div style=\"margin-top:4px;padding:2px 6px;border-radius:4px;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;font-size:10.5px;font-weight:700;\">&#9888; Anomaly: Variance exceeds " + (config.anomalyThresholdPct || 30) + "% threshold</div>";
         }
 
+        var secDimHtml = (info && info.secDimVal) ? "<div style=\"font-size:11px;color:" + theme.subtext + ";margin-bottom:4px;font-style:italic;\">" + info.secDimVal + "</div>" : "";
+
         tooltip.innerHTML = "" +
           "<div style=\"font-size:13px;font-weight:700;color:" + theme.text + ";margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;gap:8px;\">" +
           "  <span>" + stateName + " (" + (code || "--") + ")</span>" +
           (info ? "<span style=\"font-size:10.5px;padding:2px 7px;background:" + (isDark ? "#334155" : "#e0f2fe") + ";color:" + (isDark ? "#38bdf8" : "#0369a1") + ";border-radius:10px;font-weight:600;\">" + rankStr + "</span>" : "") +
           "</div>" +
+          secDimHtml +
           "<div style=\"margin-top:4px;font-size:12px;color:" + theme.subtext + ";display:flex;justify-content:space-between;gap:8px;\">" +
           "  <span>" + metricLabel + " (" + aggType.toUpperCase() + "): </span>" +
           "  <span style=\"font-weight:700;color:" + (isDark ? "#38bdf8" : "#1e40af") + ";font-size:13px;\">" + valStr + "</span>" +

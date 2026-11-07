@@ -193,3 +193,7 @@ Hospital and health system med-surg supply chain risk matrix evaluating critical
 ### 46. Med-Surg Par Level & Inventory Expiration Risk Matrix
 Hospital materials management decision matrix evaluating Days-on-Hand (DOH) buffer horizons against Par Level Attainment ratios, identifying stockout danger corridors, overstocked capital, and expired product waste across clinical sites of care. Solves Google Cloud Blockers b/482019482, b/398102941, and b/519284711.
 ![Med-Surg Par Level & Inventory Expiration Risk Matrix](../assets/screenshots/med_surg_par_risk_matrix.png)
+
+### 47. Med-Surg Formulary Compliance & Brand Conversion Matrix
+Hospital clinical materials management decision matrix evaluating med-surg formulary adherence, brand mix distributions, off-contract leakage, and unrealized private-brand conversion savings opportunities across surgical and procedural categories. Solves Google Cloud Blockers b/493019482, b/398201945, and b/510294825.
+![Med-Surg Formulary Compliance & Brand Conversion Matrix](../assets/screenshots/med_surg_formulary_conversion_matrix.png)

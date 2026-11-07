@@ -57,6 +57,7 @@ Unlike native maps that require Google Maps API keys or third-party mapping subs
 ### Section: `Display`
 - `mapMode`: Map Display Mode (`choropleth`, `bubble_pins`, `both_hybrid`)
 - `stateFieldOverride`: State Dimension (dropdown)
+- `dimSecondaryOverride`: Secondary / Segment Dimension (dropdown)
 - `measureFieldOverride`: Primary Metric Measure (dropdown)
 - `secondaryMeasureOverride`: Secondary / Target Measure (dropdown)
 - `targetCalculationMode`: Target / Benchmark Mode (`none`, `second_measure`, `multiplier`, `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`)

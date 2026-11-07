@@ -1,0 +1,24 @@
+{
+  "model": "wellverse_mba",
+  "view": "order_lines",
+  "fields": [
+    "medical_products.category",
+    "order_lines.total_spend",
+    "order_lines.national_brand_spend",
+    "order_lines.wellverse_brand_spend",
+    "order_lines.wellverse_brand_penetration",
+    "order_lines.wellverse_conversion_opportunity",
+    "order_lines.off_contract_leakage"
+  ],
+  "sorts": [
+    "order_lines.total_spend desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "med_surg_formulary_conversion_matrix",
+    "layoutMode": "conversion_opportunity_bridge",
+    "colorTheme": "wellverse_healthcare",
+    "hudMode": "scorecard",
+    "showValueLabels": "all"
+  }
+}
