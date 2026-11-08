@@ -1,0 +1,25 @@
+{
+  "model": "wellverse_mba",
+  "view": "order_lines",
+  "fields": [
+    "distribution_centers.dc_name",
+    "distribution_centers.dc_region",
+    "order_lines.line_fill_rate",
+    "order_lines.on_time_delivery_rate",
+    "order_lines.backorder_rate",
+    "order_lines.avg_days_to_deliver",
+    "order_lines.total_spend",
+    "order_lines.order_count"
+  ],
+  "sorts": [
+    "order_lines.total_spend desc"
+  ],
+  "limit": "20",
+  "vis_config": {
+    "type": "med_surg_fulfillment_sla_matrix",
+    "layoutMode": "fulfillment_sla_quadrant",
+    "colorTheme": "wellverse_healthcare",
+    "hudMode": "scorecard",
+    "showValueLabels": "all"
+  }
+}

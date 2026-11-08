@@ -295,6 +295,15 @@
         section: "Display",
         order: 2
       },
+      dimSecondaryOverride: {
+        type: "string",
+        label: "Secondary / Segment Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
       pivotFieldOverride: {
         type: "string",
         label: "Pivot / Secondary Dimension",
@@ -302,7 +311,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 3
+        order: 4
       },
       measureFieldOverride: {
         type: "string",
@@ -311,7 +320,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 4
+        order: 5
       },
       secondaryMeasureOverride: {
         type: "string",
@@ -320,7 +329,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 5
+        order: 6
       },
       targetCalculationMode: {
         type: "string",
@@ -338,42 +347,42 @@
         ],
         default: "dataset_mean",
         section: "Display",
-        order: 6
+        order: 7
       },
       targetMultiplier: {
         type: "number",
         label: "Target Multiplier (when Mode is Multiplier)",
         default: 1.15,
         section: "Display",
-        order: 7
+        order: 8
       },
       fixedTargetValue: {
         type: "number",
         label: "Fixed Target Value (when Mode is Fixed, 0 = Auto)",
         default: 0,
         section: "Display",
-        order: 8
+        order: 9
       },
       referenceLineLabel: {
         type: "string",
         label: "Benchmark / Target Reference Label",
         default: "Target Benchmark",
         section: "Display",
-        order: 9
+        order: 10
       },
       showReferenceLine: {
         type: "boolean",
         label: "Show Benchmark Target in HUD & Badges",
         default: true,
         section: "Display",
-        order: 10
+        order: 11
       },
       anomalyThresholdPct: {
         type: "number",
         label: "Variance Anomaly Alert Threshold (%)",
         default: 25,
         section: "Display",
-        order: 11
+        order: 12
       },
       sortBy: {
         type: "string",
@@ -388,28 +397,28 @@
         ],
         default: "metric_desc",
         section: "Display",
-        order: 12
+        order: 13
       },
       topNLimit: {
         type: "number",
         label: "Top-N Rows Limit (0 = All, Max 100)",
         default: 0,
         section: "Display",
-        order: 13
+        order: 14
       },
       enableOtherRollup: {
         type: "boolean",
         label: "Group Remaining into Other Rollup Summary",
         default: false,
         section: "Display",
-        order: 14
+        order: 15
       },
       suppressZeroNull: {
         type: "boolean",
         label: "Suppress Zero / Null Metric Rows",
         default: false,
         section: "Display",
-        order: 15
+        order: 16
       },
       pageSize: {
         type: "string",
@@ -425,7 +434,7 @@
         ],
         default: "25",
         section: "Display",
-        order: 16
+        order: 17
       },
       hudMode: {
         type: "string",
@@ -438,56 +447,69 @@
         ],
         default: "scorecard",
         section: "Display",
-        order: 17
+        order: 18
       },
       showSparklines: {
         type: "boolean",
         label: "Show Inline Trend Sparklines",
         default: true,
         section: "Display",
-        order: 18
+        order: 19
       },
       showMicroBars: {
         type: "boolean",
         label: "Show Volume Micro Bullet Bars",
         default: true,
         section: "Display",
-        order: 19
+        order: 20
       },
       showVarianceBadge: {
         type: "boolean",
         label: "Show Period Growth / Delta Badges",
         default: true,
         section: "Display",
-        order: 20
+        order: 21
       },
       showSummaryRow: {
         type: "boolean",
         label: "Show Grand Total Summary Row",
         default: true,
         section: "Display",
-        order: 21
+        order: 22
+      },
+      labelDensity: {
+        type: "string",
+        label: "Data Value Readouts Density",
+        display: "select",
+        values: [
+          { "All Data Values": "all" },
+          { "Min/Max Peaks Only": "peaks_only" },
+          { "Hidden / Tooltip Only": "hidden" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 23
       },
       customTitle: {
         type: "string",
         label: "Custom Table Title Override",
         default: "",
         section: "Display",
-        order: 22
+        order: 24
       },
       customSubtitle: {
         type: "string",
         label: "Custom Subtitle / Description Override",
         default: "",
         section: "Display",
-        order: 23
+        order: 25
       },
       showSearch: {
         type: "boolean",
         label: "Enable Instant Search Bar",
         default: true,
         section: "Display",
-        order: 24
+        order: 26
       },
 
       // ==========================================
@@ -597,6 +619,7 @@
       var self = this;
       var FIELD_ROLE_OPTIONS = {
         dimFieldOverride: { role: "dimension", defaultIdx: 0 },
+        dimSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         pivotFieldOverride: { role: "dimension", defaultIdx: 1 },
         measureFieldOverride: { role: "measure", defaultIdx: 0 },
         secondaryMeasureOverride: { role: "measure", defaultIdx: 1 }
@@ -844,6 +867,7 @@
 
       // Dynamic Field-Role Resolution
       var dimField = resolveField(dims, config.dimFieldOverride, 0) || dims[0];
+      var secDimField = dims.length > 1 ? resolveField(dims, config.dimSecondaryOverride, -1) : null;
       var measField = resolveField(measures, config.measureFieldOverride, 0) || measures[0];
       var secondaryMeasField = resolveField(measures, config.secondaryMeasureOverride, 1);
 
@@ -857,9 +881,22 @@
 
       data.forEach(function (row, idx) {
         var catName = row[dimField.name] ? (row[dimField.name].rendered || row[dimField.name].value) : ("Item " + (idx + 1));
+        var secDimVal = null;
+        if (secDimField && row[secDimField.name]) {
+          secDimVal = row[secDimField.name].rendered || row[secDimField.name].value;
+          if (secDimVal) {
+            catName = catName + " — " + secDimVal;
+          }
+        }
         var seriesPoints = [];
         var totalVal = 0;
         var cellLinks = [];
+        if (row[dimField.name] && row[dimField.name].links) {
+          cellLinks = cellLinks.concat(row[dimField.name].links);
+        }
+        if (secDimField && row[secDimField.name] && row[secDimField.name].links) {
+          cellLinks = cellLinks.concat(row[secDimField.name].links);
+        }
 
         if (isPivoted) {
           pivots.forEach(function (p) {
@@ -1604,7 +1641,18 @@
             tdTotal.style.padding = "8px 14px";
             tdTotal.style.textAlign = "right";
             tdTotal.style.fontWeight = "700";
-            tdTotal.textContent = formatValue(row.total, fmt);
+            if (config.labelDensity === "hidden") {
+              tdTotal.textContent = "-";
+            } else if (config.labelDensity === "peaks_only") {
+              if (row.total === maxTotalVal || row.total === minTotalVal) {
+                tdTotal.textContent = formatValue(row.total, fmt);
+              } else {
+                tdTotal.textContent = "·";
+                tdTotal.style.color = theme.subtext;
+              }
+            } else {
+              tdTotal.textContent = formatValue(row.total, fmt);
+            }
             tr.appendChild(tdTotal);
 
             if (config.showMicroBars !== false) {

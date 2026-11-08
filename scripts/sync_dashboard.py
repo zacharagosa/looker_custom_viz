@@ -46,6 +46,7 @@ VOL2_TABS = [
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "med_surg_fulfillment_sla_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "med_surg_formulary_conversion_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "med_surg_par_risk_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "surgical_procedure_variance_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
@@ -140,6 +141,7 @@ CATEGORY_TAB_MAP = {
 }
 
 VIZ_EMOJI_MAP = {
+    "med_surg_fulfillment_sla_matrix": "🏥",
     "med_surg_formulary_conversion_matrix": "🏥",
     "med_surg_par_risk_matrix": "🏥",
     "surgical_procedure_variance_matrix": "🏥",

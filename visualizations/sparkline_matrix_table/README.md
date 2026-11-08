@@ -62,6 +62,7 @@ Supports two distinct query structures:
 | :--- | :--- | :--- | :--- |
 | `tableMode` | Select | `Sparkline Matrix` | Display mode (`sparkline_matrix`, `heatmap_grid`, `compact_scorecard`) |
 | `dimFieldOverride` | Select | `Auto` | Dropdown of query fields for primary grouping dimension |
+| `dimSecondaryOverride` | Select | `Auto / None` | Optional dropdown for secondary / segment dimension |
 | `pivotFieldOverride` | Select | `Auto` | Dropdown of query fields for pivot period dimension |
 | `measureFieldOverride` | Select | `Auto` | Dropdown of query fields for primary metric measure |
 | `secondaryMeasureOverride` | Select | `Auto` | Dropdown of query fields for secondary / target measure |
@@ -81,6 +82,7 @@ Supports two distinct query structures:
 | `showMicroBars` | Boolean | `true` | Display in-cell proportional volume bars |
 | `showVarianceBadge` | Boolean | `true` | Display period growth percentage pills |
 | `showSummaryRow` | Boolean | `true` | Display grand total rollup footer row |
+| `labelDensity` | Select | `All Data Values` | Data value readouts density (`all`, `peaks_only`, `hidden`) |
 | `customTitle` | String | `""` | Optional chart header title override |
 | `customSubtitle` | String | `""` | Optional chart header subtitle override |
 | `showSearch` | Boolean | `true` | Enable top quick-search filter input |

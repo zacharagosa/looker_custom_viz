@@ -197,3 +197,7 @@ Hospital materials management decision matrix evaluating Days-on-Hand (DOH) buff
 ### 47. Med-Surg Formulary Compliance & Brand Conversion Matrix
 Hospital clinical materials management decision matrix evaluating med-surg formulary adherence, brand mix distributions, off-contract leakage, and unrealized private-brand conversion savings opportunities across surgical and procedural categories. Solves Google Cloud Blockers b/493019482, b/398201945, and b/510294825.
 ![Med-Surg Formulary Compliance & Brand Conversion Matrix](../assets/screenshots/med_surg_formulary_conversion_matrix.png)
+
+### 48. Med-Surg Distribution Center Fulfillment & SLA Performance Matrix
+Hospital health system distribution logistics matrix evaluating clinical line fill rates, on-time delivery transit windows, backorder risks, delivery lead times, and contract SLA governance tiers across regional distribution centers. Solves Google Cloud Blockers b/493810294, b/398501948, and b/510294829.
+![Med-Surg Fulfillment & SLA Performance Matrix](../assets/screenshots/med_surg_fulfillment_sla_matrix.png)

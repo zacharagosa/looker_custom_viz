@@ -55,10 +55,11 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (39 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (40 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**Med-Surg Fulfillment & SLA Performance Matrix**](visualizations/med_surg_fulfillment_sla_matrix/)<br>`med_surg_fulfillment_sla_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Distribution Center dim, optional 1 Region dim + 1 Line Fill Rate % measure, 1 On-Time Delivery % measure, optional Backorder Rate %, optional Avg Delivery Days, 1 Total Spend measure | [📸 View](visualizations/med_surg_fulfillment_sla_matrix/screenshot.png) |
 | [**Med-Surg Formulary Compliance & Brand Conversion Matrix**](visualizations/med_surg_formulary_conversion_matrix/)<br>`med_surg_formulary_conversion_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Category dim + 1 Total Spend measure, 1 National Brand Spend measure, 1 Wellverse Spend measure, 1 Brand Penetration % measure, 1 Conversion Opportunity measure, 1 Off-Contract Leakage measure | [📸 View](visualizations/med_surg_formulary_conversion_matrix/screenshot.png) |
 | [**Clinical Supply Disruption & Shortage Matrix**](visualizations/clinical_supply_disruption_matrix/)<br>`clinical_supply_disruption_matrix` | Healthcare & Med-Surg Supply Chain | 1 Category dim, 1 Product Name dim, 1 Severity dim, 1 Status dim, 1 Root Cause dim, 1 Alt Available dim, 1 Clinically Critical dim + 1 Days Active measure, 1 Disruption Count measure | [📸 View](visualizations/clinical_supply_disruption_matrix/screenshot.png) |
 | [**Med-Surg Par Level & Inventory Expiration Risk Matrix**](visualizations/med_surg_par_risk_matrix/)<br>`med_surg_par_risk_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Dimension (Care Setting / Facility), 1 Secondary Dimension (Category) + 1 On-Hand Value measure, 1 Par Target measure, 1 Days on Hand measure, 1 Expired Waste measure, 1 Stockout Events measure | [📸 View](visualizations/med_surg_par_risk_matrix/screenshot.png) |
