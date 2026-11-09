@@ -55,10 +55,11 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (40 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (41 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**SaaS Customer Health & Churn Risk Matrix**](visualizations/saas_customer_churn_risk_matrix/)<br>`saas_customer_churn_risk_matrix` | B2B SaaS & RevOps | 1 Customer Account dim, optional 1 Risk Band dim + 1 Total Active ARR ($) measure, optional ARR at Risk ($), Churn Risk Score, Seat Utilization % | [📸 View](visualizations/saas_customer_churn_risk_matrix/screenshot.png) |
 | [**Med-Surg Fulfillment & SLA Performance Matrix**](visualizations/med_surg_fulfillment_sla_matrix/)<br>`med_surg_fulfillment_sla_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Distribution Center dim, optional 1 Region dim + 1 Line Fill Rate % measure, 1 On-Time Delivery % measure, optional Backorder Rate %, optional Avg Delivery Days, 1 Total Spend measure | [📸 View](visualizations/med_surg_fulfillment_sla_matrix/screenshot.png) |
 | [**Med-Surg Formulary Compliance & Brand Conversion Matrix**](visualizations/med_surg_formulary_conversion_matrix/)<br>`med_surg_formulary_conversion_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Category dim + 1 Total Spend measure, 1 National Brand Spend measure, 1 Wellverse Spend measure, 1 Brand Penetration % measure, 1 Conversion Opportunity measure, 1 Off-Contract Leakage measure | [📸 View](visualizations/med_surg_formulary_conversion_matrix/screenshot.png) |
 | [**Clinical Supply Disruption & Shortage Matrix**](visualizations/clinical_supply_disruption_matrix/)<br>`clinical_supply_disruption_matrix` | Healthcare & Med-Surg Supply Chain | 1 Category dim, 1 Product Name dim, 1 Severity dim, 1 Status dim, 1 Root Cause dim, 1 Alt Available dim, 1 Clinically Critical dim + 1 Days Active measure, 1 Disruption Count measure | [📸 View](visualizations/clinical_supply_disruption_matrix/screenshot.png) |

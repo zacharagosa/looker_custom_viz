@@ -70,9 +70,10 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Dual Synchronized Split View` | `split_view`, `heatmap`, `decay_curves`, `churn_waterfall` |
-| `cohortDimOverride` | Select | `Auto` | Primary Cohort Dimension index (1 = Col 1) or field name override |
-| `periodDimOverride` | Select | `Auto` | Activity Period Dimension index (2 = Col 2) or field name override |
-| `measureOverride` | Select | `Auto` | Primary Metric Measure index (1 = Measure 1) or field name override |
+| `cohortDimOverride` | Select | `Auto` | Primary Cohort Dimension index or field name override |
+| `periodDimOverride` | Select | `Auto` | Activity Period Dimension index or field name override |
+| `dimSecondaryOverride` | Select | `Auto / None` | Optional Secondary / Segment Dimension for composite cohort labels (`Cohort — Segment`) |
+| `measureOverride` | Select | `Auto` | Primary Metric Measure index or field name override |
 | `targetMeasureOverride` | Select | `Auto / None` | Optional Target/Benchmark Measure index or field name override |
 | `valueDisplay` | Select | `Retention Rate (%)` | `retention_pct`, `raw_count`, `delta_benchmark` |
 | `periodZeroHandling` | Select | `Index Period 0 to 100%` | `index_100`, `hide_zero`, `as_is` |
@@ -82,13 +83,14 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `anomalyThresholdPct` | Number | `20` | Drop-off anomaly alert threshold (%) |
 | `sortBy` | Select | `Chronological (Oldest first)` | Cohort sorting: `asc`, `desc`, `size_desc`, `variance_desc` |
 | `topNLimit` | Number | `0` | Top-N cohorts display limit (0 = all) |
+| `enableOtherRollup` | Boolean | `false` | Group tail cohorts beyond Top-N limit into summary rollup |
 | `suppressZeroNull` | Boolean | `true` | Suppress zero or null data cells from rendering |
 | `hudMode` | Select | `Full Scorecard HUD` | Executive KPI HUD: `scorecard`, `compact_strip`, `hidden` |
-| `showValueLabels` | Select | `Show All Labels` | Label density: `all`, `peaks_only`, `hidden` |
+| `labelDensity` | Select | `All Data Values` | Label density: `all`, `peaks_only`, `hidden` |
 | `showBenchmark` | Boolean | `true` | Display Benchmark Average row and dashed curve overlay |
 | `showSearch` | Boolean | `true` | Enable top cohort interactive quick-search filter input |
-| `customTitleOverride` | Select | `Auto / None` | Executive scorecard title override |
-| `customSubtitleOverride` | Select | `Auto / None` | Executive scorecard subtitle override |
+| `customTitle` | String | `""` | Executive chart title override |
+| `customSubtitle` | String | `""` | Executive chart subtitle / description override |
 
 ### Style Tab
 | Option | Type | Default | Description |

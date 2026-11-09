@@ -41,11 +41,13 @@ VOL2_TABS = [
     "🔬 Statistical, ML & Forecasting",
     "🛍️ Retail, Supply Chain & FinOps",
     "🧬 Multivariate & Diagnostic Profiling",
-    "🏥 Healthcare & Med-Surg Supply Chain"
+    "🏥 Healthcare & Med-Surg Supply Chain",
+    "💼 B2B SaaS & RevOps"
 ]
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "saas_customer_churn_risk_matrix": "💼 B2B SaaS & RevOps",
     "med_surg_fulfillment_sla_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "med_surg_formulary_conversion_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "med_surg_par_risk_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
@@ -138,9 +140,13 @@ CATEGORY_TAB_MAP = {
     "Multivariate & Profiling": ("vol2", "🧬 Multivariate & Diagnostic Profiling"),
     "Healthcare & Med-Surg Supply Chain": ("vol2", "🏥 Healthcare & Med-Surg Supply Chain"),
     "Healthcare & Life Sciences": ("vol2", "🏥 Healthcare & Med-Surg Supply Chain"),
+    "B2B SaaS & RevOps": ("vol2", "💼 B2B SaaS & RevOps"),
+    "SaaS & RevOps": ("vol2", "💼 B2B SaaS & RevOps"),
+    "SaaS": ("vol2", "💼 B2B SaaS & RevOps"),
 }
 
 VIZ_EMOJI_MAP = {
+    "saas_customer_churn_risk_matrix": "💼",
     "med_surg_fulfillment_sla_matrix": "🏥",
     "med_surg_formulary_conversion_matrix": "🏥",
     "med_surg_par_risk_matrix": "🏥",

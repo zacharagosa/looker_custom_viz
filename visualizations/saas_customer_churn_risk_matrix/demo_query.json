@@ -1,0 +1,22 @@
+{
+  "model": "saas_qbr",
+  "view": "qbr_customer_risk",
+  "fields": [
+    "qbr_account_risk.account_name",
+    "qbr_account_risk.risk_band",
+    "qbr_account_risk.total_active_arr",
+    "qbr_account_risk.total_arr_at_risk",
+    "qbr_account_risk.average_risk_score",
+    "qbr_account_risk.average_utilization"
+  ],
+  "sorts": [
+    "qbr_account_risk.total_arr_at_risk desc"
+  ],
+  "limit": "25",
+  "vis_config": {
+    "type": "saas_customer_churn_risk_matrix",
+    "layoutMode": "risk_health_quadrant",
+    "hudMode": "scorecard",
+    "colorTheme": "modern_slate"
+  }
+}

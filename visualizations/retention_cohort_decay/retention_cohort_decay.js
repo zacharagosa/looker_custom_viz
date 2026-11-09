@@ -291,6 +291,15 @@
         section: "Display",
         order: 3
       },
+      dimSecondaryOverride: {
+        type: "string",
+        label: "Secondary / Segment Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
       measureOverride: {
         type: "string",
         label: "Primary Metric Measure (e.g. Retained Users)",
@@ -298,7 +307,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 4
+        order: 5
       },
       targetMeasureOverride: {
         type: "string",
@@ -307,7 +316,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 5
+        order: 6
       },
       valueDisplay: {
         type: "string",
@@ -320,7 +329,7 @@
         ],
         default: "retention_pct",
         section: "Display",
-        order: 6
+        order: 7
       },
       periodZeroHandling: {
         type: "string",
@@ -333,7 +342,7 @@
         ],
         default: "index_100",
         section: "Display",
-        order: 7
+        order: 8
       },
       targetCalculationMode: {
         type: "string",
@@ -349,28 +358,28 @@
         ],
         default: "dataset_mean",
         section: "Display",
-        order: 8
+        order: 9
       },
       fixedTargetValue: {
         type: "number",
         label: "Fixed Benchmark Target % (when Fixed Mode, 0 = Auto)",
         default: 0,
         section: "Display",
-        order: 9
+        order: 10
       },
       referenceLineLabel: {
         type: "string",
         label: "Reference Line & Benchmark Label",
         default: "Benchmark Average",
         section: "Display",
-        order: 10
+        order: 11
       },
       anomalyThresholdPct: {
         type: "number",
         label: "Drop-Off Anomaly Alert Threshold (%)",
         default: 20,
         section: "Display",
-        order: 11
+        order: 12
       },
       sortBy: {
         type: "string",
@@ -384,21 +393,28 @@
         ],
         default: "asc",
         section: "Display",
-        order: 12
+        order: 13
       },
       topNLimit: {
         type: "number",
         label: "Top-N Cohorts Display Limit (0 = All)",
         default: 0,
         section: "Display",
-        order: 13
+        order: 14
+      },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Group Remaining into Other Rollup Summary",
+        default: false,
+        section: "Display",
+        order: 15
       },
       suppressZeroNull: {
         type: "boolean",
         label: "Suppress Zero / Null Data Cells",
         default: true,
         section: "Display",
-        order: 14
+        order: 16
       },
       hudMode: {
         type: "string",
@@ -411,11 +427,24 @@
         ],
         default: "scorecard",
         section: "Display",
-        order: 15
+        order: 17
+      },
+      labelDensity: {
+        type: "string",
+        label: "Cell & Point Value Labels",
+        display: "select",
+        values: [
+          { "Show All Labels": "all" },
+          { "Peaks / Outliers Only": "peaks_only" },
+          { "Hidden / Tooltip Only": "hidden" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 18
       },
       showValueLabels: {
         type: "string",
-        label: "Cell & Point Value Labels",
+        label: "Legacy Value Labels Mode",
         display: "select",
         values: [
           { "Show All Labels": "all" },
@@ -424,35 +453,49 @@
         ],
         default: "all",
         section: "Display",
-        order: 16
+        order: 19
       },
       showBenchmark: {
         type: "boolean",
         label: "Show Benchmark Row & Curve Overlay",
         default: true,
         section: "Display",
-        order: 17
+        order: 20
       },
       showSearch: {
         type: "boolean",
         label: "Show Interactive Cohort Search Bar",
         default: true,
         section: "Display",
-        order: 18
+        order: 21
       },
-      customTitleOverride: {
+      customTitle: {
         type: "string",
-        label: "Custom Title Override",
+        label: "Custom Chart Title Override",
         default: "",
         section: "Display",
-        order: 19
+        order: 22
       },
-      customSubtitleOverride: {
+      customSubtitle: {
         type: "string",
         label: "Custom Subtitle Override",
         default: "",
         section: "Display",
-        order: 20
+        order: 23
+      },
+      customTitleOverride: {
+        type: "string",
+        label: "Legacy Custom Title Override",
+        default: "",
+        section: "Display",
+        order: 24
+      },
+      customSubtitleOverride: {
+        type: "string",
+        label: "Legacy Custom Subtitle Override",
+        default: "",
+        section: "Display",
+        order: 25
       },
 
       // ==========================================
@@ -573,6 +616,7 @@
       var FIELD_ROLE_OPTIONS = {
         cohortDimOverride: { role: "dimension", defaultIdx: 0 },
         periodDimOverride: { role: "dimension", defaultIdx: 1 },
+        dimSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         measureOverride: { role: "measure", defaultIdx: 0 },
         targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
@@ -807,13 +851,27 @@
       // 1. Process Data & Compute Cohort Matrix with Field Overrides
       var cohortDimObj = resolveField(dims, config.cohortDimOverride, 0);
       var activityDimObj = (dims.length > 1) ? resolveField(dims, config.periodDimOverride, 1) : null;
+      var secDimObj = dims.length > 2 ? resolveField(dims, config.dimSecondaryOverride, -1) : null;
       var measureObj = resolveField(meas, config.measureOverride, 0);
       var targetMeasureObj = config.targetMeasureOverride ? resolveField(meas, config.targetMeasureOverride, 1) : null;
 
       var cohortDim = cohortDimObj ? cohortDimObj.name : null;
       var activityDim = activityDimObj ? activityDimObj.name : null;
+      var secDim = secDimObj ? secDimObj.name : null;
       var measureName = measureObj ? measureObj.name : null;
       var targetMeasureName = targetMeasureObj ? targetMeasureObj.name : null;
+
+      // Helper to extract composite cohort key
+      function getCohortKey(row) {
+        var baseKey = row[cohortDim] ? String(row[cohortDim].rendered || row[cohortDim].value) : "Unknown";
+        if (secDim && row[secDim]) {
+          var secVal = row[secDim].rendered || row[secDim].value;
+          if (secVal) {
+            return baseKey + " — " + secVal;
+          }
+        }
+        return baseKey;
+      }
 
       // Map of cohorts: { [cohortKey]: { cohort: string, baseCount: number, periods: { [periodIdx]: count } } }
       var cohortsMap = {};
@@ -822,7 +880,7 @@
       if (pivots.length > 0) {
         // Case A: Pivoted data (Cohort on rows, Periods across pivots)
         rawData.forEach(function (row) {
-          var cKey = row[cohortDim] ? String(row[cohortDim].value) : "Unknown";
+          var cKey = getCohortKey(row);
           if (!cohortsMap[cKey]) {
             cohortsMap[cKey] = { cohort: cKey, periods: {}, rawRow: row };
           }
@@ -841,7 +899,7 @@
       } else if (activityDim && measureName) {
         // Case B: Unpivoted data (Cohort Dim, Activity Period Dim, Measure)
         rawData.forEach(function (row) {
-          var cKey = row[cohortDim] ? String(row[cohortDim].value) : "Unknown";
+          var cKey = getCohortKey(row);
           var aVal = row[activityDim] ? String(row[activityDim].value) : null;
           var mVal = row[measureName] ? Number(row[measureName].value) : 0;
 
@@ -871,7 +929,7 @@
       } else {
         // Fallback: 1 dim + multiple measures
         rawData.forEach(function (row) {
-          var cKey = row[cohortDim] ? String(row[cohortDim].value) : "Unknown";
+          var cKey = getCohortKey(row);
           if (!cohortsMap[cKey]) {
             cohortsMap[cKey] = { cohort: cKey, periods: {}, rawRow: row };
           }
@@ -943,10 +1001,41 @@
         });
       }
 
-      // Top-N Cohorts Limiter
+      // Top-N Cohorts Limiter with automatic Other Rollup
       var topN = Number(config.topNLimit) || 0;
       if (topN > 0 && cohortList.length > topN) {
-        cohortList = cohortList.slice(0, topN);
+        if (config.enableOtherRollup) {
+          var topCohorts = cohortList.slice(0, topN);
+          var otherCohorts = cohortList.slice(topN);
+          var otherBaseCount = 0;
+          var otherRawCounts = {};
+          otherCohorts.forEach(function (c) {
+            otherBaseCount += c.baseCount;
+            Object.keys(c.rawCounts).forEach(function (p) {
+              otherRawCounts[p] = (otherRawCounts[p] || 0) + (c.rawCounts[p] || 0);
+            });
+          });
+          var otherRates = {};
+          for (var pOther = 0; pOther <= maxPeriodIndex; pOther++) {
+            var cnt = otherRawCounts[pOther];
+            if (cnt !== undefined && cnt !== null) {
+              otherRates[pOther] = periodZeroHandling === "as_is" ? cnt : (otherBaseCount > 0 ? (cnt / otherBaseCount) * 100 : 0);
+            } else {
+              otherRates[pOther] = null;
+            }
+          }
+          topCohorts.push({
+            cohort: "Other / Tail Cohorts (" + otherCohorts.length + ")",
+            baseCount: otherBaseCount,
+            rawCounts: otherRawCounts,
+            rates: otherRates,
+            rawRow: otherCohorts[0].rawRow,
+            isOtherRollup: true
+          });
+          cohortList = topCohorts;
+        } else {
+          cohortList = cohortList.slice(0, topN);
+        }
       }
 
       // 3. Compute Benchmark Rates according to targetCalculationMode
@@ -1051,7 +1140,7 @@
       titleBadge.style.color = theme.isDark ? "#38bdf8" : "#4338ca";
 
       var defaultTitle = (cohortDimObj ? cohortDimObj.label_short || cohortDimObj.label : "Cohort") + " Lifecycle Decay Matrix";
-      var mainTitleText = config.customTitleOverride || defaultTitle;
+      var mainTitleText = config.customTitle || config.customTitleOverride || defaultTitle;
       var mainTitleEl = document.createElement("span");
       mainTitleEl.style.fontSize = fSizes.title;
       mainTitleEl.style.fontWeight = "700";
