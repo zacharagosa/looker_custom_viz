@@ -47,6 +47,7 @@ VOL2_TABS = [
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "saas_pipeline_deal_inspection_matrix": "💼 B2B SaaS & RevOps",
     "saas_customer_churn_risk_matrix": "💼 B2B SaaS & RevOps",
     "med_surg_fulfillment_sla_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
     "med_surg_formulary_conversion_matrix": "🏥 Healthcare & Med-Surg Supply Chain",
@@ -146,6 +147,7 @@ CATEGORY_TAB_MAP = {
 }
 
 VIZ_EMOJI_MAP = {
+    "saas_pipeline_deal_inspection_matrix": "💼",
     "saas_customer_churn_risk_matrix": "💼",
     "med_surg_fulfillment_sla_matrix": "🏥",
     "med_surg_formulary_conversion_matrix": "🏥",

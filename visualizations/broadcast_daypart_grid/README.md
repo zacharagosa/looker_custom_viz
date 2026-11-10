@@ -71,6 +71,7 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `viewMode` | Select | `Dual Split View` | `split_view`, `hourly_grid`, `daypart_blocks`, `diurnal_curves` |
 | `dayDimOverride` | Select | `Auto` | Dropdown of query fields for Day Dimension |
 | `hourDimOverride` | Select | `Auto` | Dropdown of query fields for Hour Dimension |
+| `dimSecondaryOverride` | Select | `Auto / None` | Dropdown of query fields for Secondary / Breakdown Dimension |
 | `sliceDimOverride` | Select | `Auto / None` | Dropdown of query fields for Slicing Category Dimension |
 | `primaryMeasureOverride` | Select | `Auto` | Dropdown of query fields for Primary Metric |
 | `targetMeasureOverride` | Select | `Auto / None` | Dropdown of query fields for Benchmark Target Measure |
@@ -83,14 +84,16 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `highlightPeaks` | Select | `Top 5% Peak Slots` | `top_5`, `top_10`, `above_avg`, `none` |
 | `sortBy` | Select | `Chronological` | `chronological`, `metric_desc`, `metric_asc`, `alphabetical` |
 | `topNLimit` | Number | `0` | Limit displayed slices to Top-N (0 = All) |
-| `rollupOther` | Boolean | `false` | Rollup unselected slices into an 'Other' bucket |
+| `enableOtherRollup` | Boolean | `false` | Group remaining unselected slices into an 'Other' rollup summary |
+| `rollupOther` | Boolean | `false` | Legacy alias for rollupOther |
 | `suppressZeroNull` | Boolean | `true` | Suppress zero/null data cells |
 | `hudMode` | Select | `Full Scorecard` | `scorecard`, `compact_strip`, `hidden` |
-| `showValueLabels` | Select | `Show All Cell Values` | `all`, `peaks_only`, `hidden` |
+| `labelDensity` | Select | `Show All Cell Values` | `all`, `peaks_only`, `hidden` |
+| `showValueLabels` | Select | `Show All Cell Values` | Legacy alias for labelDensity |
 | `showMarginals` | Boolean | `true` | Display top hourly bars and right daily totals |
 | `showSearch` | Boolean | `true` | Enable top toolbar with dimension slicer & metric switch |
-| `customTitleOverride` | Select | `Auto / None` | Custom chart title override |
-| `customSubtitleOverride` | Select | `Auto / None` | Custom chart subtitle override |
+| `customTitle` | String | `""` | Custom chart title override |
+| `customSubtitle` | String | `""` | Custom chart subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |

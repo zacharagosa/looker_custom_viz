@@ -383,6 +383,15 @@
         section: "Display",
         order: 3
       },
+      dimSecondaryOverride: {
+        type: "string",
+        label: "Secondary / Breakdown Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 4
+      },
       sliceDimOverride: {
         type: "string",
         label: "Slicing Category Dimension (Optional, e.g. Channel/Network)",
@@ -390,7 +399,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 4
+        order: 5
       },
       primaryMeasureOverride: {
         type: "string",
@@ -399,7 +408,7 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 5
+        order: 6
       },
       targetMeasureOverride: {
         type: "string",
@@ -408,13 +417,13 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 6
+        order: 7
       },
       startOfWeek: {
         type: "string",
         label: "Start of Week",
         section: "Display",
-        order: 7,
+        order: 8,
         display: "select",
         values: [
           { "Monday (Broadcast & ISO Standard)": "monday" },
@@ -426,7 +435,7 @@
         type: "string",
         label: "Daypart Grouping Scheme",
         section: "Display",
-        order: 8,
+        order: 9,
         display: "select",
         values: [
           { "Broadcast / Nielsen Standard (6 Tiers)": "nielsen" },
@@ -449,34 +458,34 @@
         ],
         default: "dataset_mean",
         section: "Display",
-        order: 9
+        order: 10
       },
       fixedTargetValue: {
         type: "number",
         label: "Fixed Benchmark Target Value (when Fixed Mode, 0 = Auto)",
         default: 0,
         section: "Display",
-        order: 10
+        order: 11
       },
       referenceLineLabel: {
         type: "string",
         label: "Reference Line & Benchmark Label",
         default: "Benchmark Target",
         section: "Display",
-        order: 11
+        order: 12
       },
       anomalyThresholdPct: {
         type: "number",
         label: "Drop-Off / Outlier Anomaly Alert Threshold (%)",
         default: 20,
         section: "Display",
-        order: 12
+        order: 13
       },
       highlightPeaks: {
         type: "string",
         label: "Peak Slot Anomaly Detection",
         section: "Display",
-        order: 13,
+        order: 14,
         display: "select",
         values: [
           { "Top 5% Peak Slots (★ Gold)": "top_5" },
@@ -498,28 +507,35 @@
         ],
         default: "chronological",
         section: "Display",
-        order: 14
+        order: 15
       },
       topNLimit: {
         type: "number",
         label: "Top-N Slices/Categories Display Limit (0 = All)",
         default: 0,
         section: "Display",
-        order: 15
+        order: 16
+      },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Group Remaining Slices into 'Other' Rollup Summary",
+        default: false,
+        section: "Display",
+        order: 17
       },
       rollupOther: {
         type: "boolean",
-        label: "Rollup Unselected Slices into 'Other'",
+        label: "Rollup Unselected Slices into 'Other' (Legacy)",
         default: false,
         section: "Display",
-        order: 16
+        order: 18
       },
       suppressZeroNull: {
         type: "boolean",
         label: "Suppress Zero / Null Data Cells",
         default: true,
         section: "Display",
-        order: 17
+        order: 19
       },
       hudMode: {
         type: "string",
@@ -532,11 +548,24 @@
         ],
         default: "scorecard",
         section: "Display",
-        order: 18
+        order: 20
+      },
+      labelDensity: {
+        type: "string",
+        label: "Cell & Curve Data Labels",
+        display: "select",
+        values: [
+          { "Show All Cell Values": "all" },
+          { "Peaks / Outliers Only": "peaks_only" },
+          { "Hidden / Tooltip Only": "hidden" }
+        ],
+        default: "all",
+        section: "Display",
+        order: 21
       },
       showValueLabels: {
         type: "string",
-        label: "In-Cell & Curve Data Labels",
+        label: "In-Cell & Curve Data Labels (Legacy)",
         display: "select",
         values: [
           { "Show All Cell Values": "all" },
@@ -545,35 +574,49 @@
         ],
         default: "all",
         section: "Display",
-        order: 19
+        order: 22
       },
       showMarginals: {
         type: "boolean",
         label: "Show Marginal Rollups (Day/Hour Totals)",
         section: "Display",
-        order: 20,
+        order: 23,
         default: true
       },
       showSearch: {
         type: "boolean",
         label: "Show Slicing & Filter Toolbar",
         section: "Display",
-        order: 21,
+        order: 24,
         default: true
       },
-      customTitleOverride: {
+      customTitle: {
         type: "string",
         label: "Custom Title Override",
         default: "",
         section: "Display",
-        order: 22
+        order: 25
       },
-      customSubtitleOverride: {
+      customTitleOverride: {
+        type: "string",
+        label: "Custom Title Override (Legacy)",
+        default: "",
+        section: "Display",
+        order: 26
+      },
+      customSubtitle: {
         type: "string",
         label: "Custom Subtitle Override",
         default: "",
         section: "Display",
-        order: 23
+        order: 27
+      },
+      customSubtitleOverride: {
+        type: "string",
+        label: "Custom Subtitle Override (Legacy)",
+        default: "",
+        section: "Display",
+        order: 28
       },
 
       // ==========================================
@@ -712,6 +755,7 @@
       var FIELD_ROLE_OPTIONS = {
         dayDimOverride: { role: "dimension", defaultIdx: 0 },
         hourDimOverride: { role: "dimension", defaultIdx: 1 },
+        dimSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         sliceDimOverride: { role: "dimension", defaultIdx: 2 },
         primaryMeasureOverride: { role: "measure", defaultIdx: 0 },
         targetMeasureOverride: { role: "measure", defaultIdx: -1 }
@@ -965,7 +1009,11 @@
 
       var dayDim = resolveField(dimensions, config.dayDimOverride, 0);
       var hourDim = resolveField(dimensions, config.hourDimOverride, 1);
-      var sliceDim = config.sliceDimOverride ? resolveField(dimensions, config.sliceDimOverride, 2) : (dimensions.length > 2 ? dimensions[2] : null);
+      var sliceDim = config.sliceDimOverride
+        ? resolveField(dimensions, config.sliceDimOverride, 2)
+        : (config.dimSecondaryOverride
+            ? resolveField(dimensions, config.dimSecondaryOverride, 2)
+            : (dimensions.length > 2 ? dimensions[2] : null));
 
       var activeMeasure = resolveField(measures, config.primaryMeasureOverride, self._selectedMeasureIndex);
       var targetMeasure = config.targetMeasureOverride ? resolveField(measures, config.targetMeasureOverride, -1) : null;
@@ -1001,7 +1049,7 @@
         var topN = config.topNLimit ? parseInt(config.topNLimit, 10) : 0;
         if (topN > 0 && sortedSlices.length > topN) {
           var kept = sortedSlices.slice(0, topN);
-          if (config.rollupOther) kept.push("Other");
+          if (config.enableOtherRollup || config.rollupOther) kept.push("Other");
           sliceValues = ["ALL"].concat(kept);
         } else {
           sliceValues = ["ALL"].concat(sortedSlices);
@@ -1209,8 +1257,8 @@
         hudElem.style.borderBottom = "1px solid " + theme.border;
         hudElem.style.marginBottom = "10px";
 
-        var titleText = config.customTitleOverride || (activeMeasure.label + " Daypart Schedule");
-        var subtitleText = config.customSubtitleOverride || ("7-Day x 24-Hour Broadcast Distribution • " + (dayDim.label || "Day") + " x " + (hourDim.label || "Hour"));
+        var titleText = config.customTitle || config.customTitleOverride || (activeMeasure.label + " Daypart Schedule");
+        var subtitleText = config.customSubtitle || config.customSubtitleOverride || ("7-Day x 24-Hour Broadcast Distribution • " + (dayDim.label || "Day") + " x " + (hourDim.label || "Hour"));
 
         if (config.hudMode === "compact_strip") {
           hudElem.innerHTML =
@@ -1402,8 +1450,9 @@
     _renderHourlyMatrix: function (d3, targetElem, matrix, daysConfig, dayparts, dayTotals, hourTotals, maxHourTotal, peakThreshold, colorScale, theme, config, activeMeasure, cellRawRows, totalVolume, benchmarkTarget, fontMultiplier) {
       var self = this;
       var showMarginals = config.showMarginals !== false;
-      var showValues = config.showValueLabels !== "hidden";
-      var peaksOnly = config.showValueLabels === "peaks_only";
+      var labelDensity = config.labelDensity || config.showValueLabels || "all";
+      var showValues = labelDensity !== "hidden";
+      var peaksOnly = labelDensity === "peaks_only";
       var cellRadius = config.cellRadius !== undefined ? config.cellRadius : 4;
       var spacing = config.cellSpacing !== undefined ? config.cellSpacing : 2;
 

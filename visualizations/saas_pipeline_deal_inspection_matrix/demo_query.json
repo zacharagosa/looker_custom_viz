@@ -1,0 +1,27 @@
+{
+  "model": "saas_qbr",
+  "view": "qbr_pipeline_inspection",
+  "fields": [
+    "qbr_deal_quality.opportunity_name",
+    "qbr_deal_quality.stage_name",
+    "qbr_deal_quality.forecast_category",
+    "qbr_deal_quality.risk_band",
+    "qbr_deal_quality.total_arr",
+    "qbr_deal_quality.average_risk_score",
+    "qbr_deal_quality.average_days_in_stage",
+    "qbr_deal_quality.average_slip_count"
+  ],
+  "filters": {
+    "qbr_deal_quality.is_closed": "No"
+  },
+  "sorts": [
+    "qbr_deal_quality.total_arr desc"
+  ],
+  "limit": "30",
+  "vis_config": {
+    "type": "saas_pipeline_deal_inspection_matrix",
+    "layoutMode": "deal_slippage_quadrant",
+    "hudMode": "scorecard",
+    "colorTheme": "modern_slate"
+  }
+}

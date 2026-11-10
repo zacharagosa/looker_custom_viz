@@ -55,10 +55,11 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (41 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (42 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**SaaS Sales Pipeline Inspection & Deal Slippage Matrix**](visualizations/saas_pipeline_deal_inspection_matrix/)<br>`saas_pipeline_deal_inspection_matrix` | B2B SaaS & RevOps | 1 Opportunity dim, optional Sales Stage, Forecast Category, Risk Band dims + 1 Deal ARR ($) measure, optional Risk Score (0-100), Days in Stage, Close-Date Slips | [📸 View](visualizations/saas_pipeline_deal_inspection_matrix/screenshot.png) |
 | [**SaaS Customer Health & Churn Risk Matrix**](visualizations/saas_customer_churn_risk_matrix/)<br>`saas_customer_churn_risk_matrix` | B2B SaaS & RevOps | 1 Customer Account dim, optional 1 Risk Band dim + 1 Total Active ARR ($) measure, optional ARR at Risk ($), Churn Risk Score, Seat Utilization % | [📸 View](visualizations/saas_customer_churn_risk_matrix/screenshot.png) |
 | [**Med-Surg Fulfillment & SLA Performance Matrix**](visualizations/med_surg_fulfillment_sla_matrix/)<br>`med_surg_fulfillment_sla_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Distribution Center dim, optional 1 Region dim + 1 Line Fill Rate % measure, 1 On-Time Delivery % measure, optional Backorder Rate %, optional Avg Delivery Days, 1 Total Spend measure | [📸 View](visualizations/med_surg_fulfillment_sla_matrix/screenshot.png) |
 | [**Med-Surg Formulary Compliance & Brand Conversion Matrix**](visualizations/med_surg_formulary_conversion_matrix/)<br>`med_surg_formulary_conversion_matrix` | Healthcare & Med-Surg Supply Chain | 1 Primary Category dim + 1 Total Spend measure, 1 National Brand Spend measure, 1 Wellverse Spend measure, 1 Brand Penetration % measure, 1 Conversion Opportunity measure, 1 Off-Contract Leakage measure | [📸 View](visualizations/med_surg_formulary_conversion_matrix/screenshot.png) |
