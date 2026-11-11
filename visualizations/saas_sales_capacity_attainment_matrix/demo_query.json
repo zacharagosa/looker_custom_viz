@@ -1,0 +1,30 @@
+{
+  "model": "saas_qbr",
+  "view": "qbr_performance",
+  "fields": [
+    "qbr_rep_roster.rep_name",
+    "qbr_rep_roster.segment",
+    "qbr_rep_roster.region",
+    "qbr_rep_roster.ramp_status",
+    "qbr_rep_roster.tenure_months",
+    "qbr_rep_quota.total_arr_quota",
+    "qbr_rep_performance.total_won_arr",
+    "qbr_rep_performance.total_commit_arr",
+    "qbr_rep_quota.arr_attainment",
+    "qbr_rep_quota.pipeline_coverage_ratio"
+  ],
+  "sorts": [
+    "qbr_rep_performance.total_won_arr desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "saas_sales_capacity_attainment_matrix",
+    "layoutMode": "attainment_matrix",
+    "colorTheme": "slate",
+    "hudMode": "scorecard",
+    "sortBy": "metric_desc",
+    "showSearch": true,
+    "labelDensity": "all",
+    "valueFormat": "compact_currency"
+  }
+}

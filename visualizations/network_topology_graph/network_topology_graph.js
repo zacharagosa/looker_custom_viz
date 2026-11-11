@@ -353,6 +353,13 @@
         if (Math.abs(num) >= 1e6) return (num / 1e6).toFixed(2) + "M";
         if (Math.abs(num) >= 1e3) return (num / 1e3).toFixed(1) + "k";
         return num.toLocaleString();
+      case "percentage":
+        return (Math.abs(num) <= 1 ? (num * 100).toFixed(1) : num.toFixed(1)) + "%";
+      case "decimal_2":
+        return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      case "raw":
+        return String(num);
+      case "auto":
       case "numeric":
       default:
         return Math.round(num).toLocaleString();
@@ -406,38 +413,56 @@
         section: "Display",
         order: 3
       },
-      volumeMeasureOverride: {
+      groupDimOverride: {
         type: "string",
-        label: "Throughput / Volume Measure",
+        label: "Node Group / Cluster Dimension (Optional)",
         display: "select",
-        values: [{ "Auto (run the query to populate field choices)": "" }],
+        values: [{ "Auto / None": "" }],
         default: "",
         section: "Display",
         order: 4
       },
-      latencyMeasureOverride: {
+      volumeMeasureOverride: {
         type: "string",
-        label: "Latency / Delay Measure",
+        label: "Primary Throughput / Volume Measure",
         display: "select",
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
         order: 5
       },
-      countMeasureOverride: {
+      latencyMeasureOverride: {
         type: "string",
-        label: "Packet / Flow Count Measure (Optional)",
+        label: "Latency / Delay / Quality Measure",
         display: "select",
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
         order: 6
       },
+      countMeasureOverride: {
+        type: "string",
+        label: "Packet / Flow / Anomaly Count Measure (Optional)",
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
+        default: "",
+        section: "Display",
+        order: 7
+      },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target / SLA Benchmark Measure (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 8
+      },
       flowAnimation: {
         type: "string",
         label: "Traffic Flow Animation",
         section: "Display",
-        order: 7,
+        order: 9,
         display: "select",
         values: [
           { "Glowing Packet Pulses": "pulse" },
@@ -450,7 +475,7 @@
         type: "string",
         label: "Node Sizing",
         section: "Display",
-        order: 8,
+        order: 10,
         display: "select",
         values: [
           { "By Total Volume / Throughput": "volume" },
@@ -463,7 +488,7 @@
         type: "string",
         label: "Link Color & Scaling",
         section: "Display",
-        order: 9,
+        order: 11,
         display: "select",
         values: [
           { "Color by Latency / Quality": "latency" },
@@ -474,52 +499,95 @@
       },
       targetCalculationMode: {
         type: "string",
-        label: "Bottleneck Threshold Mode",
+        label: "Target / Bottleneck Calculation Mode",
         display: "select",
         values: [
+          { "Target Measure Column": "measure_column" },
           { "Custom Static Threshold": "fixed" },
           { "Dataset Mean Latency": "dataset_mean" },
           { "Dataset Median Latency": "dataset_median" },
-          { "Percentile P75": "percentile_p75" },
-          { "Percentile P90": "percentile_p90" }
+          { "Top Percentile P75 Target": "percentile_p75" },
+          { "Top Percentile P90 Target": "percentile_p90" }
         ],
         default: "fixed",
         section: "Display",
-        order: 10
+        order: 12
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Benchmark Target Value (when Fixed Mode, 0 = Auto)",
+        default: 0,
+        section: "Display",
+        order: 13
       },
       latencyThreshold: {
         type: "number",
-        label: "Static Bottleneck Latency Alert Threshold",
+        label: "Static Bottleneck Latency Alert Threshold (Legacy)",
         section: "Display",
-        order: 11,
+        order: 14,
         default: 3.8
       },
       referenceLineLabel: {
         type: "string",
-        label: "Custom Reference Line / SLA Target Label",
+        label: "Reference Line & Benchmark Label",
         default: "SLA Latency Benchmark",
         section: "Display",
-        order: 12
+        order: 15
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Bottleneck / Outlier Alert Threshold (%)",
+        default: 20,
+        section: "Display",
+        order: 16
+      },
+      highlightPeaks: {
+        type: "string",
+        label: "Peak Traffic Link Detection",
+        section: "Display",
+        order: 17,
+        display: "select",
+        values: [
+          { "Top 5% Peak Links (★ Gold)": "top_5" },
+          { "Top 10% Peak Links (★ Gold)": "top_10" },
+          { "Above Average (+1σ Outliers)": "above_avg" },
+          { "None": "none" }
+        ],
+        default: "top_5"
       },
       sortBy: {
         type: "string",
         label: "Node / Link Sorting",
         display: "select",
         values: [
-          { "Metric Descending (Highest Volume First)": "metric_desc" },
-          { "Metric Ascending (Lowest Volume First)": "metric_asc" },
+          { "Metric Volume (Descending)": "metric_desc" },
+          { "Metric Volume (Ascending)": "metric_asc" },
           { "Alphabetical (A - Z)": "alphabetical" },
-          { "Natural / Query Order": "natural" }
+          { "Chronological / Natural": "chronological" }
         ],
         default: "metric_desc",
         section: "Display",
-        order: 13
+        order: 18
+      },
+      topNLimit: {
+        type: "number",
+        label: "Top-N Nodes Display Limit (0 = All)",
+        default: 0,
+        section: "Display",
+        order: 19
+      },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Group Tail Nodes into 'Other' Aggregation Cluster",
+        default: false,
+        section: "Display",
+        order: 20
       },
       nodeLimit: {
         type: "string",
-        label: "Top-N Node Capacity Limit",
+        label: "Top-N Node Capacity Limit (Legacy)",
         section: "Display",
-        order: 14,
+        order: 21,
         display: "select",
         values: [
           { "All Nodes (Up to 5,000 rows)": "all" },
@@ -534,11 +602,11 @@
         label: "Suppress Zero / Null Volume Links",
         default: true,
         section: "Display",
-        order: 15
+        order: 22
       },
       hudMode: {
         type: "string",
-        label: "Executive Telemetry HUD Mode",
+        label: "Executive Scorecard HUD Mode",
         display: "select",
         values: [
           { "Full Scorecard HUD": "scorecard" },
@@ -547,13 +615,27 @@
         ],
         default: "scorecard",
         section: "Display",
-        order: 16
+        order: 23
+      },
+      labelDensity: {
+        type: "string",
+        label: "Node Data Label Density",
+        section: "Display",
+        order: 24,
+        display: "select",
+        values: [
+          { "All Nodes Visible": "all" },
+          { "Min / Max Peaks Only": "peaks_only" },
+          { "On Hover / Focus Only": "hover_focus" },
+          { "Hidden / Tooltip Only": "hidden" }
+        ],
+        default: "all"
       },
       showLabels: {
         type: "string",
-        label: "Node Label Density",
+        label: "Node Label Density (Legacy)",
         section: "Display",
-        order: 17,
+        order: 25,
         display: "select",
         values: [
           { "All Nodes Visible": "always" },
@@ -563,36 +645,54 @@
         ],
         default: "always"
       },
+      showSearch: {
+        type: "boolean",
+        label: "Show Interactive Node Search & Filter Bar",
+        section: "Display",
+        order: 26,
+        default: true
+      },
       customTitle: {
         type: "string",
         label: "Custom Chart Title Override",
         default: "",
         section: "Display",
-        order: 18
+        order: 27
       },
       customSubtitle: {
         type: "string",
         label: "Custom Subtitle / Description Override",
         default: "",
         section: "Display",
-        order: 19
-      },
-      showSearch: {
-        type: "boolean",
-        label: "Show Interactive Node Search & Filter Bar",
-        section: "Display",
-        order: 20,
-        default: true
+        order: 28
       },
 
       // ==========================================
       // SECTION 2: STYLE (Strictly 2 tabs rule)
       // ==========================================
-      colorTheme: {
+      colorPalette: {
         type: "string",
         label: "Brand Palette Preset",
         section: "Style",
         order: 1,
+        display: "select",
+        values: [
+          { "Cyber NOC Dark (Midnight)": "cyber_dark" },
+          { "Google Enterprise Blue": "google_enterprise" },
+          { "Modern Slate": "modern_slate" },
+          { "Zayo Corporate Orange (Light)": "zayo_corporate" },
+          { "Emerald FinOps": "emerald" },
+          { "Sunset Media (Warm Amber)": "sunset_media" },
+          { "Wellverse Healthcare": "wellverse_healthcare" },
+          { "Custom Hex Override": "custom" }
+        ],
+        default: "cyber_dark"
+      },
+      colorTheme: {
+        type: "string",
+        label: "Brand Palette Preset (Legacy)",
+        section: "Style",
+        order: 2,
         display: "select",
         values: [
           { "Cyber NOC Dark (Midnight)": "cyber_dark" },
@@ -607,29 +707,53 @@
         ],
         default: "cyber_dark"
       },
-      customPrimaryColor: {
+      customPrimaryHex: {
         type: "string",
         label: "Custom Primary Node / Link Hex",
         display: "color",
         default: "",
         section: "Style",
-        order: 2
+        order: 3
       },
-      customPositiveColor: {
+      customPrimaryColor: {
         type: "string",
-        label: "Custom Optimal / Safe Latency Hex",
+        label: "Custom Primary Node / Link Hex (Legacy)",
         display: "color",
         default: "",
         section: "Style",
-        order: 3
+        order: 4
       },
-      customNegativeColor: {
+      customPositiveHex: {
+        type: "string",
+        label: "Custom Optimal / Safe Hex",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 5
+      },
+      customPositiveColor: {
+        type: "string",
+        label: "Custom Optimal / Safe Latency Hex (Legacy)",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 6
+      },
+      customNegativeHex: {
         type: "string",
         label: "Custom Bottleneck / Critical Hex",
         display: "color",
         default: "",
         section: "Style",
-        order: 4
+        order: 7
+      },
+      customNegativeColor: {
+        type: "string",
+        label: "Custom Bottleneck / Critical Hex (Legacy)",
+        display: "color",
+        default: "",
+        section: "Style",
+        order: 8
       },
       metricPolarity: {
         type: "string",
@@ -641,7 +765,7 @@
         ],
         default: "lower_better",
         section: "Style",
-        order: 5
+        order: 9
       },
       fontScale: {
         type: "string",
@@ -654,21 +778,22 @@
         ],
         default: "standard",
         section: "Style",
-        order: 6
+        order: 10
       },
       valueFormat: {
         type: "string",
-        label: "Value & Metric Format",
+        label: "Value Formatting Style",
         section: "Style",
-        order: 7,
+        order: 11,
         display: "select",
         values: [
           { "Network Bandwidth (bps/Mbps/Gbps)": "bandwidth" },
+          { "Auto (Contextual)": "auto" },
           { "Compact Number (1.2M / 45K)": "compact_num" },
-          { "Compact Currency (.2M / 5K)": "compact_currency" },
+          { "Compact Currency ($1.2M / $45K)": "compact_currency" },
           { "Percentage (45.2%)": "percentage" },
           { "Decimal 2dp (1,234.56)": "decimal_2" },
-          { "Raw (Exact Database Value)": "numeric" }
+          { "Raw (Exact Database Value)": "raw" }
         ],
         default: "bandwidth"
       },
@@ -676,28 +801,28 @@
         type: "number",
         label: "Base Node Radius (px)",
         section: "Style",
-        order: 8,
+        order: 12,
         default: 13
       },
       linkDistance: {
         type: "number",
         label: "Link Spring Distance (px)",
         section: "Style",
-        order: 9,
+        order: 13,
         default: 110
       },
       linkThickness: {
         type: "number",
         label: "Link Thickness Multiplier",
         section: "Style",
-        order: 10,
+        order: 14,
         default: 2
       },
       particleSpeed: {
         type: "string",
         label: "Packet Animation Speed",
         section: "Style",
-        order: 11,
+        order: 15,
         display: "select",
         values: [
           { "Fast (1.2s)": "fast" },
@@ -719,9 +844,11 @@
       var FIELD_ROLE_OPTIONS = {
         sourceDimOverride: { role: "dimension", defaultIdx: 0 },
         targetDimOverride: { role: "dimension", defaultIdx: 1 },
+        groupDimOverride: { role: "dimension", defaultIdx: -1 },
         volumeMeasureOverride: { role: "measure", defaultIdx: 0 },
         latencyMeasureOverride: { role: "measure", defaultIdx: 1 },
-        countMeasureOverride: { role: "measure", defaultIdx: -1 }
+        countMeasureOverride: { role: "measure", defaultIdx: -1 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
       var f = queryResponse.fields;
@@ -1031,23 +1158,30 @@ create: function (element, config) {
 
       var sourceDim = resolveField(dims, config.sourceDimOverride, 0);
       var targetDim = resolveField(dims, config.targetDimOverride, dims.length > 1 ? 1 : 0);
+      var groupDim = resolveField(dims, config.groupDimOverride, dims.length > 2 ? 2 : -1);
       var isSelfLoopModel = dims.length === 1 && (!config.targetDimOverride || config.targetDimOverride === "");
 
       var volumeMeas = resolveField(meas, config.volumeMeasureOverride, 0);
       var latencyMeas = resolveField(meas, config.latencyMeasureOverride, meas.length > 1 ? 1 : -1);
       var countMeas = resolveField(meas, config.countMeasureOverride, meas.length > 2 ? 2 : -1);
+      var targetMeas = resolveField(meas, config.targetMeasureOverride, -1);
 
-      var theme = THEMES[config.colorTheme] || THEMES.cyber_dark;
-      if (config.colorTheme === "custom") {
+      var chosenThemeKey = config.colorPalette || config.colorTheme || "cyber_dark";
+      var theme = THEMES[chosenThemeKey] || THEMES.cyber_dark;
+      if (chosenThemeKey === "custom" || config.colorTheme === "custom") {
+        var pri = config.customPrimaryHex || config.customPrimaryColor || theme.nodeStroke;
+        var pos = config.customPositiveHex || config.customPositiveColor || theme.optimalLatency;
+        var neg = config.customNegativeHex || config.customNegativeColor || theme.criticalLatency;
         theme = Object.assign({}, theme, {
-          nodeStroke: config.customPrimaryColor || theme.nodeStroke,
-          linkHighlight: config.customPrimaryColor || theme.linkHighlight,
-          pulseColor: config.customPrimaryColor || theme.pulseColor,
-          optimalLatency: config.customPositiveColor || theme.optimalLatency,
-          criticalLatency: config.customNegativeColor || theme.criticalLatency
+          nodeStroke: pri,
+          linkHighlight: pri,
+          pulseColor: pri,
+          optimalLatency: pos,
+          criticalLatency: neg
         });
       }
-      if (config.metricPolarity === "higher_better") {
+      var polarity = config.metricPolarity || "lower_better";
+      if (polarity === "higher_better" || polarity === "higher_is_better") {
         var origOpt = theme.optimalLatency;
         theme.optimalLatency = theme.criticalLatency;
         theme.criticalLatency = origOpt;
@@ -1170,9 +1304,19 @@ create: function (element, config) {
       }
 
       // Calculate Bottleneck Threshold based on Target Calculation Mode
-      var bottleneckThreshold = Number(config.latencyThreshold) || 3.8;
+      var bottleneckThreshold = Number(config.fixedTargetValue || config.latencyThreshold) || 3.8;
       var targetMode = config.targetCalculationMode || "fixed";
-      if (allLatencies.length > 0 && targetMode !== "fixed") {
+      if (targetMode === "measure_column" && targetMeas) {
+        var targetVals = [];
+        for (var ti = 0; ti < data.length; ti++) {
+          if (data[ti][targetMeas.name] && !isNaN(Number(data[ti][targetMeas.name].value))) {
+            targetVals.push(Number(data[ti][targetMeas.name].value));
+          }
+        }
+        if (targetVals.length > 0) {
+          bottleneckThreshold = targetVals.reduce(function (a, b) { return a + b; }, 0) / targetVals.length;
+        }
+      } else if (allLatencies.length > 0 && targetMode !== "fixed") {
         var sortedLat = allLatencies.slice().sort(function (a, b) { return a - b; });
         if (targetMode === "dataset_mean") {
           var sum = sortedLat.reduce(function (acc, v) { return acc + v; }, 0);
@@ -1210,23 +1354,85 @@ create: function (element, config) {
       });
 
       // Interactive Sorting
-      var sortBy = config.sortBy || "degree_desc";
+      var sortBy = config.sortBy || "metric_desc";
       if (sortBy === "metric_desc") {
         allNodes.sort(function (a, b) { return b.totalVolume - a.totalVolume; });
       } else if (sortBy === "metric_asc") {
         allNodes.sort(function (a, b) { return a.totalVolume - b.totalVolume; });
-      } else if (sortBy === "alpha") {
+      } else if (sortBy === "alpha" || sortBy === "alphabetical") {
         allNodes.sort(function (a, b) { return a.name.localeCompare(b.name); });
       } else if (sortBy === "degree_desc") {
         allNodes.sort(function (a, b) { return b.degree - a.degree; });
+      } else if (sortBy === "chronological" || sortBy === "natural") {
+        // preserve natural query arrival order
       }
 
-      // Density limiter
-      var nodeLimitConfig = config.nodeLimit || "all";
+      // Density limiter with Top-N & Other Rollup
+      var nodeLimitConfig = config.topNLimit ? String(config.topNLimit) : (config.nodeLimit || "all");
       var activeNodes = allNodes;
-      if (nodeLimitConfig !== "all") {
-        var lim = parseInt(nodeLimitConfig, 10);
-        if (!isNaN(lim) && lim < allNodes.length) {
+      var lim = nodeLimitConfig === "all" ? 0 : parseInt(nodeLimitConfig, 10);
+      if (!isNaN(lim) && lim > 0 && lim < allNodes.length) {
+        if (config.enableOtherRollup) {
+          var retainedNodes = allNodes.slice(0, lim);
+          var otherNodes = allNodes.slice(lim);
+          var retainedSet = {};
+          retainedNodes.forEach(function (n) { retainedSet[n.id] = true; });
+
+          var otherVol = 0;
+          var otherIngress = 0;
+          var otherEgress = 0;
+          otherNodes.forEach(function (n) {
+            otherVol += n.totalVolume;
+            otherIngress += n.ingressVolume;
+            otherEgress += n.egressVolume;
+          });
+
+          var otherNode = {
+            id: "__other__",
+            name: "Other (" + otherNodes.length + " Nodes)",
+            type: "other",
+            isSource: true,
+            isTarget: true,
+            inDegree: 0,
+            outDegree: 0,
+            degree: 0,
+            ingressVolume: otherIngress,
+            egressVolume: otherEgress,
+            totalVolume: otherVol,
+            weightedLatencySum: 0,
+            drillLinks: null
+          };
+          retainedNodes.push(otherNode);
+          activeNodes = retainedNodes;
+
+          var newLinksMap = {};
+          links.forEach(function (l) {
+            var s = retainedSet[l.sourceId] ? l.sourceId : "__other__";
+            var t = retainedSet[l.targetId] ? l.targetId : "__other__";
+            if (s === "__other__" && t === "__other__") return;
+            var k = s + "___" + t;
+            if (!newLinksMap[k]) {
+              newLinksMap[k] = {
+                id: k,
+                source: s,
+                target: t,
+                sourceId: s,
+                targetId: t,
+                volume: 0,
+                weightedLatencySum: 0,
+                count: 0,
+                drillLinks: l.drillLinks
+              };
+            }
+            newLinksMap[k].volume += l.volume;
+            newLinksMap[k].weightedLatencySum += (l.latency * l.volume);
+            newLinksMap[k].count += l.count;
+          });
+          links = Object.values(newLinksMap).map(function (lnk) {
+            lnk.latency = lnk.volume > 0 ? (lnk.weightedLatencySum / lnk.volume) : 0;
+            return lnk;
+          });
+        } else {
           var topSet = {};
           for (var t = 0; t < lim; t++) {
             topSet[allNodes[t].id] = true;

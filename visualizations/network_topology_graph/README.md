@@ -64,36 +64,41 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Force-Directed Topology` | `force_directed`, `concentric_radial`, `circular_peering`, `adjacency_matrix` |
-| `sourceDimOverride` | Select | Auto | Dynamic 1-based index or field name for Source Node |
-| `targetDimOverride` | Select | Auto | Dynamic 1-based index or field name for Target Node |
-| `volumeMeasureOverride` | Select | Auto | Dynamic 1-based index or field name for Throughput/Volume Measure |
-| `latencyMeasureOverride` | Select | Auto | Dynamic 1-based index or field name for Latency/Quality Measure |
-| `countMeasureOverride` | Select | Auto | Dynamic 1-based index or field name for Packet/Record Count Measure |
+| `sourceDimOverride` | Select | Auto | Dynamic field-role selector for Source Node Dimension |
+| `targetDimOverride` | Select | Auto | Dynamic field-role selector for Target Node Dimension |
+| `groupDimOverride` | Select | Auto / None | Dynamic field-role selector for Secondary / Node Cluster Group Dimension |
+| `volumeMeasureOverride` | Select | Auto | Dynamic field-role selector for Primary Throughput / Volume Measure |
+| `latencyMeasureOverride` | Select | Auto | Dynamic field-role selector for Latency / Quality Measure |
+| `countMeasureOverride` | Select | Auto | Dynamic field-role selector for Packet / Flow Count Measure |
+| `targetMeasureOverride` | Select | Auto / None | Dynamic field-role selector for Target / SLA Benchmark Measure |
 | `flowAnimation` | Select | `Glowing Packet Pulses` | `pulse`, `dash`, `none` |
 | `nodeSizing` | Select | `By Total Volume / Throughput` | `volume`, `degree`, `uniform` |
 | `edgeMetric` | Select | `Color by Latency / Quality` | `latency`, `volume`, `uniform` |
-| `targetCalculationMode` | Select | `Fixed Latency Threshold` | `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90` |
-| `latencyThreshold` | Number | `3.8` | Fixed threshold for warning/bottleneck alerts |
-| `referenceLineLabel` | String | `Bottleneck Threshold` | Label for anomaly threshold alerts |
-| `sortBy` | Select | `Degree Centrality (High to Low)` | `degree_desc`, `metric_desc`, `metric_asc`, `alpha` |
-| `nodeLimit` | Select | `All Nodes` | `all`, `25`, `50`, `100` |
-| `suppressZeroNull` | Boolean | `false` | Suppress nodes and links with zero/null throughput |
+| `targetCalculationMode` | Select | `Custom Static Threshold` | `measure_column`, `fixed`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90` |
+| `fixedTargetValue` | Number | `0` | Fixed benchmark target value (0 = Auto fallback to SLA threshold) |
+| `referenceLineLabel` | String | `SLA Latency Benchmark` | Label for benchmark / anomaly reference line |
+| `anomalyThresholdPct` | Number | `20` | Outlier / bottleneck alert threshold percentage |
+| `highlightPeaks` | Select | `Top 5% Peak Links (★ Gold)` | `top_5`, `top_10`, `above_avg`, `none` |
+| `sortBy` | Select | `Metric Volume (Descending)` | `metric_desc`, `metric_asc`, `alphabetical`, `chronological` |
+| `topNLimit` | Number | `0` | Top-N node capacity display limit (0 = All) |
+| `enableOtherRollup` | Boolean | `false` | Group tail nodes into 'Other' aggregation cluster |
+| `suppressZeroNull` | Boolean | `true` | Suppress nodes and links with zero/null throughput |
 | `hudMode` | Select | `Full Scorecard HUD` | `scorecard`, `compact_strip`, `none` |
-| `showLabels` | Select | `Always Visible` | `always`, `peaks_only`, `hover_focus`, `off` |
+| `labelDensity` | Select | `All Nodes Visible` | `all`, `peaks_only`, `hover_focus`, `hidden` |
+| `showSearch` | Boolean | `true` | Display real-time node search filter box |
 | `customTitle` | String | `""` | Custom chart title override |
 | `customSubtitle` | String | `""` | Custom subtitle / description override |
-| `showSearch` | Boolean | `true` | Display real-time node search filter box |
 
 ### Style Tab
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `colorTheme` | Select | `Cyber NOC Dark` | `cyber_dark`, `google_enterprise`, `modern_slate`, `zayo_corporate`, `slate`, `emerald`, `sunset_media`, `wellverse_healthcare`, `custom` |
-| `customPrimaryColor` | Color | `""` | Custom primary node & link highlight color |
-| `customPositiveColor` | Color | `""` | Custom optimal / healthy latency hex color |
-| `customNegativeColor` | Color | `""` | Custom bottleneck / alert hex color |
+| `colorPalette` | Select | `Cyber NOC Dark` | `cyber_dark`, `google_enterprise`, `modern_slate`, `zayo_corporate`, `emerald`, `sunset_media`, `wellverse_healthcare`, `custom` |
+| `customPrimaryHex` | Color | `""` | Custom primary node & link highlight color |
+| `customPositiveHex` | Color | `""` | Custom optimal / healthy latency hex color |
+| `customNegativeHex` | Color | `""` | Custom bottleneck / alert hex color |
 | `metricPolarity` | Select | `Lower is Better` | `lower_better`, `higher_better` |
 | `fontScale` | Select | `Standard (100%)` | `compact` (85%), `standard` (100%), `large` (125%) |
-| `valueFormat` | Select | `Network Bandwidth (bps/Mbps/Gbps)`| `bandwidth`, `compact_num`, `compact_currency`, `numeric` |
+| `valueFormat` | Select | `Network Bandwidth (bps/Mbps/Gbps)`| `bandwidth`, `auto`, `compact_num`, `compact_currency`, `percentage`, `decimal_2`, `raw` |
 | `baseNodeRadius` | Number | `13` | Base node circle radius in pixels |
 | `linkDistance` | Number | `110` | Physics spring link distance in pixels |
 | `linkThickness` | Number | `2` | Link line thickness multiplier (1-6) |

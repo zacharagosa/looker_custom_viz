@@ -210,3 +210,7 @@ Executive customer success health & churn risk matrix for B2B SaaS RevOps: 2D St
 Executive sales pipeline inspection and deal velocity matrix for B2B SaaS RevOps: 2D Strategic Deal Slippage Quadrant mapping days in stage against ARR with risk bubble scaling, stage progression & stagnation waterfall, forecast category vs risk band cross-matrix, and high-density executive deal scorecard. Solves Google Cloud Blockers b/494819203, b/398601955, and b/520394840.
 ![SaaS Sales Pipeline Inspection & Deal Slippage Matrix](../assets/screenshots/saas_pipeline_deal_inspection_matrix.png)
 
+### 51. SaaS Sales Capacity & Quota Attainment Matrix
+Executive sales capacity planning and rep quota attainment matrix for B2B SaaS RevOps: multi-modal rep quota attainment & pacing matrix with dual-stage bullet progress bars against quota benchmarks, 2x2 tenure vs attainment quadrant stratifying President's Club superstars and ramp prodigies, executive team capacity waterfall bridge, and high-density rep leaderboard scorecard. Solves Google Cloud Blockers b/494910291, b/398701962, and b/520494850.
+![SaaS Sales Capacity & Quota Attainment Matrix](../assets/screenshots/saas_sales_capacity_attainment_matrix.png)
+
