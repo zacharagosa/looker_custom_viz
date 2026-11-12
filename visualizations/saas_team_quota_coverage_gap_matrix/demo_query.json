@@ -1,0 +1,33 @@
+{
+  "model": "saas_qbr",
+  "view": "qbr_team_rollup",
+  "fields": [
+    "qbr_sales_team.manager_name",
+    "qbr_sales_team.team_name",
+    "qbr_sales_team.region",
+    "qbr_sales_team.segment",
+    "qbr_sales_team.total_headcount",
+    "qbr_sales_team.total_team_arr_quota",
+    "qbr_team_performance.total_won_arr",
+    "qbr_team_performance.total_commit_arr",
+    "qbr_team_performance.total_upside_arr",
+    "qbr_team_performance.total_open_pipeline_arr",
+    "qbr_sales_team.team_attainment",
+    "qbr_sales_team.team_quota_gap",
+    "qbr_team_performance.win_rate"
+  ],
+  "sorts": [
+    "qbr_team_performance.total_won_arr desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "saas_team_quota_coverage_gap_matrix",
+    "layoutMode": "team_matrix",
+    "colorTheme": "slate",
+    "hudMode": "scorecard",
+    "sortBy": "metric_desc",
+    "showSearch": true,
+    "labelDensity": "all",
+    "valueFormat": "compact_currency"
+  }
+}

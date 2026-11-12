@@ -260,12 +260,21 @@
       },
       secondaryMeasureOverride: {
         type: "string",
-        label: "Target / Benchmark Measure (Optional)",
+        label: "Secondary Rate / Comparison Measure (Optional)",
         display: "select",
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
         order: 6
+      },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target / SLA Benchmark Measure (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 7
       },
       nodeAlignment: {
         type: "string",
@@ -321,14 +330,22 @@
         ],
         default: "0"
       },
+      topNLimit: {
+        type: "number",
+        label: "Top-N Heavy Paths Limit (0 = All)",
+        default: 0,
+        section: "Display",
+        order: 11
+      },
       topPathsLimit: {
         type: "string",
-        label: "Top Paths Limit (Rows Optimization)",
+        label: "Top Paths Limit (Legacy Preset)",
         section: "Display",
-        order: 11,
+        order: 12,
         display: "select",
         values: [
           { "All Paths (Up to 5,000 rows)": "all" },
+          { "Top 10 Heavy Paths": "10" },
           { "Top 25 Heavy Paths": "25" },
           { "Top 50 Heavy Paths": "50" },
           { "Top 100 Heavy Paths": "100" },
@@ -338,10 +355,10 @@
       },
       enableOtherRollup: {
         type: "boolean",
-        label: "Rollup Unselected Flows into (Other) Stream",
+        label: "Rollup Unselected Flows into '(Other Flows)' Stream",
         section: "Display",
-        order: 12,
-        default: false
+        order: 13,
+        default: true
       },
       sortBy: {
         type: "string",
@@ -371,14 +388,15 @@
         order: 15,
         display: "select",
         values: [
+          { "Target Measure Column": "measure_column" },
+          { "Fixed Benchmark Target Value": "fixed" },
           { "Dataset Mean (Average Node Volume)": "dataset_mean" },
           { "Dataset Median": "dataset_median" },
-          { "Fixed Benchmark Target Value": "fixed" },
           { "Top Percentile P75 Target": "percentile_p75" },
           { "Top Percentile P90 Target": "percentile_p90" },
-          { "Target Measure Column": "measure_column" }
+          { "Disabled / Hidden": "none" }
         ],
-        default: "dataset_mean"
+        default: "none"
       },
       fixedTargetValue: {
         type: "number",
@@ -603,7 +621,8 @@
         intermediateDimOverride: { role: "dimension", defaultIdx: 1 },
         targetDimOverride: { role: "dimension", defaultIdx: 2 },
         volumeMeasureOverride: { role: "measure", defaultIdx: 0 },
-        secondaryMeasureOverride: { role: "measure", defaultIdx: -1 }
+        secondaryMeasureOverride: { role: "measure", defaultIdx: -1 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
       var f = queryResponse.fields;
@@ -904,13 +923,25 @@
 
       // Target calculation mode
       var computedBenchmark = 0;
-      if (targetMode === "fixed") {
+      var resolvedTargetMeasure = config.targetMeasureOverride ? resolveField(meas, config.targetMeasureOverride, -1) : null;
+      if (!resolvedTargetMeasure && secMeasureName) {
+        var secCandidate = meas.find(function (m) { return m.name === secMeasureName; });
+        var secLabel = secCandidate ? (secCandidate.label || secCandidate.label_short || secCandidate.name).toLowerCase() : "";
+        if (secLabel.indexOf("target") !== -1 || secLabel.indexOf("quota") !== -1 || secLabel.indexOf("sla") !== -1 || secLabel.indexOf("goal") !== -1) {
+          resolvedTargetMeasure = secCandidate;
+        }
+      }
+      var targetColName = resolvedTargetMeasure ? resolvedTargetMeasure.name : secMeasureName;
+
+      if (targetMode === "none") {
+        computedBenchmark = 0;
+      } else if (targetMode === "fixed") {
         computedBenchmark = fixedTargetVal;
-      } else if (targetMode === "measure_column" && secMeasureName) {
+      } else if (targetMode === "measure_column" && targetColName) {
         var sumTarget = 0, countTarget = 0;
         data.forEach(function (r) {
-          if (r[secMeasureName] && !isNaN(Number(r[secMeasureName].value))) {
-            sumTarget += Number(r[secMeasureName].value);
+          if (r[targetColName] && !isNaN(Number(r[targetColName].value))) {
+            sumTarget += Number(r[targetColName].value);
             countTarget++;
           }
         });

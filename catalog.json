@@ -301,7 +301,7 @@
     "instance_wide": true,
     "screenshot": "visualizations/sankey_flow_diagram/screenshot.png",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-09",
+    "last_upgraded": "2026-11-12",
     "looker_demo_url": "/explore/thelook/order_items?fields=users.traffic_source,products.category,order_items.status,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=365+days&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sankey_flow_diagram%22%2C%22viewMode%22%3A%22sankey%22%2C%22nodeAlignment%22%3A%22justify%22%2C%22linkColorMode%22%3A%22gradient%22%2C%22colorPalette%22%3A%22corporate_blue%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curvature%22%3A0.5%2C%22nodeWidth%22%3A18%2C%22nodePadding%22%3A16%2C%22showNodeValues%22%3Atrue%2C%22showNodePercentages%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22enableAnimation%22%3Atrue%2C%22highlightFlowsOnHover%22%3Atrue%7D&origin=share-expanded&toggle=vis"
   },
   {
@@ -2462,5 +2462,45 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-11",
     "looker_demo_url": "/explore/saas_qbr/qbr_performance?fields=qbr_rep_roster.rep_name,qbr_rep_roster.segment,qbr_rep_roster.region,qbr_rep_roster.ramp_status,qbr_rep_roster.tenure_months,qbr_rep_quota.total_arr_quota,qbr_rep_performance.total_won_arr,qbr_rep_performance.total_commit_arr,qbr_rep_quota.arr_attainment,qbr_rep_quota.pipeline_coverage_ratio&sorts=qbr_rep_performance.total_won_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_sales_capacity_attainment_matrix%22%2C%22layoutMode%22%3A%22attainment_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "saas_team_quota_coverage_gap_matrix",
+    "name": "SaaS Team Quota, Coverage & Gap Matrix",
+    "date_added": "2026-11-12",
+    "library": "D3.js v7",
+    "category": "B2B SaaS & RevOps",
+    "description": "Executive sales team quota attainment, pipeline coverage multiplier, and revenue deficit matrix for B2B SaaS RevOps: multi-modal sales team attainment matrix with multi-stage bullet progress bars (Won + Commit + Upside vs Quota), step-by-step quota-to-pipeline progression waterfall, 2x2 pipeline coverage vs attainment strategic quadrant, and quota-per-head capacity productivity bars.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Team Dimension + 1 Manager Dimension + Optional Region and Segment Dimensions",
+      "measures": "ARR Quota Measure + Closed Won ARR Measure + Optional Commit ARR, Upside ARR, Open Pipeline ARR, and Headcount Measures"
+    },
+    "suggested_dataset": {
+      "model": "saas_qbr",
+      "explore": "qbr_team_rollup",
+      "fields": [
+        "qbr_sales_team.manager_name",
+        "qbr_sales_team.team_name",
+        "qbr_sales_team.region",
+        "qbr_sales_team.segment",
+        "qbr_sales_team.total_headcount",
+        "qbr_sales_team.total_team_arr_quota",
+        "qbr_team_performance.total_won_arr",
+        "qbr_team_performance.total_commit_arr",
+        "qbr_team_performance.total_upside_arr",
+        "qbr_team_performance.total_open_pipeline_arr",
+        "qbr_sales_team.team_attainment",
+        "qbr_sales_team.team_quota_gap",
+        "qbr_team_performance.win_rate"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/saas_team_quota_coverage_gap_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-12",
+    "looker_demo_url": "/explore/saas_qbr/qbr_team_rollup?fields=qbr_sales_team.manager_name,qbr_sales_team.team_name,qbr_sales_team.region,qbr_sales_team.segment,qbr_sales_team.total_headcount,qbr_sales_team.total_team_arr_quota,qbr_team_performance.total_won_arr,qbr_team_performance.total_commit_arr,qbr_team_performance.total_upside_arr,qbr_team_performance.total_open_pipeline_arr,qbr_sales_team.team_attainment,qbr_sales_team.team_quota_gap,qbr_team_performance.win_rate&sorts=qbr_team_performance.total_won_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_team_quota_coverage_gap_matrix%22%2C%22layoutMode%22%3A%22team_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
   }
 ]

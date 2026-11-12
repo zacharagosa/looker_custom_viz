@@ -22,6 +22,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**SaaS Team Quota, Coverage & Gap Matrix**](visualizations/saas_team_quota_coverage_gap_matrix/)<br>`saas_team_quota_coverage_gap_matrix` | B2B SaaS & RevOps | 1 Team dim, 1 Manager dim, optional Region, Segment dims + ARR Quota measure, Closed Won ARR measure, optional Commit ARR, Upside ARR, Pipeline ARR, Headcount | [📸 View](visualizations/saas_team_quota_coverage_gap_matrix/screenshot.png) |
 | [**Radial KPI Progress Gauge**](visualizations/radial_progress_gauge/)<br>`radial_progress_gauge` | Performance & Variance | 0 to 1 (optional category grouping) + 1 to 6 measures (e.g. Sales, Orders, AOV) | [📸 View](visualizations/radial_progress_gauge/screenshot.png) |
 | [**Calendar Activity Heatmap**](visualizations/calendar_activity_heatmap/)<br>`calendar_activity_heatmap` | Time Series & Schedules | 1 Date field (YYYY-MM-DD) + 1 Numeric count or sum measure | [📸 View](visualizations/calendar_activity_heatmap/screenshot.png) |
 | [**Stephen Few Bullet Graph**](visualizations/bullet_graph/)<br>`bullet_graph` | Performance & Variance | 0 to 1 (e.g. Category, State, Rep) + 1 to 3 (Actual required; Target/Goal and Baseline optional) | [📸 View](visualizations/bullet_graph/screenshot.png) |
@@ -55,7 +56,7 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (43 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (44 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
