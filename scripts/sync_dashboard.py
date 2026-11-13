@@ -47,6 +47,7 @@ VOL2_TABS = [
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "saas_deal_velocity_slippage_matrix": "💼 B2B SaaS & RevOps",
     "saas_team_quota_coverage_gap_matrix": "💼 B2B SaaS & RevOps",
     "saas_sales_capacity_attainment_matrix": "💼 B2B SaaS & RevOps",
     "saas_pipeline_deal_inspection_matrix": "💼 B2B SaaS & RevOps",
@@ -149,6 +150,7 @@ CATEGORY_TAB_MAP = {
 }
 
 VIZ_EMOJI_MAP = {
+    "saas_deal_velocity_slippage_matrix": "💼",
     "saas_team_quota_coverage_gap_matrix": "💼",
     "saas_sales_capacity_attainment_matrix": "💼",
     "saas_pipeline_deal_inspection_matrix": "💼",

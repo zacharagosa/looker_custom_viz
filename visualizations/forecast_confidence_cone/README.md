@@ -7,11 +7,15 @@ Inspired by probabilistic machine learning models, ARIMA confidence intervals, a
 ## Features
 - **Continuous Historical & Forward Trajectory**: Plots trailing historical actual observations as a solid line and forward AI projections as an aligned dashed path.
 - **Uncertainty Confidence Cone (Fan Chart)**: Shaded prediction interval bands (e.g. 90% or 95% confidence intervals) expanding outward over the forecast horizon.
+- **Dynamic Field-Role Mapping (`Display`)**: Re-map Date Dimension, Series / Partition Dimension, Primary Forecast Measure, Lower/Upper Bounds, and Target Measure Column dynamically via select dropdowns without editing LookML.
+- **Configurable Benchmark Reference Lines & Targets (`Display`)**: Support for `Target Measure Column`, `Fixed Static Target Value`, `Dataset Mean`, `Dataset Median`, `Percentile P75 Target`, and `Percentile P90 Ceiling`.
+- **Anomaly Detection & Threshold Alerting (`Display`)**: Configurable deviation threshold (`alertThresholdPct`, e.g. 15%) that flags outliers with alert badges in the HUD and custom alert color styling.
+- **Sorting, Top-N & Null Handling (`Display`)**: Interactive sort orders (`Chronological/Natural`, `Metric Descending`, `Metric Ascending`, `Alphabetical`), Top-N horizon limit with automatic `'(Other)'` tail rollup, and zero/null suppression.
 - **What-If Simulation Slider (`Display`)**: Live slider in Looker's Edit Viz modal allowing executives to simulate % revenue lift or economic stress testing (-50% to +50%) with real-time recalculation of pipeline projections.
-- **Executive KPI Scorecard HUD (`Display`)**: Top-level metric cards displaying Trailing Actual Mean, Projected Forecast Mean, Trajectory Lift %, and 30-Day Forward Pipeline Volume.
-- **Configurable Benchmark Reference Line (`Display`)**: Toggle between Trailing Mean, Median, P90 Ceiling, or Fixed Quota Target.
+- **Executive Scorecard HUD & Title Density (`Display`)**: Full Scorecard HUD, Compact Metric Strip, or Hidden mode, plus custom chart title and subtitle overrides.
+- **Data Label Density Controls (`Display`)**: Toggle labels for `All Data Points`, `Min / Max Peaks Only`, or `Hidden / Hover Only`.
 - **Interactive Search & Filter Bar (`Display`)**: Filter dates dynamically to inspect specific windows.
-- **Brand Palettes & Formatting (`Style`)**: Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, or custom hex color overrides.
+- **Brand Palettes, Polarity & Typography (`Style`)**: Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, or custom hex color overrides with color picker (`display: 'color'`), Metric Polarity toggle (`Higher is Better` vs `Lower is Better`), Typography Font Scale (`Compact`, `Standard`, `Large`), and Value Formatting.
 - **Looker Drill Menu Integration**: Full integration with `LookerCharts.Utils.openDrillMenu` on data points.
 - **Responsive Geometry**: Debounced `ResizeObserver` with `<4px` height-delta guard for zero layout shift in dense dashboards.
 

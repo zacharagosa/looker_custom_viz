@@ -1,0 +1,33 @@
+{
+  "model": "saas_qbr",
+  "view": "qbr_pipeline_inspection",
+  "fields": [
+    "qbr_deal_quality.stage_name",
+    "qbr_deal_quality.forecast_category",
+    "qbr_deal_quality.open_deal_count",
+    "qbr_deal_quality.open_arr",
+    "qbr_deal_quality.average_days_in_stage",
+    "qbr_deal_quality.average_slip_count",
+    "qbr_deal_quality.average_risk_score",
+    "qbr_deal_quality.high_risk_arr"
+  ],
+  "filters": {
+    "qbr_deal_quality.is_closed": "No"
+  },
+  "sorts": [
+    "qbr_deal_quality.open_arr desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "saas_deal_velocity_slippage_matrix",
+    "layoutMode": "velocity_stage_matrix",
+    "colorTheme": "slate",
+    "hudMode": "scorecard",
+    "sortBy": "metric_desc",
+    "showSearch": true,
+    "labelDensity": "all",
+    "valueFormat": "compact_currency",
+    "targetValue": 60,
+    "referenceLineLabel": "Velocity SLA Threshold (60d)"
+  }
+}

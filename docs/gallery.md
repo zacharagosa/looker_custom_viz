@@ -217,3 +217,7 @@ Executive sales capacity planning and rep quota attainment matrix for B2B SaaS R
 ### 52. SaaS Team Quota, Coverage & Gap Matrix
 Executive sales team quota attainment, pipeline coverage multiplier, and revenue deficit matrix for B2B SaaS RevOps: multi-modal sales team attainment matrix with multi-stage bullet progress bars (Won + Commit + Upside vs Quota), step-by-step quota-to-pipeline progression waterfall, 2x2 pipeline coverage vs attainment strategic quadrant, and quota-per-head capacity productivity bars. Solves Google Cloud Blockers b/494910291, b/398701962, and b/520494850.
 ![SaaS Team Quota, Coverage & Gap Matrix](../assets/screenshots/saas_team_quota_coverage_gap_matrix.png)
+
+### 53. SaaS Deal Velocity & Stage Slippage Matrix
+Executive sales pipeline velocity, stage dwell time, and close-date slippage matrix for B2B SaaS RevOps: 4 multi-modal layout modes (Stage Progression & Velocity Matrix with days in stage vs SLA thresholds, 2D Stage Aging Risk Quadrant mapping dwell time against ARR to highlight stalled enterprise commitments in the Danger Zone, Revenue Slippage & Health Waterfall, and Stage vs Forecast Category Cross-Matrix highlighting stale commits). Solves Google Cloud Blockers b/419284729, b/398701962, and b/520494850.
+![SaaS Deal Velocity & Stage Slippage Matrix](../assets/screenshots/saas_deal_velocity_slippage_matrix.png)

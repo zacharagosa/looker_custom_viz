@@ -199,6 +199,15 @@
         section: "Display",
         order: 6
       },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target / SLA Benchmark Measure (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 7
+      },
       simulationScenarioPct: {
         type: 'number',
         label: 'What-If Simulation Scenario (% Lift / Stress)',
@@ -208,36 +217,80 @@
         step: 5,
         default: 0,
         section: 'Display',
-        order: 7
+        order: 8
       },
       targetMode: {
         type: 'string',
         label: 'Reference Line / Target Mode',
         display: 'select',
         values: [
+          { 'Target Measure Column': 'measure_column' },
+          { 'Fixed Static Target Value': 'fixed_value' },
           { 'Dataset Mean (Trailing Historical Average)': 'dataset_mean' },
           { 'Dataset Median (Historical Median)': 'dataset_median' },
-          { 'Fixed Static Target Value': 'fixed_value' },
+          { 'Percentile P75 Target': 'percentile_p75' },
           { 'Percentile P90 Ceiling': 'percentile_p90' },
           { 'None / Hidden': 'none' }
         ],
         default: 'dataset_mean',
         section: 'Display',
-        order: 8
+        order: 9
       },
       targetValue: {
         type: 'number',
         label: 'Fixed Target Value (when Fixed Mode, 0 = Auto)',
         default: 0,
         section: 'Display',
-        order: 9
+        order: 10
       },
       referenceLineLabel: {
         type: 'string',
         label: 'Target / Baseline Label',
         default: 'Historical Run-Rate Baseline',
         section: 'Display',
-        order: 10
+        order: 11
+      },
+      alertThresholdPct: {
+        type: 'number',
+        label: 'Anomaly Alert Threshold (% Deviation)',
+        default: 15,
+        section: 'Display',
+        order: 12
+      },
+      sortBy: {
+        type: 'string',
+        label: 'Sort Order',
+        display: 'select',
+        values: [
+          { 'Chronological / Natural Date': 'chronological' },
+          { 'Metric Value Descending': 'metric_desc' },
+          { 'Metric Value Ascending': 'metric_asc' },
+          { 'Alphabetical / Series Name': 'alphabetical' }
+        ],
+        default: 'chronological',
+        section: 'Display',
+        order: 13
+      },
+      topNLimit: {
+        type: 'number',
+        label: 'Top-N Points / Horizon Limit (0 = All)',
+        default: 0,
+        section: 'Display',
+        order: 14
+      },
+      enableOtherRollup: {
+        type: 'boolean',
+        label: 'Rollup Tail Horizons into (Other)',
+        default: false,
+        section: 'Display',
+        order: 15
+      },
+      suppressNulls: {
+        type: 'boolean',
+        label: 'Suppress Null / Zero Observations',
+        default: true,
+        section: 'Display',
+        order: 16
       },
       hudMode: {
         type: 'string',
@@ -250,28 +303,55 @@
         ],
         default: 'scorecard',
         section: 'Display',
-        order: 11
+        order: 17
+      },
+      labelDensity: {
+        type: 'string',
+        label: 'Data Label Density',
+        display: 'select',
+        values: [
+          { 'All Data Points': 'all' },
+          { 'Min / Max Peaks Only': 'peaks_only' },
+          { 'Hidden / Hover Only': 'hidden' }
+        ],
+        default: 'peaks_only',
+        section: 'Display',
+        order: 18
+      },
+      customTitle: {
+        type: 'string',
+        label: 'Custom Chart Title Override',
+        default: '',
+        section: 'Display',
+        order: 19
+      },
+      customSubtitle: {
+        type: 'string',
+        label: 'Custom Subtitle Override',
+        default: '',
+        section: 'Display',
+        order: 20
       },
       showDataPoints: {
         type: 'boolean',
         label: 'Show Interactive Data Points',
         default: true,
         section: 'Display',
-        order: 12
+        order: 21
       },
       showLegend: {
         type: 'boolean',
         label: 'Show Model Legend & Horizon Marker',
         default: true,
         section: 'Display',
-        order: 13
+        order: 22
       },
       showSearch: {
         type: 'boolean',
         label: 'Show Date Search / Filter Bar',
         default: true,
         section: 'Display',
-        order: 14
+        order: 23
       },
 
       // ==========================================
@@ -296,21 +376,24 @@
       },
       customPrimaryHex: {
         type: 'string',
-        label: 'Custom Forecast Line Hex',
+        label: 'Custom Forecast / Primary Color',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 2
       },
       customPositiveHex: {
         type: 'string',
-        label: 'Custom Actual History Hex',
+        label: 'Custom Actual History Color',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 3
       },
       customNegativeHex: {
         type: 'string',
-        label: 'Custom Anomaly / Alert Hex',
+        label: 'Custom Anomaly / Alert Color',
+        display: 'color',
         default: '',
         section: 'Style',
         order: 4
@@ -382,7 +465,8 @@
         seriesDimOverride: { role: "dimension", defaultIdx: 1 },
         measureFieldOverride: { role: "measure", defaultIdx: 0 },
         lowerBoundOverride: { role: "measure", defaultIdx: 1 },
-        upperBoundOverride: { role: "measure", defaultIdx: 2 }
+        upperBoundOverride: { role: "measure", defaultIdx: 2 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
       var f = queryResponse.fields;
@@ -724,14 +808,94 @@
       var forecastSum = forecastValues.reduce(function (a, b) { return a + b; }, 0);
       var forecastMean = forecastValues.length > 0 ? (forecastSum / forecastValues.length) : 0;
 
+      // Sorting
+      var sortBy = config.sortBy || 'chronological';
+      if (sortBy === 'metric_desc') {
+        points.sort(function (a, b) { return b.value - a.value; });
+      } else if (sortBy === 'metric_asc') {
+        points.sort(function (a, b) { return a.value - b.value; });
+      } else if (sortBy === 'alphabetical') {
+        points.sort(function (a, b) { return a.dateStr.localeCompare(b.dateStr); });
+      } else {
+        points.sort(function (a, b) { return a.date - b.date; });
+      }
+
+      // Top-N Horizon Limit
+      var topN = parseInt(config.topNLimit, 10) || 0;
+      if (topN > 0 && points.length > topN) {
+        if (config.enableOtherRollup) {
+          var kept = points.slice(0, topN);
+          var otherSlice = points.slice(topN);
+          if (otherSlice.length > 0) {
+            var avgOtherVal = otherSlice.reduce(function (acc, pt) { return acc + pt.value; }, 0) / otherSlice.length;
+            kept.push({
+              date: otherSlice[0].date,
+              dateStr: '(Other ' + otherSlice.length + ' Periods)',
+              value: avgOtherVal,
+              rawValue: avgOtherVal,
+              lower: avgOtherVal * 0.9,
+              upper: avgOtherVal * 1.1,
+              isForecast: true,
+              seriesType: 'Other Rollup',
+              drillLinks: [],
+              rendered: formatNumber(avgOtherVal, config.valueFormat || 'compact_currency')
+            });
+          }
+          points = kept;
+        } else {
+          points = points.slice(0, topN);
+        }
+      }
+
       var liftPct = histMean > 0 ? Math.round(((forecastMean - histMean) / histMean) * 100) : 0;
+      var isLowerBetter = config.metricPolarity === 'lower_is_better';
+      var liftIsPositive = isLowerBetter ? (liftPct <= 0) : (liftPct >= 0);
 
       // Benchmark Target calculation
       var targetMode = config.targetMode || 'dataset_mean';
+      var allVals = histValues.concat(forecastValues);
+      var sortedAllVals = allVals.slice().sort(function (a, b) { return a - b; });
       var benchmarkTarget = histMean;
-      if (targetMode === 'dataset_median') benchmarkTarget = histMedian;
-      else if (targetMode === 'fixed_value') benchmarkTarget = Number(config.targetValue) || histMean;
-      else if (targetMode === 'percentile_p90') benchmarkTarget = histMean * 1.25;
+      if (targetMode === 'dataset_median') {
+        benchmarkTarget = histMedian;
+      } else if (targetMode === 'fixed_value') {
+        benchmarkTarget = Number(config.targetValue) || histMean;
+      } else if (targetMode === 'percentile_p75') {
+        benchmarkTarget = sortedAllVals.length > 0 ? sortedAllVals[Math.floor(sortedAllVals.length * 0.75)] : histMean;
+      } else if (targetMode === 'percentile_p90') {
+        benchmarkTarget = sortedAllVals.length > 0 ? sortedAllVals[Math.floor(sortedAllVals.length * 0.90)] : (histMean * 1.25);
+      } else if (targetMode === 'measure_column') {
+        var targetCol = config.targetMeasureOverride ? resolveField(measures, config.targetMeasureOverride, -1) : null;
+        if (!targetCol) {
+          targetCol = measures.find(function (m) {
+            var l = (m.label || m.name || '').toLowerCase();
+            return l.indexOf('target') !== -1 || l.indexOf('quota') !== -1 || l.indexOf('goal') !== -1 || l.indexOf('baseline') !== -1 || l.indexOf('sla') !== -1;
+          });
+        }
+        if (targetCol) {
+          var sumT = 0, cntT = 0;
+          data.forEach(function (r) {
+            if (r[targetCol.name] && r[targetCol.name].value !== null && !isNaN(Number(r[targetCol.name].value))) {
+              sumT += Number(r[targetCol.name].value);
+              cntT++;
+            }
+          });
+          benchmarkTarget = cntT > 0 ? (sumT / cntT) : histMean;
+        }
+      }
+
+      // Anomaly Alert Threshold detection
+      var alertThreshold = Number(config.alertThresholdPct) || 15;
+      var anomalyCount = 0;
+      points.forEach(function (pt) {
+        if (benchmarkTarget > 0) {
+          var devPct = Math.abs((pt.value - benchmarkTarget) / benchmarkTarget) * 100;
+          pt.isAnomaly = devPct >= alertThreshold;
+          if (pt.isAnomaly) anomalyCount++;
+        } else {
+          pt.isAnomaly = false;
+        }
+      });
 
       // --- 5. RENDER EXECUTIVE SCORECARD HUD & WHAT-IF CONTROLS ---
       var hudMode = config.hudMode || 'scorecard';
@@ -753,12 +917,16 @@
         var fontScale = config.fontScale || 'standard';
         var valFontSize = fontScale === 'compact' ? '13px' : (fontScale === 'large' ? '18px' : '15px');
 
+        var chartTitle = config.customTitle ? String(config.customTitle).trim() : '30-Day Forward Outlook';
+        var chartSubtitle = config.customSubtitle ? String(config.customSubtitle).trim() : '';
+
         var hudHtml = '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">';
 
         // Title
         hudHtml += '<div style="display:flex;flex-direction:column;">' +
           '<span style="font-size:10px;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:0.5px;">Predictive Horizon</span>' +
-          '<span style="font-size:' + valFontSize + ';font-weight:700;color:#0f172a;">30-Day Forward Outlook</span>' +
+          '<span style="font-size:' + valFontSize + ';font-weight:700;color:#0f172a;">' + chartTitle + '</span>' +
+          (chartSubtitle ? '<span style="font-size:11px;color:#64748b;margin-top:1px;">' + chartSubtitle + '</span>' : '') +
           '</div>';
 
         // Historical Baseline
@@ -773,11 +941,26 @@
           '<span style="font-size:' + valFontSize + ';font-weight:700;color:' + forecastColor + ';">' + formatNumber(forecastMean, config.valueFormat || 'compact_currency') + '/d</span>' +
           '</div>';
 
-        // Projected Lift / Delta
+        // Projected Lift / Delta with Polarity
         hudHtml += '<div style="display:flex;flex-direction:column;">' +
           '<span style="font-size:10px;text-transform:uppercase;color:#64748b;font-weight:600;">Projected Trajectory Lift</span>' +
-          '<span style="font-size:' + valFontSize + ';font-weight:700;color:' + (liftPct >= 0 ? '#16a34a' : alertColor) + ';">' + (liftPct >= 0 ? '+' : '') + liftPct + '%</span>' +
+          '<span style="font-size:' + valFontSize + ';font-weight:700;color:' + (liftIsPositive ? '#16a34a' : alertColor) + ';">' + (liftPct >= 0 ? '+' : '') + liftPct + '%</span>' +
           '</div>';
+
+        // Benchmark Target Chip if active
+        if (benchmarkTarget > 0 && targetMode !== 'none') {
+          hudHtml += '<div style="display:flex;flex-direction:column;">' +
+            '<span style="font-size:10px;text-transform:uppercase;color:#d97706;font-weight:600;">' + (config.referenceLineLabel || 'Benchmark Target') + '</span>' +
+            '<span style="font-size:' + valFontSize + ';font-weight:700;color:#b45309;">' + formatNumber(benchmarkTarget, config.valueFormat || 'compact_currency') + '</span>' +
+            '</div>';
+        }
+
+        // Anomaly Alert Badge if anomalies detected
+        if (anomalyCount > 0) {
+          hudHtml += '<div style="background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;">' +
+            '<span>⚠️ ' + anomalyCount + ' Anomaly Alert' + (anomalyCount > 1 ? 's' : '') + ' (&gt;' + alertThreshold + '%)</span>' +
+            '</div>';
+        }
 
         // 30-Day Cumulative Forecast
         hudHtml += '<div style="display:flex;flex-direction:column;">' +
