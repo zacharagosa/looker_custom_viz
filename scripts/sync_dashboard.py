@@ -91,7 +91,8 @@ VOL2_VIZ_MAP = {
     "voronoi_treemap": "🧬 Multivariate & Diagnostic Profiling",
     "horizon_small_multiples": "🧬 Multivariate & Diagnostic Profiling",
     "pca_biplot_projection": "🧬 Multivariate & Diagnostic Profiling",
-    "hierarchical_cluster_dendrogram": "🧬 Multivariate & Diagnostic Profiling"
+    "hierarchical_cluster_dendrogram": "🧬 Multivariate & Diagnostic Profiling",
+    "cspm_compliance_benchmark_matrix": "🔐 Cloud Governance & Security Compliance"
 }
 
 
@@ -147,6 +148,9 @@ CATEGORY_TAB_MAP = {
     "B2B SaaS & RevOps": ("vol2", "💼 B2B SaaS & RevOps"),
     "SaaS & RevOps": ("vol2", "💼 B2B SaaS & RevOps"),
     "SaaS": ("vol2", "💼 B2B SaaS & RevOps"),
+    "Cloud Governance & Security Compliance": ("vol2", "🔐 Cloud Governance & Security Compliance"),
+    "Cloud Governance & Compliance": ("vol2", "🔐 Cloud Governance & Security Compliance"),
+    "Governance & Compliance": ("vol2", "🔐 Cloud Governance & Security Compliance"),
 }
 
 VIZ_EMOJI_MAP = {
@@ -178,6 +182,7 @@ VIZ_EMOJI_MAP = {
     "multi_layer_geo_map": "📍",
     "radar_polar_chart": "🕸️",
     "interactive_drilldown_treemap": "🗂️",
+    "cspm_compliance_benchmark_matrix": "🔐",
     "violin_distribution_plot": "🎻",
     "dynamic_pivot_matrix": "🔢",
     "streamgraph_themeriver": "〰️",

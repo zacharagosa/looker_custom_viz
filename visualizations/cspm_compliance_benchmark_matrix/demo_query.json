@@ -1,0 +1,31 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "prisma_cloud_compliance",
+  "fields": [
+    "prisma_cloud_compliance.compliance_framework",
+    "prisma_cloud_compliance.resource_type",
+    "prisma_cloud_compliance.severity",
+    "prisma_cloud_compliance.count",
+    "prisma_cloud_compliance.critical_high_open_count",
+    "prisma_cloud_compliance.open_findings_count",
+    "prisma_cloud_compliance.posture_compliance_score",
+    "prisma_cloud_compliance.avg_days_to_remediate"
+  ],
+  "sorts": [
+    "prisma_cloud_compliance.compliance_framework asc",
+    "prisma_cloud_compliance.severity asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "cspm_compliance_benchmark_matrix",
+    "layoutMode": "framework_matrix",
+    "colorPalette": "google_enterprise",
+    "hudMode": "scorecard",
+    "sortBy": "compliance_asc",
+    "showSearch": true,
+    "valueFormat": "percentage",
+    "targetMode": "fixed",
+    "fixedTargetValue": 0.85,
+    "referenceLineLabel": "CISO Target Compliance SLA (85%)"
+  }
+}

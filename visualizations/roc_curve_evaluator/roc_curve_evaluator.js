@@ -338,6 +338,15 @@
         section: "Display",
         order: 11
       },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target / SLA Benchmark Measure (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 12
+      },
       optimalMarker: {
         type: 'string',
         label: 'Optimal Operating Point Recommendation',
@@ -349,82 +358,183 @@
         ],
         default: 'youden_j',
         section: 'Display',
-        order: 12
+        order: 13
       },
       initialThreshold: {
         type: 'number',
         label: 'Initial Decision Threshold (0.00 to 1.00)',
         default: 0.50,
         section: 'Display',
-        order: 13
-      },
-      showConfusionMatrix: {
-        type: 'boolean',
-        label: 'Show Live 2x2 Confusion Matrix Card',
-        default: true,
-        section: 'Display',
         order: 14
       },
-      showAUCScore: {
-        type: 'boolean',
-        label: 'Show AUROC & AUPRC in Scorecard HUD',
-        default: true,
+      targetMode: {
+        type: 'string',
+        label: 'Target Benchmark Mode',
+        display: 'select',
+        values: [
+          { 'None (Disabled)': 'none' },
+          { 'Dataset Mean': 'dataset_mean' },
+          { 'Dataset Median': 'dataset_median' },
+          { 'Top Percentile P75 Target': 'percentile_p75' },
+          { 'Top Percentile P90 Target': 'percentile_p90' },
+          { 'Fixed Target Benchmark': 'fixed' }
+        ],
+        default: 'none',
         section: 'Display',
         order: 15
       },
-      showCostModel: {
-        type: 'boolean',
-        label: 'Enable Financial Impact / Error Cost Calculator',
-        default: true,
+      fixedTargetValue: {
+        type: 'number',
+        label: 'Fixed Target Benchmark (e.g. 0.85)',
+        default: 0.85,
         section: 'Display',
         order: 16
       },
-      costPerFP: {
-        type: 'number',
-        label: 'Cost per False Positive / False Alarm ($)',
-        default: 15,
+      referenceLineLabel: {
+        type: 'string',
+        label: 'Reference Line Label',
+        default: 'Target Performance Benchmark',
         section: 'Display',
         order: 17
       },
-      costPerFN: {
+      anomalyThresholdPct: {
         type: 'number',
-        label: 'Cost per False Negative / Missed Incident ($)',
-        default: 350,
+        label: 'Underperformance Disparity Alert Threshold (%)',
+        default: 15,
         section: 'Display',
         order: 18
+      },
+      sortBy: {
+        type: 'string',
+        label: 'Operating Points Sort Order',
+        display: 'select',
+        values: [
+          { 'Threshold Ascending (0.0 → 1.0)': 'threshold_asc' },
+          { 'Threshold Descending (1.0 → 0.0)': 'threshold_desc' },
+          { 'F1-Score Descending': 'f1_desc' },
+          { 'Precision Descending': 'precision_desc' },
+          { 'Recall / TPR Descending': 'recall_desc' },
+          { 'Natural / Query Order': 'natural' }
+        ],
+        default: 'threshold_asc',
+        section: 'Display',
+        order: 19
+      },
+      topNLimit: {
+        type: 'number',
+        label: 'Top-N Operating Points Limit (0 = All)',
+        default: 0,
+        section: 'Display',
+        order: 20
+      },
+      enableOtherRollup: {
+        type: 'boolean',
+        label: 'Highlight / Rollup Non-Top Points',
+        default: false,
+        section: 'Display',
+        order: 21
+      },
+      suppressZeroNull: {
+        type: 'boolean',
+        label: 'Suppress Zero / Null Points',
+        default: false,
+        section: 'Display',
+        order: 22
       },
       hudMode: {
         type: 'string',
         label: 'Executive Model Scorecard HUD',
         display: 'select',
         values: [
-          { 'Full Scorecard HUD (Top Band)': 'scorecard' },
+          { 'Full Scorecard HUD': 'scorecard' },
           { 'Compact Metric Strip': 'compact_strip' },
           { 'Hidden': 'hidden' }
         ],
         default: 'scorecard',
         section: 'Display',
-        order: 19
+        order: 23
+      },
+      dataLabels: {
+        type: 'string',
+        label: 'Operating Point Data Labels',
+        display: 'select',
+        values: [
+          { 'Optimal & Peak Points Only': 'optimal_only' },
+          { 'All Operating Points': 'all' },
+          { 'Hidden': 'hidden' }
+        ],
+        default: 'optimal_only',
+        section: 'Display',
+        order: 24
       },
       customTitleOverride: {
         type: 'string',
         label: 'Custom Scorecard Title Override',
         default: '',
         section: 'Display',
-        order: 20
+        order: 25
+      },
+      customSubtitleOverride: {
+        type: 'string',
+        label: 'Custom Subtitle Override',
+        default: '',
+        section: 'Display',
+        order: 26
+      },
+      showSearch: {
+        type: 'boolean',
+        label: 'Show Interactive Threshold Search Bar',
+        default: true,
+        section: 'Display',
+        order: 27
+      },
+      showConfusionMatrix: {
+        type: 'boolean',
+        label: 'Show Live 2x2 Confusion Matrix Card',
+        default: true,
+        section: 'Display',
+        order: 28
+      },
+      showAUCScore: {
+        type: 'boolean',
+        label: 'Show AUROC & AUPRC in Scorecard HUD',
+        default: true,
+        section: 'Display',
+        order: 29
+      },
+      showCostModel: {
+        type: 'boolean',
+        label: 'Enable Financial Impact / Error Cost Calculator',
+        default: true,
+        section: 'Display',
+        order: 30
+      },
+      costPerFP: {
+        type: 'number',
+        label: 'Cost per False Positive / Alarm ($)',
+        default: 15,
+        section: 'Display',
+        order: 31
+      },
+      costPerFN: {
+        type: 'number',
+        label: 'Cost per False Negative / Miss ($)',
+        default: 350,
+        section: 'Display',
+        order: 32
       },
       showGridLines: {
         type: 'boolean',
         label: 'Show Axis Grid Lines',
         default: true,
         section: 'Display',
-        order: 21
+        order: 33
       },
 
       // ==========================================
       // SECTION 2: STYLE (Strictly 2 tabs rule)
       // ==========================================
-      colorTheme: {
+      colorPalette: {
         type: 'string',
         label: 'Brand Palette Preset',
         display: 'select',
@@ -441,13 +551,46 @@
         section: 'Style',
         order: 1
       },
+      colorTheme: {
+        type: 'string',
+        label: 'Brand Palette (Legacy)',
+        display: 'select',
+        values: [
+          { 'Google Enterprise': 'google_enterprise' },
+          { 'Modern Slate': 'modern_slate' },
+          { 'Cyberpunk Dark': 'cyberpunk_dark' },
+          { 'Emerald FinOps': 'emerald_finops' },
+          { 'Sunset Media': 'sunset_media' },
+          { 'Wellverse Healthcare': 'wellverse_healthcare' },
+          { 'Custom Hex Override': 'custom' }
+        ],
+        default: 'google_enterprise',
+        section: 'Style',
+        order: 2
+      },
       customPrimaryHex: {
         type: 'string',
         label: 'Custom ROC Curve Color (Hex)',
         display: 'color',
         default: '',
         section: 'Style',
-        order: 2
+        order: 3
+      },
+      customPositiveHex: {
+        type: 'string',
+        label: 'Custom Positive / TP Hex Override',
+        display: 'color',
+        default: '',
+        section: 'Style',
+        order: 4
+      },
+      customNegativeHex: {
+        type: 'string',
+        label: 'Custom Negative / FP Hex Override',
+        display: 'color',
+        default: '',
+        section: 'Style',
+        order: 5
       },
       customAccentHex: {
         type: 'string',
@@ -455,7 +598,19 @@
         display: 'color',
         default: '',
         section: 'Style',
-        order: 3
+        order: 6
+      },
+      metricPolarity: {
+        type: 'string',
+        label: 'Metric Polarity (Optimization Direction)',
+        display: 'select',
+        values: [
+          { 'Higher is Better (Standard Performance)': 'higher_is_better' },
+          { 'Lower is Better (Latency / Churn / Cost Focus)': 'lower_is_better' }
+        ],
+        default: 'higher_is_better',
+        section: 'Style',
+        order: 7
       },
       fontScale: {
         type: 'string',
@@ -468,41 +623,44 @@
         ],
         default: 'standard',
         section: 'Style',
-        order: 4
+        order: 8
       },
       valueFormat: {
         type: 'string',
         label: 'Number & Probability Formatting',
         display: 'select',
         values: [
+          { 'Auto Formatting': 'auto' },
           { 'Percentage (89.4%)': 'percentage' },
-          { 'Decimal 3dp (0.894)': 'decimal_2' },
-          { 'Compact Count (12.4K)': 'compact_number' }
+          { 'Compact Number (12.4K)': 'compact_number' },
+          { 'Compact Currency ($1.2M)': 'compact_currency' },
+          { 'Decimal 2dp (0.89)': 'decimal_2' },
+          { 'Raw Unformatted': 'raw' }
         ],
         default: 'percentage',
         section: 'Style',
-        order: 5
+        order: 9
       },
       curveStrokeWidth: {
         type: 'number',
         label: 'Curve Stroke Width (px)',
         default: 3,
         section: 'Style',
-        order: 6
+        order: 10
       },
       enableAreaFill: {
         type: 'boolean',
         label: 'Enable Gradient Fill Under Curves',
         default: true,
         section: 'Style',
-        order: 7
+        order: 11
       },
       enableAnimation: {
         type: 'boolean',
         label: 'Enable Smooth Entry Transitions',
         default: true,
         section: 'Style',
-        order: 8
+        order: 12
       }
     },
 
@@ -524,7 +682,8 @@
         tpFieldOverride: { role: "any", defaultIdx: 6 },
         fpFieldOverride: { role: "any", defaultIdx: 7 },
         tnFieldOverride: { role: "any", defaultIdx: 8 },
-        fnFieldOverride: { role: "any", defaultIdx: 9 }
+        fnFieldOverride: { role: "any", defaultIdx: 9 },
+        targetMeasureOverride: { role: "any", defaultIdx: -1 }
       };
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
       var f = queryResponse.fields;
@@ -737,12 +896,20 @@
       var fFN = resolveField(allFields, config.fnFieldOverride, 9);
 
       // --- 2. THEMES & COLOR RESOLUTION ---
-      var themeKey = config.colorTheme || 'google_enterprise';
+      var themeKey = config.colorPalette || config.colorTheme || 'google_enterprise';
       var theme = THEMES[themeKey] ? Object.assign({}, THEMES[themeKey]) : Object.assign({}, THEMES.google_enterprise);
 
-      if (themeKey === 'custom' || config.customPrimaryHex || config.customAccentHex) {
+      if (themeKey === 'custom' || config.customPrimaryHex || config.customAccentHex || config.customPositiveHex || config.customNegativeHex) {
         if (config.customPrimaryHex) theme.curvePrimary = config.customPrimaryHex;
         if (config.customAccentHex) theme.curveSecondary = config.customAccentHex;
+        if (config.customPositiveHex) {
+          theme.tpColor = config.customPositiveHex;
+          theme.f1Color = config.customPositiveHex;
+        }
+        if (config.customNegativeHex) {
+          theme.fpColor = config.customNegativeHex;
+          theme.curveSecondary = config.customNegativeHex;
+        }
       }
 
       element.style.backgroundColor = theme.bg;
@@ -796,8 +963,53 @@
 
       if (rawPoints.length === 0) return;
 
-      // Sort points by threshold ascending
-      rawPoints.sort(function (a, b) { return a.threshold - b.threshold; });
+      // Benchmark Target Calculation
+      var targetMode = config.targetMode || 'none';
+      var targetVal = null;
+      if (targetMode === 'fixed') {
+        targetVal = Number(config.fixedTargetValue) || 0.85;
+      } else if (targetMode === 'dataset_mean' && rawPoints.length > 0) {
+        targetVal = rawPoints.reduce(function (acc, p) { return acc + p.recall; }, 0) / rawPoints.length;
+      } else if (targetMode === 'dataset_median' && rawPoints.length > 0) {
+        var sortedRecs = rawPoints.map(function (p) { return p.recall; }).sort(function (a, b) { return a - b; });
+        targetVal = sortedRecs[Math.floor(sortedRecs.length / 2)];
+      } else if (targetMode === 'percentile_p75' && rawPoints.length > 0) {
+        var sortedP75 = rawPoints.map(function (p) { return p.recall; }).sort(function (a, b) { return a - b; });
+        targetVal = sortedP75[Math.floor(sortedP75.length * 0.75)];
+      } else if (targetMode === 'percentile_p90' && rawPoints.length > 0) {
+        var sortedP90 = rawPoints.map(function (p) { return p.recall; }).sort(function (a, b) { return a - b; });
+        targetVal = sortedP90[Math.floor(sortedP90.length * 0.90)];
+      }
+
+      // Suppress zero / null handling
+      if (config.suppressZeroNull) {
+        rawPoints = rawPoints.filter(function (p) {
+          return p.threshold !== null && !isNaN(p.threshold) && (p.recall > 0 || p.precision > 0 || p.fpr > 0);
+        });
+      }
+
+      // Sort points by requested order
+      var sortBy = config.sortBy || 'threshold_asc';
+      if (sortBy === 'threshold_desc') {
+        rawPoints.sort(function (a, b) { return b.threshold - a.threshold; });
+      } else if (sortBy === 'f1_desc') {
+        rawPoints.sort(function (a, b) { return b.f1 - a.f1; });
+      } else if (sortBy === 'precision_desc') {
+        rawPoints.sort(function (a, b) { return b.precision - a.precision; });
+      } else if (sortBy === 'recall_desc') {
+        rawPoints.sort(function (a, b) { return b.recall - a.recall; });
+      } else if (sortBy === 'natural') {
+        rawPoints.sort(function (a, b) { return a.idx - b.idx; });
+      } else {
+        // default threshold_asc
+        rawPoints.sort(function (a, b) { return a.threshold - b.threshold; });
+      }
+
+      // Top-N Filtering
+      var topN = Number(config.topNLimit) || 0;
+      if (topN > 0 && rawPoints.length > topN) {
+        rawPoints = rawPoints.slice(0, topN);
+      }
 
       // Compute Global AUROC & AUPRC
       var auroc = computeAUC(rawPoints, 'fpr', 'recall');
@@ -860,7 +1072,14 @@
         subTitle.style.fontSize = fSizes.subtitle;
         subTitle.style.color = theme.subtext;
         subTitle.style.marginTop = '2px';
-        subTitle.textContent = 'AUROC: ' + auroc.toFixed(3) + ' (' + aurocRating + ') • AUPRC: ' + auprc.toFixed(3) + ' • Operating Threshold T: ' + activePoint.threshold.toFixed(2);
+        subTitle.textContent = config.customSubtitleOverride || ('AUROC: ' + auroc.toFixed(3) + ' (' + aurocRating + ') • AUPRC: ' + auprc.toFixed(3) + ' • Operating Threshold T: ' + activePoint.threshold.toFixed(2));
+
+        if (targetVal !== null && activePoint.recall < targetVal * (1 - (Number(config.anomalyThresholdPct) || 15) / 100)) {
+          var alertBadge = document.createElement('span');
+          alertBadge.style.cssText = 'background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;margin-left:8px;';
+          alertBadge.textContent = '⚠️ Gap (' + ((targetVal - activePoint.recall) * 100).toFixed(1) + '% below goal)';
+          subTitle.appendChild(alertBadge);
+        }
 
         titleBox.appendChild(mainTitle);
         titleBox.appendChild(subTitle);
@@ -909,6 +1128,9 @@
         if (config.showAUCScore !== false) {
           statCards.appendChild(makeHudCard('AUROC', auroc.toFixed(3), theme.curvePrimary, aurocRating));
           statCards.appendChild(makeHudCard('AUPRC', auprc.toFixed(3), theme.curveSecondary, 'Avg Precision'));
+        }
+        if (targetVal !== null) {
+          statCards.appendChild(makeHudCard(config.referenceLineLabel || 'Benchmark', (targetVal * 100).toFixed(1) + '%', theme.accColor || '#f59e0b', 'Goal Target'));
         }
         statCards.appendChild(makeHudCard('F1 Score', (activePoint.f1 * 100).toFixed(1) + '%', theme.f1Color, 'Balance'));
         statCards.appendChild(makeHudCard('Precision (PPV)', (activePoint.precision * 100).toFixed(1) + '%', theme.curveSecondary, 'True Alarm Rate'));
@@ -1003,6 +1225,36 @@
 
       controlBar.appendChild(sliderBox);
       controlBar.appendChild(presetsBox);
+
+      if (config.showSearch !== false) {
+        var searchBox = document.createElement('div');
+        searchBox.style.display = 'flex';
+        searchBox.style.alignItems = 'center';
+        searchBox.style.gap = '6px';
+        searchBox.style.marginLeft = 'auto';
+
+        var searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.placeholder = '🔍 Threshold (e.g. 0.65)...';
+        searchInput.style.fontSize = '11px';
+        searchInput.style.padding = '4px 8px';
+        searchInput.style.borderRadius = '5px';
+        searchInput.style.border = '1px solid ' + (themeKey === 'cyberpunk_dark' ? '#475569' : '#cbd5e1');
+        searchInput.style.background = themeKey === 'cyberpunk_dark' ? '#1e293b' : '#ffffff';
+        searchInput.style.color = theme.text;
+        searchInput.style.width = '160px';
+        searchInput.addEventListener('input', function (e) {
+          var val = parseFloat(e.target.value);
+          if (!isNaN(val) && val >= 0 && val <= 1) {
+            self._activeThreshold = val;
+            slider.value = String(val);
+            updateThresholdState(val);
+          }
+        });
+        searchBox.appendChild(searchInput);
+        controlBar.appendChild(searchBox);
+      }
+
       container.appendChild(controlBar);
 
       // --- 6. SPLIT LAYOUT: CURVE CANVAS (LEFT) & CONFUSION MATRIX (RIGHT) ---
@@ -1135,6 +1387,24 @@
           .attr('x1', 0).attr('y1', height).attr('x2', width).attr('y2', 0)
           .attr('stroke', theme.baseline).attr('stroke-width', 1.5).attr('stroke-dasharray', '4 4');
 
+        // Benchmark Target reference line
+        if (targetVal !== null) {
+          g.append('line')
+            .attr('x1', 0).attr('x2', width)
+            .attr('y1', y(targetVal)).attr('y2', y(targetVal))
+            .attr('stroke', theme.accColor || '#f59e0b')
+            .attr('stroke-width', 1.5)
+            .attr('stroke-dasharray', '4 4');
+
+          g.append('text')
+            .attr('x', width - 8).attr('y', y(targetVal) - 6)
+            .attr('text-anchor', 'end')
+            .attr('fill', theme.accColor || '#f59e0b')
+            .attr('font-size', '10px')
+            .attr('font-weight', '600')
+            .text((config.referenceLineLabel || 'Benchmark') + ': ' + (targetVal * 100).toFixed(1) + '%');
+        }
+
         // Curve Area
         if (config.enableAreaFill !== false) {
           var area = d3.area()
@@ -1247,6 +1517,24 @@
         g.append('line')
           .attr('x1', 0).attr('y1', y(basePrev)).attr('x2', width).attr('y2', y(basePrev))
           .attr('stroke', theme.baseline).attr('stroke-width', 1).attr('stroke-dasharray', '3 3');
+
+        // Benchmark Target reference line
+        if (targetVal !== null) {
+          g.append('line')
+            .attr('x1', 0).attr('x2', width)
+            .attr('y1', y(targetVal)).attr('y2', y(targetVal))
+            .attr('stroke', theme.accColor || '#f59e0b')
+            .attr('stroke-width', 1.5)
+            .attr('stroke-dasharray', '4 4');
+
+          g.append('text')
+            .attr('x', width - 8).attr('y', y(targetVal) - 6)
+            .attr('text-anchor', 'end')
+            .attr('fill', theme.accColor || '#f59e0b')
+            .attr('font-size', '10px')
+            .attr('font-weight', '600')
+            .text((config.referenceLineLabel || 'Benchmark') + ': ' + (targetVal * 100).toFixed(1) + '%');
+        }
 
         // Curve Area
         if (config.enableAreaFill !== false) {

@@ -56,10 +56,11 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (45 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (46 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**Cloud Security Posture & Compliance Benchmark Matrix**](visualizations/cspm_compliance_benchmark_matrix/)<br>`cspm_compliance_benchmark_matrix` | Cloud Governance & Security Compliance | 1 Framework dim, 1 Resource Asset dim, optional Severity dim + 1 Compliance Posture Score measure, 1 Open Findings Count measure, 1 Critical/High Count measure, optional Remediation SLA Days measure | [📸 View](visualizations/cspm_compliance_benchmark_matrix/screenshot.png) |
 | [**SaaS Deal Velocity & Stage Slippage Matrix**](visualizations/saas_deal_velocity_slippage_matrix/)<br>`saas_deal_velocity_slippage_matrix` | B2B SaaS & RevOps | 1 Sales Stage dim, optional 1 Forecast Category dim + 1 Active ARR measure, 1 Avg Days in Stage measure, optional 1 Slips Count measure, 1 Deals at Risk measure, 1 Benchmark Days measure | [📸 View](visualizations/saas_deal_velocity_slippage_matrix/screenshot.png) |
 | [**SaaS Sales Capacity & Quota Attainment Matrix**](visualizations/saas_sales_capacity_attainment_matrix/)<br>`saas_sales_capacity_attainment_matrix` | B2B SaaS & RevOps | 1 Sales Rep dim, optional Segment, Region, Ramp Status, Tenure dims + ARR Quota measure, Closed Won ARR measure, optional Commit ARR, Attainment %, Coverage Ratio | [📸 View](visualizations/saas_sales_capacity_attainment_matrix/screenshot.png) |
 | [**SaaS Sales Pipeline Inspection & Deal Slippage Matrix**](visualizations/saas_pipeline_deal_inspection_matrix/)<br>`saas_pipeline_deal_inspection_matrix` | B2B SaaS & RevOps | 1 Opportunity dim, optional Sales Stage, Forecast Category, Risk Band dims + 1 Deal ARR ($) measure, optional Risk Score (0-100), Days in Stage, Close-Date Slips | [📸 View](visualizations/saas_pipeline_deal_inspection_matrix/screenshot.png) |

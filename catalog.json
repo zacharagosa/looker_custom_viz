@@ -1143,7 +1143,7 @@
     "deployed": true,
     "instance_wide": true,
     "options_upgraded": true,
-    "last_upgraded": "2026-10-03",
+    "last_upgraded": "2026-11-14",
     "screenshot": "visualizations/roc_curve_evaluator/screenshot.png",
     "looker_demo_url": "/explore/retail_banking/roc_curve?fields=roc_curve.threshold,roc_curve.false_positive_rate,roc_curve.recall,roc_curve.precision,roc_curve.threshold_f1,roc_curve.threshold_accuracy,roc_curve.true_positives,roc_curve.false_positives,roc_curve.true_negatives,roc_curve.false_negatives&sorts=roc_curve.threshold+asc&limit=100&vis=%7B%22type%22%3A%22roc_curve_evaluator%22%2C%22curveType%22%3A%22dual_view%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConfusionMatrix%22%3Atrue%2C%22optimalMarker%22%3A%22youden_j%22%2C%22initialThreshold%22%3A0.5%2C%22enableAreaFill%22%3Atrue%2C%22showGridLines%22%3Atrue%2C%22showAUCScore%22%3Atrue%2C%22showCostModel%22%3Atrue%2C%22costPerFP%22%3A15%2C%22costPerFN%22%3A350%7D&origin=share-expanded&toggle=vis"
   },
@@ -2537,5 +2537,40 @@
     "last_upgraded": "2026-11-13",
     "screenshot": "visualizations/saas_deal_velocity_slippage_matrix/screenshot.png",
     "looker_demo_url": "/explore/saas_qbr/qbr_pipeline_inspection?fields=qbr_deal_quality.stage_name,qbr_deal_quality.forecast_category,qbr_deal_quality.open_deal_count,qbr_deal_quality.open_arr,qbr_deal_quality.average_days_in_stage,qbr_deal_quality.average_slip_count,qbr_deal_quality.average_risk_score,qbr_deal_quality.high_risk_arr&f[qbr_deal_quality.is_closed]=No&sorts=qbr_deal_quality.open_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_deal_velocity_slippage_matrix%22%2C%22layoutMode%22%3A%22velocity_stage_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22targetValue%22%3A60%2C%22referenceLineLabel%22%3A%22Velocity+SLA+Threshold+%2860d%29%22%7D&origin=share-expanded&toggle=vis"
+  },
+  {
+    "id": "cspm_compliance_benchmark_matrix",
+    "name": "Cloud Security Posture & Compliance Benchmark Matrix",
+    "date_added": "2026-11-14",
+    "library": "D3.js v7",
+    "category": "Cloud Governance & Security Compliance",
+    "description": "Multi-cloud CSPM governance matrix auditing CIS, NIST, ISO 27001, SOC 2, and PCI-DSS compliance across GKE, Compute, Storage, IAM, and Databases with remediation SLA aging waterlines and critical vulnerability alerts.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Framework Dimension, 1 Resource Asset Dimension, optional Severity",
+      "measures": "1 Compliance Posture Score, 1 Open Findings Count, 1 Critical/High Count, optional Remediation SLA Days"
+    },
+    "suggested_dataset": {
+      "model": "palo_alto_networks_security",
+      "explore": "prisma_cloud_compliance",
+      "fields": [
+        "prisma_cloud_compliance.compliance_framework",
+        "prisma_cloud_compliance.resource_type",
+        "prisma_cloud_compliance.severity",
+        "prisma_cloud_compliance.count",
+        "prisma_cloud_compliance.critical_high_open_count",
+        "prisma_cloud_compliance.open_findings_count",
+        "prisma_cloud_compliance.posture_compliance_score",
+        "prisma_cloud_compliance.avg_days_to_remediate"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/cspm_compliance_benchmark_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-14",
+    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.resource_type,prisma_cloud_compliance.severity,prisma_cloud_compliance.count,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.posture_compliance_score,prisma_cloud_compliance.avg_days_to_remediate&sorts=prisma_cloud_compliance.compliance_framework+asc,prisma_cloud_compliance.severity+asc&limit=500&vis=%7B%22type%22%3A%22cspm_compliance_benchmark_matrix%22%2C%22layoutMode%22%3A%22framework_matrix%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22compliance_asc%22%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22percentage%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A0.85%2C%22referenceLineLabel%22%3A%22CISO+Target+Compliance+SLA+%2885%25%29%22%7D&origin=share-expanded&toggle=vis"
   }
 ]

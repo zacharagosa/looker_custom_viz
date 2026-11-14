@@ -50,33 +50,39 @@ Evaluates binary classification models output by **BigQuery ML** (`ML.ROC_CURVE`
 
 ### Section: `Display`
 - `curveType`: Evaluation View Mode (`dual_view`, `roc`, `pr`, `threshold_metrics`)
-- `thresholdFieldOverride`: Decision Threshold Field
-- `fprFieldOverride`: False Positive Rate Field
-- `recallFieldOverride`: Recall / TPR Field
-- `precisionFieldOverride`: Precision Field
-- `f1FieldOverride`: F1 Score Field
-- `accuracyFieldOverride`: Accuracy Field
-- `tpFieldOverride`: True Positives Count Field
-- `fpFieldOverride`: False Positives Count Field
-- `tnFieldOverride`: True Negatives Count Field
-- `fnFieldOverride`: False Negatives Count Field
+- `thresholdFieldOverride` - `fnFieldOverride`: Dynamic field-role dropdowns populated from queryResponse (`display: 'select'`)
+- `targetMeasureOverride`: Optional benchmark target measure column
 - `optimalMarker`: Optimal Operating Point Recommendation (`youden_j`, `max_f1`, `none`)
 - `initialThreshold`: Initial Decision Threshold (default: `0.50`)
+- `targetMode`: Target Benchmark Mode (`none`, `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`, `fixed`)
+- `fixedTargetValue`: Fixed Benchmark Target AUROC / Recall (default: `0.85`)
+- `referenceLineLabel`: Reference Line / Goal Label (default: `Target Performance Benchmark`)
+- `anomalyThresholdPct`: Underperformance Disparity Alert Threshold (%) (default: `15%`)
+- `sortBy`: Operating Point Sort Order (`threshold_asc`, `threshold_desc`, `f1_desc`, `precision_desc`, `recall_desc`, `natural`)
+- `topNLimit`: Top-N Operating Points Limit (`0 = All`, `20`, `50`, `100`)
+- `enableOtherRollup`: Highlight / Rollup Non-Top Points
+- `suppressZeroNull`: Suppress Zero / Null Points Toggle
+- `hudMode`: Executive Model Scorecard HUD (`scorecard`, `compact_strip`, `hidden`)
+- `dataLabels`: Operating Point Labels (`optimal_only`, `all`, `hidden`)
+- `customTitleOverride`: Custom Scorecard Title Override
+- `customSubtitleOverride`: Custom Subtitle Override
+- `showSearch`: Show Interactive Threshold Search Bar (default: `true`)
 - `showConfusionMatrix`: Show Live 2x2 Confusion Matrix Card (default: `true`)
 - `showAUCScore`: Show AUROC & AUPRC in Scorecard HUD (default: `true`)
 - `showCostModel`: Enable Financial Impact / Error Cost Calculator (default: `true`)
 - `costPerFP`: Cost per False Positive ($) (default: `15`)
 - `costPerFN`: Cost per False Negative / Missed Incident ($) (default: `350`)
-- `hudMode`: Executive Model Scorecard HUD (`scorecard`, `compact_strip`, `hidden`)
-- `customTitleOverride`: Custom Scorecard Title Override
 - `showGridLines`: Show Axis Grid Lines (default: `true`)
 
 ### Section: `Style`
-- `colorTheme`: Brand Palette Preset (`google_enterprise`, `modern_slate`, `cyberpunk_dark`, `emerald_finops`, `sunset_media`, `wellverse_healthcare`, `custom`)
-- `customPrimaryHex`: Custom ROC Curve Color (Hex)
+- `colorPalette`: Brand Palette Preset (`google_enterprise`, `modern_slate`, `cyberpunk_dark`, `emerald_finops`, `sunset_media`, `wellverse_healthcare`, `custom`)
+- `customPrimaryHex`: Custom Primary Curve Hex Override
+- `customPositiveHex`: Custom Positive / True Positive Hex Override
+- `customNegativeHex`: Custom Negative / False Positive Hex Override
 - `customAccentHex`: Custom PR Curve Color (Hex)
+- `metricPolarity`: Metric Polarity Toggle (`higher_is_better` vs `lower_is_better`)
 - `fontScale`: Typography Font Scale (`compact`, `standard`, `large`)
-- `valueFormat`: Number & Probability Formatting (`percentage`, `decimal_2`, `compact_number`)
+- `valueFormat`: Value Format (`auto`, `compact_number`, `compact_currency`, `percentage`, `decimal_2`, `raw`)
 - `curveStrokeWidth`: Curve Stroke Width (px) (default: `3`)
 - `enableAreaFill`: Enable Gradient Fill Under Curves (default: `true`)
 - `enableAnimation`: Enable Smooth Entry Transitions (default: `true`)
