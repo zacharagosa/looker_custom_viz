@@ -210,6 +210,15 @@
         section: "Display",
         order: 5
       },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Benchmark / Target Measure Override",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 6
+      },
       targetMode: {
         type: 'string',
         label: 'Market Benchmark Mode',
@@ -218,33 +227,34 @@
           { 'Dataset Mean (Market Average Share)': 'dataset_mean' },
           { 'Dataset Median (Market Median)': 'dataset_median' },
           { 'Fixed Target %': 'fixed' },
+          { 'Measure Column (Target / Benchmark Measure)': 'measure_column' },
           { 'Top Percentile P75 Target': 'percentile_p75' },
           { 'Top Percentile P90 Target': 'percentile_p90' }
         ],
         default: 'dataset_mean',
         section: 'Display',
-        order: 6
+        order: 7
       },
       fixedTargetValue: {
         type: 'number',
         label: 'Fixed Benchmark % (when Fixed Mode, 0 = Auto)',
         default: 0,
         section: 'Display',
-        order: 7
+        order: 8
       },
       referenceLineLabel: {
         type: 'string',
         label: 'Reference Benchmark Label',
         default: 'Market Benchmark',
         section: 'Display',
-        order: 8
+        order: 9
       },
       anomalyThresholdPct: {
         type: 'number',
         label: 'Dominance Anomaly Alert Threshold (%)',
         default: 35,
         section: 'Display',
-        order: 9
+        order: 10
       },
       sortBy: {
         type: 'string',
@@ -258,28 +268,28 @@
         ],
         default: 'metric_desc',
         section: 'Display',
-        order: 10
+        order: 11
       },
       topNLimit: {
         type: 'number',
         label: 'Top-N Column Categories (0 = All, Max 15)',
         default: 0,
         section: 'Display',
-        order: 11
+        order: 12
       },
       enableOtherRollup: {
         type: 'boolean',
         label: 'Group Remaining into "Other" Column',
         default: true,
         section: 'Display',
-        order: 12
+        order: 13
       },
       suppressZeroNull: {
         type: 'boolean',
         label: 'Suppress Zero / Null Data Cells',
         default: true,
         section: 'Display',
-        order: 13
+        order: 14
       },
       hudMode: {
         type: 'string',
@@ -292,7 +302,7 @@
         ],
         default: 'scorecard',
         section: 'Display',
-        order: 14
+        order: 15
       },
       showValueLabels: {
         type: 'string',
@@ -305,28 +315,35 @@
         ],
         default: 'all',
         section: 'Display',
-        order: 15
+        order: 16
       },
       customTitleOverride: {
         type: 'string',
         label: 'Custom Scorecard Title Override',
         default: '',
         section: 'Display',
-        order: 16
+        order: 17
+      },
+      customSubtitleOverride: {
+        type: 'string',
+        label: 'Custom Scorecard Subtitle Override',
+        default: '',
+        section: 'Display',
+        order: 18
       },
       showLegend: {
         type: 'boolean',
         label: 'Show Sub-Segment Color Legend',
         default: true,
         section: 'Display',
-        order: 17
+        order: 19
       },
       showSearch: {
         type: 'boolean',
         label: 'Show Interactive Search / Filter Bar',
         default: true,
         section: 'Display',
-        order: 18
+        order: 20
       },
 
       // ==========================================
@@ -428,7 +445,8 @@
         dimFieldOverride: { role: "dimension", defaultIdx: 0 },
         subDimOverride: { role: "dimension", defaultIdx: 1 },
         measureFieldOverride: { role: "measure", defaultIdx: 0 },
-        secondaryMeasureOverride: { role: "measure", defaultIdx: 1 }
+        secondaryMeasureOverride: { role: "measure", defaultIdx: 1 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
       var f = queryResponse.fields;
@@ -633,6 +651,7 @@
       var subDim = (dimensions.length > 1) ? resolveField(dimensions, config.subDimOverride, 1) : null;
       var primaryMeas = resolveField(measures, config.measureFieldOverride, 0);
       var secMeas = (measures.length > 1) ? resolveField(measures, config.secondaryMeasureOverride, 1) : null;
+      var targetMeas = config.targetMeasureOverride ? resolveField(measures, config.targetMeasureOverride, -1) : null;
 
       // --- 2. PALETTE & BRAND COLOR RESOLUTION ---
       var paletteKey = config.colorPalette || 'google_enterprise';
@@ -798,7 +817,32 @@
         col.segmentList = segArray;
       });
 
-      // --- 4. EXECUTIVE SCORECARD HUD ---
+      // --- 4. EXECUTIVE SCORECARD HUD & BENCHMARK CALCULATION ---
+      var targetMode = config.targetMode || 'dataset_mean';
+      var targetBenchmarkPct = null;
+      if (targetMode === 'fixed') {
+        targetBenchmarkPct = (Number(config.fixedTargetValue) || 20) / 100;
+      } else if (targetMode === 'dataset_mean' && colList.length > 0) {
+        targetBenchmarkPct = 1 / colList.length;
+      } else if (targetMode === 'dataset_median' && colList.length > 0) {
+        var sortedShares = colList.map(function (c) { return c.share; }).sort(function (a, b) { return a - b; });
+        targetBenchmarkPct = sortedShares[Math.floor(sortedShares.length / 2)] || 0.2;
+      } else if (targetMode === 'percentile_p75' && colList.length > 0) {
+        var sortedShares = colList.map(function (c) { return c.share; }).sort(function (a, b) { return a - b; });
+        targetBenchmarkPct = sortedShares[Math.floor(sortedShares.length * 0.75)] || 0.25;
+      } else if (targetMode === 'percentile_p90' && colList.length > 0) {
+        var sortedShares = colList.map(function (c) { return c.share; }).sort(function (a, b) { return a - b; });
+        targetBenchmarkPct = sortedShares[Math.floor(sortedShares.length * 0.90)] || 0.35;
+      } else if (targetMode === 'measure_column' && targetMeas) {
+        var totTarget = 0;
+        data.forEach(function (row) {
+          var tv = Number(row[targetMeas.name] && row[targetMeas.name].value) || 0;
+          totTarget += tv;
+        });
+        targetBenchmarkPct = grandTotal > 0 && totTarget > 0 ? (totTarget / grandTotal) : 0.2;
+        if (targetBenchmarkPct > 1) targetBenchmarkPct = 0.2;
+      }
+
       var hudMode = config.hudMode || 'scorecard';
       var topCol = colList[0];
       var topSub = subKeysSorted[0];
@@ -838,7 +882,7 @@
         subtitle.style.fontSize = fSizes.subtitle;
         subtitle.style.color = theme.subtext;
         subtitle.style.marginTop = '2px';
-        subtitle.textContent = colList.length + ' Categories • ' + subKeysSorted.length + ' Segments • Total Market ' + formatVal(grandTotal, null);
+        subtitle.textContent = config.customSubtitleOverride || (colList.length + ' Categories • ' + subKeysSorted.length + ' Segments • Total Market ' + formatVal(grandTotal, null));
         titleBox.appendChild(mainTitle);
         titleBox.appendChild(subtitle);
         header.appendChild(titleBox);
@@ -879,6 +923,10 @@
         statsBox.appendChild(createStatCard('Top ' + (primaryDim ? primaryDim.label_short || 'Category' : 'Category'), topCol.name + ' (' + topColSharePct + '%)', dominanceAlert ? 'alert' : 'normal'));
         if (topSub) {
           statsBox.appendChild(createStatCard('Leading Segment', topSub + ' (' + ((allSubSegments[topSub] / grandTotal) * 100).toFixed(1) + '%)', 'normal'));
+        }
+        if (targetBenchmarkPct !== null) {
+          var targetStatus = (topCol.share >= targetBenchmarkPct) ? (isLowerBetter ? 'alert' : 'success') : (isLowerBetter ? 'success' : 'normal');
+          statsBox.appendChild(createStatCard(config.referenceLineLabel || 'Market Target', (targetBenchmarkPct * 100).toFixed(1) + '%', targetStatus));
         }
 
         // Search Bar
@@ -979,14 +1027,14 @@
       if (layoutMode === 'heatmap_matrix') {
         renderHeatmapMatrix(chartWrapper, colList, subKeysSorted, grandTotal, theme, config, tooltip, formatVal, fSizes);
       } else {
-        renderMarimekkoChart(d3, chartWrapper, colList, grandTotal, layoutMode, theme, config, tooltip, formatVal, fSizes);
+        renderMarimekkoChart(d3, chartWrapper, colList, grandTotal, layoutMode, theme, config, tooltip, formatVal, fSizes, targetBenchmarkPct);
       }
 
       done();
     }
   };
 
-  function renderMarimekkoChart(d3, container, colList, grandTotal, layoutMode, theme, config, tooltip, formatVal, fSizes) {
+  function renderMarimekkoChart(d3, container, colList, grandTotal, layoutMode, theme, config, tooltip, formatVal, fSizes, targetBenchmarkPct) {
     var width = container.clientWidth || 900;
     var height = container.clientHeight || 450;
     if (height < 280) height = 360;
@@ -1099,6 +1147,41 @@
         .attr('fill', theme.subtext)
         .text(colWidth > 45 ? formatVal(col.totalVolume, null) + ' (' + (col.share * 100).toFixed(0) + '%)' : (col.share * 100).toFixed(0) + '%');
     });
+
+    // Reference Benchmark Line
+    if (targetBenchmarkPct !== null && targetBenchmarkPct > 0 && targetBenchmarkPct <= 1) {
+      var refY = (1 - targetBenchmarkPct) * innerH;
+      var refG = g.append('g').attr('class', 'marimekko-benchmark-ref');
+      refG.append('line')
+        .attr('x1', 0)
+        .attr('y1', refY)
+        .attr('x2', innerW)
+        .attr('y2', refY)
+        .attr('stroke', theme.text)
+        .attr('stroke-dasharray', '5 4')
+        .attr('stroke-width', 1.5)
+        .attr('opacity', 0.65);
+
+      var refLabelText = (config.referenceLineLabel || 'Benchmark') + ' (' + (targetBenchmarkPct * 100).toFixed(1) + '%)';
+      refG.append('rect')
+        .attr('x', innerW - 145)
+        .attr('y', refY - 18)
+        .attr('width', 140)
+        .attr('height', 16)
+        .attr('rx', 3)
+        .attr('fill', theme.hudBg)
+        .attr('stroke', theme.border)
+        .attr('stroke-width', 1);
+
+      refG.append('text')
+        .attr('x', innerW - 75)
+        .attr('y', refY - 6)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '9px')
+        .attr('font-weight', '700')
+        .attr('fill', theme.text)
+        .text(refLabelText);
+    }
   }
 
   function renderHeatmapMatrix(container, colList, subKeysSorted, grandTotal, theme, config, tooltip, formatVal, fSizes) {

@@ -14,14 +14,15 @@ A Marimekko chart (also known as a Mekko chart or Mosaic plot) is a specialized 
   - `Marimekko (Variable-Width Mosaic Matrix)`: Both column width and segment height reflect metric volume (e.g. Broadcast Network spend share vs Content Genre composition).
   - `100% Stacked Market Share`: Normalized uniform column widths comparing internal categorical mix percentages.
   - `Heatmap Affinity Matrix`: Tabular cross-tabulation grid color-coded by market concentration and segment volume.
-- **Dynamic Field-Role Mapping**: Dynamic field dropdowns (populated from the live query) for Primary Column Category, Sub-Segment Category, Volume/Weight Metric, and Secondary Metric.
+- **Dynamic Field-Role Mapping**: Dynamic field dropdowns (populated from the live query via Looker's `registerOptions`) for Primary Column Category, Sub-Segment Category, Volume/Weight Metric, Secondary Metric, and Target Metric.
 - **Configurable Target & Reference Modes**:
   - `Dataset Mean (Market Average Segment Share)`
   - `Dataset Median (Market Median)`
   - `Fixed Target %`
+  - `Measure Column (Target / Benchmark Measure)`
   - `Top Percentile P75 / P90 Benchmark`
 - **Sorting & Top-N Bucketing**: Sort columns by Total Volume Descending/Ascending or Alphabetical; limit Top-N categories with automatic `'Other'` segment rollups.
-- **Executive KPI HUD**: Top scorecard showing Market Leaders, Total Tracked Volume, Top Category Share %, and Anomaly Alerts.
+- **Executive KPI HUD**: Top scorecard showing Market Leaders, Total Tracked Volume, Top Category Share %, Market Benchmark Target, and Anomaly Alerts.
 - **Enterprise Brand Palettes**: Google Enterprise, Modern Slate, Cyberpunk Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, or Custom Hex overrides.
 - **Interactive Tooltip & Native Drill Menus**: High-fidelity hover cards with 2D market percentages and seamless Looker drill-down menu integration (`LookerCharts.Utils.openDrillMenu`).
 
@@ -35,6 +36,7 @@ A Marimekko chart (also known as a Mekko chart or Mosaic plot) is a specialized 
 | **Dimension 2** | `1` *(Required)* | Sub-Segment Hierarchy (Height / Color) | `broadcast_programming.genre`, `products.category` |
 | **Measure 1** | `1` *(Required)* | Primary Volume / Revenue Metric | `ad_spot_airings.total_spend_mxn`, `sales.revenue` |
 | **Measure 2** | `0` or `1` *(Optional)* | Secondary Metric (Spots, Volume, Margin)| `ad_spot_airings.total_airing_spots` |
+| **Measure 3** | `0` or `1` *(Optional)* | Target / Benchmark Measure | `ad_spot_airings.target_spend_mxn` |
 
 ---
 
@@ -44,11 +46,12 @@ A Marimekko chart (also known as a Mekko chart or Mosaic plot) is a specialized 
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `layoutMode` | Select | `marimekko` | Visualization paradigm (`Marimekko`, `100% Stacked`, `Heatmap Grid`) |
-| `dimFieldOverride` | Select | `Auto` | Dropdown of query fields for Primary Column Dimension |
-| `subDimOverride` | Select | `Auto` | Dropdown of query fields for Sub-Segment Dimension |
-| `measureFieldOverride`| String | `1` | Dropdown of query fields for Primary Measure |
-| `secondaryMeasureOverride`| String | `2` | Optional Dropdown of query fields for Secondary Measure |
-| `targetMode` | Select | `dataset_mean` | Reference target benchmark mode |
+| `dimFieldOverride` | Select | `Auto` | Dynamic dropdown of query fields for Primary Column Dimension |
+| `subDimOverride` | Select | `Auto` | Dynamic dropdown of query fields for Sub-Segment Dimension |
+| `measureFieldOverride`| Select | `Auto` | Dynamic dropdown of query fields for Primary Measure |
+| `secondaryMeasureOverride`| Select | `Auto` | Dynamic dropdown of query fields for Secondary Measure |
+| `targetMeasureOverride`| Select | `Auto / None` | Dynamic dropdown of query fields for Benchmark / Target Measure |
+| `targetMode` | Select | `dataset_mean` | Reference target benchmark mode (`Dataset Mean`, `Dataset Median`, `Fixed Target %`, `Measure Column`, `P75`, `P90`) |
 | `fixedTargetValue` | Number | `0` | Target % when Fixed Mode |
 | `referenceLineLabel` | String | `Market Benchmark` | Reference line annotation label |
 | `anomalyThresholdPct` | Number | `35` | Segment market share % triggering dominance alert |
@@ -58,7 +61,8 @@ A Marimekko chart (also known as a Mekko chart or Mosaic plot) is a specialized 
 | `suppressZeroNull` | Boolean | `true` | Suppress zero or null cells |
 | `hudMode` | Select | `scorecard` | Executive KPI HUD (`Full Scorecard`, `Compact Strip`, `Hidden`) |
 | `showValueLabels` | Select | `all` | Segment labels (`All`, `Dominant Peaks Only`, `Hidden`) |
-| `customTitleOverride` | Select | `Auto / None` | Custom chart title override |
+| `customTitleOverride` | String | `""` | Custom chart title override |
+| `customSubtitleOverride` | String | `""` | Custom chart subtitle override |
 | `showLegend` | Boolean | `true` | Display sub-segment color legend |
 | `showSearch` | Boolean | `true` | Show interactive category search bar |
 

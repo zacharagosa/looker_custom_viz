@@ -225,3 +225,8 @@ Executive sales pipeline velocity, stage dwell time, and close-date slippage mat
 ### 54. Cloud Security Posture & Compliance Benchmark Matrix
 Multi-cloud CSPM governance matrix auditing CIS Benchmark, ISO 27001, NIST SP 800-53, PCI-DSS, and SOC 2 Type II compliance posture across GKE, Compute Engine, Storage, IAM, and Databases. Features 4 multi-modal layout modes (Framework Benchmark Matrix with compliance heat grading, 2D Compliance Risk Quadrant mapping findings against compliance scores, Compliance Deficit Waterfall Bridge, and SLA Aging Cross-Matrix highlighting overdue critical CVEs) backed by authentic multi-cloud security telemetry from `palo_alto_networks_security::prisma_cloud_compliance`. Solves Google Cloud Blockers b/495201948, b/398801967, and b/520594860.
 ![Cloud Security Posture & Compliance Benchmark Matrix](../assets/screenshots/cspm_compliance_benchmark_matrix.png)
+
+### 55. SecOps Incident Dwell-Time & SLA Frontier Matrix
+Enterprise SecOps incident decision matrix contrasting intrusion detection lag (MTTD) against remediation containment duration (MTTR) across MITRE ATT&CK tactics, with CISO SLA breach frontiers, dwell-time waterfall bars, and SOAR playbook automation curves. Backed by authentic multi-cloud security telemetry from `palo_alto_networks_security::cortex_security_incidents`. Solves Google Cloud Blockers b/492019482, b/539102847, and b/540291834.
+![SecOps Incident Dwell-Time & SLA Frontier Matrix](../assets/screenshots/secops_incident_dwell_time_matrix.png)
+

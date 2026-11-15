@@ -1,0 +1,32 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "cortex_security_incidents",
+  "fields": [
+    "cortex_security_incidents.mitre_tactic",
+    "cortex_security_incidents.severity",
+    "cortex_security_incidents.count",
+    "cortex_security_incidents.total_alerts",
+    "cortex_security_incidents.avg_mttd_minutes",
+    "cortex_security_incidents.avg_mttr_minutes",
+    "cortex_security_incidents.automation_rate",
+    "cortex_security_incidents.high_critical_count"
+  ],
+  "sorts": [
+    "cortex_security_incidents.total_alerts desc"
+  ],
+  "limit": "50",
+  "vis_config": {
+    "type": "secops_incident_dwell_time_matrix",
+    "layoutMode": "quadrant_scatter",
+    "colorPalette": "cortex_navy",
+    "hudMode": "scorecard",
+    "sortBy": "mttr_desc",
+    "showSearch": true,
+    "mttdSlaTarget": 8.0,
+    "mttrSlaTarget": 75.0,
+    "targetMode": "fixed",
+    "referenceLineLabel": "CISO SLA Target",
+    "metricPolarity": "lower_is_better",
+    "valueFormat": "decimal_1"
+  }
+}
