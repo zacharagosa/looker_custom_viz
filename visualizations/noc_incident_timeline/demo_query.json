@@ -1,0 +1,27 @@
+{
+  "model": "zayo_network_analytics",
+  "view": "noc_case_war_room",
+  "fields": [
+    "noc_case_timeline.event_time_time",
+    "noc_case_timeline.source_system",
+    "noc_case_timeline.event_type",
+    "noc_case_timeline.description",
+    "noc_case_timeline.actor",
+    "noc_case_timeline.severity"
+  ],
+  "filters": {
+    "noc_case_timeline.case_id": "CASE-2026-9901"
+  },
+  "sorts": [
+    "noc_case_timeline.event_time_time asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "noc_incident_timeline",
+    "slaTargetHours": 4,
+    "nowMode": "latest_event",
+    "labelDensity": "all",
+    "showHud": true,
+    "colorPalette": "zayo_orange"
+  }
+}

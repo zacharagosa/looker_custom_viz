@@ -42,11 +42,13 @@ VOL2_TABS = [
     "🛍️ Retail, Supply Chain & FinOps",
     "🧬 Multivariate & Diagnostic Profiling",
     "🏥 Healthcare & Med-Surg Supply Chain",
-    "💼 B2B SaaS & RevOps"
+    "💼 B2B SaaS & RevOps",
+    "🔐 Cloud Governance & Security Compliance"
 ]
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "cloud_governance_posture_pack": "🔐 Cloud Governance & Security Compliance",
     "saas_deal_velocity_slippage_matrix": "💼 B2B SaaS & RevOps",
     "saas_team_quota_coverage_gap_matrix": "💼 B2B SaaS & RevOps",
     "saas_sales_capacity_attainment_matrix": "💼 B2B SaaS & RevOps",
@@ -155,6 +157,7 @@ CATEGORY_TAB_MAP = {
 }
 
 VIZ_EMOJI_MAP = {
+    "cloud_governance_posture_pack": "🔐",
     "saas_deal_velocity_slippage_matrix": "💼",
     "saas_team_quota_coverage_gap_matrix": "💼",
     "saas_sales_capacity_attainment_matrix": "💼",
