@@ -95,7 +95,8 @@ VOL2_VIZ_MAP = {
     "pca_biplot_projection": "🧬 Multivariate & Diagnostic Profiling",
     "hierarchical_cluster_dendrogram": "🧬 Multivariate & Diagnostic Profiling",
     "cspm_compliance_benchmark_matrix": "🔐 Cloud Governance & Security Compliance",
-    "secops_incident_dwell_time_matrix": "🔐 Cloud Governance & Security Compliance"
+    "secops_incident_dwell_time_matrix": "🔐 Cloud Governance & Security Compliance",
+    "policy_drift_spc_control_chart": "🔐 Cloud Governance & Security Compliance"
 }
 
 
@@ -188,6 +189,7 @@ VIZ_EMOJI_MAP = {
     "interactive_drilldown_treemap": "🗂️",
     "cspm_compliance_benchmark_matrix": "🔐",
     "secops_incident_dwell_time_matrix": "⏱️",
+    "policy_drift_spc_control_chart": "📈",
     "violin_distribution_plot": "🎻",
     "dynamic_pivot_matrix": "🔢",
     "streamgraph_themeriver": "〰️",

@@ -8,32 +8,31 @@ Designed to resolve long-standing Looker Cloud Blockers and community gaps:
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Features & Flexibility Controls (Strictly 2 Tabs: `Display` & `Style`)
 
 1. **4 Multi-Modal Visual Paradigms (`layoutMode`)**:
-   - **Candlestick & Bollinger Volatility Envelope (`candlestick_bollinger`)**: Classic Japanese Candlesticks (emerald bullish & crimson bearish real bodies with high/low wicks) + 20-period center Simple Moving Average (SMA) + Upper & Lower Bollinger Bands with translucent shaded volatility ribbon.
+   - **Candlestick & Bollinger Volatility Envelope (`candlestick_bollinger`)**: Classic Japanese Candlesticks with high/low wicks + center Simple Moving Average (SMA) + Upper/Lower Bollinger Bands with translucent shaded volatility ribbon.
    - **Western OHLC Tick Bars (`ohlc_bars`)**: Traditional high-low vertical range bar with left tick for Open and right tick for Close.
-   - **Heikin-Ashi Smoothed Trend (`heikin_ashi`)**: Noise-filtered trend candles based on smoothed average prices, highlighting sustained momentum and trend reversals.
-   - **Bandwidth %B Volatility Oscillator (`bandwidth_oscillator`)**: Quantifies market volatility squeezes and expansion breakouts.
+   - **Heikin-Ashi Smoothed Trend (`heikin_ashi`)**: Noise-filtered trend candles highlighting sustained directional momentum.
+   - **Bandwidth %B Volatility Squeeze Oscillator (`bandwidth_oscillator`)**: Upper price + Bollinger envelope paired with a lower `%B` / Squeeze oscillator panel (`0% / 50% / 100%` overbought/oversold reference lines).
 
-2. **Volume Histogram Sub-Chart (`showVolumeSubchart`)**:
-   - Secondary bottom panel displaying daily volume bars color-matched to day's bullish/bearish candle.
+2. **Dynamic Field-Role Mapping (`Display`)**:
+   - Re-map Date, Open, High, Low, Close, Volume, and optional Target Benchmark Measure on the fly using dynamic Looker `select` dropdowns populated via `registerOptions`.
 
-3. **Dynamic Field-Role Mapping (`Display`)**:
-   - Re-map Date, Open, High, Low, Close, and Volume measures on the fly using dynamic Looker select dropdowns populated via `registerOptions`.
+3. **Configurable Reference Lines, Targets & Thresholds (`Display`)**:
+   - Supports `Dataset Mean`, `Dataset Median`, `Percentile P75`, `Percentile P90`, `Target Measure Column`, `Period High`, `Period Low`, `Fixed Value`, and `None`, plus custom label and Volatility Squeeze Alert Threshold (`% Bandwidth`).
 
-4. **Configurable Bollinger Parameters**:
-   - Customizable Moving Average period (`10`, `14`, `20`, `30`, `50`) and Standard Deviation multiplier (`1.5`, `2.0`, `2.5`, `3.0`).
+4. **Sorting, Top-N Windowing & Null Handling (`Display`)**:
+   - Interactive sort order (`Chronological Ascending`, `Chronological Descending`, `Close Descending`, `Close Ascending`, `Alphabetical`), Top-N candle windowing with excluded/prior summary rollup chip, and zero/null OHLC row suppression.
 
-5. **Executive KPI HUD & Floating Crosshair Tracker**:
-   - Scorecard strip displaying Latest Close, Period Return %, Period High/Low range, and Bollinger Bandwidth Squeeze alert state.
-   - Interactive vertical dashed crosshair scrubber with real-time floating inspection card displaying Open, High, Low, Close, Net %, Volume, SMA, and Band levels.
+5. **Executive HUD, Interactive Search & Callout Density (`Display`)**:
+   - Multi-density Scorecard HUD (`Full Scorecard`, `Compact Strip`, `Hidden`), peak/all data callout labels (`All`, `Min/Max Peaks Only`, `Hidden`), overlay legend toggle, custom title/subtitle overrides, and a live date search & signal filter bar (`All`, `Bullish`, `Bearish`, `Squeeze`).
 
-6. **Looker Drill-Down Menus**:
-   - Full integration with Looker's native drill-down actions (`LookerCharts.Utils.openDrillMenu`) on candle click.
+6. **Enterprise Brand Palettes, Polarity & Typography (`Style`)**:
+   - 8 presets (`Google Enterprise`, `Modern Slate`, `Cyberpunk Dark`, `Emerald FinOps`, `Sunset Media`, `Wellverse Healthcare`, `Trading Pro Dark`, `Custom Hex Override`), native `display: 'color'` pickers, metric polarity (`Higher is Better` vs `Lower is Better`), font scaling (`Compact`, `Standard`, `Large Presentation`), and 7 value formats (`Auto`, `Precise Currency`, `Compact Currency`, `Compact Number`, `Percentage`, `Decimal 2dp`, `Raw`).
 
-7. **Strictly 2 Configuration Sections**:
-   - Only `Display` and `Style` sections, keeping Looker's Edit Viz modal headers clean and uncluttered.
+7. **Looker Drill-Down & Responsive Sizing**:
+   - Full `LookerCharts.Utils.openDrillMenu` integration on candle click and debounced `ResizeObserver` (`<4px` guard).
 
 ---
 

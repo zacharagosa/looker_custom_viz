@@ -1,0 +1,34 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "threat_firewall_events",
+  "fields": [
+    "threat_firewall_events.event_date",
+    "threat_firewall_events.rule_name",
+    "threat_firewall_events.threat_count",
+    "threat_firewall_events.blocked_threat_count",
+    "threat_firewall_events.threat_block_rate"
+  ],
+  "sorts": [
+    "threat_firewall_events.event_date asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "policy_drift_spc_control_chart",
+    "layoutMode": "xmr_control",
+    "sigmaMultiplier": "3.0",
+    "showSigmaZones": true,
+    "showNelsonRules": true,
+    "showMovingRange": true,
+    "targetMode": "percentile_p90",
+    "referenceLineLabel": "P90 Threat SLA",
+    "anomalyAlertThreshold": 5,
+    "hudMode": "full",
+    "labelDensity": "peaks_only",
+    "showLegend": true,
+    "showSearch": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "lower_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_number"
+  }
+}
