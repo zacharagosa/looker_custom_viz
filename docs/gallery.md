@@ -234,3 +234,8 @@ Enterprise SecOps incident decision matrix contrasting intrusion detection lag (
 Multi-cloud governance and compliance posture visualizer featuring zoomable D3 hierarchical circle packing (`Cloud Provider → Compliance Framework → Resource / Policy`), 10×10 proportional governance waffle grids, SLA-threshold force beeswarm clusters, and policy remediation velocity ladders with CISO SLA breach alerts. Backed by authentic multi-cloud CSPM telemetry from `palo_alto_networks_security::prisma_cloud_compliance`.
 ![Cloud Governance & Multi-Cloud Posture Pack](../assets/screenshots/cloud_governance_posture_pack.png)
 
+### 57. Compliance & SLA Aging Ridgeline Joyplot
+Overlapping Gaussian Kernel Density Estimation (KDE) ridgeline waves with dual-zone SLA Breach Tail highlighting (`> 30d` CISO remediation SLA), Empirical Cumulative Distribution (`ECDF`) remediation curves, IQR quantile severity beeswarm strips, and multi-cloud SLA breach matrices backed by authentic CSPM findings from `palo_alto_networks_security::prisma_cloud_compliance`.
+![Compliance & SLA Aging Ridgeline Joyplot](../assets/screenshots/compliance_sla_ridgeline_analyzer.png)
+
+

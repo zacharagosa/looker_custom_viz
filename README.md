@@ -56,10 +56,11 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (49 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (50 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**Compliance & SLA Aging Ridgeline Joyplot**](visualizations/compliance_sla_ridgeline_analyzer/)<br>`compliance_sla_ridgeline_analyzer` | Cloud Governance & Security Compliance | 1 Group dim (`compliance_framework`), optional Secondary Slice (`cloud_provider`) & Severity dim + 1 Continuous Aging/Latency field (`days_open`) | [📸 View](visualizations/compliance_sla_ridgeline_analyzer/screenshot.png) |
 | [**Policy Drift & Security SLA Shewhart SPC Control Chart**](visualizations/policy_drift_spc_control_chart/)<br>`policy_drift_spc_control_chart` | Cloud Governance & Security Compliance | 1 Chronological Date/Period dim, optional 1 Policy/Group dim + 1 Primary SPC measure, optional Secondary Context & Target SLA measures | [📸 View](visualizations/policy_drift_spc_control_chart/screenshot.png) |
 | [**Cloud Governance & Multi-Cloud Posture Pack**](visualizations/cloud_governance_posture_pack/)<br>`cloud_governance_posture_pack` | Cloud Governance & Security Compliance | 1 Cloud/Org dim, optional Framework & Resource/Policy dims + 1 Volume/Open Findings measure, optional Compliance Score %, Critical/High Findings, Avg Remediation Days | [📸 View](visualizations/cloud_governance_posture_pack/screenshot.png) |
 | [**SecOps Incident Dwell-Time & SLA Frontier Matrix**](visualizations/secops_incident_dwell_time_matrix/)<br>`secops_incident_dwell_time_matrix` | Cloud Governance & Security Compliance | 1 Primary Tactic dim, optional Severity dim + 1 MTTD Detect measure, 1 MTTR Remediate measure, optional Volume/Alerts measure, optional Automation Rate measure | [📸 View](visualizations/secops_incident_dwell_time_matrix/screenshot.png) |

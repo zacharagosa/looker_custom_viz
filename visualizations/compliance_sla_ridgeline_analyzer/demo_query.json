@@ -1,0 +1,40 @@
+{
+  "model": "palo_alto_networks_security",
+  "view": "prisma_cloud_compliance",
+  "fields": [
+    "prisma_cloud_compliance.finding_id",
+    "prisma_cloud_compliance.compliance_framework",
+    "prisma_cloud_compliance.cloud_provider",
+    "prisma_cloud_compliance.severity",
+    "prisma_cloud_compliance.resource_type",
+    "prisma_cloud_compliance.days_open"
+  ],
+  "filters": {
+    "prisma_cloud_compliance.finding_status": "OPEN,EXEMPTED"
+  },
+  "sorts": [
+    "prisma_cloud_compliance.days_open desc"
+  ],
+  "limit": "1500",
+  "vis_config": {
+    "type": "compliance_sla_ridgeline_analyzer",
+    "layoutMode": "ridgeline_joyplot",
+    "groupDimOverride": "prisma_cloud_compliance.compliance_framework",
+    "subGroupDimOverride": "prisma_cloud_compliance.cloud_provider",
+    "severityDimOverride": "prisma_cloud_compliance.severity",
+    "valueFieldOverride": "prisma_cloud_compliance.days_open",
+    "targetMode": "fixed",
+    "fixedTargetValue": 30,
+    "referenceLineLabel": "CISO 30-Day Remediation SLA",
+    "anomalyThresholdPct": 55,
+    "sortBy": "breach_desc",
+    "hudMode": "scorecard",
+    "labelDensity": "peaks_only",
+    "showLegend": true,
+    "showSearch": true,
+    "colorTheme": "google_enterprise",
+    "metricPolarity": "lower_is_better",
+    "fontScale": "standard",
+    "valueFormat": "days_1dp"
+  }
+}
