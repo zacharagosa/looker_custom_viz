@@ -17,11 +17,19 @@
     "showConfidenceInterval": true,
     "showRiskTable": true,
     "showMedianGuide": true,
-    "hudDensity": "full",
+    "hudMode": "scorecard",
+    "labelDensity": "peaks_only",
     "targetMode": "fixed_value",
     "fixedTargetValue": 120,
-    "targetLabel": "Incident SLA (120m)",
+    "referenceLineLabel": "Incident SLA (120m)",
+    "anomalyThresholdPct": 25,
+    "topNLimit": "5",
+    "enableOtherRollup": false,
+    "suppressZeroNull": false,
     "colorPalette": "cyberpunk_dark",
+    "metricPolarity": "lower_is_better",
+    "fontScale": "standard",
+    "valueFormat": "auto",
     "timeUnit": "Minutes"
   }
 }

@@ -1,80 +1,42 @@
 # 📉 Kaplan-Meier Survival & Hazard Curve
 
-An enterprise-grade, high-density **Kaplan-Meier Survival, Nelson-Aalen Cumulative Hazard, and At-Risk Patient/Incident Analysis Visualization** built with **D3.js v7** for Looker and Looker Studio.
+An enterprise-grade, high-density **Kaplan-Meier Survival, Nelson-Aalen Cumulative Hazard, Smoothed Hazard Rate, and At-Risk Life Table Visualization** built with **D3.js v7** for Looker.
 
 ---
 
 ## 🎯 Business Problem & Inspiration
 
-Survival analysis (time-to-event modeling) is ubiquitous across healthcare clinical trials, customer SaaS subscription churn, hardware reliability/MTBF, and cybersecurity incident response (MTTR). Out-of-the-box Looker visualizations lack native step-function survival curves, Greenwood confidence bands, censoring tick markers, and aligned At-Risk summary tables.
-
-This custom visualization directly addresses high-priority customer requirements across enterprise analytics:
-1. **Healthcare & Life Sciences**: Clinical trial survival analysis, patient attrition tracking, and drug efficacy step plots with Greenwood confidence intervals.
-2. **SaaS & Subscription Analytics**: Time-to-churn survival curves, retention modeling, and risk tables across subscription cohorts.
-3. **Hardware & SecOps Reliability**: Mean Time Between Failures (MTBF) and Mean Time to Resolution (MTTR) survival curves with right-censored incident tracking.
+Survival analysis (time-to-event modeling) is essential across SecOps incident response (MTTR), healthcare clinical trials, SaaS customer churn/retention, and hardware reliability (MTBF). Native Looker charts cannot render non-parametric step-function survival curves, Greenwood 95% confidence bands, right-censoring tick markers, Mantel-Cox Log-Rank hypothesis tests, or aligned At-Risk life tables.
 
 ---
 
-## ✨ Core Capabilities & Features
+## ✨ Core Capabilities & Flexibility Options
 
-### 1. Multi-Modal Survival & Hazard Representations
-Switch between 4 functional visual representations with a single dropdown:
-- **Kaplan-Meier Survival Probability $S(t)$**: Classic non-parametric step-down curve stepping from 1.0 (100%) down toward 0%, with distinct vertical tick marks indicating right-censored observations.
-- **Inverted Attrition / Resolution Rate ($1 - S(t)$)**: Cumulative failure/conversion probability stepping upward from 0% to 100% (ideal for MTTR resolution curves or user onboarding drop-off).
-- **Nelson-Aalen Cumulative Hazard $H(t)$**: Cumulative failure intensity $H(t) = -\ln(S(t))$ indicating risk accumulation over time.
-- **Hazard Rate Density $\lambda(t)$**: Smoothed interval failure rate / hazard density over time buckets.
+### 1. Multi-Modal Survival & Hazard Representations (`Display`)
+Switch between 4 functional visual representations:
+- **Kaplan-Meier Survival Probability $S(t)$ (`survival`)**: Non-parametric step-down curve from 1.0 (100%) toward 0%, with right-censored tick marks and Greenwood 95% confidence ribbons.
+- **Cumulative Resolution / Attrition ($1 - S(t)$, `inverted_churn`)**: Cumulative event incidence stepping upward from 0% to 100%.
+- **Nelson-Aalen Cumulative Hazard $H(t)$ (`cumulative_hazard`)**: Accumulated risk intensity $H(t) = -\ln(S(t))$.
+- **Smoothed Hazard Rate Density $\lambda(t)$ (`hazard_rate`)**: Interval failure velocity smoothed across adaptive time bins.
 
-### 2. Greenwood 95% Confidence Interval Ribbon Bands
-- Evaluates variance using Greenwood's formula:
-  $$\widehat{\text{Var}}(\hat{S}(t)) = \hat{S}(t)^2 \sum_{t_i \le t} \frac{d_i}{n_i(n_i - d_i)}$$
-- Renders semi-transparent confidence interval bands bounded between $[0, 1]$.
+### 2. Dynamic Field-Role Mapping (`Display`)
+Live `registerOptions` dropdowns populated from the active query:
+- **Primary Strata / Cohort Dimension** & **Secondary / Sub-Strata Dimension** (for composite cohort grouping)
+- **Observation ID Dimension**
+- **Duration / Time-to-Event Field** & **Event / Censoring Status Field**
+- **Target / SLA Measure Column**
 
-### 3. Aligned At-Risk Summary Table
-- Renders an interactive, responsive life table directly beneath the horizontal time axis.
-- Aligned to time intervals (e.g. 0m, 60m, 120m, 180m, 240m, 300m), showing the exact number of active subjects/incidents at risk $n(t)$ and cumulative events $d(t)$ for every cohort.
+### 3. Configurable Benchmarks, Sorting, Top-N & Density (`Display`)
+- **SLA / Target Milestone Reference Mode**: `Fixed Time Value`, `Measure Column`, `Dataset Mean`, `Dataset Median (P50)`, `Percentile P75`, `Percentile P90`, or `None`, with custom target label, favorable zone shading, and **SLA Breach Alert Threshold (%)**.
+- **Sorting, Top-N & Null Handling**: Sort by median time, observation count, alphabetical, or natural query order; Top-N cohort limit (`3 / 5 / 8 / 10 / All`) with **true re-computed `'Other'` cohort KM rollup**; and **Zero / Null duration suppression**.
+- **Executive HUD, Label Density & Interactivity**: `Full Scorecard` (with live **Mantel-Cox Log-Rank $\chi^2$ & p-value**), `Compact Strip`, or `Hidden`; curve endpoint label density (`All`, `Min/Max Peaks & Median`, `Hidden`); custom title/subtitle overrides; live cohort search bar; interactive legend filter pills; and **Looker drill-down menu** support.
 
-### 4. Median Survival & SLA Reference Goals
-- **Median Survival Time Guide**: Horizontal dashed line at $S(t) = 0.5$ intersecting the curve to pinpoint median time to event.
-- **Configurable SLA / Target Goal**: Fixed time threshold (e.g., 2h / 120m resolution SLA) or statistical benchmark (Dataset Mean, Median, P75, P90) with pass/fail region shading.
-
-### 5. Log-Rank Statistical Cohort Comparison
-- Performs two-sided log-rank test across cohorts/strata, displaying $\chi^2$ statistic and p-value in the Executive HUD to indicate statistically significant variance.
-
-### 6. Executive KPI Scorecard HUD
-- **Median Time to Event**: Overall and top-stratum median survival / MTTR.
-- **Interval Survival %**: Percentage of population surviving past key milestone.
-- **Censoring Rate %**: Percentage of active/censored observations vs resolved events.
-- **Log-Rank Significance**: $\chi^2$ and p-value evaluating cohort divergence.
-
-### 7. Dynamic Field-Role Mapping
-- **Strata / Cohort Dimension**: Dropdown dynamically populated from query dimensions (e.g. `mitre_tactic`, `subscription_tier`, `clinical_arm`).
-- **Observation ID Dimension**: Identifier dimension (e.g. `incident_id`, `patient_id`, `account_id`).
-- **Duration / Time Measure**: Numeric measure or dimension indicating elapsed duration $t$ (e.g. `avg_mttr_minutes`, `days_active`).
-- **Event / Censoring Status**: Optional binary or status measure (1 = Event occurred, 0 = Censored; defaults to uncensored event).
-
-### 8. Strictly 2 Clean Option Tabs
-All options are strictly partitioned into `Display` and `Style` sections, keeping Looker's Edit Viz modal clean and uncrowded.
+### 4. Brand Palettes, Polarity & Typography (`Style`)
+- 6 enterprise presets (`Google Enterprise`, `Modern Slate`, `Cyberpunk Dark`, `Emerald FinOps`, `Sunset Media & Coral`, `Wellverse Healthcare`) + `Custom Hex Override` with native `display: 'color'` pickers.
+- Metric polarity (`Lower Duration is Better` vs `Higher Survival is Better`), font scale (`Compact`, `Standard`, `Large Presentation`), value formatting (`Auto`, `Compact Number`, `Compact Currency`, `Percentage`, `Decimal 2dp`, `Raw`), curve interpolation, stroke width, and CI band opacity.
 
 ---
 
-## 📊 Data Shape Requirements
+## 📊 Domain-Authentic Demo Dataset (`palo_alto_networks_security::cortex_security_incidents`)
 
-- **Dimensions**:
-  - Dimension 1 (Strata / Cohort, e.g. `cortex_security_incidents.mitre_tactic`)
-  - Dimension 2 (Observation ID, e.g. `cortex_security_incidents.incident_id`)
-- **Measures / Values**:
-  - Measure 1 (Duration / Time to Event $t$, e.g. `cortex_security_incidents.avg_mttr_minutes`)
-  - Measure 2 (Optional: Event / Censored flag or Alert Count, e.g. `cortex_security_incidents.alert_count`)
-
----
-
-## 🚀 LookML Manifest Snippet
-
-```lookml
-visualization: {
-  id: "kaplan_meier_survival_curve"
-  label: "Kaplan-Meier Survival & Hazard Curve"
-  file: "visualizations/kaplan_meier_survival_curve.js"
-  dependencies: ["https://d3js.org/d3.v7.min.js"]
-}
-```
+Demonstrated on 500 SecOps security incidents across MITRE ATT&CK tactics (`mitre_tactic`, `incident_id`, `avg_mttr_minutes`, `alert_count`) against a 120-minute Incident MTTR SLA target.

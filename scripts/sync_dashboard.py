@@ -43,11 +43,14 @@ VOL2_TABS = [
     "🧬 Multivariate & Diagnostic Profiling",
     "🏥 Healthcare & Med-Surg Supply Chain",
     "💼 B2B SaaS & RevOps",
-    "🔐 Cloud Governance & Security Compliance"
+    "🔐 Cloud Governance & Security Compliance",
+    "🧪 Experimentation, Causal Lift & A/B Ops"
 ]
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "causal_impact_synthetic_control": "🧪 Experimentation, Causal Lift & A/B Ops",
+    "ab_experiment_forest_plot": "🧪 Experimentation, Causal Lift & A/B Ops",
     "cloud_governance_posture_pack": "🔐 Cloud Governance & Security Compliance",
     "saas_deal_velocity_slippage_matrix": "💼 B2B SaaS & RevOps",
     "saas_team_quota_coverage_gap_matrix": "💼 B2B SaaS & RevOps",
@@ -156,6 +159,7 @@ CATEGORY_TAB_MAP = {
     "Cloud Governance & Security Compliance": ("vol2", "🔐 Cloud Governance & Security Compliance"),
     "Cloud Governance & Compliance": ("vol2", "🔐 Cloud Governance & Security Compliance"),
     "Governance & Compliance": ("vol2", "🔐 Cloud Governance & Security Compliance"),
+    "Experimentation & Causal Lift": ("vol2", "🧪 Experimentation, Causal Lift & A/B Ops"),
 }
 
 VIZ_EMOJI_MAP = {
@@ -238,6 +242,8 @@ VIZ_EMOJI_MAP = {
     "bcg_growth_share_matrix": "🌟",
     "tornado_sensitivity_chart": "🌪️",
     "price_elasticity_revenue_optimizer": "🏷️",
+    "ab_experiment_forest_plot": "🧪",
+    "causal_impact_synthetic_control": "🔬",
 }
 
 

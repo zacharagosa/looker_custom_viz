@@ -1,0 +1,45 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "causal_impact_experiments",
+  "fields": [
+    "causal_impact_experiments.observation_date",
+    "causal_impact_experiments.market_segment",
+    "causal_impact_experiments.period_phase",
+    "causal_impact_experiments.is_treated",
+    "causal_impact_experiments.total_observed_value",
+    "causal_impact_experiments.total_counterfactual_predicted",
+    "causal_impact_experiments.total_ci_lower",
+    "causal_impact_experiments.total_ci_upper",
+    "causal_impact_experiments.total_pointwise_lift",
+    "causal_impact_experiments.total_cumulative_lift",
+    "causal_impact_experiments.total_cumulative_ci_lower",
+    "causal_impact_experiments.total_cumulative_ci_upper",
+    "causal_impact_experiments.avg_donor_weight_pct",
+    "causal_impact_experiments.avg_causal_p_value",
+    "causal_impact_experiments.avg_pre_period_rmspe"
+  ],
+  "sorts": [
+    "causal_impact_experiments.observation_date asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "causal_impact_synthetic_control",
+    "layoutMode": "stacked_triptych",
+    "targetMode": "fixed_value",
+    "fixedTargetValue": 15000,
+    "referenceLineLabel": "Daily Lift Goal ($15K)",
+    "anomalyThresholdPct": 5,
+    "sortBy": "chronological",
+    "topNLimit": "all",
+    "enableOtherRollup": false,
+    "suppressZeroNull": false,
+    "hudMode": "scorecard",
+    "labelDensity": "peaks_only",
+    "showSearch": true,
+    "showLegend": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "compact_currency"
+  }
+}

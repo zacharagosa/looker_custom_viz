@@ -238,4 +238,8 @@ Multi-cloud governance and compliance posture visualizer featuring zoomable D3 h
 Overlapping Gaussian Kernel Density Estimation (KDE) ridgeline waves with dual-zone SLA Breach Tail highlighting (`> 30d` CISO remediation SLA), Empirical Cumulative Distribution (`ECDF`) remediation curves, IQR quantile severity beeswarm strips, and multi-cloud SLA breach matrices backed by authentic CSPM findings from `palo_alto_networks_security::prisma_cloud_compliance`.
 ![Compliance & SLA Aging Ridgeline Joyplot](../assets/screenshots/compliance_sla_ridgeline_analyzer.png)
 
+### 58. Causal Impact & Synthetic Control Analyzer
+3-panel synchronized Bayesian structural time-series Causal Impact & Synthetic Control analyzer featuring Observed vs. Synthetic Counterfactual 95% credible cones, Pointwise Causal Lift diverging bars, Cumulative Incremental Impact trajectories, In-Space Placebo Permutation diagnostics with Post/Pre RMSPE ratio rank bars, and Multi-Cohort Causal Scorecard matrices backed by `void_weaver_analytics::causal_impact_experiments`.
+![Causal Impact & Synthetic Control Analyzer](../assets/screenshots/causal_impact_synthetic_control.png)
+
 

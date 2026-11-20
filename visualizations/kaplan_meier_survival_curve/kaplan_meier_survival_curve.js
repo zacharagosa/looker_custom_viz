@@ -3,24 +3,15 @@
  * Built with D3.js v7
  *
  * Inspired by:
- * - Buganizer Cloud Blocker b/312984102: "Kaplan-Meier Survival Analysis & Attrition Curve in Looker"
- * - Buganizer Cloud Blocker b/289410591: "Time-to-Event and Attrition Survival Curves with Risk Tables"
+ * - Looker Cloud Blocker b/312984102: "Kaplan-Meier Survival Analysis & Attrition Curve in Looker"
+ * - Looker Cloud Blocker b/289410591: "Time-to-Event and Attrition Survival Curves with Risk Tables"
  * - Internal YAQS: "Survival Analysis & Customer Attrition with Censoring in Looker"
  *
  * Multi-Modal Functional Capabilities:
  * 1. "survival": Non-parametric Kaplan-Meier step-down probability curve S(t) from 100% to 0% with right-censored markers.
  * 2. "inverted_churn": Cumulative event incidence (1 - S(t)), stepping from 0% to 100% (MTTR resolution / churn attrition).
  * 3. "cumulative_hazard": Nelson-Aalen cumulative hazard curve H(t) = -ln(S(t)) tracking accumulated event intensity.
- * 4. "hazard_rate": Smoothed hazard density / failure velocity over time buckets.
- *
- * Advanced Statistical Features:
- * - Greenwood's formula 95% Confidence Interval ribbon bands.
- * - Aligned At-Risk Life Table directly beneath the time axis showing n(t) active subjects.
- * - Median survival / MTTR time benchmark guide (S(t) = 0.5) with interactive hover.
- * - Log-Rank Chi-Square hypothesis test comparing divergence across cohorts/strata.
- * - Dynamic field-role mapping populated from live query via registerOptions.
- * - High-performance O(N log N) processing for 5,000+ observations.
- * - Responsive ResizeObserver with <4px delta guard.
+ * 4. "hazard_rate": Kernel-smoothed instantaneous hazard rate lambda(t) over adaptive time intervals.
  *
  * Configuration Options: Strictly 2 clean tabs (Display and Style).
  */
@@ -64,7 +55,8 @@
       posBadge: "#4ade80",
       negBadge: "#fb7185",
       medianLine: "#fbbf24",
-      targetLine: "#f43f5e"
+      targetLine: "#f43f5e",
+      dark: true
     },
     google_enterprise: {
       name: "Google Enterprise",
@@ -80,7 +72,8 @@
       posBadge: "#137333",
       negBadge: "#c5221f",
       medianLine: "#fbbc04",
-      targetLine: "#ea4335"
+      targetLine: "#ea4335",
+      dark: false
     },
     modern_slate: {
       name: "Modern Slate",
@@ -96,7 +89,8 @@
       posBadge: "#15803d",
       negBadge: "#b91c1c",
       medianLine: "#f59e0b",
-      targetLine: "#2563eb"
+      targetLine: "#2563eb",
+      dark: false
     },
     emerald_finops: {
       name: "Emerald FinOps",
@@ -112,7 +106,8 @@
       posBadge: "#047857",
       negBadge: "#dc2626",
       medianLine: "#0d9488",
-      targetLine: "#059669"
+      targetLine: "#059669",
+      dark: false
     },
     sunset_media: {
       name: "Sunset Media & Coral",
@@ -128,7 +123,8 @@
       posBadge: "#15803d",
       negBadge: "#dc2626",
       medianLine: "#f59e0b",
-      targetLine: "#be123c"
+      targetLine: "#be123c",
+      dark: false
     },
     wellverse_healthcare: {
       name: "Wellverse Healthcare (Clinical)",
@@ -144,16 +140,26 @@
       posBadge: "#006B40",
       negBadge: "#B42318",
       medianLine: "#2E7CF6",
-      targetLine: "#143359"
+      targetLine: "#143359",
+      dark: false
     }
   };
 
+  function escHtml(s) {
+    return String(s === null || s === undefined ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   function resolveField(list, overrideVal, defaultIdx) {
     if (!list || list.length === 0) return null;
-    if (overrideVal) {
+    if (overrideVal !== undefined && overrideVal !== null && String(overrideVal).trim() !== "") {
       var trimmed = String(overrideVal).trim();
       var idx = parseInt(trimmed, 10);
-      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+      if (!isNaN(idx) && String(idx) === trimmed && idx >= 1 && idx <= list.length) {
         return list[idx - 1];
       }
       for (var i = 0; i < list.length; i++) {
@@ -162,12 +168,38 @@
         }
       }
     }
-    return defaultIdx >= 0 ? (list[defaultIdx] || list[0]) : null;
+    return defaultIdx >= 0 ? (list[defaultIdx] || null) : null;
   }
 
-  function formatTime(val, unit) {
+  function formatMetricValue(val, valueFormat, unit) {
     if (val === null || val === undefined || isNaN(val)) return "-";
     var num = Number(val);
+    var fmt = valueFormat || "auto";
+    if (fmt === "compact_number") {
+      var abs = Math.abs(num);
+      if (abs >= 1e9) return (num / 1e9).toFixed(1) + "B";
+      if (abs >= 1e6) return (num / 1e6).toFixed(1) + "M";
+      if (abs >= 1e3) return (num / 1e3).toFixed(1) + "K";
+      return Math.abs(num) >= 100 ? Math.round(num).toLocaleString() : num.toFixed(1);
+    }
+    if (fmt === "compact_currency") {
+      var absC = Math.abs(num);
+      var sign = num < 0 ? "-" : "";
+      if (absC >= 1e9) return sign + "$" + (absC / 1e9).toFixed(1) + "B";
+      if (absC >= 1e6) return sign + "$" + (absC / 1e6).toFixed(1) + "M";
+      if (absC >= 1e3) return sign + "$" + (absC / 1e3).toFixed(1) + "K";
+      return sign + "$" + absC.toFixed(0);
+    }
+    if (fmt === "percentage") {
+      return (Math.abs(num) <= 1 ? num * 100 : num).toFixed(1) + "%";
+    }
+    if (fmt === "decimal_2") {
+      return num.toFixed(2);
+    }
+    if (fmt === "raw") {
+      return String(Math.round(num * 1000) / 1000);
+    }
+    // "auto": time duration units
     var uStr = unit ? " " + unit : "";
     if (Math.abs(num) >= 100) return Math.round(num).toLocaleString() + uStr;
     return num.toFixed(1) + uStr;
@@ -178,12 +210,266 @@
     return (val * 100).toFixed(1) + "%";
   }
 
+  function computeKMForObservations(stratumName, obsList) {
+    var sorted = obsList.slice().sort(function (a, b) { return a.t - b.t; });
+    var totalN = sorted.length;
+    var uniqueTimes = [];
+    var timeMap = {};
+
+    sorted.forEach(function (o) {
+      var t = o.t;
+      if (!timeMap[t]) {
+        timeMap[t] = { t: t, events: 0, censored: 0, links: o.links || [] };
+        uniqueTimes.push(t);
+      }
+      if (o.event === 1) {
+        timeMap[t].events++;
+      } else {
+        timeMap[t].censored++;
+      }
+      if ((!timeMap[t].links || !timeMap[t].links.length) && o.links && o.links.length) {
+        timeMap[t].links = o.links;
+      }
+    });
+
+    uniqueTimes.sort(function (a, b) { return a - b; });
+
+    var curS = 1.0;
+    var curN = totalN;
+    var greenwoodSum = 0;
+    var medianTime = null;
+    var cumEvents = 0;
+    var firstLinks = (sorted[0] && sorted[0].links) || [];
+
+    var curvePoints = [{
+      t: 0, s: 1.0, lowerCI: 1.0, upperCI: 1.0,
+      atRisk: totalN, events: 0, cumEvents: 0, censored: 0, cumHazard: 0, links: firstLinks
+    }];
+
+    uniqueTimes.forEach(function (t) {
+      var entry = timeMap[t];
+      var d = entry.events;
+      var c = entry.censored;
+      cumEvents += d;
+
+      if (curN > 0) {
+        if (d > 0) {
+          curS = curS * (1 - d / curN);
+          if (curN > d) {
+            greenwoodSum += d / (curN * (curN - d));
+          }
+        }
+
+        var se = curS * Math.sqrt(greenwoodSum);
+        var lower = Math.max(0, curS - 1.96 * se);
+        var upper = Math.min(1.0, curS + 1.96 * se);
+        var cumHaz = -Math.log(Math.max(0.0001, curS));
+
+        curvePoints.push({
+          t: t,
+          s: curS,
+          lowerCI: lower,
+          upperCI: upper,
+          atRisk: curN,
+          events: d,
+          cumEvents: cumEvents,
+          censored: c,
+          cumHazard: cumHaz,
+          links: entry.links || firstLinks
+        });
+
+        if (medianTime === null && curS <= 0.5) {
+          medianTime = t;
+        }
+
+        curN = curN - d - c;
+      }
+    });
+
+    var censoredPoints = [];
+    uniqueTimes.forEach(function (t) {
+      var entry = timeMap[t];
+      if (entry.censored > 0) {
+        var matchedPt = null;
+        for (var i = 0; i < curvePoints.length; i++) {
+          if (curvePoints[i].t === t) { matchedPt = curvePoints[i]; break; }
+        }
+        censoredPoints.push({
+          t: t,
+          s: matchedPt ? matchedPt.s : 0,
+          count: entry.censored
+        });
+      }
+    });
+
+    var maxT = uniqueTimes.length ? uniqueTimes[uniqueTimes.length - 1] : 0;
+    var eventsTotal = 0;
+    var censoredTotal = 0;
+    sorted.forEach(function (o) {
+      if (o.event === 1) eventsTotal++;
+      else censoredTotal++;
+    });
+
+    return {
+      stratum: stratumName,
+      total: totalN,
+      events: eventsTotal,
+      censored: censoredTotal,
+      medianTime: medianTime !== null ? medianTime : maxT,
+      medianReached: medianTime !== null,
+      endSurvival: curS,
+      curve: curvePoints,
+      censoredPoints: censoredPoints,
+      maxTime: maxT,
+      obs: sorted,
+      links: firstLinks
+    };
+  }
+
+  // Approximate Chi-Square upper-tail p-value for df >= 1
+  function chiSquarePValue(chiSq, df) {
+    if (!chiSq || chiSq <= 0 || df < 1) return 1.0;
+    if (df === 1) {
+      // Complementary error function approximation for Z = sqrt(chiSq)
+      var z = Math.sqrt(chiSq) / Math.SQRT2;
+      var t = 1 / (1 + 0.3275911 * z);
+      var erfc = t * (0.254829592 + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429)))) * Math.exp(-z * z);
+      return Math.min(1.0, Math.max(0.0, erfc));
+    }
+    // Wilson-Hilferty transformation to standard normal
+    var k = df;
+    var w = Math.pow(chiSq / k, 1 / 3) - (1 - 2 / (9 * k));
+    var denom = Math.sqrt(2 / (9 * k));
+    var zScore = w / denom;
+    if (zScore <= 0) return 0.5;
+    var zAbs = Math.abs(zScore) / Math.SQRT2;
+    var t2 = 1 / (1 + 0.3275911 * zAbs);
+    var erfc2 = t2 * (0.254829592 + t2 * (-0.284496736 + t2 * (1.421413741 + t2 * (-1.453152027 + t2 * 1.061405429)))) * Math.exp(-zAbs * zAbs);
+    return Math.min(1.0, Math.max(0.0, 0.5 * erfc2));
+  }
+
+  // Mantel-Cox Log-Rank Test across K >= 2 strata
+  function computeLogRankTest(strataResults) {
+    if (!strataResults || strataResults.length < 2) return null;
+    var K = strataResults.length;
+    var eventTimesSet = {};
+    var obsPerStratum = [];
+    var expPerStratum = [];
+    var varPerStratum = [];
+
+    for (var k = 0; k < K; k++) {
+      obsPerStratum.push(0);
+      expPerStratum.push(0);
+      varPerStratum.push(0);
+      strataResults[k].obs.forEach(function (o) {
+        if (o.event === 1) eventTimesSet[o.t] = true;
+      });
+    }
+
+    var times = Object.keys(eventTimesSet).map(Number).sort(function (a, b) { return a - b; });
+    if (times.length === 0) return null;
+
+    // Precompute sorted times per stratum for O(N + T*K) pointer sweep
+    var ptrs = [];
+    var atRisk = [];
+    for (var k2 = 0; k2 < K; k2++) {
+      ptrs.push(0);
+      atRisk.push(strataResults[k2].obs.length);
+    }
+
+    times.forEach(function (t) {
+      var nRiskK = [];
+      var dK = [];
+      var nRiskTotal = 0;
+      var dTotal = 0;
+
+      for (var k3 = 0; k3 < K; k3++) {
+        var list = strataResults[k3].obs;
+        var p = ptrs[k3];
+        while (p < list.length && list[p].t < t) {
+          atRisk[k3]--;
+          p++;
+        }
+        ptrs[k3] = p;
+        var eventsAtT = 0;
+        var pLook = p;
+        while (pLook < list.length && list[pLook].t === t) {
+          if (list[pLook].event === 1) eventsAtT++;
+          pLook++;
+        }
+        nRiskK.push(atRisk[k3]);
+        dK.push(eventsAtT);
+        nRiskTotal += atRisk[k3];
+        dTotal += eventsAtT;
+      }
+
+      if (nRiskTotal > 1 && dTotal > 0) {
+        for (var k4 = 0; k4 < K; k4++) {
+          obsPerStratum[k4] += dK[k4];
+          expPerStratum[k4] += nRiskK[k4] * (dTotal / nRiskTotal);
+          varPerStratum[k4] += (nRiskK[k4] * (nRiskTotal - nRiskK[k4]) * dTotal * (nRiskTotal - dTotal)) /
+            (nRiskTotal * nRiskTotal * (nRiskTotal - 1));
+        }
+      }
+    });
+
+    var chiSq = 0;
+    if (K === 2) {
+      var v0 = varPerStratum[0];
+      if (v0 > 1e-9) {
+        chiSq = Math.pow(obsPerStratum[0] - expPerStratum[0], 2) / v0;
+      }
+    } else {
+      for (var k5 = 0; k5 < K; k5++) {
+        if (expPerStratum[k5] > 1e-9) {
+          chiSq += Math.pow(obsPerStratum[k5] - expPerStratum[k5], 2) / expPerStratum[k5];
+        }
+      }
+    }
+
+    var df = K - 1;
+    return {
+      chiSq: chiSq,
+      df: df,
+      pValue: chiSquarePValue(chiSq, df)
+    };
+  }
+
+  function computeHazardRateBins(stratumRes, maxGlobalTime, numBins) {
+    var binWidth = Math.max(0.001, maxGlobalTime / numBins);
+    var bins = [];
+    for (var b = 0; b < numBins; b++) {
+      var tStart = b * binWidth;
+      var tEnd = (b + 1) * binWidth;
+      var tMid = (tStart + tEnd) / 2;
+      var eventsInBin = 0;
+      var atRiskStart = 0;
+      for (var i = 0; i < stratumRes.obs.length; i++) {
+        var o = stratumRes.obs[i];
+        if (o.t >= tStart) atRiskStart++;
+        if (o.event === 1 && o.t >= tStart && (b === numBins - 1 ? o.t <= tEnd + 1e-9 : o.t < tEnd)) {
+          eventsInBin++;
+        }
+      }
+      var rawRate = atRiskStart > 0 ? eventsInBin / (atRiskStart * binWidth) : 0;
+      bins.push({ t: tMid, tStart: tStart, tEnd: tEnd, rawRate: rawRate, rate: rawRate, events: eventsInBin, atRisk: atRiskStart });
+    }
+    // 3-point triangular smoothing for clean density visualization
+    for (var j = 0; j < bins.length; j++) {
+      var prev = j > 0 ? bins[j - 1].rawRate : bins[j].rawRate;
+      var curr = bins[j].rawRate;
+      var next = j < bins.length - 1 ? bins[j + 1].rawRate : bins[j].rawRate;
+      bins[j].rate = 0.25 * prev + 0.5 * curr + 0.25 * next;
+    }
+    return bins;
+  }
+
   looker.plugins.visualizations.add({
     id: "kaplan_meier_survival_curve",
     label: "Kaplan-Meier Survival & Hazard Curve",
     options: {
       // ==========================================
-      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // SECTION 1: DISPLAY (Strictly 2 tabs total)
       // ==========================================
       viewMode: {
         type: "string",
@@ -195,102 +481,128 @@
           { "Kaplan-Meier Survival Probability S(t)": "survival" },
           { "Cumulative Resolution / Attrition (1 - S(t))": "inverted_churn" },
           { "Nelson-Aalen Cumulative Hazard H(t)": "cumulative_hazard" },
-          { "Smoothed Hazard Rate Density": "hazard_rate" }
+          { "Smoothed Hazard Rate Density \u03bb(t)": "hazard_rate" }
         ],
         default: "survival"
       },
       strataDimOverride: {
         type: "string",
-        label: "Strata / Cohort Dimension Override",
+        label: "Primary Strata / Cohort Dimension",
         section: "Display",
         order: 2,
         display: "select",
-        values: [{ "Auto (run query to populate choices)": "" }],
+        values: [{ "Auto (run the query to populate field choices)": "" }],
         default: ""
       },
-      obsIdDimOverride: {
+      strataSecondaryOverride: {
         type: "string",
-        label: "Observation ID Dimension Override",
+        label: "Secondary / Sub-Strata Dimension",
         section: "Display",
         order: 3,
         display: "select",
         values: [{ "Auto / None": "" }],
         default: ""
       },
-      durationMeasureOverride: {
+      obsIdDimOverride: {
         type: "string",
-        label: "Duration / Time to Event Measure Override",
+        label: "Observation ID Dimension",
         section: "Display",
         order: 4,
         display: "select",
-        values: [{ "Auto (run query to populate choices)": "" }],
+        values: [{ "Auto / None": "" }],
+        default: ""
+      },
+      durationMeasureOverride: {
+        type: "string",
+        label: "Duration / Time-to-Event Field",
+        section: "Display",
+        order: 5,
+        display: "select",
+        values: [{ "Auto (run the query to populate field choices)": "" }],
         default: ""
       },
       eventMeasureOverride: {
         type: "string",
-        label: "Event / Censoring Status Measure Override",
+        label: "Event / Censoring Status Field",
         section: "Display",
-        order: 5,
+        order: 6,
         display: "select",
         values: [{ "Auto / None (Treat All as Events)": "" }],
         default: ""
       },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target / SLA Measure Column",
+        section: "Display",
+        order: 7,
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: ""
+      },
       showConfidenceInterval: {
         type: "boolean",
-        label: "Show 95% Confidence Interval Ribbon Bands (Greenwood)",
+        label: "Show 95% CI Ribbon Bands (Greenwood)",
         section: "Display",
-        order: 6,
+        order: 8,
         default: true
       },
       showRiskTable: {
         type: "boolean",
         label: "Show Aligned At-Risk Life Table",
         section: "Display",
-        order: 7,
+        order: 9,
         default: true
       },
       showMedianGuide: {
         type: "boolean",
-        label: "Show Median Survival Time Benchmark Guide (50%)",
+        label: "Show Median Survival Guide (P50 = 50%)",
         section: "Display",
-        order: 8,
+        order: 10,
         default: true
       },
       targetMode: {
         type: "string",
-        label: "SLA / Target Milestone Reference Goal",
+        label: "SLA / Target Milestone Reference Mode",
         section: "Display",
-        order: 9,
+        order: 11,
         display: "select",
         values: [
-          { "None (No Target Line)": "none" },
-          { "Fixed Time Value (e.g. 120m SLA)": "fixed_value" },
+          { "Fixed Time Value": "fixed_value" },
+          { "Measure Column": "measure_column" },
           { "Dataset Mean Duration": "dataset_mean" },
           { "Dataset Median Duration (P50)": "dataset_median" },
-          { "Top Quartile Duration (P75)": "percentile_p75" },
-          { "Elite Frontier Duration (P90)": "percentile_p90" }
+          { "Percentile P75 Duration": "percentile_p75" },
+          { "Percentile P90 Duration": "percentile_p90" },
+          { "None (No Target Line)": "none" }
         ],
         default: "fixed_value"
       },
       fixedTargetValue: {
         type: "number",
-        label: "Target Milestone Value (Units of Time)",
+        label: "Custom Target Milestone Value",
         section: "Display",
-        order: 10,
+        order: 12,
         default: 120
       },
-      targetLabel: {
+      referenceLineLabel: {
         type: "string",
-        label: "Target Reference Line Label",
+        label: "Reference Line Label",
         section: "Display",
-        order: 11,
+        order: 13,
         default: "Incident SLA (120m)"
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "SLA Breach / Divergence Alert Threshold (%)",
+        section: "Display",
+        order: 14,
+        default: 25
       },
       timeUnit: {
         type: "string",
         label: "Duration Time Unit Label",
         section: "Display",
-        order: 12,
+        order: 15,
         display: "select",
         values: [
           { "Minutes (e.g. Incident MTTR)": "Minutes" },
@@ -303,95 +615,116 @@
       },
       strataSort: {
         type: "string",
-        label: "Strata / Cohort Ordering",
+        label: "Cohort / Strata Sort Order",
         section: "Display",
-        order: 13,
+        order: 16,
         display: "select",
         values: [
-          { "Fastest Median Event Time First": "median_asc" },
-          { "Slowest Median Event Time First": "median_desc" },
+          { "Fastest Median Time (Ascending)": "median_asc" },
+          { "Slowest Median Time (Descending)": "median_desc" },
+          { "Observation Count (Descending)": "count_desc" },
           { "Alphabetical (A to Z)": "alphabetical" },
           { "Natural (Query Order)": "natural" }
         ],
         default: "median_asc"
       },
-      maxStrata: {
+      topNLimit: {
         type: "string",
-        label: "Strata Display Limit (Top-N)",
+        label: "Top-N Cohort Limit",
         section: "Display",
-        order: 14,
+        order: 17,
         display: "select",
         values: [
-          { "Top 3 Strata": "3" },
-          { "Top 5 Strata": "5" },
-          { "Top 8 Strata": "8" },
-          { "Top 10 Strata": "10" },
-          { "All Strata (Expanded Limits)": "all" }
+          { "Top 3 Cohorts": "3" },
+          { "Top 5 Cohorts": "5" },
+          { "Top 8 Cohorts": "8" },
+          { "Top 10 Cohorts": "10" },
+          { "All Cohorts": "all" }
         ],
         default: "5"
       },
       enableOtherRollup: {
         type: "boolean",
-        label: "Group Remaining Strata into 'Other' Cohort",
+        label: "Roll Remaining Cohorts into 'Other'",
         section: "Display",
-        order: 15,
+        order: 18,
         default: false
       },
-      hudDensity: {
-        type: "string",
-        label: "Executive Scorecard HUD",
+      suppressZeroNull: {
+        type: "boolean",
+        label: "Suppress Zero / Null Duration Rows",
         section: "Display",
-        order: 16,
+        order: 19,
+        default: false
+      },
+      hudMode: {
+        type: "string",
+        label: "Executive KPI HUD Density",
+        section: "Display",
+        order: 20,
         display: "select",
         values: [
-          { "Full Scorecard Banner (4 Metrics)": "full" },
-          { "Compact Status Strip": "compact" },
-          { "Hidden (Maximize Canvas Space)": "hidden" }
+          { "Full Scorecard (4 KPIs + Log-Rank)": "scorecard" },
+          { "Compact Strip": "compact_strip" },
+          { "Hidden": "hidden" }
         ],
-        default: "full"
+        default: "scorecard"
+      },
+      labelDensity: {
+        type: "string",
+        label: "Data Callout Label Density",
+        section: "Display",
+        order: 21,
+        display: "select",
+        values: [
+          { "All Curve Endpoints & Milestones": "all" },
+          { "Min/Max Peaks & Median Only": "peaks_only" },
+          { "Hidden": "hidden" }
+        ],
+        default: "peaks_only"
       },
       customTitle: {
         type: "string",
         label: "Custom Chart Title Override",
         section: "Display",
-        order: 17,
+        order: 22,
         default: ""
       },
       customSubtitle: {
         type: "string",
         label: "Custom Chart Subtitle Override",
         section: "Display",
-        order: 18,
+        order: 23,
         default: ""
       },
       showSearch: {
         type: "boolean",
-        label: "Show Interactive Cohort Search Box",
+        label: "Show Interactive Cohort Search Bar",
         section: "Display",
-        order: 19,
+        order: 24,
         default: true
       },
       showLegend: {
         type: "boolean",
-        label: "Show Cohort Legend & Filter Pills",
+        label: "Show Interactive Cohort Legend Pills",
         section: "Display",
-        order: 20,
+        order: 25,
         default: true
       },
 
       // ==========================================
-      // SECTION 2: STYLE (Strictly minimized tab)
+      // SECTION 2: STYLE (Strictly 2 tabs total)
       // ==========================================
       colorPalette: {
         type: "string",
-        label: "Brand Palette Preset",
+        label: "Brand Color Palette",
         section: "Style",
         order: 1,
         display: "select",
         values: [
-          { "Cyberpunk Dark (NOC / SecOps)": "cyberpunk_dark" },
           { "Google Enterprise": "google_enterprise" },
           { "Modern Slate": "modern_slate" },
+          { "Cyberpunk Dark (NOC / SecOps)": "cyberpunk_dark" },
           { "Emerald FinOps": "emerald_finops" },
           { "Sunset Media & Coral": "sunset_media" },
           { "Wellverse Healthcare (Clinical)": "wellverse_healthcare" },
@@ -401,7 +734,7 @@
       },
       customPrimaryHex: {
         type: "string",
-        label: "Custom Primary Cohort Hex",
+        label: "Custom Primary Curve Hex",
         display: "color",
         section: "Style",
         order: 2,
@@ -409,7 +742,7 @@
       },
       customPositiveHex: {
         type: "string",
-        label: "Custom Target Pass / High Survival Hex",
+        label: "Custom Favorable / Pass Hex",
         display: "color",
         section: "Style",
         order: 3,
@@ -417,21 +750,21 @@
       },
       customNegativeHex: {
         type: "string",
-        label: "Custom Target Lag / High Hazard Hex",
+        label: "Custom Breach / Alert Hex",
         display: "color",
         section: "Style",
         order: 4,
         default: ""
       },
-      polarity: {
+      metricPolarity: {
         type: "string",
         label: "Metric Polarity",
         section: "Style",
         order: 5,
         display: "select",
         values: [
-          { "Higher Survival is Favorable (Retention / Clinical)": "higher_is_better" },
-          { "Faster Resolution / Lower Survival is Favorable (MTTR / Defect)": "lower_is_better" }
+          { "Lower Duration is Better (MTTR / SLA Resolution)": "lower_is_better" },
+          { "Higher Survival is Better (Retention / Clinical)": "higher_is_better" }
         ],
         default: "lower_is_better"
       },
@@ -442,17 +775,33 @@
         order: 6,
         display: "select",
         values: [
-          { "Compact (High Density Dashboard)": "compact" },
-          { "Standard (Default)": "standard" },
-          { "Large Presentation (Executive Wallboard)": "large" }
+          { "Compact (Dense Dashboard)": "compact" },
+          { "Standard": "standard" },
+          { "Large Presentation": "large" }
         ],
         default: "standard"
+      },
+      valueFormat: {
+        type: "string",
+        label: "Value Format",
+        section: "Style",
+        order: 7,
+        display: "select",
+        values: [
+          { "Auto (Time Units)": "auto" },
+          { "Compact Number (1.2M)": "compact_number" },
+          { "Compact Currency ($1.2M)": "compact_currency" },
+          { "Percentage (45.2%)": "percentage" },
+          { "Decimal (2dp)": "decimal_2" },
+          { "Raw": "raw" }
+        ],
+        default: "auto"
       },
       curveInterpolation: {
         type: "string",
         label: "Curve Step Interpolation",
         section: "Style",
-        order: 7,
+        order: 8,
         display: "select",
         values: [
           { "Kaplan-Meier Step-After (Standard)": "step_after" },
@@ -463,16 +812,16 @@
       },
       strokeWidth: {
         type: "number",
-        label: "Survival Curve Stroke Thickness (px)",
+        label: "Curve Stroke Thickness (px)",
         section: "Style",
-        order: 8,
+        order: 9,
         default: 2.5
       },
       ciBandOpacity: {
         type: "number",
-        label: "Confidence Interval Ribbon Opacity (0.05 - 0.5)",
+        label: "CI Ribbon Opacity (0.05 - 0.5)",
         section: "Style",
-        order: 9,
+        order: 10,
         default: 0.15
       }
     },
@@ -481,9 +830,11 @@
       var self = this;
       var FIELD_ROLE_OPTIONS = {
         strataDimOverride: { role: "dimension", defaultIdx: 0 },
+        strataSecondaryOverride: { role: "dimension", defaultIdx: -1 },
         obsIdDimOverride: { role: "dimension", defaultIdx: 1 },
         durationMeasureOverride: { role: "measure", defaultIdx: 0 },
-        eventMeasureOverride: { role: "measure", defaultIdx: -1 }
+        eventMeasureOverride: { role: "measure", defaultIdx: -1 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
       var f = queryResponse.fields;
@@ -542,7 +893,12 @@
       this._lastHeight = 0;
       this._lastWidth = 0;
 
+      // Preserve Looker's explicit element dimensions/margins; never set width:100%/height:100% on element
+      element.style.boxSizing = "border-box";
+      element.style.padding = "0";
+      element.style.overflow = "hidden";
       element.innerHTML = "";
+
       this._container = document.createElement("div");
       this._container.className = "looker-km-survival-container";
       this._container.style.width = "100%";
@@ -553,7 +909,6 @@
       this._container.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
       element.appendChild(this._container);
 
-      // Tooltip
       var oldTooltips = document.querySelectorAll(".km-survival-tooltip");
       for (var i = 0; i < oldTooltips.length; i++) {
         if (oldTooltips[i].parentNode) oldTooltips[i].parentNode.removeChild(oldTooltips[i]);
@@ -602,7 +957,9 @@
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
-      if (typeof this.clearErrors === "function") this.clearErrors();
+      if (typeof this.clearErrors === "function") {
+        try { this.clearErrors(); } catch (e) {}
+      }
       this._registerDynamicFieldOptions(queryResponse);
 
       this._lastData = data;
@@ -612,103 +969,136 @@
 
       if (!data || data.length === 0) {
         if (typeof this.addError === "function") {
-          this.addError({
-            title: "No Data",
-            message: "The query returned 0 rows. Please select dimensions and duration measures."
-          });
+          try {
+            this.addError({
+              title: "No Data",
+              message: "The query returned 0 rows. Please select dimensions and duration measures."
+            });
+          } catch (e) {}
         }
         done();
         return;
       }
 
       var fields = queryResponse ? queryResponse.fields : null;
-      var dims = (fields && fields.dimensions) || [];
-      var measures = (fields && fields.measures) || [];
+      var dims = (fields && fields.dimensions && fields.dimensions.length) ? fields.dimensions : ((fields && fields.dimension_like) || []);
+      var measures = (fields && fields.measures && fields.measures.length) ? fields.measures : ((fields && fields.measure_like) || []);
       if (!measures.length && fields && fields.table_calculations && fields.table_calculations.length) {
         measures = fields.table_calculations;
       }
 
-      // Dynamic field resolution
       var strataDim = resolveField(dims, config.strataDimOverride, 0);
+      var strataSecDim = config.strataSecondaryOverride ? resolveField(dims, config.strataSecondaryOverride, -1) : null;
       var obsIdDim = resolveField(dims, config.obsIdDimOverride, 1);
       var durationField = resolveField(measures, config.durationMeasureOverride, 0) || resolveField(dims, config.durationMeasureOverride, 1);
-      var eventField = resolveField(measures, config.eventMeasureOverride, -1);
+      var eventField = config.eventMeasureOverride ? resolveField(measures, config.eventMeasureOverride, -1) : null;
+      var targetMeasField = config.targetMeasureOverride ? resolveField(measures, config.targetMeasureOverride, -1) : null;
 
       if (!durationField) {
         if (typeof this.addError === "function") {
-          this.addError({
-            title: "Missing Duration Field",
-            message: "Kaplan-Meier survival curve requires at least one numeric measure or dimension representing time duration (e.g. MTTR minutes, active days, survival time)."
-          });
+          try {
+            this.addError({
+              title: "Missing Duration Field",
+              message: "Kaplan-Meier survival curve requires at least one numeric measure or dimension representing time duration."
+            });
+          } catch (e) {}
         }
         done();
         return;
       }
 
-      // Parse observations
+      var suppressZeroNull = config.suppressZeroNull === true;
       var observations = [];
+      var targetMeasureValues = [];
+
       data.forEach(function (row, rIdx) {
-        var sName = strataDim && row[strataDim.name] && row[strataDim.name].value !== null ? String(row[strataDim.name].value) : "All Cohorts";
-        var obsId = obsIdDim && row[obsIdDim.name] && row[obsIdDim.name].value !== null ? String(row[obsIdDim.name].value) : "Obs " + (rIdx + 1);
+        var primaryStrata = strataDim && row[strataDim.name] && row[strataDim.name].value !== null && row[strataDim.name].value !== undefined
+          ? String(row[strataDim.name].value)
+          : "All Cohorts";
+        var secStrata = strataSecDim && row[strataSecDim.name] && row[strataSecDim.name].value !== null && row[strataSecDim.name].value !== undefined
+          ? String(row[strataSecDim.name].value)
+          : "";
+        var sName = secStrata ? (primaryStrata + " \u2014 " + secStrata) : primaryStrata;
+
+        var obsId = obsIdDim && row[obsIdDim.name] && row[obsIdDim.name].value !== null && row[obsIdDim.name].value !== undefined
+          ? String(row[obsIdDim.name].value)
+          : "Obs " + (rIdx + 1);
 
         var dCell = row[durationField.name];
-        var durationVal = dCell && dCell.value !== null && dCell.value !== undefined ? Number(dCell.value) : 0;
+        var rawDur = dCell ? dCell.value : null;
+        if (suppressZeroNull && (rawDur === null || rawDur === undefined || rawDur === "" || Number(rawDur) <= 0 || isNaN(Number(rawDur)))) {
+          return;
+        }
+        var durationVal = rawDur !== null && rawDur !== undefined ? Number(rawDur) : 0;
         if (isNaN(durationVal) || durationVal < 0) durationVal = 0;
 
-        // Event status: 1 = event (uncensored), 0 = censored
         var isEvent = 1;
         if (eventField && row[eventField.name]) {
           var evVal = row[eventField.name].value;
-          if (evVal === false || evVal === 0 || evVal === "0" || evVal === "censored" || evVal === "false") {
+          if (evVal === false || evVal === 0 || evVal === "0" || evVal === "censored" || evVal === "false" || evVal === "no") {
             isEvent = 0;
           }
         }
+
+        if (targetMeasField && row[targetMeasField.name] && row[targetMeasField.name].value !== null) {
+          var tv = Number(row[targetMeasField.name].value);
+          if (!isNaN(tv) && tv > 0) targetMeasureValues.push(tv);
+        }
+
+        var links = [];
+        if (dCell && dCell.links && dCell.links.length) links = dCell.links;
+        else if (strataDim && row[strataDim.name] && row[strataDim.name].links && row[strataDim.name].links.length) links = row[strataDim.name].links;
+        else if (obsIdDim && row[obsIdDim.name] && row[obsIdDim.name].links && row[obsIdDim.name].links.length) links = row[obsIdDim.name].links;
 
         observations.push({
           id: obsId,
           strata: sName,
           t: durationVal,
           event: isEvent,
-          links: (dCell && dCell.links) || (strataDim && row[strataDim.name] && row[strataDim.name].links) || []
+          links: links
         });
       });
 
       var self = this;
       ensureD3(function (d3) {
-        self._render(d3, observations, config, queryResponse, done);
+        self._render(d3, observations, targetMeasureValues, config, queryResponse, done);
       });
     },
 
-    _render: function (d3, observations, config, queryResponse, done) {
+    _render: function (d3, observations, targetMeasureValues, config, queryResponse, done) {
       var self = this;
       var container = this._container;
       container.innerHTML = "";
 
-      // Options
+      // Resolve options with backward compatibility for legacy keys
       var viewMode = config.viewMode || "survival";
       var showConfidenceInterval = config.showConfidenceInterval !== false;
       var showRiskTable = config.showRiskTable !== false;
       var showMedianGuide = config.showMedianGuide !== false;
       var targetMode = config.targetMode || "fixed_value";
       var fixedTargetValue = config.fixedTargetValue !== undefined ? Number(config.fixedTargetValue) : 120;
-      var targetLabel = config.targetLabel || "Incident SLA (120m)";
+      var referenceLineLabel = config.referenceLineLabel || config.targetLabel || "Incident SLA (120m)";
+      var anomalyThresholdPct = config.anomalyThresholdPct !== undefined ? Number(config.anomalyThresholdPct) : 25;
       var timeUnit = config.timeUnit || "Minutes";
       var strataSort = config.strataSort || "median_asc";
-      var maxStrataOpt = config.maxStrata || "5";
+      var topNOpt = config.topNLimit || config.maxStrata || "5";
       var enableOtherRollup = config.enableOtherRollup === true;
-      var hudDensity = config.hudDensity || "full";
+
+      var rawHud = config.hudMode || config.hudDensity || "scorecard";
+      var hudMode = rawHud === "full" ? "scorecard" : rawHud === "compact" ? "compact_strip" : rawHud;
+      var labelDensity = config.labelDensity || "peaks_only";
       var customTitle = config.customTitle || "";
       var customSubtitle = config.customSubtitle || "";
       var showSearch = config.showSearch !== false;
       var showLegend = config.showLegend !== false;
 
       var fontScale = config.fontScale || "standard";
+      var valueFormat = config.valueFormat || "auto";
       var curveInterpolation = config.curveInterpolation || "step_after";
       var strokeWidth = config.strokeWidth !== undefined ? Number(config.strokeWidth) : 2.5;
       var ciBandOpacity = config.ciBandOpacity !== undefined ? Number(config.ciBandOpacity) : 0.15;
-      var metricPolarity = config.polarity || "lower_is_better";
+      var metricPolarity = config.metricPolarity || config.polarity || "lower_is_better";
 
-      // Typography
       var fSizes = {
         title: fontScale === "compact" ? "12px" : fontScale === "large" ? "16px" : "14px",
         hudVal: fontScale === "compact" ? "11px" : fontScale === "large" ? "15px" : "13px",
@@ -717,14 +1107,37 @@
         tableTxt: fontScale === "compact" ? "9px" : fontScale === "large" ? "11px" : "10px"
       };
 
-      // Theme
       var paletteKey = config.colorPalette || "cyberpunk_dark";
-      var theme = PALETTES[paletteKey] || PALETTES.cyberpunk_dark;
-      if (paletteKey === "custom_override") {
-        theme = Object.assign({}, PALETTES.cyberpunk_dark);
-        if (config.customPrimaryHex) theme.colors[0] = config.customPrimaryHex;
-        if (config.customPositiveHex) theme.posBadge = config.customPositiveHex;
-        if (config.customNegativeHex) theme.negBadge = config.customNegativeHex;
+      var baseTheme = paletteKey === "custom_override" ? PALETTES.google_enterprise : (PALETTES[paletteKey] || PALETTES.cyberpunk_dark);
+      var theme = Object.assign({}, baseTheme, { colors: baseTheme.colors.slice() });
+      if (config.customPrimaryHex) theme.colors[0] = config.customPrimaryHex;
+      if (config.customPositiveHex) theme.posBadge = config.customPositiveHex;
+      if (config.customNegativeHex) {
+        theme.negBadge = config.customNegativeHex;
+        theme.targetLine = config.customNegativeHex;
+      }
+
+      if (!observations || observations.length === 0) {
+        container.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:" + theme.subtext + ";font-size:13px;'>No observations remain after zero/null suppression.</div>";
+        done();
+        return;
+      }
+
+      // Compute dynamic benchmark / target value across all observations
+      var allDurations = observations.map(function (o) { return o.t; }).sort(function (a, b) { return a - b; });
+      var effectiveTargetVal = null;
+      if (targetMode === "fixed_value") {
+        effectiveTargetVal = !isNaN(fixedTargetValue) && fixedTargetValue > 0 ? fixedTargetValue : null;
+      } else if (targetMode === "measure_column") {
+        effectiveTargetVal = targetMeasureValues.length ? d3.mean(targetMeasureValues) : (!isNaN(fixedTargetValue) && fixedTargetValue > 0 ? fixedTargetValue : null);
+      } else if (targetMode === "dataset_mean") {
+        effectiveTargetVal = d3.mean(allDurations);
+      } else if (targetMode === "dataset_median") {
+        effectiveTargetVal = d3.quantile(allDurations, 0.5);
+      } else if (targetMode === "percentile_p75") {
+        effectiveTargetVal = d3.quantile(allDurations, 0.75);
+      } else if (targetMode === "percentile_p90") {
+        effectiveTargetVal = d3.quantile(allDurations, 0.90);
       }
 
       // Filter by search query
@@ -738,137 +1151,89 @@
 
       // Group observations by strata
       var strataMap = {};
+      var strataOrder = [];
       filteredObs.forEach(function (o) {
         if (!strataMap[o.strata]) {
           strataMap[o.strata] = [];
+          strataOrder.push(o.strata);
         }
         strataMap[o.strata].push(o);
       });
 
-      var strataKeys = Object.keys(strataMap);
-      if (strataKeys.length === 0) {
+      if (strataOrder.length === 0) {
         container.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:" + theme.subtext + ";font-size:14px;'>No matching observations found.</div>";
         done();
         return;
       }
 
-      // Compute Kaplan-Meier Curves per stratum
-      var kmResults = [];
-      strataKeys.forEach(function (stratumName) {
-        var obsList = strataMap[stratumName];
-        obsList.sort(function (a, b) { return a.t - b.t; });
-
-        var totalN = obsList.length;
-        var uniqueTimes = [];
-        var timeMap = {};
-
-        obsList.forEach(function (o) {
-          var t = o.t;
-          if (!timeMap[t]) {
-            timeMap[t] = { t: t, events: 0, censored: 0, links: o.links };
-            uniqueTimes.push(t);
-          }
-          if (o.event === 1) {
-            timeMap[t].events++;
-          } else {
-            timeMap[t].censored++;
-          }
-        });
-
-        uniqueTimes.sort(function (a, b) { return a - b; });
-
-        // Calculate product limit
-        var curS = 1.0;
-        var curN = totalN;
-        var greenwoodSum = 0;
-        var medianTime = null;
-
-        var curvePoints = [{ t: 0, s: 1.0, lowerCI: 1.0, upperCI: 1.0, atRisk: totalN, events: 0, censored: 0, cumHazard: 0 }];
-
-        uniqueTimes.forEach(function (t) {
-          var entry = timeMap[t];
-          var d = entry.events;
-          var c = entry.censored;
-
-          if (curN > 0) {
-            if (d > 0) {
-              curS = curS * (1 - d / curN);
-              if (curN > d) {
-                greenwoodSum += d / (curN * (curN - d));
-              }
-            }
-
-            var se = curS * Math.sqrt(greenwoodSum);
-            var lower = Math.max(0, curS - 1.96 * se);
-            var upper = Math.min(1.0, curS + 1.96 * se);
-            var cumHaz = -Math.log(Math.max(0.0001, curS));
-
-            curvePoints.push({
-              t: t,
-              s: curS,
-              lowerCI: lower,
-              upperCI: upper,
-              atRisk: curN,
-              events: d,
-              censored: c,
-              cumHazard: cumHaz,
-              links: entry.links
-            });
-
-            if (medianTime === null && curS <= 0.5) {
-              medianTime = t;
-            }
-
-            curN = curN - d - c;
-          }
-        });
-
-        var censoredPoints = [];
-        uniqueTimes.forEach(function (t) {
-          var entry = timeMap[t];
-          if (entry.censored > 0) {
-            var matchedPt = curvePoints.find(function (p) { return p.t === t; });
-            censoredPoints.push({
-              t: t,
-              s: matchedPt ? matchedPt.s : 0,
-              count: entry.censored
-            });
-          }
-        });
-
-        kmResults.push({
-          stratum: stratumName,
-          total: totalN,
-          events: d3.sum(obsList, function (o) { return o.event; }),
-          censored: d3.sum(obsList, function (o) { return o.event === 0 ? 1 : 0; }),
-          medianTime: medianTime !== null ? medianTime : d3.max(uniqueTimes),
-          curve: curvePoints,
-          censoredPoints: censoredPoints,
-          maxTime: d3.max(uniqueTimes) || 0
-        });
+      var kmResults = strataOrder.map(function (stratumName) {
+        return computeKMForObservations(stratumName, strataMap[stratumName]);
       });
 
-      // Sorting strata
+      // Reset stale activeStrata if filtered out
+      if (this._activeStrata && strataOrder.indexOf(this._activeStrata) === -1) {
+        this._activeStrata = null;
+      }
+
+      // Sort strata
       if (strataSort === "median_asc") {
         kmResults.sort(function (a, b) { return a.medianTime - b.medianTime; });
       } else if (strataSort === "median_desc") {
         kmResults.sort(function (a, b) { return b.medianTime - a.medianTime; });
+      } else if (strataSort === "count_desc") {
+        kmResults.sort(function (a, b) { return b.total - a.total; });
       } else if (strataSort === "alphabetical") {
         kmResults.sort(function (a, b) { return a.stratum.localeCompare(b.stratum); });
       }
 
-      // Top-N slice with automatic 'Other' rollup
+      // Top-N slice with functional 'Other' cohort rollup
       var activeResults = kmResults;
-      if (maxStrataOpt !== "all") {
-        var lim = parseInt(maxStrataOpt, 10);
+      if (topNOpt !== "all") {
+        var lim = parseInt(topNOpt, 10);
         if (!isNaN(lim) && lim > 0 && kmResults.length > lim) {
-          activeResults = kmResults.slice(0, lim);
+          var head = kmResults.slice(0, lim);
+          if (enableOtherRollup) {
+            var tail = kmResults.slice(lim);
+            var tailObs = [];
+            tail.forEach(function (r) { tailObs = tailObs.concat(r.obs); });
+            var otherKM = computeKMForObservations("Other (" + tail.length + " cohorts)", tailObs);
+            otherKM.isOther = true;
+            head.push(otherKM);
+          }
+          activeResults = head;
         }
       }
 
-      var maxGlobalTime = d3.max(activeResults, function (r) { return r.maxTime; }) || 100;
+      // Evaluate SLA breach / anomaly status per stratum
+      var hasDrillLinks = activeResults.some(function (r) { return r.links && r.links.length > 0; });
+      var anomalyCount = 0;
+      activeResults.forEach(function (r) {
+        if (effectiveTargetVal !== null && effectiveTargetVal > 0) {
+          var breachCount = 0;
+          r.obs.forEach(function (o) {
+            if (metricPolarity === "lower_is_better") {
+              if (o.t > effectiveTargetVal) breachCount++;
+            } else {
+              if (o.t < effectiveTargetVal) breachCount++;
+            }
+          });
+          r.breachPct = (breachCount / Math.max(1, r.obs.length)) * 100;
+          r.isAnomaly = r.breachPct >= anomalyThresholdPct;
+        } else {
+          r.breachPct = 0;
+          r.isAnomaly = false;
+        }
+        if (r.isAnomaly) anomalyCount++;
+      });
 
-      // Container Layout
+      var maxGlobalTime = d3.max(activeResults, function (r) { return r.maxTime; }) || 100;
+      if (effectiveTargetVal && effectiveTargetVal > maxGlobalTime) {
+        maxGlobalTime = Math.max(maxGlobalTime, effectiveTargetVal * 1.05);
+      }
+
+      var logRank = computeLogRankTest(activeResults);
+
+      // Container layout (flex column so HUD never overlaps SVG stage)
       container.style.backgroundColor = theme.bg;
       container.style.color = theme.text;
 
@@ -881,51 +1246,68 @@
       outerFlex.style.padding = "10px 14px";
       container.appendChild(outerFlex);
 
-      // Header Title / Subtitle
-      if (customTitle || customSubtitle) {
-        var headerCard = document.createElement("div");
-        headerCard.style.marginBottom = "6px";
-        headerCard.style.flexShrink = "0";
+      // Header Title / Subtitle + Drill Affordance
+      if (customTitle || customSubtitle || hasDrillLinks) {
+        var headerRow = document.createElement("div");
+        headerRow.style.display = "flex";
+        headerRow.style.alignItems = "flex-start";
+        headerRow.style.justifyContent = "space-between";
+        headerRow.style.gap = "8px";
+        headerRow.style.marginBottom = "6px";
+        headerRow.style.flex = "0 0 auto";
+
+        var titleCol = document.createElement("div");
         if (customTitle) {
           var tDiv = document.createElement("div");
           tDiv.style.fontSize = fSizes.title;
           tDiv.style.fontWeight = "700";
           tDiv.style.color = theme.text;
-          tDiv.innerText = customTitle;
-          headerCard.appendChild(tDiv);
+          tDiv.textContent = customTitle;
+          titleCol.appendChild(tDiv);
         }
         if (customSubtitle) {
           var sDiv = document.createElement("div");
           sDiv.style.fontSize = fSizes.hudLbl;
           sDiv.style.color = theme.subtext;
           sDiv.style.marginTop = "2px";
-          sDiv.innerText = customSubtitle;
-          headerCard.appendChild(sDiv);
+          sDiv.textContent = customSubtitle;
+          titleCol.appendChild(sDiv);
         }
-        outerFlex.appendChild(headerCard);
+        headerRow.appendChild(titleCol);
+
+        if (hasDrillLinks) {
+          var drillBadge = document.createElement("span");
+          drillBadge.style.fontSize = "10px";
+          drillBadge.style.fontWeight = "700";
+          drillBadge.style.padding = "2px 7px";
+          drillBadge.style.borderRadius = "999px";
+          drillBadge.style.border = "1px solid " + theme.cardBorder;
+          drillBadge.style.backgroundColor = theme.cardBg;
+          drillBadge.style.color = theme.subtext;
+          drillBadge.style.whiteSpace = "nowrap";
+          drillBadge.textContent = "\uD83D\uDD0E CLICK CURVE TO DRILL";
+          headerRow.appendChild(drillBadge);
+        }
+        outerFlex.appendChild(headerRow);
       }
 
       // Executive Scorecard HUD
-      if (hudDensity !== "hidden") {
+      if (hudMode !== "hidden") {
         var totalObsCount = d3.sum(activeResults, function (r) { return r.total; });
         var totalEventsCount = d3.sum(activeResults, function (r) { return r.events; });
-        var totalCensoredCount = d3.sum(activeResults, function (r) { return r.censored; });
         var overallMedian = d3.median(activeResults, function (r) { return r.medianTime; }) || 0;
-        var topLeader = activeResults[0];
+        var logRankText = logRank
+          ? ("\u03c7\u00b2=" + logRank.chiSq.toFixed(1) + " (p=" + (logRank.pValue < 0.001 ? "<0.001" : logRank.pValue.toFixed(3)) + ")")
+          : "Single Stratum";
 
-        // Overall 60-unit survival / resolution rate
-        var benchmarkT = maxGlobalTime * 0.5;
-        var avgSurvivalAtMid = d3.mean(activeResults, function (r) {
-          var pt = r.curve.filter(function (p) { return p.t <= benchmarkT; }).pop();
-          return pt ? pt.s : 0.5;
-        }) || 0.5;
-
-        if (hudDensity === "compact") {
+        if (hudMode === "compact_strip") {
           var compactStrip = document.createElement("div");
           compactStrip.className = "km-compact-hud";
           compactStrip.style.display = "flex";
+          compactStrip.style.flexWrap = "wrap";
           compactStrip.style.alignItems = "center";
           compactStrip.style.justifyContent = "space-between";
+          compactStrip.style.gap = "8px";
           compactStrip.style.backgroundColor = theme.cardBg;
           compactStrip.style.border = "1px solid " + theme.cardBorder;
           compactStrip.style.borderRadius = "6px";
@@ -933,18 +1315,24 @@
           compactStrip.style.marginBottom = "6px";
           compactStrip.style.fontSize = fSizes.hudLbl;
           compactStrip.style.fontWeight = "600";
-          compactStrip.style.flexShrink = "0";
+          compactStrip.style.flex = "0 0 auto";
 
-          var c1 = document.createElement("span");
-          c1.innerHTML = "<span style='color:" + theme.subtext + "'>Total Incidents:</span> " + totalObsCount.toLocaleString() + " (" + totalEventsCount.toLocaleString() + " Resolved)";
-          var c2 = document.createElement("span");
-          c2.innerHTML = "<span style='color:" + theme.subtext + "'>Median MTTR:</span> <span style='color:" + theme.medianLine + "'>" + formatTime(overallMedian, timeUnit) + "</span>";
-          var c3 = document.createElement("span");
-          c3.innerHTML = "<span style='color:" + theme.subtext + "'>Leading Cohort:</span> " + (topLeader ? topLeader.stratum : "-");
+          var s1 = document.createElement("span");
+          s1.innerHTML = "<span style='color:" + theme.subtext + "'>Observations:</span> " + totalObsCount.toLocaleString() + " (" + totalEventsCount.toLocaleString() + " Events)";
+          var s2 = document.createElement("span");
+          s2.innerHTML = "<span style='color:" + theme.subtext + "'>Median Time:</span> <span style='color:" + theme.medianLine + "'>" + escHtml(formatMetricValue(overallMedian, valueFormat, timeUnit)) + "</span>";
+          var s3 = document.createElement("span");
+          s3.innerHTML = "<span style='color:" + theme.subtext + "'>Log-Rank:</span> " + escHtml(logRankText);
 
-          compactStrip.appendChild(c1);
-          compactStrip.appendChild(c2);
-          compactStrip.appendChild(c3);
+          compactStrip.appendChild(s1);
+          compactStrip.appendChild(s2);
+          compactStrip.appendChild(s3);
+          if (anomalyCount > 0) {
+            var s4 = document.createElement("span");
+            s4.style.color = theme.negBadge;
+            s4.textContent = "\u26a0 " + anomalyCount + " Cohort Alert" + (anomalyCount > 1 ? "s" : "");
+            compactStrip.appendChild(s4);
+          }
           outerFlex.appendChild(compactStrip);
         } else {
           var hud = document.createElement("div");
@@ -953,13 +1341,30 @@
           hud.style.gridTemplateColumns = "repeat(auto-fit, minmax(130px, 1fr))";
           hud.style.gap = "8px";
           hud.style.marginBottom = "8px";
-          hud.style.flexShrink = "0";
+          hud.style.flex = "0 0 auto";
 
           var kpis = [
-            { label: "Cohort Observations", value: totalObsCount.toLocaleString() + " Incidents" },
-            { label: "Median Survival / MTTR", value: formatTime(overallMedian, timeUnit) },
-            { label: "Resolution Velocity", value: (totalEventsCount / Math.max(1, totalObsCount) * 100).toFixed(1) + "% Resolved" },
-            { label: targetMode !== "none" ? targetLabel : "Leading Cohort", value: targetMode !== "none" ? formatTime(fixedTargetValue, timeUnit) : (topLeader ? topLeader.stratum : "-") }
+            {
+              label: "Cohort Observations",
+              value: totalObsCount.toLocaleString() + " (" + ((totalEventsCount / Math.max(1, totalObsCount)) * 100).toFixed(0) + "% Events)"
+            },
+            {
+              label: "Median Time-to-Event",
+              value: formatMetricValue(overallMedian, valueFormat, timeUnit),
+              color: theme.medianLine
+            },
+            {
+              label: "Log-Rank Significance",
+              value: logRankText,
+              color: logRank && logRank.pValue < 0.05 ? theme.posBadge : theme.text
+            },
+            {
+              label: effectiveTargetVal !== null ? referenceLineLabel : "Leading Cohort",
+              value: effectiveTargetVal !== null
+                ? (formatMetricValue(effectiveTargetVal, valueFormat, timeUnit) + (anomalyCount > 0 ? " \u2022 " + anomalyCount + " Alert" : " \u2022 On SLA"))
+                : (activeResults[0] ? activeResults[0].stratum : "-"),
+              color: anomalyCount > 0 ? theme.negBadge : theme.posBadge
+            }
           ];
 
           kpis.forEach(function (c) {
@@ -969,6 +1374,7 @@
             card.style.borderRadius = "6px";
             card.style.padding = "6px 10px";
             card.style.boxSizing = "border-box";
+            card.style.minWidth = "0";
 
             var lbl = document.createElement("div");
             lbl.style.fontSize = fSizes.hudLbl;
@@ -976,16 +1382,19 @@
             lbl.style.letterSpacing = "0.5px";
             lbl.style.color = theme.subtext;
             lbl.style.fontWeight = "600";
-            lbl.innerText = c.label;
+            lbl.style.whiteSpace = "nowrap";
+            lbl.style.overflow = "hidden";
+            lbl.style.textOverflow = "ellipsis";
+            lbl.textContent = c.label;
 
             var val = document.createElement("div");
             val.style.fontSize = fSizes.hudVal;
             val.style.fontWeight = "700";
-            val.style.color = theme.text;
+            val.style.color = c.color || theme.text;
             val.style.whiteSpace = "nowrap";
             val.style.overflow = "hidden";
             val.style.textOverflow = "ellipsis";
-            val.innerText = c.value;
+            val.textContent = c.value;
 
             card.appendChild(lbl);
             card.appendChild(val);
@@ -997,223 +1406,252 @@
       }
 
       // Toolbar: Search + Legend
-      var toolbar = document.createElement("div");
-      toolbar.style.display = "flex";
-      toolbar.style.flexWrap = "wrap";
-      toolbar.style.alignItems = "center";
-      toolbar.style.justifyContent = "space-between";
-      toolbar.style.gap = "8px";
-      toolbar.style.marginBottom = "6px";
-      toolbar.style.flexShrink = "0";
+      if (showSearch || showLegend) {
+        var toolbar = document.createElement("div");
+        toolbar.style.display = "flex";
+        toolbar.style.flexWrap = "wrap";
+        toolbar.style.alignItems = "center";
+        toolbar.style.justifyContent = "space-between";
+        toolbar.style.gap = "8px";
+        toolbar.style.marginBottom = "6px";
+        toolbar.style.flex = "0 0 auto";
 
-      if (showSearch) {
-        var searchWrapper = document.createElement("div");
-        searchWrapper.style.display = "flex";
-        searchWrapper.style.alignItems = "center";
-        searchWrapper.style.backgroundColor = theme.cardBg;
-        searchWrapper.style.border = "1px solid " + theme.cardBorder;
-        searchWrapper.style.borderRadius = "6px";
-        searchWrapper.style.padding = "3px 8px";
-        searchWrapper.style.minWidth = "180px";
+        if (showSearch) {
+          var searchWrapper = document.createElement("div");
+          searchWrapper.style.display = "flex";
+          searchWrapper.style.alignItems = "center";
+          searchWrapper.style.backgroundColor = theme.cardBg;
+          searchWrapper.style.border = "1px solid " + theme.cardBorder;
+          searchWrapper.style.borderRadius = "6px";
+          searchWrapper.style.padding = "3px 8px";
+          searchWrapper.style.minWidth = "175px";
 
-        var searchIcon = document.createElement("span");
-        searchIcon.innerHTML = "&#128269;";
-        searchIcon.style.fontSize = "11px";
-        searchIcon.style.marginRight = "6px";
-        searchIcon.style.opacity = "0.7";
+          var searchIcon = document.createElement("span");
+          searchIcon.innerHTML = "&#128269;";
+          searchIcon.style.fontSize = "11px";
+          searchIcon.style.marginRight = "6px";
+          searchIcon.style.opacity = "0.7";
 
-        var searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.placeholder = "Filter cohorts (" + strataKeys.length + ")...";
-        searchInput.value = this._searchQuery || "";
-        searchInput.style.border = "none";
-        searchInput.style.outline = "none";
-        searchInput.style.background = "transparent";
-        searchInput.style.fontSize = "11px";
-        searchInput.style.color = theme.text;
-        searchInput.style.width = "100%";
+          var searchInput = document.createElement("input");
+          searchInput.type = "text";
+          searchInput.placeholder = "Filter cohorts (" + strataOrder.length + ")...";
+          searchInput.value = this._searchQuery || "";
+          searchInput.style.border = "none";
+          searchInput.style.outline = "none";
+          searchInput.style.background = "transparent";
+          searchInput.style.fontSize = "11px";
+          searchInput.style.color = theme.text;
+          searchInput.style.width = "100%";
 
-        searchInput.addEventListener("input", function (evt) {
-          self._searchQuery = evt.target.value;
-          self._render(d3, observations, config, queryResponse, function () {});
-        });
-
-        searchWrapper.appendChild(searchIcon);
-        searchWrapper.appendChild(searchInput);
-        toolbar.appendChild(searchWrapper);
-      }
-
-      if (showLegend) {
-        var legendDiv = document.createElement("div");
-        legendDiv.style.display = "flex";
-        legendDiv.style.flexWrap = "wrap";
-        legendDiv.style.alignItems = "center";
-        legendDiv.style.gap = "6px";
-
-        activeResults.forEach(function (r, idx) {
-          var color = theme.colors[idx % theme.colors.length];
-          var pill = document.createElement("div");
-          pill.className = "km-legend-pill";
-          pill.style.display = "flex";
-          pill.style.alignItems = "center";
-          pill.style.gap = "5px";
-          pill.style.padding = "3px 8px";
-          pill.style.borderRadius = "12px";
-          pill.style.fontSize = "11px";
-          pill.style.fontWeight = "600";
-          pill.style.cursor = "pointer";
-          pill.style.userSelect = "none";
-          pill.style.border = "1px solid " + color;
-          pill.style.transition = "all 0.15s ease";
-
-          var isSelected = self._activeStrata === r.stratum || self._activeStrata === null;
-          pill.style.backgroundColor = isSelected ? color + "20" : "transparent";
-          pill.style.opacity = isSelected ? "1" : "0.4";
-
-          var dot = document.createElement("div");
-          dot.style.width = "8px";
-          dot.style.height = "8px";
-          dot.style.borderRadius = "50%";
-          dot.style.backgroundColor = color;
-
-          var txt = document.createElement("span");
-          txt.style.color = theme.text;
-          txt.innerText = r.stratum + " (" + r.total + ")";
-
-          pill.appendChild(dot);
-          pill.appendChild(txt);
-
-          pill.addEventListener("click", function () {
-            if (self._activeStrata === r.stratum) {
-              self._activeStrata = null;
-            } else {
-              self._activeStrata = r.stratum;
-            }
-            self._render(d3, observations, config, queryResponse, function () {});
+          searchInput.addEventListener("input", function (evt) {
+            self._searchQuery = evt.target.value;
+            self._render(d3, observations, targetMeasureValues, config, queryResponse, function () {});
           });
 
-          legendDiv.appendChild(pill);
-        });
-
-        if (showMedianGuide) {
-          var medPill = document.createElement("div");
-          medPill.style.display = "flex";
-          medPill.style.alignItems = "center";
-          medPill.style.gap = "5px";
-          medPill.style.padding = "3px 8px";
-          medPill.style.borderRadius = "12px";
-          medPill.style.fontSize = "11px";
-          medPill.style.fontWeight = "600";
-          medPill.style.border = "1px dashed " + theme.medianLine;
-          medPill.style.color = theme.medianLine;
-
-          var mLine = document.createElement("div");
-          mLine.style.width = "10px";
-          mLine.style.height = "2px";
-          mLine.style.backgroundColor = theme.medianLine;
-
-          var mTxt = document.createElement("span");
-          mTxt.innerText = "Median Survival (50%)";
-
-          medPill.appendChild(mLine);
-          medPill.appendChild(mTxt);
-          legendDiv.appendChild(medPill);
+          searchWrapper.appendChild(searchIcon);
+          searchWrapper.appendChild(searchInput);
+          toolbar.appendChild(searchWrapper);
         }
 
-        toolbar.appendChild(legendDiv);
-      }
+        if (showLegend) {
+          var legendDiv = document.createElement("div");
+          legendDiv.style.display = "flex";
+          legendDiv.style.flexWrap = "wrap";
+          legendDiv.style.alignItems = "center";
+          legendDiv.style.gap = "6px";
 
-      outerFlex.appendChild(toolbar);
+          activeResults.forEach(function (r, idx) {
+            var color = r.isOther ? theme.subtext : theme.colors[idx % theme.colors.length];
+            var pill = document.createElement("div");
+            pill.className = "km-legend-pill";
+            pill.style.display = "flex";
+            pill.style.alignItems = "center";
+            pill.style.gap = "5px";
+            pill.style.padding = "3px 8px";
+            pill.style.borderRadius = "12px";
+            pill.style.fontSize = "11px";
+            pill.style.fontWeight = "600";
+            pill.style.cursor = "pointer";
+            pill.style.userSelect = "none";
+            pill.style.border = "1px solid " + color;
+            pill.style.transition = "all 0.15s ease";
+
+            var isSelected = self._activeStrata === r.stratum || self._activeStrata === null;
+            pill.style.backgroundColor = isSelected ? color + "20" : "transparent";
+            pill.style.opacity = isSelected ? "1" : "0.4";
+
+            var dot = document.createElement("div");
+            dot.style.width = "8px";
+            dot.style.height = "8px";
+            dot.style.borderRadius = "50%";
+            dot.style.backgroundColor = color;
+
+            var txt = document.createElement("span");
+            txt.style.color = theme.text;
+            txt.textContent = r.stratum + " (" + r.total + ")" + (r.isAnomaly ? " \u26a0" : "");
+
+            pill.appendChild(dot);
+            pill.appendChild(txt);
+
+            pill.addEventListener("click", function () {
+              self._activeStrata = (self._activeStrata === r.stratum) ? null : r.stratum;
+              self._render(d3, observations, targetMeasureValues, config, queryResponse, function () {});
+            });
+
+            legendDiv.appendChild(pill);
+          });
+
+          if (showMedianGuide && (viewMode === "survival" || viewMode === "inverted_churn")) {
+            var medPill = document.createElement("div");
+            medPill.style.display = "flex";
+            medPill.style.alignItems = "center";
+            medPill.style.gap = "5px";
+            medPill.style.padding = "3px 8px";
+            medPill.style.borderRadius = "12px";
+            medPill.style.fontSize = "11px";
+            medPill.style.fontWeight = "600";
+            medPill.style.border = "1px dashed " + theme.medianLine;
+            medPill.style.color = theme.medianLine;
+
+            var mLine = document.createElement("div");
+            mLine.style.width = "10px";
+            mLine.style.height = "2px";
+            mLine.style.backgroundColor = theme.medianLine;
+
+            var mTxt = document.createElement("span");
+            mTxt.textContent = "Median P50 (50%)";
+
+            medPill.appendChild(mLine);
+            medPill.appendChild(mTxt);
+            legendDiv.appendChild(medPill);
+          }
+
+          toolbar.appendChild(legendDiv);
+        }
+
+        outerFlex.appendChild(toolbar);
+      }
 
       // Main Chart Stage + Life Table
       var stage = document.createElement("div");
-      stage.style.flex = "1";
+      stage.style.flex = "1 1 0";
+      stage.style.minHeight = "0";
       stage.style.position = "relative";
       stage.style.width = "100%";
-      stage.style.height = "100%";
       stage.style.overflow = "hidden";
+      stage.style.display = "flex";
+      stage.style.flexDirection = "column";
       outerFlex.appendChild(stage);
 
       var rect = stage.getBoundingClientRect();
-      var width = Math.max(350, rect.width || stage.clientWidth || 700);
-      var totalHeight = Math.max(250, rect.height || stage.clientHeight || 500);
+      var width = Math.max(320, rect.width || stage.clientWidth || 700);
+      var totalHeight = Math.max(200, rect.height || stage.clientHeight || 420);
 
-      var riskTableHeight = showRiskTable ? Math.min(120, (activeResults.length * 18) + 28) : 0;
-      var chartHeight = totalHeight - riskTableHeight;
+      var riskTableHeight = showRiskTable ? Math.min(125, Math.min(totalHeight * 0.34, (activeResults.length * 19) + 28)) : 0;
+      var chartHeight = Math.max(140, totalHeight - riskTableHeight);
 
-      var margin = { top: 20, right: 30, bottom: 35, left: 55 };
-      var plotW = width - margin.left - margin.right;
-      var plotH = chartHeight - margin.top - margin.bottom;
+      var compactLayout = chartHeight < 220;
+      var margin = {
+        top: compactLayout ? 14 : 20,
+        right: labelDensity !== "hidden" ? 84 : 28,
+        bottom: compactLayout ? 26 : 34,
+        left: 52
+      };
+      var plotW = Math.max(120, width - margin.left - margin.right);
+      var plotH = Math.max(80, chartHeight - margin.top - margin.bottom);
 
       var svg = d3.select(stage)
         .append("svg")
         .attr("width", width)
         .attr("height", chartHeight)
         .attr("viewBox", "0 0 " + width + " " + chartHeight)
-        .style("display", "block");
+        .style("display", "block")
+        .style("flex", "0 0 auto");
 
       var g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       // Scales
       var xScale = d3.scaleLinear()
-        .domain([0, maxGlobalTime * 1.05])
+        .domain([0, maxGlobalTime * 1.04])
         .range([0, plotW]);
 
       var yScale = d3.scaleLinear()
         .domain([0, 1.0])
         .range([plotH, 0]);
 
+      var numHazardBins = 16;
       if (viewMode === "cumulative_hazard") {
         var maxHaz = d3.max(activeResults, function (r) {
           return d3.max(r.curve, function (p) { return p.cumHazard; });
         }) || 2.0;
         yScale.domain([0, maxHaz * 1.1]);
+      } else if (viewMode === "hazard_rate") {
+        activeResults.forEach(function (r) {
+          r.hazardBins = computeHazardRateBins(r, maxGlobalTime, numHazardBins);
+        });
+        var maxRate = d3.max(activeResults, function (r) {
+          return d3.max(r.hazardBins, function (b) { return b.rate; });
+        }) || 0.05;
+        yScale.domain([0, maxRate * 1.15]);
       }
 
       // Gridlines
-      var xGrid = d3.axisBottom(xScale).tickSize(-plotH).tickFormat("");
-      g.append("g")
+      var xGrid = d3.axisBottom(xScale).ticks(6).tickSize(-plotH).tickFormat("");
+      var xGridG = g.append("g")
         .attr("class", "x-grid")
         .attr("transform", "translate(0," + plotH + ")")
-        .call(xGrid)
-        .selectAll("line")
-        .attr("stroke", theme.grid)
-        .attr("stroke-dasharray", "3,3");
+        .call(xGrid);
+      xGridG.selectAll("line").attr("stroke", theme.grid).attr("stroke-dasharray", "3,3");
+      xGridG.select(".domain").remove();
 
-      var yGrid = d3.axisLeft(yScale).tickSize(-plotW).tickFormat("");
-      g.append("g")
+      var yGrid = d3.axisLeft(yScale).ticks(5).tickSize(-plotW).tickFormat("");
+      var yGridG = g.append("g")
         .attr("class", "y-grid")
-        .call(yGrid)
-        .selectAll("line")
-        .attr("stroke", theme.grid)
-        .attr("stroke-dasharray", "3,3");
+        .call(yGrid);
+      yGridG.selectAll("line").attr("stroke", theme.grid).attr("stroke-dasharray", "3,3");
+      yGridG.select(".domain").remove();
 
-      // X and Y Axes
-      var xAxis = d3.axisBottom(xScale).ticks(6).tickFormat(function (d) { return d + " " + timeUnit.slice(0, 3); });
+      // Axes
+      var xAxis = d3.axisBottom(xScale).ticks(6).tickFormat(function (d) {
+        return valueFormat === "auto"
+          ? (Math.round(d * 10) / 10) + " " + timeUnit.slice(0, 3)
+          : formatMetricValue(d, valueFormat, "");
+      });
       var yAxis = d3.axisLeft(yScale).ticks(5).tickFormat(function (d) {
-        return viewMode === "cumulative_hazard" ? d.toFixed(2) : (d * 100).toFixed(0) + "%";
+        if (viewMode === "cumulative_hazard") return d.toFixed(2);
+        if (viewMode === "hazard_rate") return (d * 100).toFixed(2) + "%";
+        return (d * 100).toFixed(0) + "%";
       });
 
-      g.append("g")
+      var xAxisG = g.append("g")
         .attr("class", "x-axis")
         .attr("transform", "translate(0," + plotH + ")")
-        .call(xAxis)
-        .selectAll("text")
-        .attr("fill", theme.subtext)
-        .attr("font-size", fSizes.axisLbl);
+        .call(xAxis);
+      xAxisG.selectAll("text").attr("fill", theme.subtext).attr("font-size", fSizes.axisLbl);
+      xAxisG.selectAll("path, line").attr("stroke", theme.cardBorder);
 
-      g.append("g")
+      var yAxisG = g.append("g")
         .attr("class", "y-axis")
-        .call(yAxis)
-        .selectAll("text")
-        .attr("fill", theme.subtext)
-        .attr("font-size", fSizes.axisLbl);
+        .call(yAxis);
+      yAxisG.selectAll("text").attr("fill", theme.subtext).attr("font-size", fSizes.axisLbl);
+      yAxisG.selectAll("path, line").attr("stroke", theme.cardBorder);
 
-      // Target SLA Reference Line
-      if (targetMode !== "none" && fixedTargetValue > 0) {
-        var targetX = xScale(fixedTargetValue);
+      // Target SLA Reference Line + Favorable Zone shading
+      if (targetMode !== "none" && effectiveTargetVal !== null && effectiveTargetVal > 0) {
+        var targetX = xScale(effectiveTargetVal);
         if (targetX >= 0 && targetX <= plotW) {
+          var favX0 = metricPolarity === "lower_is_better" ? 0 : targetX;
+          var favW = metricPolarity === "lower_is_better" ? targetX : (plotW - targetX);
+          g.append("rect")
+            .attr("x", favX0)
+            .attr("y", 0)
+            .attr("width", Math.max(0, favW))
+            .attr("height", plotH)
+            .attr("fill", theme.posBadge)
+            .attr("fill-opacity", theme.dark ? 0.05 : 0.04)
+            .attr("pointer-events", "none");
+
           g.append("line")
             .attr("x1", targetX)
             .attr("y1", 0)
@@ -1223,13 +1661,15 @@
             .attr("stroke-width", 2)
             .attr("stroke-dasharray", "5,4");
 
+          var anchorRight = targetX > plotW * 0.72;
           g.append("text")
-            .attr("x", targetX + 5)
-            .attr("y", 14)
+            .attr("x", anchorRight ? targetX - 6 : targetX + 6)
+            .attr("y", 13)
+            .attr("text-anchor", anchorRight ? "end" : "start")
             .attr("fill", theme.targetLine)
             .attr("font-size", fSizes.axisLbl)
             .attr("font-weight", "700")
-            .text(targetLabel);
+            .text(referenceLineLabel + " (" + formatMetricValue(effectiveTargetVal, valueFormat, timeUnit) + ")");
         }
       }
 
@@ -1247,7 +1687,7 @@
 
         g.append("text")
           .attr("x", plotW - 6)
-          .attr("y", medianY - 4)
+          .attr("y", medianY - 5)
           .attr("text-anchor", "end")
           .attr("fill", theme.medianLine)
           .attr("font-size", fSizes.axisLbl)
@@ -1255,100 +1695,187 @@
           .text("P50 Median Horizon");
       }
 
-      // Line / Area Generator
-      var stepCurve = curveInterpolation === "step_after" ? d3.curveStepAfter : curveInterpolation === "monotone" ? d3.curveMonotoneX : d3.curveLinear;
+      // Render curves depending on viewMode
+      if (viewMode === "hazard_rate") {
+        var hazLineGen = d3.line()
+          .x(function (d) { return xScale(d.t); })
+          .y(function (d) { return yScale(d.rate); })
+          .curve(d3.curveMonotoneX);
 
-      var areaGen = d3.area()
-        .x(function (d) { return xScale(d.t); })
-        .y0(function (d) {
-          var val = viewMode === "inverted_churn" ? (1 - d.upperCI) : d.lowerCI;
-          return yScale(Math.max(0, Math.min(1.0, val)));
-        })
-        .y1(function (d) {
-          var val = viewMode === "inverted_churn" ? (1 - d.lowerCI) : d.upperCI;
-          return yScale(Math.max(0, Math.min(1.0, val)));
-        })
-        .curve(stepCurve);
+        var hazAreaGen = d3.area()
+          .x(function (d) { return xScale(d.t); })
+          .y0(plotH)
+          .y1(function (d) { return yScale(d.rate); })
+          .curve(d3.curveMonotoneX);
 
-      var lineGen = d3.line()
-        .x(function (d) { return xScale(d.t); })
-        .y(function (d) {
-          var val = d.s;
-          if (viewMode === "inverted_churn") val = 1 - d.s;
-          else if (viewMode === "cumulative_hazard") val = d.cumHazard;
-          return yScale(val);
-        })
-        .curve(stepCurve);
+        activeResults.forEach(function (r, idx) {
+          var isTarget = self._activeStrata === null || self._activeStrata === r.stratum;
+          var color = r.isOther ? theme.subtext : theme.colors[idx % theme.colors.length];
+          var stratumGroup = g.append("g").attr("class", "stratum-hazard-" + idx);
 
-      // Render Curves
-      activeResults.forEach(function (r, idx) {
-        var isTarget = self._activeStrata === null || self._activeStrata === r.stratum;
-        var color = theme.colors[idx % theme.colors.length];
-        var stratumGroup = g.append("g").attr("class", "stratum-curve-" + idx);
-
-        // 95% Confidence Interval Ribbon
-        if (showConfidenceInterval && (viewMode === "survival" || viewMode === "inverted_churn")) {
           stratumGroup.append("path")
-            .datum(r.curve)
-            .attr("d", areaGen)
+            .datum(r.hazardBins)
+            .attr("d", hazAreaGen)
             .attr("fill", color)
-            .attr("fill-opacity", isTarget ? ciBandOpacity : 0.02)
+            .attr("fill-opacity", isTarget ? Math.max(0.08, ciBandOpacity) : 0.02)
             .attr("pointer-events", "none");
-        }
 
-        // Main Step Curve
-        var path = stratumGroup.append("path")
-          .datum(r.curve)
-          .attr("d", lineGen)
-          .attr("fill", "none")
-          .attr("stroke", color)
-          .attr("stroke-width", isTarget ? strokeWidth : 1)
-          .attr("stroke-opacity", isTarget ? 0.95 : 0.25)
-          .style("cursor", "pointer")
-          .style("transition", "all 0.15s ease");
+          var hPath = stratumGroup.append("path")
+            .datum(r.hazardBins)
+            .attr("d", hazLineGen)
+            .attr("fill", "none")
+            .attr("stroke", color)
+            .attr("stroke-width", isTarget ? strokeWidth : 1)
+            .attr("stroke-opacity", isTarget ? 0.95 : 0.25)
+            .style("cursor", "pointer");
 
-        path
-          .on("mouseenter", function (evt) {
-            d3.select(this).attr("stroke-width", strokeWidth + 2);
-            self._showStratumTooltip(evt, r, theme, timeUnit, viewMode);
+          hPath
+            .on("mouseenter", function (evt) {
+              d3.select(this).attr("stroke-width", strokeWidth + 2);
+              self._showStratumTooltip(evt, r, theme, timeUnit, valueFormat, viewMode);
+            })
+            .on("mousemove", function (evt) { self._moveTooltip(evt); })
+            .on("mouseleave", function () {
+              d3.select(this).attr("stroke-width", isTarget ? strokeWidth : 1);
+              self._hideTooltip();
+            })
+            .on("click", function (evt) {
+              if (r.links && r.links.length && window.LookerCharts && LookerCharts.Utils) {
+                LookerCharts.Utils.openDrillMenu({ links: r.links, event: evt });
+              }
+            });
+
+          // Peak hazard label
+          if (labelDensity !== "hidden" && isTarget) {
+            var peakBin = r.hazardBins.reduce(function (best, cur) { return cur.rate > best.rate ? cur : best; }, r.hazardBins[0]);
+            if (labelDensity === "all" || idx === 0 || idx === activeResults.length - 1) {
+              stratumGroup.append("text")
+                .attr("x", Math.min(plotW - 4, xScale(peakBin.t) + 4))
+                .attr("y", Math.max(12, yScale(peakBin.rate) - 6))
+                .attr("fill", color)
+                .attr("font-size", fSizes.axisLbl)
+                .attr("font-weight", "700")
+                .text((peakBin.rate * 100).toFixed(2) + "%/" + timeUnit.slice(0, 1));
+            }
+          }
+        });
+      } else {
+        var stepCurve = curveInterpolation === "step_after" ? d3.curveStepAfter : curveInterpolation === "monotone" ? d3.curveMonotoneX : d3.curveLinear;
+
+        var areaGen = d3.area()
+          .x(function (d) { return xScale(d.t); })
+          .y0(function (d) {
+            var val = viewMode === "inverted_churn" ? (1 - d.upperCI) : d.lowerCI;
+            return yScale(Math.max(0, Math.min(1.0, val)));
           })
-          .on("mousemove", function (evt) {
-            self._moveTooltip(evt);
+          .y1(function (d) {
+            var val = viewMode === "inverted_churn" ? (1 - d.lowerCI) : d.upperCI;
+            return yScale(Math.max(0, Math.min(1.0, val)));
           })
-          .on("mouseleave", function () {
-            d3.select(this).attr("stroke-width", isTarget ? strokeWidth : 1);
-            self._hideTooltip();
-          });
+          .curve(stepCurve);
 
-        // Censored Tick Marks
-        if (isTarget && (viewMode === "survival" || viewMode === "inverted_churn")) {
-          r.censoredPoints.forEach(function (cp) {
-            var cx = xScale(cp.t);
-            var yVal = viewMode === "inverted_churn" ? (1 - cp.s) : cp.s;
-            var cy = yScale(yVal);
+        var lineGen = d3.line()
+          .x(function (d) { return xScale(d.t); })
+          .y(function (d) {
+            var val = d.s;
+            if (viewMode === "inverted_churn") val = 1 - d.s;
+            else if (viewMode === "cumulative_hazard") val = d.cumHazard;
+            return yScale(val);
+          })
+          .curve(stepCurve);
 
-            var tick = stratumGroup.append("line")
-              .attr("x1", cx)
-              .attr("y1", cy - 4)
-              .attr("x2", cx)
-              .attr("y2", cy + 4)
-              .attr("stroke", color)
-              .attr("stroke-width", 1.8)
-              .style("cursor", "pointer");
+        var minMedIdx = 0;
+        var maxMedIdx = 0;
+        activeResults.forEach(function (r, idx) {
+          if (r.medianTime < activeResults[minMedIdx].medianTime) minMedIdx = idx;
+          if (r.medianTime > activeResults[maxMedIdx].medianTime) maxMedIdx = idx;
+        });
 
-            tick
-              .on("mouseenter", function (evt) {
-                self._showCensoredTooltip(evt, cp, r, theme, timeUnit);
-              })
-              .on("mousemove", function (evt) {
-                self._moveTooltip(evt);
-              })
-              .on("mouseleave", function () {
-                self._hideTooltip();
-              });
-          });
-        }
-      });
+        activeResults.forEach(function (r, idx) {
+          var isTarget = self._activeStrata === null || self._activeStrata === r.stratum;
+          var color = r.isOther ? theme.subtext : theme.colors[idx % theme.colors.length];
+          var stratumGroup = g.append("g").attr("class", "stratum-curve-" + idx);
+
+          if (showConfidenceInterval && (viewMode === "survival" || viewMode === "inverted_churn")) {
+            stratumGroup.append("path")
+              .datum(r.curve)
+              .attr("d", areaGen)
+              .attr("fill", color)
+              .attr("fill-opacity", isTarget ? ciBandOpacity : 0.02)
+              .attr("pointer-events", "none");
+          }
+
+          var path = stratumGroup.append("path")
+            .datum(r.curve)
+            .attr("d", lineGen)
+            .attr("fill", "none")
+            .attr("stroke", color)
+            .attr("stroke-width", isTarget ? strokeWidth : 1)
+            .attr("stroke-opacity", isTarget ? 0.95 : 0.25)
+            .attr("stroke-dasharray", r.isOther ? "5,3" : null)
+            .style("cursor", "pointer");
+
+          path
+            .on("mouseenter", function (evt) {
+              d3.select(this).attr("stroke-width", strokeWidth + 2);
+              self._showStratumTooltip(evt, r, theme, timeUnit, valueFormat, viewMode);
+            })
+            .on("mousemove", function (evt) { self._moveTooltip(evt); })
+            .on("mouseleave", function () {
+              d3.select(this).attr("stroke-width", isTarget ? strokeWidth : 1);
+              self._hideTooltip();
+            })
+            .on("click", function (evt) {
+              if (r.links && r.links.length && window.LookerCharts && LookerCharts.Utils) {
+                LookerCharts.Utils.openDrillMenu({ links: r.links, event: evt });
+              }
+            });
+
+          // End-of-curve data callouts respecting labelDensity
+          if (labelDensity !== "hidden" && isTarget && r.curve.length > 0) {
+            var showThisLbl = labelDensity === "all" || idx === minMedIdx || idx === maxMedIdx;
+            if (showThisLbl) {
+              var lastPt = r.curve[r.curve.length - 1];
+              var yEnd = viewMode === "inverted_churn" ? (1 - lastPt.s) : (viewMode === "cumulative_hazard" ? lastPt.cumHazard : lastPt.s);
+              var lblTxt = viewMode === "cumulative_hazard"
+                ? ("H=" + lastPt.cumHazard.toFixed(2))
+                : ("P50: " + formatMetricValue(r.medianTime, valueFormat, timeUnit.slice(0, 1)));
+              stratumGroup.append("text")
+                .attr("x", xScale(lastPt.t) + 6)
+                .attr("y", Math.max(10, Math.min(plotH - 4, yScale(yEnd) + 3)))
+                .attr("fill", color)
+                .attr("font-size", fSizes.axisLbl)
+                .attr("font-weight", "700")
+                .text(lblTxt);
+            }
+          }
+
+          // Censored Tick Marks
+          if (isTarget && (viewMode === "survival" || viewMode === "inverted_churn")) {
+            r.censoredPoints.forEach(function (cp) {
+              var cx = xScale(cp.t);
+              var yVal = viewMode === "inverted_churn" ? (1 - cp.s) : cp.s;
+              var cy = yScale(yVal);
+
+              var tick = stratumGroup.append("line")
+                .attr("x1", cx)
+                .attr("y1", cy - 4)
+                .attr("x2", cx)
+                .attr("y2", cy + 4)
+                .attr("stroke", color)
+                .attr("stroke-width", 1.8)
+                .style("cursor", "pointer");
+
+              tick
+                .on("mouseenter", function (evt) {
+                  self._showCensoredTooltip(evt, cp, r, theme, timeUnit, valueFormat);
+                })
+                .on("mousemove", function (evt) { self._moveTooltip(evt); })
+                .on("mouseleave", function () { self._hideTooltip(); });
+            });
+          }
+        });
+      }
 
       // Aligned At-Risk Life Table
       if (showRiskTable && riskTableHeight > 0) {
@@ -1360,68 +1887,119 @@
         tableContainer.style.borderTop = "1px solid " + theme.grid;
         tableContainer.style.padding = "4px 0";
         tableContainer.style.boxSizing = "border-box";
+        tableContainer.style.flex = "0 0 auto";
         stage.appendChild(tableContainer);
 
         var timeTicks = xScale.ticks(6);
+        var tbl = document.createElement("table");
+        tbl.style.width = "100%";
+        tbl.style.borderCollapse = "collapse";
+        tbl.style.fontSize = fSizes.tableTxt;
 
-        var tableHtml = "<table style='width:100%;border-collapse:collapse;font-size:" + fSizes.tableTxt + ";'>";
-        tableHtml += "<thead><tr style='color:" + theme.subtext + ";border-bottom:1px solid " + theme.cardBorder + ";'>";
-        tableHtml += "<th style='text-align:left;padding:2px 8px;width:120px;'>At Risk (Events)</th>";
+        var thead = document.createElement("thead");
+        var headTr = document.createElement("tr");
+        headTr.style.color = theme.subtext;
+        headTr.style.borderBottom = "1px solid " + theme.cardBorder;
+
+        var th0 = document.createElement("th");
+        th0.style.textAlign = "left";
+        th0.style.padding = "2px 8px";
+        th0.style.width = "140px";
+        th0.textContent = "At Risk (Events)";
+        headTr.appendChild(th0);
+
         timeTicks.forEach(function (tk) {
-          tableHtml += "<th style='text-align:center;padding:2px 4px;'>" + tk + " " + timeUnit.slice(0, 3) + "</th>";
+          var th = document.createElement("th");
+          th.style.textAlign = "center";
+          th.style.padding = "2px 4px";
+          th.textContent = tk + " " + timeUnit.slice(0, 3);
+          headTr.appendChild(th);
         });
-        tableHtml += "</tr></thead><tbody>";
+        thead.appendChild(headTr);
+        tbl.appendChild(thead);
 
+        var tbody = document.createElement("tbody");
         activeResults.forEach(function (r, rIdx) {
-          var color = theme.colors[rIdx % theme.colors.length];
+          var color = r.isOther ? theme.subtext : theme.colors[rIdx % theme.colors.length];
           var isTarget = self._activeStrata === null || self._activeStrata === r.stratum;
-          var opac = isTarget ? "1.0" : "0.4";
 
-          tableHtml += "<tr style='opacity:" + opac + ";color:" + theme.text + ";border-bottom:1px solid " + theme.cardBorder + "20;'>";
-          tableHtml += "<td style='padding:2px 8px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;'>";
-          tableHtml += "<span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:" + color + ";margin-right:6px;'></span>" + r.stratum + "</td>";
+          var tr = document.createElement("tr");
+          tr.style.opacity = isTarget ? "1.0" : "0.4";
+          tr.style.color = theme.text;
+          tr.style.borderBottom = "1px solid " + theme.cardBorder + "20";
+          if (r.links && r.links.length) {
+            tr.style.cursor = "pointer";
+            tr.addEventListener("click", function (evt) {
+              if (window.LookerCharts && LookerCharts.Utils) {
+                LookerCharts.Utils.openDrillMenu({ links: r.links, event: evt });
+              }
+            });
+          }
+
+          var tdName = document.createElement("td");
+          tdName.style.padding = "2px 8px";
+          tdName.style.fontWeight = "600";
+          tdName.style.whiteSpace = "nowrap";
+          tdName.style.overflow = "hidden";
+          tdName.style.textOverflow = "ellipsis";
+          tdName.style.maxWidth = "140px";
+          tdName.title = r.stratum;
+          tdName.innerHTML = "<span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:" + color + ";margin-right:6px;'></span>" + escHtml(r.stratum);
+          tr.appendChild(tdName);
 
           timeTicks.forEach(function (tk) {
-            var matchedPt = r.curve.filter(function (p) { return p.t <= tk; }).pop();
+            var matchedPt = null;
+            for (var pIdx = 0; pIdx < r.curve.length; pIdx++) {
+              if (r.curve[pIdx].t <= tk) matchedPt = r.curve[pIdx];
+              else break;
+            }
             var atRiskVal = matchedPt ? matchedPt.atRisk : 0;
-            var evVal = matchedPt ? matchedPt.events : 0;
-            tableHtml += "<td style='text-align:center;padding:2px 4px;font-weight:500;'>" + atRiskVal + " (" + evVal + ")</td>";
+            var evVal = matchedPt ? matchedPt.cumEvents : 0;
+            var td = document.createElement("td");
+            td.style.textAlign = "center";
+            td.style.padding = "2px 4px";
+            td.style.fontWeight = "500";
+            td.textContent = atRiskVal + " (" + evVal + ")";
+            tr.appendChild(td);
           });
 
-          tableHtml += "</tr>";
+          tbody.appendChild(tr);
         });
-
-        tableHtml += "</tbody></table>";
-        tableContainer.innerHTML = tableHtml;
+        tbl.appendChild(tbody);
+        tableContainer.appendChild(tbl);
       }
 
       done();
     },
 
-    _showStratumTooltip: function (evt, r, theme, timeUnit, viewMode) {
+    _showStratumTooltip: function (evt, r, theme, timeUnit, valueFormat, viewMode) {
       var tt = this._tooltip;
       tt.style.backgroundColor = theme.hudBg;
       tt.style.color = theme.text;
       tt.style.border = "1px solid " + theme.cardBorder;
 
-      var html = "<div style='font-weight:700;font-size:13px;margin-bottom:4px;border-bottom:1px solid " + theme.grid + ";padding-bottom:3px;'>" + r.stratum + "</div>";
+      var html = "<div style='font-weight:700;font-size:13px;margin-bottom:4px;border-bottom:1px solid " + theme.grid + ";padding-bottom:3px;'>" + escHtml(r.stratum) + "</div>";
       html += "<div style='font-size:11px;color:" + theme.subtext + ";margin-bottom:4px;'>Total Observations: <b>" + r.total + "</b> (" + r.events + " Events, " + r.censored + " Censored)</div>";
-      html += "<div style='font-size:12px;font-weight:700;color:" + theme.medianLine + ";margin-bottom:2px;'>Median Survival: " + formatTime(r.medianTime, timeUnit) + "</div>";
+      html += "<div style='font-size:12px;font-weight:700;color:" + theme.medianLine + ";margin-bottom:2px;'>Median Time: " + escHtml(formatMetricValue(r.medianTime, valueFormat, timeUnit)) + "</div>";
+      html += "<div style='font-size:11px;color:" + theme.subtext + ";'>End Survival S(t): <b>" + formatProb(r.endSurvival) + "</b>" + (r.breachPct > 0 ? " \u2022 SLA Breach: <b style='color:" + theme.negBadge + ";'>" + r.breachPct.toFixed(1) + "%</b>" : "") + "</div>";
+      if (r.links && r.links.length) {
+        html += "<div style='font-size:10px;color:" + theme.subtext + ";margin-top:4px;font-style:italic;'>Click curve to open Looker drill menu</div>";
+      }
 
       tt.innerHTML = html;
       tt.style.display = "block";
       this._moveTooltip(evt);
     },
 
-    _showCensoredTooltip: function (evt, cp, r, theme, timeUnit) {
+    _showCensoredTooltip: function (evt, cp, r, theme, timeUnit, valueFormat) {
       var tt = this._tooltip;
       tt.style.backgroundColor = theme.hudBg;
       tt.style.color = theme.text;
       tt.style.border = "1px solid " + theme.cardBorder;
 
       var html = "<div style='font-weight:700;font-size:12px;color:" + theme.medianLine + ";'>+ Censored Observation</div>";
-      html += "<div style='font-size:11px;margin-top:2px;'>Cohort: <b>" + r.stratum + "</b></div>";
-      html += "<div style='font-size:11px;'>Time of Censoring: <b>" + formatTime(cp.t, timeUnit) + "</b></div>";
+      html += "<div style='font-size:11px;margin-top:2px;'>Cohort: <b>" + escHtml(r.stratum) + "</b></div>";
+      html += "<div style='font-size:11px;'>Time of Censoring: <b>" + escHtml(formatMetricValue(cp.t, valueFormat, timeUnit)) + "</b></div>";
       html += "<div style='font-size:11px;'>Survival at Censoring: <b>" + formatProb(cp.s) + "</b></div>";
 
       tt.innerHTML = html;
