@@ -49,6 +49,7 @@ VOL2_TABS = [
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "sequential_ab_peeking_monitor": "🧪 Experimentation, Causal Lift & A/B Ops",
     "causal_impact_synthetic_control": "🧪 Experimentation, Causal Lift & A/B Ops",
     "ab_experiment_forest_plot": "🧪 Experimentation, Causal Lift & A/B Ops",
     "cloud_governance_posture_pack": "🔐 Cloud Governance & Security Compliance",
@@ -244,6 +245,7 @@ VIZ_EMOJI_MAP = {
     "price_elasticity_revenue_optimizer": "🏷️",
     "ab_experiment_forest_plot": "🧪",
     "causal_impact_synthetic_control": "🔬",
+    "sequential_ab_peeking_monitor": "🧪",
 }
 
 

@@ -13,26 +13,21 @@ This visualization provides a multi-modal attribution suite designed specificall
 ## 📸 Key Features
 
 - **3 Distinct Attribution Paradigms**:
-  - `Multi-Model Attribution Comparison` (Default): Side-by-side grouped horizontal bar matrix evaluating channel performance simultaneously across **5 algorithmic attribution models**:
-    1. **First-Touch Attribution**: Over-weights top-of-funnel brand discovery and awareness channels.
-    2. **Linear Attribution**: Equal credit distribution across all touchpoints.
-    3. **Time-Decay Attribution (7-Day Half-Life)**: Exponential decay model weighting touchpoints closer to the conversion event.
-    4. **Last-Touch Attribution**: Classic direct-response credit model.
-    5. **Markov / Algorithmic Shapley Credit**: Removal-effect credit calculation measuring incremental conversion lift.
+  - `Multi-Model Attribution Comparison` (Default): Side-by-side grouped horizontal bar matrix evaluating channel performance simultaneously across **5 algorithmic attribution models** (First-Touch, Linear, Time-Decay, Last-Touch, and Markov/Shapley) with a configurable benchmark reference line.
   - `Touchpoint Transition Flow (Sankey Ribbons)`: Dynamic multi-hop flow diagram connecting ad spend touchpoints (Left) to conversion outcomes and broadcast programming dayparts (Right).
-  - `Campaign ROAS & Efficiency Matrix`: Scatter matrix plotting Ad Spend ($) against Attributed Conversions/GRPs, with interactive circle radiuses, channel hover cards, and a prominent Target ROAS slope benchmark line.
-- **Dynamic Field-Role Mapping**:
-  - Re-map which query columns drive Channel, Sub-Channel/Daypart, Spend, and Conversions using dropdowns automatically populated with the dimensions and measures in the live query.
-- **Executive Scorecard HUD**:
-  - Top scorecard band featuring Total Ad Spend, Total Attributed Conversions/GRPs, Top Spender, and Maximum Attribution Model Variance delta (with automated alert badges).
+  - `Campaign ROAS & Efficiency Matrix`: Scatter matrix plotting Ad Spend against Attributed Conversions/GRPs, with interactive circle radii, channel hover cards, and a Target ROAS slope benchmark line.
+- **Dynamic Field-Role Mapping (`Display`)**:
+  - Query-populated dropdown selectors (`registerOptions`) and 1-based index/name overrides for Primary Channel, Sub-Channel/Daypart, Spend, Conversions/GRPs, and optional Target Measure.
+- **Configurable Reference Targets, Top-N & 'Other Channels' Rollup (`Display`)**:
+  - Supports `Dataset Mean`, `Dataset Median`, `Measure Column`, `Fixed Value`, `Percentile P75/P90`, and `None`, plus Top-N limiting with automatic `'Other Channels'` rollup and zero/null suppression.
+- **Executive Scorecard HUD & Label Density (`Display`)**:
+  - Configurable HUD (`Full Scorecard`, `Compact Strip`, `Hidden`), label density (`All`, `Min/Max Peaks Only`, `Hidden`), custom chart title/subtitle overrides, and real-time search filter.
 - **Domain-Authentic Media & Broadcast Data**:
   - Bound authentically to `tvun_media_analytics::ad_spot_airings` modeling television networks (`Las Estrellas`, `Canal 5`, `TUDN`, `Univision`, `Nu9ve`, `ViX`), broadcast genres, and dayparts (`Prime Time`, `Daytime`, `Late Night`).
-- **Interactive Filtering & Sorting**:
-  - Real-time channel search filter, Top-N channel limiters, and sorting by Spend, Conversions, Model Variance, or Alphabetical.
-- **7 Curated Enterprise Palettes**:
-  - `Sunset Media` (Default warm broadcast & ad-ops palette), `Google Enterprise`, `Modern Slate`, `Cyberpunk Dark`, `Emerald FinOps`, `Wellverse Healthcare`, and `Custom Hex Override`.
+- **7 Curated Enterprise Palettes & Polarity (`Style`)**:
+  - `Sunset Media`, `Google Enterprise`, `Modern Slate`, `Cyberpunk Dark`, `Emerald FinOps`, `Wellverse Healthcare`, and `Custom Hex Override` with native color pickers, metric polarity (`Higher is Better` vs `Lower is Better`), font scaling, and value formatting.
 - **Looker Drill-Downs & Container Bounds**:
-  - Integrated with native Looker drill menus (`looker.drill(...)`) and guarded by debounced `ResizeObserver` (<4px guard).
+  - Integrated with `LookerCharts.Utils.openDrillMenu` on bars, channel labels, Sankey nodes/ribbons, and scatter points, guarded by a debounced `ResizeObserver` (<4px guard).
 
 ---
 
@@ -42,8 +37,9 @@ This visualization provides a multi-modal attribution suite designed specificall
 | :--- | :--- | :--- | :--- |
 | **Dimension 1** | `1` *(Required)* | Primary Touchpoint Channel / Network | `broadcast_programming.network` |
 | **Dimension 2** | `0 to 1` *(Optional)* | Sub-Channel / Genre / Daypart | `broadcast_programming.genre` or `ad_spot_airings.daypart` |
-| **Measure 1** | `1` *(Required)* | Ad Spend / Investment Volume ($) | `ad_spot_airings.total_spend_mxn` |
+| **Measure 1** | `1` *(Required)* | Ad Spend / Investment Volume | `ad_spot_airings.total_spend_mxn` |
 | **Measure 2** | `0 to 1` *(Optional)* | Conversions / GRPs / Reach | `nielsen_ratings_markets.total_grps` |
+| **Measure 3** | `0 to 1` *(Optional)* | Target / Benchmark Measure | Custom target measure |
 
 ---
 
@@ -55,23 +51,25 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `layoutMode` | Select | `Multi-Model Attribution Comparison` | `attribution_comparison`, `touchpoint_sankey`, `campaign_efficiency_matrix` |
-| `touchpointDimOverride` | Select | `Auto` | Primary Channel Dimension index (1 = Col 1) or field name override |
-| `stageDimOverride` | Select | `Auto` | Sub-Channel/Daypart Dimension index (2 = Col 2) or field name override |
-| `spendMeasureOverride` | Select | `Auto` | Spend Measure index (1 = Measure 1) or field name override |
-| `conversionMeasureOverride` | Select | `Auto` | Conversions/GRPs Measure index (2 = Measure 2) or field name override |
-| `targetMode` | Select | `Dataset Mean` | Benchmark calculation: `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90` |
-| `fixedTargetValue` | Number | `0` | Fixed benchmark target ratio (when Fixed mode selected) |
+| `touchpointDimOverride` | Select | `Auto` | Primary Channel Dimension (query-populated dropdown or 1-based index) |
+| `stageDimOverride` | Select | `Auto` | Sub-Channel/Daypart Dimension (query-populated dropdown or 1-based index) |
+| `spendMeasureOverride` | Select | `Auto` | Spend Measure (query-populated dropdown or 1-based index) |
+| `conversionMeasureOverride` | Select | `Auto` | Conversions/GRPs Measure (query-populated dropdown or 1-based index) |
+| `targetMeasureOverride` | Select | `Auto / None` | Optional Target Measure for `measure_column` benchmark mode |
+| `targetMode` | Select | `Dataset Mean` | Benchmark: `dataset_mean`, `dataset_median`, `measure_column`, `fixed`, `percentile_p75`, `percentile_p90`, `none` |
+| `fixedTargetValue` | Number | `0` | Fixed benchmark target ratio/value (when Fixed mode selected) |
 | `referenceLineLabel` | String | `Benchmark Target` | Reference line and scorecard benchmark label |
 | `anomalyThresholdPct` | Number | `25` | Model variance anomaly alert threshold (%) |
-| `sortBy` | Select | `Spend Volume (Descending)` | Sorting: `spend_desc`, `conv_desc`, `variance_desc`, `name_asc` |
+| `sortBy` | Select | `Spend (Descending)` | Sorting: `spend_desc`, `spend_asc`, `conv_desc`, `conv_asc`, `variance_desc`, `name_asc`, `natural` |
 | `topNLimit` | Number | `8` | Top-N channels display limit (0 = all) |
+| `enableOtherRollup` | Boolean | `true` | Roll unselected channels into `'Other Channels'` bucket |
 | `suppressZeroNull` | Boolean | `true` | Suppress zero or null data touchpoints |
 | `hudMode` | Select | `Full Scorecard HUD` | Executive KPI HUD: `scorecard`, `compact_strip`, `hidden` |
 | `showValueLabels` | Select | `Show All Labels` | Label density: `all`, `peaks_only`, `hidden` |
 | `showLegend` | Boolean | `true` | Display attribution model and channel color legend |
 | `showSearch` | Boolean | `true` | Enable interactive quick-search filter bar |
-| `customTitleOverride` | Select | `Auto / None` | Executive scorecard title override |
-| `customSubtitleOverride` | Select | `Auto / None` | Executive scorecard subtitle override |
+| `customTitle` | String | `""` | Custom chart title override |
+| `customSubtitle` | String | `""` | Custom chart subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |
@@ -82,7 +80,7 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `customNegativeHex` | Color | `""` | Custom alert / underperforming color override |
 | `metricPolarity` | Select | `Higher is Better` | Polarity: `higher_is_better` vs `lower_is_better` |
 | `fontScale` | Select | `Standard` | Typography scale: `compact`, `standard`, `large` |
-| `valueFormat` | Select | `Compact Currency` | Formatting style: `compact_currency`, `compact_number`, `percentage`, `decimal_2`, `raw`, `auto` |
+| `valueFormat` | Select | `Compact Currency` | Formatting style: `auto`, `compact_currency`, `compact_number`, `percentage`, `decimal_2`, `raw` |
 
 ---
 

@@ -1,0 +1,46 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "sequential_ab_telemetry",
+  "fields": [
+    "sequential_ab_telemetry.experiment_name",
+    "sequential_ab_telemetry.experiment_day",
+    "sequential_ab_telemetry.stopping_verdict",
+    "sequential_ab_telemetry.surface_area",
+    "sequential_ab_telemetry.avg_cum_relative_lift_pct",
+    "sequential_ab_telemetry.avg_always_valid_ci_lower_pct",
+    "sequential_ab_telemetry.avg_always_valid_ci_upper_pct",
+    "sequential_ab_telemetry.avg_upper_efficacy_bound_pct",
+    "sequential_ab_telemetry.avg_lower_harm_bound_pct",
+    "sequential_ab_telemetry.avg_futility_bound_pct",
+    "sequential_ab_telemetry.avg_srm_p_value",
+    "sequential_ab_telemetry.avg_traffic_split_pct",
+    "sequential_ab_telemetry.avg_mde_target_pct",
+    "sequential_ab_telemetry.avg_prob_beat_control",
+    "sequential_ab_telemetry.avg_guardrail_latency_delta_ms",
+    "sequential_ab_telemetry.max_cum_control_users",
+    "sequential_ab_telemetry.max_cum_treatment_users"
+  ],
+  "sorts": [
+    "sequential_ab_telemetry.experiment_name asc",
+    "sequential_ab_telemetry.experiment_day asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "sequential_ab_peeking_monitor",
+    "layoutMode": "sequential_boundaries",
+    "targetMode": "measure_column",
+    "referenceLineLabel": "MDE Launch Threshold",
+    "sortBy": "urgency_desc",
+    "topNLimit": 6,
+    "enableOtherRollup": true,
+    "suppressZeroNull": true,
+    "hudMode": "scorecard",
+    "labelDensity": "all",
+    "showLegend": true,
+    "showSearch": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "percent_delta"
+  }
+}
