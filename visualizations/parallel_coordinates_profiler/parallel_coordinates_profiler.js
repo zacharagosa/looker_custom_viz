@@ -243,46 +243,64 @@
         values: [{ "Auto (run query to populate choices)": "" }],
         default: ""
       },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Comparison / Target Measure (Optional)",
+        section: "Display",
+        order: 5,
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: ""
+      },
       targetCalculationMode: {
         type: "string",
         label: "Benchmark Reference Profile Mode",
         section: "Display",
-        order: 5,
+        order: 6,
         display: "select",
         values: [
           { "Dataset Mean (Average of All Entities)": "dataset_mean" },
           { "Dataset Median (P50 Profile)": "dataset_median" },
           { "Top Quartile Benchmark (P75 Profile)": "percentile_p75" },
           { "Top Decile Benchmark (P90 Profile)": "percentile_p90" },
+          { "Target Measure Column (Anchor Axis)": "measure_column" },
+          { "Fixed Target Value (Anchor Axis)": "fixed_value" },
           { "None (Hide Benchmark Polyline)": "none" }
         ],
         default: "dataset_mean"
+      },
+      fixedTargetValue: {
+        type: "number",
+        label: "Fixed Target Value (when Fixed Mode)",
+        section: "Display",
+        order: 7,
+        default: 0
       },
       referenceLineLabel: {
         type: "string",
         label: "Benchmark Reference Profile Label",
         section: "Display",
-        order: 6,
+        order: 8,
         default: "Dataset Benchmark Profile"
       },
       alertThreshold: {
         type: "number",
-        label: "Outlier Anomaly Alert Threshold %",
+        label: "Anomaly Alert Threshold (% Deviation)",
         section: "Display",
-        order: 7,
+        order: 9,
         default: 25
       },
       sortOrder: {
         type: "string",
         label: "Entity Sorting & Priority",
         section: "Display",
-        order: 8,
+        order: 10,
         display: "select",
         values: [
           { "Primary Metric Descending (Highest First)": "metric_desc" },
           { "Primary Metric Ascending (Lowest First)": "metric_asc" },
           { "Alphabetical by Entity Name": "alphabetical" },
-          { "Natural / Query Order": "natural" }
+          { "Chronological / Natural Order": "natural" }
         ],
         default: "metric_desc"
       },
@@ -290,7 +308,7 @@
         type: "string",
         label: "Top-N Entity Focus Limit",
         section: "Display",
-        order: 9,
+        order: 11,
         display: "select",
         values: [
           { "All Entities (No Limit)": "all" },
@@ -301,45 +319,79 @@
         ],
         default: "all"
       },
+      enableOtherRollup: {
+        type: "boolean",
+        label: "Rollup Remaining into 'Other Entities' Profile",
+        section: "Display",
+        order: 12,
+        default: true
+      },
       suppressNulls: {
         type: "boolean",
         label: "Suppress Incomplete Entity Records",
         section: "Display",
-        order: 10,
+        order: 13,
         default: true
       },
       hudMode: {
         type: "string",
         label: "Executive KPI HUD Mode",
         section: "Display",
-        order: 11,
+        order: 14,
         display: "select",
         values: [
           { "Full Scorecard Strip": "full" },
-          { "Compact Metric Pill": "compact" },
+          { "Compact Status Strip": "compact" },
           { "Hidden (Maximum Chart Canvas)": "hidden" }
         ],
         default: "full"
+      },
+      labelDensity: {
+        type: "string",
+        label: "Entity Polyline Label Density",
+        section: "Display",
+        order: 15,
+        display: "select",
+        values: [
+          { "Peaks & Anomalies Only": "peaks_only" },
+          { "All Visible Entities": "all" },
+          { "Hidden (Hover Only)": "hidden" }
+        ],
+        default: "peaks_only"
+      },
+      showLegend: {
+        type: "boolean",
+        label: "Show Interactive Cluster Legend",
+        section: "Display",
+        order: 16,
+        default: true
+      },
+      showSearch: {
+        type: "boolean",
+        label: "Show Interactive Search Filter",
+        section: "Display",
+        order: 17,
+        default: true
       },
       showBrushHUD: {
         type: "boolean",
         label: "Show Real-Time Brush Filter Counter",
         section: "Display",
-        order: 12,
+        order: 18,
         default: true
       },
       chartTitleOverride: {
         type: "string",
         label: "Custom Chart Title Override",
         section: "Display",
-        order: 13,
+        order: 19,
         default: ""
       },
       chartSubtitleOverride: {
         type: "string",
         label: "Custom Subtitle Override",
         section: "Display",
-        order: 14,
+        order: 20,
         default: ""
       },
 
@@ -371,32 +423,48 @@
         display: "color",
         default: ""
       },
+      customPositiveHex: {
+        type: "string",
+        label: "Custom Positive / Benchmark Pass Hex",
+        section: "Style",
+        order: 3,
+        display: "color",
+        default: ""
+      },
+      customNegativeHex: {
+        type: "string",
+        label: "Custom Negative / Anomaly Alert Hex",
+        section: "Style",
+        order: 4,
+        display: "color",
+        default: ""
+      },
       lineOpacity: {
         type: "number",
         label: "Default Line Opacity (0.1 to 1.0)",
         section: "Style",
-        order: 3,
+        order: 5,
         default: 0.45
       },
       lineWidth: {
         type: "number",
         label: "Normal Line Stroke Width (px)",
         section: "Style",
-        order: 4,
+        order: 6,
         default: 1.8
       },
       highlightWidth: {
         type: "number",
         label: "Hover Focus Stroke Width (px)",
         section: "Style",
-        order: 5,
+        order: 7,
         default: 3.5
       },
       polarity: {
         type: "string",
         label: "Primary Metric Polarity",
         section: "Style",
-        order: 6,
+        order: 8,
         display: "select",
         values: [
           { "Higher is Better (Throughput, Revenue, Availability)": "higher_better" },
@@ -408,7 +476,7 @@
         type: "string",
         label: "Typography & UI Scale",
         section: "Style",
-        order: 7,
+        order: 9,
         display: "select",
         values: [
           { "Compact (Dense Multi-Tile Dashboard)": "compact" },
@@ -421,7 +489,7 @@
         type: "string",
         label: "Axis & Tooltip Numeric Format",
         section: "Style",
-        order: 8,
+        order: 10,
         display: "select",
         values: [
           { "Auto Detect by Metric Name": "auto" },
@@ -440,7 +508,8 @@
       var FIELD_ROLE_OPTIONS = {
         entityDimOverride: { role: "dimension", defaultIdx: 0 },
         groupDimOverride: { role: "dimension", defaultIdx: 1 },
-        primaryMeasureOverride: { role: "measure", defaultIdx: 0 }
+        primaryMeasureOverride: { role: "measure", defaultIdx: 0 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
 
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
@@ -661,14 +730,18 @@
       var entityDim = resolveField(dims, config.entityDimOverride, 0) || dims[0];
       var groupDim = resolveField(dims, config.groupDimOverride, 1) || (dims.length > 1 ? dims[1] : null);
       var anchorMeas = resolveField(meas, config.primaryMeasureOverride, 0) || meas[0];
+      var targetMeas = config.targetMeasureOverride ? resolveField(meas, config.targetMeasureOverride, -1) : null;
 
       var themeKey = config.colorTheme || "google_enterprise";
-      var theme = THEMES[themeKey] || THEMES.google_enterprise;
+      var theme = Object.assign({}, THEMES[themeKey] || THEMES.google_enterprise);
       if (config.primaryColorOverride) {
-        theme = Object.assign({}, theme, {
-          palette: [config.primaryColorOverride].concat(theme.palette)
-        });
+        theme.palette = [config.primaryColorOverride].concat(theme.palette);
+        theme.benchmarkLine = themeKey === "custom" ? config.primaryColorOverride : theme.benchmarkLine;
       }
+      var posColor = config.customPositiveHex || "#16a34a";
+      var negColor = config.customNegativeHex || "#dc2626";
+      var isLowerBetter = (config.polarity === "lower_better");
+
       this._container.style.backgroundColor = theme.bg;
       this._container.style.display = "flex";
       this._container.style.flexDirection = "column";
@@ -677,13 +750,30 @@
       if (config.fontScale === "compact") fontScale = 0.88;
       else if (config.fontScale === "large") fontScale = 1.15;
 
-      // Extract Active Measure Axes (all numeric measures)
+      // Extract Active Measure Axes (all numeric measures; exclude dedicated targetMeas only if >= 3 measures remain)
       var activeMeasures = meas.filter(function (m) {
-        return m.name !== (entityDim ? entityDim.name : null) && m.name !== (groupDim ? groupDim.name : null);
+        if (m.name === (entityDim ? entityDim.name : null) || m.name === (groupDim ? groupDim.name : null)) return false;
+        if (targetMeas && m.name === targetMeas.name && meas.length >= 3) return false;
+        return true;
       });
 
       if (activeMeasures.length < 2) {
         activeMeasures = meas;
+      }
+
+      function findRowDrillLinks(row) {
+        if (entityDim && row[entityDim.name] && row[entityDim.name].links && row[entityDim.name].links.length) {
+          return row[entityDim.name].links;
+        }
+        if (anchorMeas && row[anchorMeas.name] && row[anchorMeas.name].links && row[anchorMeas.name].links.length) {
+          return row[anchorMeas.name].links;
+        }
+        var keys = Object.keys(row);
+        for (var k = 0; k < keys.length; k++) {
+          var cell = row[keys[k]];
+          if (cell && cell.links && cell.links.length) return cell.links;
+        }
+        return null;
       }
 
       // ==========================================
@@ -695,32 +785,39 @@
       for (var i = 0; i < data.length; i++) {
         var row = data[i];
         var eName = row[entityDim.name] ? String(row[entityDim.name].value) : ("Entity #" + (i + 1));
-        var gVal = (groupDim && row[groupDim.name]) ? String(row[groupDim.name].value) : "All";
+        var gVal = (groupDim && row[groupDim.name] && row[groupDim.name].value !== null) ? String(row[groupDim.name].value) : "All";
         groupSet[gVal] = true;
 
         var vals = {};
-        var hasValidMeasure = false;
+        var validCount = 0;
         for (var mIdx = 0; mIdx < activeMeasures.length; mIdx++) {
           var m = activeMeasures[mIdx];
           var rawVal = row[m.name] ? row[m.name].value : null;
-          var num = Number(rawVal);
-          if (rawVal !== null && !isNaN(num)) {
+          var num = (rawVal !== null && rawVal !== undefined && rawVal !== "") ? Number(rawVal) : NaN;
+          if (!isNaN(num)) {
             vals[m.name] = num;
-            hasValidMeasure = true;
+            validCount++;
           } else {
             vals[m.name] = null;
           }
         }
 
-        if (config.suppressNulls && !hasValidMeasure) continue;
+        if (config.suppressNulls !== false && validCount === 0) continue;
+
+        var rowTargetVal = null;
+        if (targetMeas && row[targetMeas.name] && row[targetMeas.name].value !== null) {
+          var tv = Number(row[targetMeas.name].value);
+          if (!isNaN(tv)) rowTargetVal = tv;
+        }
 
         entities.push({
           id: i,
           name: eName,
           group: gVal,
           values: vals,
-          rawRow: row,
-          drillLinks: (row[entityDim.name] && row[entityDim.name].links) || null
+          targetVal: rowTargetVal,
+          isOther: false,
+          drillLinks: findRowDrillLinks(row)
         });
       }
 
@@ -746,11 +843,38 @@
         entities.sort(function (a, b) { return a.name.localeCompare(b.name); });
       }
 
-      // Top-N Filtering
+      // Top-N Filtering with Optional 'Other Entities' Centroid Rollup
       if (config.topN && config.topN !== "all") {
         var limit = parseInt(config.topN, 10);
-        if (!isNaN(limit) && limit > 0) {
-          entities = entities.slice(0, limit);
+        if (!isNaN(limit) && limit > 0 && entities.length > limit) {
+          var kept = entities.slice(0, limit);
+          var remainder = entities.slice(limit);
+          if (config.enableOtherRollup !== false && remainder.length > 0) {
+            var otherVals = {};
+            activeMeasures.forEach(function (m) {
+              var sum = 0;
+              var cnt = 0;
+              remainder.forEach(function (r) {
+                if (r.values[m.name] !== null && r.values[m.name] !== undefined) {
+                  sum += r.values[m.name];
+                  cnt++;
+                }
+              });
+              otherVals[m.name] = cnt > 0 ? (sum / cnt) : null;
+            });
+            var otherLabel = "Other (" + remainder.length + " Entities)";
+            groupSet["Other"] = true;
+            kept.push({
+              id: -1,
+              name: otherLabel,
+              group: "Other",
+              values: otherVals,
+              targetVal: null,
+              isOther: true,
+              drillLinks: null
+            });
+          }
+          entities = kept;
         }
       }
 
@@ -760,19 +884,19 @@
         .domain(groupKeys)
         .range(theme.palette);
 
-      // Y Scales per Axis
+      // Y Scales & Benchmark Profile per Axis
       var yScales = {};
       var benchmarkValues = {};
       var targetMode = config.targetCalculationMode || "dataset_mean";
+      var fixedTargetVal = Number(config.fixedTargetValue) || 0;
 
       activeMeasures.forEach(function (m) {
-        var arr = entities.map(function (e) { return e.values[m.name]; }).filter(function (v) { return v !== null; });
+        var arr = entities.map(function (e) { return e.values[m.name]; }).filter(function (v) { return v !== null && !isNaN(v); });
         var minVal = d3.min(arr);
         var maxVal = d3.max(arr);
         if (minVal === undefined) minVal = 0;
         if (maxVal === undefined || maxVal === minVal) maxVal = minVal + 1;
 
-        // Headroom 5%
         var span = maxVal - minVal;
         yScales[m.name] = d3.scaleLinear()
           .domain([minVal - (span * 0.05), maxVal + (span * 0.05)])
@@ -786,119 +910,225 @@
           benchmarkValues[m.name] = d3.quantile(arr.slice().sort(d3.ascending), 0.75);
         } else if (targetMode === "percentile_p90") {
           benchmarkValues[m.name] = d3.quantile(arr.slice().sort(d3.ascending), 0.90);
+        } else if (targetMode === "fixed_value") {
+          if (m.name === anchorMeas.name) {
+            benchmarkValues[m.name] = fixedTargetVal > 0 ? fixedTargetVal : d3.mean(arr);
+          } else {
+            benchmarkValues[m.name] = d3.mean(arr);
+          }
+        } else if (targetMode === "measure_column") {
+          if (m.name === anchorMeas.name && targetMeas) {
+            var tArr = entities.map(function (e) { return e.targetVal; }).filter(function (v) { return v !== null && !isNaN(v); });
+            benchmarkValues[m.name] = tArr.length ? d3.mean(tArr) : d3.mean(arr);
+          } else {
+            benchmarkValues[m.name] = d3.mean(arr);
+          }
         }
       });
 
+      // Anomaly Detection vs Benchmark (wired to alertThreshold & polarity)
+      var alertPct = Number(config.alertThreshold);
+      if (isNaN(alertPct) || alertPct <= 0) alertPct = 25;
+      var anomalyCount = 0;
+
+      entities.forEach(function (e) {
+        if (e.isOther) {
+          e.isAnomaly = false;
+          e.anchorDeviationPct = 0;
+          return;
+        }
+        var aVal = e.values[anchorMeas.name];
+        var refVal = (targetMode === "measure_column" && e.targetVal !== null) ? e.targetVal : benchmarkValues[anchorMeas.name];
+        if (targetMode !== "none" && aVal !== null && refVal !== undefined && refVal !== 0) {
+          var diffPct = ((aVal - refVal) / Math.abs(refVal)) * 100;
+          e.anchorDeviationPct = diffPct;
+          e.isAnomaly = isLowerBetter ? (diffPct > alertPct) : (diffPct < -alertPct);
+          if (e.isAnomaly) anomalyCount++;
+        } else {
+          e.anchorDeviationPct = 0;
+          e.isAnomaly = false;
+        }
+      });
+
+      var hasAnyDrills = entities.some(function (e) { return e.drillLinks && e.drillLinks.length; });
+
       // ==========================================
-      // 2. EXECUTIVE KPI HUD & SEARCH BAR
+      // 2. EXECUTIVE KPI HUD, LEGEND & SEARCH BAR
       // ==========================================
       var hudMode = config.hudMode || "full";
+      var showSearch = config.showSearch !== false;
+      var showLegend = config.showLegend !== false;
       var searchInput = null;
       var brushedCountSpan = null;
       var activeBrushes = {};
+      var activeGroupFilter = null;
 
-      if (hudMode !== "hidden") {
+      if (hudMode !== "hidden" || showSearch || showLegend) {
         var hudContainer = document.createElement("div");
-        // In-flow header row (never overlays the chart canvas)
         hudContainer.style.position = "relative";
         hudContainer.style.flex = "0 0 auto";
-        hudContainer.style.padding = (8 * fontScale) + "px 14px " + (4 * fontScale) + "px 14px";
+        hudContainer.style.padding = (6 * fontScale) + "px 14px " + (4 * fontScale) + "px 14px";
         hudContainer.style.zIndex = "10";
         hudContainer.style.display = "flex";
-        hudContainer.style.flexWrap = "wrap";
-        hudContainer.style.alignItems = "center";
-        hudContainer.style.justifyContent = "space-between";
-        hudContainer.style.gap = "8px 10px";
+        hudContainer.style.flexDirection = "column";
+        hudContainer.style.gap = "6px";
         hudContainer.style.boxSizing = "border-box";
 
-        var kpiCard = document.createElement("div");
-        kpiCard.style.pointerEvents = "auto";
-        kpiCard.style.display = "flex";
-        kpiCard.style.alignItems = "center";
-        kpiCard.style.flexWrap = "wrap";
-        kpiCard.style.gap = (10 * fontScale) + "px";
-        kpiCard.style.padding = (6 * fontScale) + "px " + (14 * fontScale) + "px";
-        kpiCard.style.background = theme.hudBg;
-        kpiCard.style.border = "1px solid " + theme.hudBorder;
-        kpiCard.style.borderRadius = "8px";
-        kpiCard.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
-        kpiCard.style.fontSize = (11.5 * fontScale) + "px";
-        kpiCard.style.color = theme.text;
+        if (hudMode !== "hidden" || showSearch) {
+          var topRow = document.createElement("div");
+          topRow.style.display = "flex";
+          topRow.style.flexWrap = "wrap";
+          topRow.style.alignItems = "center";
+          topRow.style.justifyContent = "space-between";
+          topRow.style.gap = "8px 10px";
 
-        var hudHTML = "";
-        if (config.chartTitleOverride) {
-          hudHTML +=
-            '<div style="display:flex; flex-direction:column; margin-right:4px;">' +
-              '<span style="font-weight:700; font-size:' + (12.5 * fontScale) + 'px; color:' + theme.text + ';">' + config.chartTitleOverride + '</span>' +
-              (config.chartSubtitleOverride ? '<span style="font-size:' + (10 * fontScale) + 'px; color:' + theme.subtext + ';">' + config.chartSubtitleOverride + '</span>' : '') +
-            '</div>' +
-            '<div style="width:1px; height:18px; background:' + theme.hudBorder + ';"></div>';
+          if (hudMode !== "hidden") {
+            var kpiCard = document.createElement("div");
+            kpiCard.style.pointerEvents = "auto";
+            kpiCard.style.display = "flex";
+            kpiCard.style.alignItems = "center";
+            kpiCard.style.flexWrap = "wrap";
+            kpiCard.style.gap = (hudMode === "compact" ? 8 : 10) * fontScale + "px";
+            kpiCard.style.padding = (hudMode === "compact" ? 4 : 6) * fontScale + "px " + (12 * fontScale) + "px";
+            kpiCard.style.background = theme.hudBg;
+            kpiCard.style.border = "1px solid " + theme.hudBorder;
+            kpiCard.style.borderRadius = "8px";
+            kpiCard.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+            kpiCard.style.fontSize = (hudMode === "compact" ? 10.5 : 11.5) * fontScale + "px";
+            kpiCard.style.color = theme.text;
+
+            var hudHTML = "";
+            if (config.chartTitleOverride) {
+              hudHTML +=
+                '<div style="display:flex; flex-direction:column; margin-right:4px;">' +
+                  '<span style="font-weight:700; font-size:' + (12.5 * fontScale) + 'px; color:' + theme.text + ';">' + config.chartTitleOverride + '</span>' +
+                  (hudMode === "full" && config.chartSubtitleOverride ? '<span style="font-size:' + (10 * fontScale) + 'px; color:' + theme.subtext + ';">' + config.chartSubtitleOverride + '</span>' : '') +
+                '</div>' +
+                '<div style="width:1px; height:18px; background:' + theme.hudBorder + ';"></div>';
+            }
+
+            hudHTML +=
+              '<div style="display:flex; align-items:center; gap:5px;">' +
+                '<span>📊</span>' +
+                '<span>Entities: <strong>' + entities.length + '</strong></span>' +
+              '</div>' +
+              '<div style="width:1px; height:14px; background:' + theme.hudBorder + ';"></div>' +
+              '<div style="display:flex; align-items:center; gap:5px;">' +
+                '<span>📐</span>' +
+                '<span>Axes: <strong>' + activeMeasures.length + '</strong></span>' +
+              '</div>';
+
+            if (hudMode === "full" && targetMode !== "none" && benchmarkValues[anchorMeas.name] !== undefined) {
+              var bLbl = config.referenceLineLabel || "Benchmark";
+              hudHTML +=
+                '<div style="width:1px; height:14px; background:' + theme.hudBorder + ';"></div>' +
+                '<div style="display:flex; align-items:center; gap:5px;">' +
+                  '<span style="color:' + theme.benchmarkLine + '; font-weight:700;">—</span>' +
+                  '<span>' + bLbl + ': <strong>' + formatValue(benchmarkValues[anchorMeas.name], config.valueFormat, anchorMeas) + '</strong></span>' +
+                '</div>';
+            }
+
+            if (targetMode !== "none" && anomalyCount > 0) {
+              hudHTML +=
+                '<div style="width:1px; height:14px; background:' + theme.hudBorder + ';"></div>' +
+                '<div style="display:flex; align-items:center; gap:4px; padding:1px 6px; border-radius:999px; background:' + negColor + '18; color:' + negColor + '; font-weight:700;">' +
+                  '<span>⚠ Alerts (&gt;' + alertPct + '%): ' + anomalyCount + '</span>' +
+                '</div>';
+            }
+
+            if (hudMode === "full" && groupDim) {
+              hudHTML +=
+                '<div style="width:1px; height:14px; background:' + theme.hudBorder + ';"></div>' +
+                '<div style="display:flex; align-items:center; gap:5px;">' +
+                  '<span>🏷️</span>' +
+                  '<span>Clusters: <strong>' + groupKeys.length + '</strong></span>' +
+                '</div>';
+            }
+
+            if (config.showBrushHUD !== false) {
+              hudHTML +=
+                '<div style="width:1px; height:14px; background:' + theme.hudBorder + ';"></div>' +
+                '<div style="display:flex; align-items:center; gap:6px;">' +
+                  '<span>Filtered: <strong id="brushed-counter" style="color:' + posColor + ';">' + entities.length + ' / ' + entities.length + ' (100%)</strong></span>' +
+                  '<button id="clear-brushes-btn" style="display:none; font-size:10px; padding:1px 6px; border-radius:4px; border:1px solid #cbd5e1; background:#f1f5f9; color:#0f172a; cursor:pointer;">Clear</button>' +
+                '</div>';
+            }
+
+            if (hudMode === "full" && hasAnyDrills) {
+              hudHTML +=
+                '<div style="width:1px; height:14px; background:' + theme.hudBorder + ';"></div>' +
+                '<span style="font-size:' + (10 * fontScale) + 'px; color:' + theme.subtext + '; font-weight:600;">🔎 Click line to drill</span>';
+            }
+
+            kpiCard.innerHTML = hudHTML;
+            topRow.appendChild(kpiCard);
+            brushedCountSpan = kpiCard.querySelector("#brushed-counter");
+          } else {
+            var spacer = document.createElement("div");
+            topRow.appendChild(spacer);
+          }
+
+          if (showSearch) {
+            var searchBox = document.createElement("div");
+            searchBox.style.pointerEvents = "auto";
+            searchBox.style.display = "flex";
+            searchBox.style.alignItems = "center";
+            searchBox.style.padding = (4 * fontScale) + "px " + (10 * fontScale) + "px";
+            searchBox.style.background = theme.hudBg;
+            searchBox.style.border = "1px solid " + theme.hudBorder;
+            searchBox.style.borderRadius = "8px";
+            searchBox.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+
+            searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.placeholder = "🔍 Search Entity or Cluster...";
+            searchInput.style.border = "none";
+            searchInput.style.background = "transparent";
+            searchInput.style.outline = "none";
+            searchInput.style.fontSize = (11 * fontScale) + "px";
+            searchInput.style.color = theme.text;
+            searchInput.style.width = (155 * fontScale) + "px";
+
+            searchBox.appendChild(searchInput);
+            topRow.appendChild(searchBox);
+          }
+
+          hudContainer.appendChild(topRow);
         }
 
-        hudHTML +=
-          '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="font-size:' + (13 * fontScale) + 'px;">📊</span>' +
-            '<span>Entities: <strong>' + entities.length + '</strong></span>' +
-          '</div>' +
-          '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
-          '<div style="display:flex; align-items:center; gap:6px;">' +
-            '<span style="font-size:' + (13 * fontScale) + 'px;">📐</span>' +
-            '<span>Axes: <strong>' + activeMeasures.length + ' Telemetry KPIs</strong></span>' +
-          '</div>';
+        if (showLegend && groupKeys.length > 0 && !(groupKeys.length === 1 && groupKeys[0] === "All")) {
+          var legendRow = document.createElement("div");
+          legendRow.style.display = "flex";
+          legendRow.style.flexWrap = "wrap";
+          legendRow.style.alignItems = "center";
+          legendRow.style.gap = "6px";
+          legendRow.style.fontSize = (10.5 * fontScale) + "px";
 
-        if (groupDim) {
-          hudHTML +=
-            '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
-            '<div style="display:flex; align-items:center; gap:6px;">' +
-              '<span style="font-size:' + (13 * fontScale) + 'px;">🏷️</span>' +
-              '<span>Clusters: <strong>' + groupKeys.length + ' (' + (groupDim.label_short || groupDim.label || groupDim.name) + ')</strong></span>' +
-            '</div>';
+          groupKeys.slice(0, 12).forEach(function (gk) {
+            var pill = document.createElement("button");
+            pill.type = "button";
+            var c = gk === "Other" ? "#64748b" : colorScale(gk);
+            pill.style.cssText = "display:inline-flex; align-items:center; gap:5px; padding:2px 8px; border-radius:999px; border:1px solid " + theme.hudBorder + "; background:" + theme.cardBg + "; color:" + theme.text + "; cursor:pointer; font-size:inherit; font-weight:600; transition:opacity 0.15s ease;";
+            pill.innerHTML = '<span style="width:8px; height:8px; border-radius:50%; background:' + c + '; display:inline-block;"></span><span>' + gk + '</span>';
+            pill.onclick = function () {
+              activeGroupFilter = (activeGroupFilter === gk) ? null : gk;
+              var allPills = legendRow.querySelectorAll("button");
+              for (var pIdx = 0; pIdx < allPills.length; pIdx++) {
+                allPills[pIdx].style.opacity = (!activeGroupFilter || allPills[pIdx].textContent === activeGroupFilter) ? "1" : "0.35";
+              }
+              if (typeof updateBrushedVisibility === "function") updateBrushedVisibility();
+            };
+            legendRow.appendChild(pill);
+          });
+          hudContainer.appendChild(legendRow);
         }
-
-        if (config.showBrushHUD !== false) {
-          hudHTML +=
-            '<div style="width:1px; height:16px; background:' + theme.hudBorder + ';"></div>' +
-            '<div style="display:flex; align-items:center; gap:6px;">' +
-              '<span>Active Filtered: <strong id="brushed-counter" style="color:#2563eb;">' + entities.length + ' / ' + entities.length + ' (100%)</strong></span>' +
-              '<button id="clear-brushes-btn" style="display:none; font-size:10px; padding:1px 6px; border-radius:4px; border:1px solid #cbd5e1; background:#f1f5f9; cursor:pointer;">Clear</button>' +
-            '</div>';
-        }
-
-        kpiCard.innerHTML = hudHTML;
-        hudContainer.appendChild(kpiCard);
-
-        // Search Input
-        var searchBox = document.createElement("div");
-        searchBox.style.pointerEvents = "auto";
-        searchBox.style.display = "flex";
-        searchBox.style.alignItems = "center";
-        searchBox.style.padding = (5 * fontScale) + "px " + (10 * fontScale) + "px";
-        searchBox.style.background = theme.hudBg;
-        searchBox.style.border = "1px solid " + theme.hudBorder;
-        searchBox.style.borderRadius = "8px";
-        searchBox.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
-
-        searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.placeholder = "🔍 Search Entity...";
-        searchInput.style.border = "none";
-        searchInput.style.background = "transparent";
-        searchInput.style.outline = "none";
-        searchInput.style.fontSize = (11 * fontScale) + "px";
-        searchInput.style.color = theme.text;
-        searchInput.style.width = (140 * fontScale) + "px";
-
-        searchBox.appendChild(searchInput);
-        hudContainer.appendChild(searchBox);
 
         this._container.appendChild(hudContainer);
-        brushedCountSpan = kpiCard.querySelector("#brushed-counter");
       }
 
       // ==========================================
       // 3. SVG & LAYOUT CALCULATION
       // ==========================================
-      // Chart canvas wrapper takes the remaining height below the HUD row
       var chartWrap = document.createElement("div");
       chartWrap.className = "parallel-coords-canvas";
       chartWrap.style.position = "relative";
@@ -909,14 +1139,14 @@
       this._container.appendChild(chartWrap);
 
       var chartRect = chartWrap.getBoundingClientRect();
-      var width = Math.max(320, chartRect.width || 0);
-      var height = Math.max(200, chartRect.height || 0);
+      var width = Math.max(320, chartRect.width || element.clientWidth || 720);
+      var height = Math.max(200, chartRect.height || element.clientHeight || 420);
 
-      // Room for the axis header labels only (HUD is no longer overlaid)
+      var labelDensity = config.labelDensity || "peaks_only";
       var topMargin = 30 * fontScale;
       var bottomMargin = 45 * fontScale;
       var leftMargin = 60 * fontScale;
-      var rightMargin = 60 * fontScale;
+      var rightMargin = (labelDensity !== "hidden" ? 115 : 60) * fontScale;
 
       var innerWidth = Math.max(200, width - leftMargin - rightMargin);
       var innerHeight = Math.max(150, height - topMargin - bottomMargin);
@@ -949,7 +1179,7 @@
         var pts = [];
         activeMeasures.forEach(function (m) {
           var val = d.values[m.name];
-          if (val !== null && val !== undefined) {
+          if (val !== null && val !== undefined && !isNaN(val)) {
             pts.push([xScale(m.name), yScales[m.name](val)]);
           }
         });
@@ -980,9 +1210,14 @@
         .attr("class", "entity-line")
         .attr("d", path)
         .attr("fill", "none")
-        .attr("stroke", function (d) { return colorScale(d.group); })
-        .attr("stroke-width", normalWidth)
-        .attr("stroke-opacity", defaultOpacity)
+        .attr("stroke", function (d) {
+          if (d.isOther) return "#64748b";
+          if (d.isAnomaly) return negColor;
+          return colorScale(d.group);
+        })
+        .attr("stroke-dasharray", function (d) { return d.isOther ? "4,3" : null; })
+        .attr("stroke-width", function (d) { return d.isAnomaly ? normalWidth + 0.6 : normalWidth; })
+        .attr("stroke-opacity", function (d) { return d.isAnomaly ? Math.min(0.9, defaultOpacity + 0.25) : defaultOpacity; })
         .style("cursor", "pointer")
         .style("transition", "stroke-opacity 0.15s ease, stroke-width 0.15s ease");
 
@@ -994,7 +1229,7 @@
         var benchPts = [];
         activeMeasures.forEach(function (m) {
           var bVal = benchmarkValues[m.name];
-          if (bVal !== undefined) {
+          if (bVal !== undefined && !isNaN(bVal)) {
             benchPts.push([xScale(m.name), yScales[m.name](bVal)]);
           }
         });
@@ -1012,7 +1247,6 @@
             .attr("stroke-dasharray", "6,4")
             .attr("opacity", 0.95);
 
-          // Benchmark Nodes on each axis
           benchmarkG.selectAll("circle.bench-node")
             .data(benchPts)
             .enter()
@@ -1028,6 +1262,54 @@
       }
 
       // ==========================================
+      // 5B. ENTITY ENDPOINT LABELS (labelDensity)
+      // ==========================================
+      if (labelDensity !== "hidden" && activeMeasures.length > 0) {
+        var lastMeas = activeMeasures[activeMeasures.length - 1];
+        var lastX = xScale(lastMeas.name);
+        var labelCandidates = entities.filter(function (e) {
+          return e.values[lastMeas.name] !== null && e.values[lastMeas.name] !== undefined;
+        });
+
+        if (labelDensity === "peaks_only") {
+          var sortedByLast = labelCandidates.slice().sort(function (a, b) {
+            return b.values[lastMeas.name] - a.values[lastMeas.name];
+          });
+          var peakSet = new Set();
+          sortedByLast.slice(0, 3).forEach(function (e) { peakSet.add(e); });
+          sortedByLast.slice(-2).forEach(function (e) { peakSet.add(e); });
+          labelCandidates.forEach(function (e) {
+            if (e.isAnomaly || e.isOther) peakSet.add(e);
+          });
+          labelCandidates = Array.from(peakSet);
+        }
+
+        // Collision avoidance along right-hand axis Y coordinates
+        labelCandidates.sort(function (a, b) {
+          return yScales[lastMeas.name](a.values[lastMeas.name]) - yScales[lastMeas.name](b.values[lastMeas.name]);
+        });
+        var placedYs = [];
+        var minGap = 12 * fontScale;
+        var labelsG = gMain.append("g").attr("class", "entity-endpoint-labels");
+        labelCandidates.forEach(function (e) {
+          var yPos = yScales[lastMeas.name](e.values[lastMeas.name]);
+          var overlaps = placedYs.some(function (py) { return Math.abs(py - yPos) < minGap; });
+          if (overlaps) return;
+          placedYs.push(yPos);
+          var lblTxt = e.name.length > 16 ? e.name.slice(0, 15) + "\u2026" : e.name;
+          labelsG.append("text")
+            .attr("x", lastX + 8)
+            .attr("y", yPos + 3)
+            .attr("fill", e.isAnomaly ? negColor : (e.isOther ? "#64748b" : colorScale(e.group)))
+            .attr("font-size", (9.5 * fontScale) + "px")
+            .attr("font-weight", e.isAnomaly ? "700" : "600")
+            .text((e.isAnomaly ? "⚠ " : "") + lblTxt)
+            .append("title")
+            .text(e.name + " (" + formatValue(e.values[lastMeas.name], config.valueFormat, lastMeas) + ")");
+        });
+      }
+
+      // ==========================================
       // 6. VERTICAL AXES & 1D BRUSHING
       // ==========================================
       var axesG = gMain.append("g").attr("class", "parallel-axes-layer");
@@ -1039,7 +1321,6 @@
         .attr("class", "axis-group")
         .attr("transform", function (m) { return "translate(" + xScale(m.name) + ",0)"; });
 
-      // Draw D3 Y Axis
       axisGroups.each(function (m) {
         var axis = d3.axisLeft(yScales[m.name])
           .ticks(6)
@@ -1053,9 +1334,6 @@
           .attr("font-size", (9.5 * fontScale) + "px");
       });
 
-      // Axis Headers (Metric Names)
-      // Edge axes anchor inward so long headers never clip at the tile edges;
-      // headers longer than the axis spacing are truncated with a hover title.
       var nAxes = activeMeasures.length;
       var axisSpacing = nAxes > 1 ? (xScale.step ? xScale.step() : innerWidth / (nAxes - 1)) : innerWidth;
       var headerFontPx = 11 * fontScale;
@@ -1082,7 +1360,6 @@
         .append("title")
         .text(function (m) { return m.label || m.label_short || m.name; });
 
-      // Axis Footers (Metric Units / Summary)
       axisGroups.append("text")
         .attr("text-anchor", "middle")
         .attr("y", innerHeight + (18 * fontScale))
@@ -1090,14 +1367,16 @@
         .attr("font-size", (9.5 * fontScale) + "px")
         .text(function (m) {
           if (targetMode !== "none" && benchmarkValues[m.name] !== undefined) {
-            return "Avg: " + formatValue(benchmarkValues[m.name], config.valueFormat, m);
+            return "Ref: " + formatValue(benchmarkValues[m.name], config.valueFormat, m);
           }
           return "";
         });
 
-      // Multi-Axis Brushing Functionality
+      // Multi-Axis Brushing + Search + Group Legend Filtering
       function updateBrushedVisibility() {
         var hasActiveBrushes = Object.keys(activeBrushes).length > 0;
+        var q = searchInput ? searchInput.value.toLowerCase().trim() : "";
+        var hasFilters = hasActiveBrushes || Boolean(q) || Boolean(activeGroupFilter);
         var passingCount = 0;
 
         paths.each(function (d) {
@@ -1110,18 +1389,26 @@
               break;
             }
           }
+          if (passes && q) {
+            var matchesSearch = d.name.toLowerCase().indexOf(q) !== -1 || (d.group && d.group.toLowerCase().indexOf(q) !== -1);
+            if (!matchesSearch) passes = false;
+          }
+          if (passes && activeGroupFilter) {
+            if (d.group !== activeGroupFilter) passes = false;
+          }
           d._passesBrush = passes;
           if (passes) passingCount++;
         });
 
         paths
           .attr("stroke-opacity", function (d) {
-            if (!hasActiveBrushes) return defaultOpacity;
-            return d._passesBrush ? 0.9 : 0.04;
+            if (!hasFilters) return d.isAnomaly ? Math.min(0.9, defaultOpacity + 0.25) : defaultOpacity;
+            return d._passesBrush ? 0.92 : 0.04;
           })
           .attr("stroke-width", function (d) {
-            if (!hasActiveBrushes) return normalWidth;
-            return d._passesBrush ? (normalWidth + 0.6) : (normalWidth * 0.7);
+            var baseW = d.isAnomaly ? normalWidth + 0.6 : normalWidth;
+            if (!hasFilters) return baseW;
+            return d._passesBrush ? (baseW + 0.7) : (normalWidth * 0.7);
           });
 
         if (brushedCountSpan) {
@@ -1140,7 +1427,6 @@
         }
       }
 
-      // Attach D3 1D Brush to Each Axis
       axisGroups.append("g")
         .attr("class", "brush")
         .each(function (m) {
@@ -1164,7 +1450,6 @@
       // 7. INTERACTIVE HOVER & DRILL-DOWNS
       // ==========================================
       function handleMouseEnter(event, d) {
-        // Bring selected line to front
         this.parentNode.appendChild(this);
 
         paths.attr("stroke-opacity", function (p) {
@@ -1184,10 +1469,10 @@
           var val = d.values[m.name];
           var bVal = benchmarkValues[m.name];
           var varianceBadge = "";
-          if (bVal !== undefined && bVal > 0 && val !== null) {
-            var diff = ((val - bVal) / bVal) * 100;
-            var isGood = (config.polarity === "lower_better") ? (diff <= 0) : (diff >= 0);
-            var color = isGood ? "#16a34a" : "#dc2626";
+          if (targetMode !== "none" && bVal !== undefined && bVal !== 0 && val !== null) {
+            var diff = ((val - bVal) / Math.abs(bVal)) * 100;
+            var isGood = isLowerBetter ? (diff <= 0) : (diff >= 0);
+            var color = isGood ? posColor : negColor;
             var sign = diff > 0 ? "+" : "";
             varianceBadge = '<span style="font-size:10px; margin-left:6px; color:' + color + '; font-weight:700;">(' + sign + diff.toFixed(1) + '%)</span>';
           }
@@ -1201,7 +1486,7 @@
 
         tt.innerHTML =
           '<div style="font-size:13px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; justify-content:space-between; gap:10px;">' +
-            '<span>' + d.name + '</span>' +
+            '<span>' + (d.isAnomaly ? "⚠ " : "") + d.name + '</span>' +
             (groupDim ? ('<span style="font-size:10.5px; padding:2px 6px; border-radius:4px; background:' + colorScale(d.group) + '22; color:' + colorScale(d.group) + '; font-weight:700;">' + d.group + '</span>') : '') +
           '</div>' +
           '<div style="border-top:1px solid ' + theme.border + '; padding-top:6px; font-size:11px;">' +
@@ -1244,23 +1529,9 @@
         .on("mouseleave", handleMouseLeave)
         .on("click", handleClick);
 
-      // Search Box Interaction
       if (searchInput) {
         searchInput.oninput = function () {
-          var q = searchInput.value.toLowerCase().trim();
-          if (!q) {
-            updateBrushedVisibility();
-            return;
-          }
-          paths
-            .attr("stroke-opacity", function (d) {
-              var matches = d.name.toLowerCase().indexOf(q) !== -1 || (d.group && d.group.toLowerCase().indexOf(q) !== -1);
-              return matches ? 1.0 : 0.04;
-            })
-            .attr("stroke-width", function (d) {
-              var matches = d.name.toLowerCase().indexOf(q) !== -1 || (d.group && d.group.toLowerCase().indexOf(q) !== -1);
-              return matches ? highlightWidth : (normalWidth * 0.7);
-            });
+          updateBrushedVisibility();
         };
       }
     }

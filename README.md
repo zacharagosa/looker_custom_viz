@@ -56,10 +56,11 @@ All visualizations are built with a strict **2-tab option architecture (`Display
 
 ---
 
-### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (52 Visualizations)
+### Volume 2: Industry Verticals, Telemetry & Advanced Data Apps (53 Visualizations)
 
 | Visualization | Category | Required Data Shape | Preview |
 | :--- | :--- | :--- | :---: |
+| [**Uplift Modeling, Qini Gain & CATE Persuasion Analyzer**](visualizations/uplift_cate_qini_curve/)<br>`uplift_cate_qini_curve` | Experimentation & Causal Lift | 2 to 4 Dimensions (Campaign Name, Decile Rank, Player Segment, Persuasion Quadrant) + 2 to 8 Measures (CATE Uplift %, Cumulative Qini Gain, Random/Oracle Baselines, Control Rate %, Net Profit) | [📸 View](visualizations/uplift_cate_qini_curve/screenshot.png) |
 | [**Sequential A/B Peeking & Anytime-Valid Boundary Monitor**](visualizations/sequential_ab_peeking_monitor/)<br>`sequential_ab_peeking_monitor` | Experimentation & Causal Lift | 2 to 3 Dimensions (Experiment Name, Experiment Day, Stopping Verdict) + 1 to 7 Measures (Cumulative Lift %, Always-Valid CI Lower/Upper, Efficacy/Harm Bounds, SRM p-Value, MDE Target) | [📸 View](visualizations/sequential_ab_peeking_monitor/screenshot.png) |
 | [**Causal Impact & Synthetic Control Analyzer**](visualizations/causal_impact_synthetic_control/)<br>`causal_impact_synthetic_control` | Experimentation & Causal Lift | 1 Time/Date dim, optional Cohort, Phase & Is-Treated dims + Observed, Synthetic Counterfactual, CI Lower/Upper, Pointwise/Cumulative Lift measures | [📸 View](visualizations/causal_impact_synthetic_control/screenshot.png) |
 | [**Compliance & SLA Aging Ridgeline Joyplot**](visualizations/compliance_sla_ridgeline_analyzer/)<br>`compliance_sla_ridgeline_analyzer` | Cloud Governance & Security Compliance | 1 Group dim (`compliance_framework`), optional Secondary Slice (`cloud_provider`) & Severity dim + 1 Continuous Aging/Latency field (`days_open`) | [📸 View](visualizations/compliance_sla_ridgeline_analyzer/screenshot.png) |

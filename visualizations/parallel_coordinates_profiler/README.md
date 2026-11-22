@@ -57,22 +57,24 @@ Standard Business Intelligence charts force analysts to compare metrics pairwise
 
 ### Section 1: Display
 - **Line & Curve Interpolation Mode**: Smooth B-Spline (`smooth_spline`), Straight Segments (`straight_line`), or Bundled Curves (`bundle_curves`).
-- **Entity Dimension Override**: Dynamic select dropdown to assign polyline entity label.
-- **Group / Category Dimension Override**: Dynamic select dropdown to assign color grouping.
-- **Primary Measure Override**: Dynamic select dropdown for primary sort and benchmark anchor.
-- **Benchmark Reference Profile Mode**: `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`, or `none`.
-- **Benchmark Reference Profile Label**: Custom label for dashed benchmark polyline.
-- **Outlier Anomaly Alert Threshold %**: Tolerance threshold for outlier variance badges.
+- **Entity Dimension Override**: Dynamic `registerOptions` dropdown to assign polyline entity label.
+- **Group / Category Dimension Override**: Dynamic `registerOptions` dropdown to assign color grouping.
+- **Primary Measure Override**: Dynamic `registerOptions` dropdown for primary sort and benchmark anchor.
+- **Comparison / Target Measure Override**: Optional dynamic `registerOptions` dropdown for row-level SLA / target benchmarking.
+- **Benchmark Reference Profile Mode**: `dataset_mean`, `dataset_median`, `percentile_p75`, `percentile_p90`, `measure_column`, `fixed_value`, or `none`.
+- **Fixed Target Value & Benchmark Label**: Custom numeric benchmark target and HUD/axis reference label.
+- **Anomaly Alert Threshold (% Deviation)**: Tolerance threshold flagging outlier polylines exceeding benchmark variance (respecting Metric Polarity).
 - **Entity Sorting & Priority**: Primary Metric Descending, Primary Metric Ascending, Alphabetical, or Natural.
-- **Top-N Entity Focus Limit**: All Entities, Top 10, Top 20, Top 30, Top 50.
+- **Top-N Entity Focus Limit & 'Other' Rollup**: All Entities, Top 10, Top 20, Top 30, Top 50, with optional `'Other Entities (N)'` mean centroid rollup polyline.
 - **Suppress Incomplete Entity Records**: Exclude entities with null or missing measure values.
-- **Executive KPI HUD Mode**: Full Scorecard Strip, Compact Metric Pill, or Hidden.
-- **Show Real-Time Brush Filter Counter**: Toggle live pass-through counter and reset button.
+- **Executive KPI HUD Mode**: Full Scorecard Strip, Compact Status Strip, or Hidden.
+- **Entity Polyline Label Density**: Peaks & Anomalies Only, All Visible Entities, or Hidden.
+- **Interactive Cluster Legend & Search Filter**: Toggle clickable cluster isolation legend pills, live search filter bar, and real-time brush counter.
 - **Custom Chart Title / Subtitle Override**: Optional top headline text.
 
 ### Section 2: Style
 - **Visual Palette Theme**: Google Enterprise, Modern Executive Slate, Cyber NOC Dark, Emerald FinOps, Sunset Media, Wellverse Healthcare, Custom Hex Accent.
-- **Custom Primary Accent Hex**: Color picker override for entity lines or highlights.
+- **Custom Hex Color Pickers (`display: 'color'`)**: Native color overrides for Primary Accent, Positive / Benchmark Pass, and Negative / Anomaly Alert.
 - **Default Line Opacity**: Slider/number from 0.1 to 1.0 (default 0.45).
 - **Normal Line Stroke Width**: Polyline thickness (1 to 5 px).
 - **Hover Focus Stroke Width**: Thickness on mouse hover (2 to 8 px).

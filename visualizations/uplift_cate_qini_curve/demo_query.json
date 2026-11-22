@@ -1,0 +1,48 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "uplift_cate_telemetry",
+  "fields": [
+    "uplift_cate_telemetry.campaign_name",
+    "uplift_cate_telemetry.decile_rank",
+    "uplift_cate_telemetry.decile_label",
+    "uplift_cate_telemetry.targeted_pct",
+    "uplift_cate_telemetry.player_segment",
+    "uplift_cate_telemetry.persuasion_quadrant",
+    "uplift_cate_telemetry.avg_cate_lift_pct",
+    "uplift_cate_telemetry.avg_cate_ci_lower_pct",
+    "uplift_cate_telemetry.avg_cate_ci_upper_pct",
+    "uplift_cate_telemetry.avg_control_rate_pct",
+    "uplift_cate_telemetry.avg_treatment_rate_pct",
+    "uplift_cate_telemetry.avg_cumulative_qini_gain",
+    "uplift_cate_telemetry.avg_random_baseline_gain",
+    "uplift_cate_telemetry.avg_oracle_qini_gain",
+    "uplift_cate_telemetry.total_treatment_users",
+    "uplift_cate_telemetry.total_incremental_conversions",
+    "uplift_cate_telemetry.avg_cum_net_profit_usd",
+    "uplift_cate_telemetry.avg_auuc_score"
+  ],
+  "sorts": [
+    "uplift_cate_telemetry.campaign_name asc",
+    "uplift_cate_telemetry.decile_rank asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "uplift_cate_qini_curve",
+    "layoutMode": "qini_gain_curve",
+    "targetMode": "measure_column",
+    "referenceLineLabel": "Min Incremental Lift Threshold",
+    "anomalyThresholdPct": -1.0,
+    "sortBy": "qini_desc",
+    "topNLimit": "all",
+    "enableOtherRollup": true,
+    "suppressZeroNull": true,
+    "hudMode": "scorecard",
+    "labelDensity": "peaks_only",
+    "showLegend": true,
+    "showSearch": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "auto"
+  }
+}

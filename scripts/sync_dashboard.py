@@ -49,6 +49,7 @@ VOL2_TABS = [
 
 # Explicit assignment of vertical / specialized visualization IDs to Vol. 2 tabs
 VOL2_VIZ_MAP = {
+    "uplift_cate_qini_curve": "🧪 Experimentation, Causal Lift & A/B Ops",
     "sequential_ab_peeking_monitor": "🧪 Experimentation, Causal Lift & A/B Ops",
     "causal_impact_synthetic_control": "🧪 Experimentation, Causal Lift & A/B Ops",
     "ab_experiment_forest_plot": "🧪 Experimentation, Causal Lift & A/B Ops",
@@ -246,6 +247,7 @@ VIZ_EMOJI_MAP = {
     "ab_experiment_forest_plot": "🧪",
     "causal_impact_synthetic_control": "🔬",
     "sequential_ab_peeking_monitor": "🧪",
+    "uplift_cate_qini_curve": "🎯",
 }
 
 
