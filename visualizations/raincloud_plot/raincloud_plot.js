@@ -13,10 +13,14 @@
  *   - "cloud_boxplot": Cloud + Boxplot Only (Executive high-density distribution mode).
  *   - "rain_strip": Jittered Beeswarm / Strip Plot with Mean & IQR overlay.
  *
- * Performance & Architecture:
+ * Flexibility & Architecture:
  *   - O(N) client-side aggregation handling 5,000+ raw observations.
- *   - Deterministic hash-based jitter so point positions never jump on re-renders.
- *   - Debounced ResizeObserver with <4px height-delta guard.
+ *   - Dynamic Field-Role Mapping via Looker `registerOptions` dropdowns (Primary/Secondary Category, Observation ID, Metric, Size, Target Measure).
+ *   - Configurable Benchmark Target Modes (Dataset Mean, Median, Fixed Value, P75, P90, Target Measure Column, None) + Anomaly Alert Thresholds.
+ *   - Sorting, Top-N Bucketing with true statistical 'Other' cohort rollup, and zero/null suppression.
+ *   - Executive Scorecard HUD (`Full Scorecard`, `Compact Strip`, `Hidden`), Legend, Label Density (`All`, `Peaks Only`, `Hidden`), and Interactive Search.
+ *   - 8 Brand Palettes + Custom Hex Color Pickers (`display: 'color'`), Metric Polarity, Font Scaling, and Value Formatting.
+ *   - Deterministic hash-based jitter, debounced ResizeObserver (<4px guard), Looker drill-down menu support.
  *   - Strict 2-tab configuration limit ("Display" and "Style").
  */
 
@@ -159,12 +163,22 @@
     }
   };
 
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   function resolveField(list, overrideVal, defaultIdx) {
     if (!list || list.length === 0) return null;
-    if (overrideVal) {
+    if (overrideVal !== undefined && overrideVal !== null && String(overrideVal).trim() !== "") {
       var trimmed = String(overrideVal).trim();
       var idx = parseInt(trimmed, 10);
-      if (!isNaN(idx) && idx >= 1 && idx <= list.length) {
+      if (!isNaN(idx) && String(idx) === trimmed && idx >= 1 && idx <= list.length) {
         return list[idx - 1];
       }
       for (var i = 0; i < list.length; i++) {
@@ -173,7 +187,10 @@
         }
       }
     }
-    return list[defaultIdx] || list[0];
+    if (defaultIdx >= 0 && defaultIdx < list.length) {
+      return list[defaultIdx];
+    }
+    return defaultIdx < 0 ? null : list[0];
   }
 
   function hashString(str) {
@@ -188,7 +205,7 @@
   }
 
   function formatValue(val, formatType, lookerRendered) {
-    if (val === null || val === undefined || isNaN(val)) return "-";
+    if (val === null || val === undefined || isNaN(val) || !isFinite(val)) return "-";
     if (formatType === "auto" && lookerRendered) return lookerRendered;
     var num = Number(val);
     var abs = Math.abs(num);
@@ -197,7 +214,7 @@
     switch (formatType) {
       case "percentage":
       case "percent":
-        return sign + (abs < 1 && abs > 0 ? (abs * 100).toFixed(1) : abs.toFixed(1)) + "%";
+        return sign + (abs > 0 && abs <= 1 ? (abs * 100).toFixed(1) : abs.toFixed(1)) + "%";
       case "compact_number":
       case "compact_num":
         if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
@@ -216,13 +233,14 @@
       case "auto":
       default:
         if (lookerRendered) return lookerRendered;
+        if (abs >= 1e9) return sign + (abs / 1e9).toFixed(2) + "B";
         if (abs >= 1e6) return sign + (abs / 1e6).toFixed(2) + "M";
         if (abs >= 1e3) return sign + (abs / 1e3).toFixed(1) + "K";
         return sign + (abs >= 10 ? Math.round(abs).toLocaleString() : abs.toFixed(1));
     }
   }
 
-  function computeSilvermanBandwidth(data) {
+  function computeBandwidth(data, mode) {
     var n = data.length;
     if (n < 2) return 1.0;
     var mean = data.reduce(function (a, b) { return a + b; }, 0) / n;
@@ -234,9 +252,17 @@
     var q3 = sorted[Math.floor(0.75 * n)];
     var iqr = q3 - q1;
 
-    var a = (iqr > 0 && iqr / 1.34 < std) ? iqr / 1.34 : std;
-    var h = 0.9 * a * Math.pow(n, -0.2);
-    return Math.max(h, 0.001);
+    var base;
+    if (mode === "scott") {
+      base = 3.5 * (std > 0 ? std : 1.0) * Math.pow(n, -1.0 / 3.0);
+    } else {
+      var a = (iqr > 0 && iqr / 1.34 < std) ? iqr / 1.34 : std;
+      if (a <= 0) a = std > 0 ? std : 1.0;
+      base = 0.9 * a * Math.pow(n, -0.2);
+      if (mode === "smooth") base *= 1.5;
+      else if (mode === "fine") base *= 0.7;
+    }
+    return Math.max(base, 0.001);
   }
 
   function computeKDE(data, samplePoints, bandwidth) {
@@ -259,12 +285,105 @@
     return densities;
   }
 
+  function computeCategoryStats(d3, catName, obsList, config, isOther) {
+    var vals = obsList.map(function (o) { return o.val; }).sort(function (a, b) { return a - b; });
+    var n = vals.length;
+
+    var mean = vals.reduce(function (a, b) { return a + b; }, 0) / (n || 1);
+    var q1 = d3.quantile(vals, 0.25);
+    if (q1 === undefined) q1 = vals[0];
+    var median = d3.quantile(vals, 0.50);
+    if (median === undefined) median = vals[Math.floor(n / 2)];
+    var q3 = d3.quantile(vals, 0.75);
+    if (q3 === undefined) q3 = vals[n - 1];
+    var p01 = d3.quantile(vals, 0.01);
+    if (p01 === undefined) p01 = vals[0];
+    var p99 = d3.quantile(vals, 0.99);
+    if (p99 === undefined) p99 = vals[n - 1];
+
+    var iqr = q3 - q1;
+    var lowerWhisker = Math.max(vals[0], q1 - 1.5 * iqr);
+    var upperWhisker = Math.min(vals[n - 1], q3 + 1.5 * iqr);
+
+    var outliers = obsList.filter(function (o) {
+      return o.val < lowerWhisker || o.val > upperWhisker;
+    });
+
+    var bwMode = config.bandwidthMode || "silverman";
+    var bw = computeBandwidth(vals, bwMode);
+
+    var sampleMin = lowerWhisker;
+    var sampleMax = upperWhisker;
+    if (config.outlierThreshold === "full_domain") {
+      sampleMin = vals[0];
+      sampleMax = vals[n - 1];
+    } else if (config.outlierThreshold === "p99") {
+      sampleMin = p01;
+      sampleMax = p99;
+    }
+    if (sampleMax <= sampleMin) {
+      sampleMin = vals[0];
+      sampleMax = vals[n - 1];
+    }
+
+    var numPoints = 44;
+    var step = (sampleMax - sampleMin) / (numPoints - 1 || 1);
+    var samplePoints = [];
+    for (var i = 0; i < numPoints; i++) {
+      samplePoints.push(sampleMin + i * step);
+    }
+
+    var densities = computeKDE(vals, samplePoints, bw);
+    var maxDensity = Math.max.apply(null, densities) || 0.001;
+
+    var kdeData = samplePoints.map(function (pt, idx) {
+      return {
+        x: pt,
+        density: densities[idx],
+        normDensity: densities[idx] / maxDensity
+      };
+    });
+
+    var targetVals = obsList
+      .map(function (o) { return o.targetVal; })
+      .filter(function (v) { return v !== null && v !== undefined && isFinite(v); });
+    var categoryTarget = targetVals.length > 0
+      ? (targetVals.reduce(function (a, b) { return a + b; }, 0) / targetVals.length)
+      : null;
+
+    return {
+      name: catName,
+      isOther: !!isOther,
+      observations: obsList,
+      values: vals,
+      count: n,
+      min: vals[0],
+      max: vals[n - 1],
+      mean: mean,
+      median: median,
+      q1: q1,
+      q3: q3,
+      p01: p01,
+      p99: p99,
+      iqr: iqr,
+      lowerWhisker: lowerWhisker,
+      upperWhisker: upperWhisker,
+      outliers: outliers,
+      kdeData: kdeData,
+      maxDensity: maxDensity,
+      categoryTarget: categoryTarget,
+      isAnomaly: false,
+      isPeakMax: false,
+      isPeakMin: false
+    };
+  }
+
   looker.plugins.visualizations.add({
     id: "raincloud_plot",
     label: "Raincloud Plot (Half-Violin KDE + Boxplot + Jittered Beeswarm)",
     options: {
       // ==========================================
-      // SECTION 1: DISPLAY (Strictly minimized tab)
+      // SECTION 1: DISPLAY (Strictly 2 tabs rule)
       // ==========================================
       viewMode: {
         type: "string",
@@ -282,21 +401,30 @@
       },
       categoryDimOverride: {
         type: "string",
-        label: "Category Dimension (e.g. MITRE Tactic)",
+        label: "Primary Category Dimension (e.g. MITRE Tactic)",
         display: "select",
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
         order: 2
       },
+      secondaryDimOverride: {
+        type: "string",
+        label: "Secondary / Group Dimension (Optional)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 3
+      },
       observationDimOverride: {
         type: "string",
-        label: "Observation Dimension (e.g. Incident ID)",
+        label: "Observation ID Dimension (e.g. Incident ID)",
         display: "select",
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 3
+        order: 4
       },
       metricMeasureOverride: {
         type: "string",
@@ -305,16 +433,25 @@
         values: [{ "Auto (run the query to populate field choices)": "" }],
         default: "",
         section: "Display",
-        order: 4
+        order: 5
       },
       sizeMeasureOverride: {
         type: "string",
         label: "Point Size Measure (Optional, e.g. Alert Count)",
         display: "select",
-        values: [{ "Auto (run the query to populate field choices)": "" }],
+        values: [{ "Auto / None": "" }],
         default: "",
         section: "Display",
-        order: 5
+        order: 6
+      },
+      targetMeasureOverride: {
+        type: "string",
+        label: "Target Benchmark Measure (for Measure Column Mode)",
+        display: "select",
+        values: [{ "Auto / None": "" }],
+        default: "",
+        section: "Display",
+        order: 7
       },
       targetCalculationMode: {
         type: "string",
@@ -326,25 +463,40 @@
           { "Fixed Benchmark Value": "fixed" },
           { "Top Percentile P75 Target": "percentile_p75" },
           { "Top Percentile P90 Target": "percentile_p90" },
-          { "Target Measure Column": "measure_column" }
+          { "Target Measure Column": "measure_column" },
+          { "None (Hide Target)": "none" }
         ],
         default: "dataset_mean",
         section: "Display",
-        order: 6
+        order: 8
       },
       fixedTargetValue: {
         type: "number",
         label: "Fixed Benchmark Target Value (when Fixed Mode, 0 = Auto)",
         default: 0,
         section: "Display",
-        order: 7
+        order: 9
       },
       referenceLineLabel: {
         type: "string",
         label: "Reference Line & Benchmark Label",
         default: "Benchmark Target",
         section: "Display",
-        order: 8
+        order: 10
+      },
+      showReferenceLine: {
+        type: "boolean",
+        label: "Show Benchmark Reference Line",
+        default: true,
+        section: "Display",
+        order: 11
+      },
+      anomalyThresholdPct: {
+        type: "number",
+        label: "Anomaly / SLA Deviation Alert Threshold (% Deviation, 0 = Off)",
+        default: 25,
+        section: "Display",
+        order: 12
       },
       bandwidthMode: {
         type: "string",
@@ -358,7 +510,7 @@
         ],
         default: "silverman",
         section: "Display",
-        order: 9
+        order: 13
       },
       jitterAmount: {
         type: "string",
@@ -371,7 +523,7 @@
         ],
         default: "standard",
         section: "Display",
-        order: 10
+        order: 14
       },
       pointRadius: {
         type: "number",
@@ -382,7 +534,7 @@
         step: 0.5,
         default: 3.5,
         section: "Display",
-        order: 11
+        order: 15
       },
       pointOpacity: {
         type: "number",
@@ -393,7 +545,7 @@
         step: 0.05,
         default: 0.65,
         section: "Display",
-        order: 12
+        order: 16
       },
       outlierThreshold: {
         type: "string",
@@ -406,7 +558,7 @@
         ],
         default: "tukey_fence",
         section: "Display",
-        order: 13
+        order: 17
       },
       sortBy: {
         type: "string",
@@ -418,32 +570,32 @@
           { "IQR Spread (Highest Dispersion First)": "iqr_desc" },
           { "Observation Count (Largest Sample First)": "count_desc" },
           { "Alphabetical": "alphabetical" },
-          { "Natural / Natural Order": "natural" }
+          { "Natural Query Order": "natural" }
         ],
         default: "median_desc",
         section: "Display",
-        order: 14
+        order: 18
       },
       topNLimit: {
         type: "number",
         label: "Top-N Categories Display Limit (0 = All)",
         default: 0,
         section: "Display",
-        order: 15
+        order: 19
       },
       rollupOther: {
         type: "boolean",
         label: "Rollup Unselected into 'Other' Category",
         default: false,
         section: "Display",
-        order: 16
+        order: 20
       },
       suppressZeroNull: {
         type: "boolean",
         label: "Suppress Zero / Null Data Observations",
         default: true,
         section: "Display",
-        order: 17
+        order: 21
       },
       hudMode: {
         type: "string",
@@ -456,45 +608,52 @@
         ],
         default: "scorecard",
         section: "Display",
-        order: 18
+        order: 22
       },
       showValueLabels: {
         type: "string",
-        label: "Statistical Summary Labels",
+        label: "Data Value Label Density",
         display: "select",
         values: [
-          { "Show All (Median, IQR, Count)": "all" },
-          { "Median Value Only": "median_only" },
+          { "All (Median, IQR & Peak Badges)": "all" },
+          { "Min/Max Peaks Only": "peaks_only" },
           { "Hidden": "hidden" }
         ],
         default: "all",
         section: "Display",
-        order: 19
+        order: 23
+      },
+      showLegend: {
+        type: "boolean",
+        label: "Show Statistical Layer Legend",
+        default: true,
+        section: "Display",
+        order: 24
       },
       showSearch: {
         type: "boolean",
         label: "Show Interactive Category Search Bar",
         default: true,
         section: "Display",
-        order: 20
+        order: 25
       },
       customTitleOverride: {
         type: "string",
         label: "Custom Title Override",
         default: "",
         section: "Display",
-        order: 21
+        order: 26
       },
       customSubtitleOverride: {
         type: "string",
         label: "Custom Subtitle Override",
         default: "",
         section: "Display",
-        order: 22
+        order: 27
       },
 
       // ==========================================
-      // SECTION 2: STYLE (Strictly minimized tab)
+      // SECTION 2: STYLE (Strictly 2 tabs rule)
       // ==========================================
       colorPalette: {
         type: "string",
@@ -594,7 +753,7 @@
         values: [
           { "Auto (Looker / Contextual)": "auto" },
           { "Compact Number (1.2M, 450K)": "compact_number" },
-          { "Compact Currency (.2M, 50K)": "compact_currency" },
+          { "Compact Currency ($1.2M, $50K)": "compact_currency" },
           { "Percentage (45.2%)": "percentage" },
           { "Decimal (1,234.56)": "decimal_2" },
           { "Raw Unformatted": "raw" }
@@ -605,19 +764,15 @@
       }
     },
 
-    // ------------------------------------------------------------------
-    // Dynamic Field-Role Dropdowns
-    // Populates every field-role selector from the live query's actual
-    // dimensions & measures (via Looker's `registerOptions` trigger) so users
-    // pick columns by name instead of typing 1-based column indexes.
-    // ------------------------------------------------------------------
     _registerDynamicFieldOptions: function (queryResponse) {
       var self = this;
       var FIELD_ROLE_OPTIONS = {
         categoryDimOverride: { role: "dimension", defaultIdx: 0 },
+        secondaryDimOverride: { role: "dimension", defaultIdx: -1 },
         observationDimOverride: { role: "dimension", defaultIdx: 1 },
         metricMeasureOverride: { role: "measure", defaultIdx: 0 },
-        sizeMeasureOverride: { role: "measure", defaultIdx: -1 }
+        sizeMeasureOverride: { role: "measure", defaultIdx: -1 },
+        targetMeasureOverride: { role: "measure", defaultIdx: -1 }
       };
       if (!queryResponse || !queryResponse.fields || typeof self.trigger !== "function") return;
       var f = queryResponse.fields;
@@ -674,28 +829,35 @@
       this._setupResizeObserver(element);
 
       element.innerHTML = "";
+      element.style.boxSizing = "border-box";
+      element.style.padding = "0";
+      element.style.overflow = "hidden";
+
       this._container = document.createElement("div");
       this._container.className = "raincloud-plot-container";
       this._container.style.width = "100%";
       this._container.style.height = "100%";
-      this._container.style.overflow = "auto";
+      this._container.style.display = "flex";
+      this._container.style.flexDirection = "column";
+      this._container.style.overflow = "hidden";
       this._container.style.boxSizing = "border-box";
       this._container.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
       element.appendChild(this._container);
 
-      // Create floating tooltip
-      this._tooltip = document.createElement("div");
-      this._tooltip.className = "raincloud-plot-tooltip";
-      this._tooltip.style.position = "fixed";
-      this._tooltip.style.pointerEvents = "none";
-      this._tooltip.style.display = "none";
-      this._tooltip.style.zIndex = "999999";
-      this._tooltip.style.padding = "10px 14px";
-      this._tooltip.style.borderRadius = "8px";
-      this._tooltip.style.fontSize = "12px";
-      this._tooltip.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
-      this._tooltip.style.transition = "opacity 0.12s ease-out";
-      document.body.appendChild(this._tooltip);
+      if (!this._tooltip || !document.body.contains(this._tooltip)) {
+        this._tooltip = document.createElement("div");
+        this._tooltip.className = "raincloud-plot-tooltip";
+        this._tooltip.style.position = "fixed";
+        this._tooltip.style.pointerEvents = "none";
+        this._tooltip.style.display = "none";
+        this._tooltip.style.zIndex = "999999";
+        this._tooltip.style.padding = "10px 14px";
+        this._tooltip.style.borderRadius = "8px";
+        this._tooltip.style.fontSize = "12px";
+        this._tooltip.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
+        this._tooltip.style.transition = "opacity 0.12s ease-out";
+        document.body.appendChild(this._tooltip);
+      }
 
       this._searchFilter = "";
     },
@@ -758,7 +920,7 @@
       this._element = element;
       this._lastElement = element;
       this._lastData = data;
-      this._lastConfig = config;
+      this._lastConfig = config || {};
       this._lastQueryResponse = queryResponse;
       this._lastDetails = details;
       this._lastRenderW = (element && element.clientWidth) || 0;
@@ -770,17 +932,24 @@
 
       if (!this._container || !element.contains(this._container)) {
         element.innerHTML = "";
+        element.style.boxSizing = "border-box";
+        element.style.padding = "0";
+        element.style.overflow = "hidden";
         this._container = document.createElement("div");
         this._container.className = "raincloud-plot-container";
         this._container.style.width = "100%";
         this._container.style.height = "100%";
-        this._container.style.overflow = "auto";
+        this._container.style.display = "flex";
+        this._container.style.flexDirection = "column";
+        this._container.style.overflow = "hidden";
         this._container.style.boxSizing = "border-box";
         this._container.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
         element.appendChild(this._container);
       }
 
-      this.clearErrors();
+      if (this.clearErrors) {
+        try { this.clearErrors(); } catch (e) {}
+      }
 
       if (!queryResponse || !queryResponse.fields) {
         done();
@@ -797,11 +966,15 @@
         measures = queryResponse.fields.table_calculations;
       }
 
-      if (dimensions.length < 1 || (dimensions.length < 2 && measures.length < 1)) {
-        this.addError({
-          title: "Incompatible Data Fields",
-          message: "Raincloud Plot requires at least 1 Category Dimension, 1 Observation Dimension (e.g. Incident ID / Order ID), and 1 Numeric Measure."
-        });
+      if (dimensions.length < 1 || measures.length < 1) {
+        if (this.addError) {
+          try {
+            this.addError({
+              title: "Incompatible Data Fields",
+              message: "Raincloud Plot requires at least 1 Category Dimension, an optional Observation ID Dimension, and 1 Numeric Measure."
+            });
+          } catch (e) {}
+        }
         done();
         return;
       }
@@ -809,14 +982,18 @@
       var self = this;
       ensureD3(function (d3) {
         try {
-          self._renderChart(d3, data, config, queryResponse);
+          self._renderChart(d3, data, config || {}, queryResponse);
           done();
         } catch (err) {
           console.error("Raincloud Plot render error:", err);
-          self.addError({
-            title: "Render Error",
-            message: err.message
-          });
+          if (self.addError) {
+            try {
+              self.addError({
+                title: "Render Error",
+                message: err.message
+              });
+            } catch (e) {}
+          }
           done();
         }
       });
@@ -833,7 +1010,8 @@
       if (themeKey === "custom_override" || config.customPrimaryHex || config.customPositiveHex || config.customNegativeHex) {
         theme = Object.assign({}, theme);
         if (config.customPrimaryHex) {
-          theme.palette = [config.customPrimaryHex, "#4f46e5", "#0891b2", "#059669", "#d97706", "#dc2626"];
+          theme.palette = [config.customPrimaryHex, "#4f46e5", "#0891b2", "#059669", "#d97706", "#dc2626", "#7c3aed", "#475569"];
+          theme.benchmarkLine = config.customPrimaryHex;
         }
         if (config.customPositiveHex) theme.positive = config.customPositiveHex;
         if (config.customNegativeHex) theme.negative = config.customNegativeHex;
@@ -847,7 +1025,6 @@
       container.style.color = theme.text;
       container.style.fontSize = (12 * fontMultiplier) + "px";
 
-      // Field resolution
       var dimensions = (queryResponse.fields.dimensions && queryResponse.fields.dimensions.length > 0)
         ? queryResponse.fields.dimensions
         : (queryResponse.fields.dimension_like || []);
@@ -859,45 +1036,67 @@
       }
 
       var categoryDim = resolveField(dimensions, config.categoryDimOverride, 0);
+      var secondaryDim = config.secondaryDimOverride ? resolveField(dimensions, config.secondaryDimOverride, -1) : null;
+      if (secondaryDim && categoryDim && secondaryDim.name === categoryDim.name) secondaryDim = null;
       var obsDim = resolveField(dimensions, config.observationDimOverride, dimensions.length > 1 ? 1 : 0);
       var metricMeasure = resolveField(measures, config.metricMeasureOverride, 0);
       var sizeMeasure = config.sizeMeasureOverride ? resolveField(measures, config.sizeMeasureOverride, -1) : null;
+      var targetMeasure = config.targetMeasureOverride ? resolveField(measures, config.targetMeasureOverride, -1) : null;
+      if (!targetMeasure && config.targetCalculationMode === "measure_column" && measures.length > 1) {
+        targetMeasure = measures[1].name !== metricMeasure.name ? measures[1] : null;
+      }
 
       // Group observations by category
       var categoryMap = {};
+      var categoryOrder = [];
       var allObservations = [];
 
       data.forEach(function (row) {
         var catCell = row[categoryDim.name];
-        var catVal = (catCell && typeof catCell === "object") ? (catCell.value !== undefined ? catCell.value : catCell.rendered) : catCell;
+        var catVal = (catCell && typeof catCell === "object") ? (catCell.value !== undefined && catCell.value !== null ? catCell.value : catCell.rendered) : catCell;
         if (catVal === null || catVal === undefined || catVal === "") catVal = "Unspecified";
         catVal = String(catVal);
 
+        if (secondaryDim && row[secondaryDim.name] !== undefined) {
+          var secCell = row[secondaryDim.name];
+          var secVal = (secCell && typeof secCell === "object") ? (secCell.rendered || secCell.value) : secCell;
+          if (secVal !== null && secVal !== undefined && secVal !== "") {
+            catVal = catVal + " \u2014 " + String(secVal);
+          }
+        }
+
         var obsCell = obsDim ? row[obsDim.name] : null;
-        var obsVal = (obsCell && typeof obsCell === "object") ? (obsCell.value !== undefined ? obsCell.value : obsCell.rendered) : obsCell;
-        var obsId = (obsVal !== null && obsVal !== undefined && obsVal !== "") ? String(obsVal) : "Obs-" + allObservations.length;
+        var obsVal = (obsCell && typeof obsCell === "object") ? (obsCell.rendered || obsCell.value) : obsCell;
+        var obsId = (obsVal !== null && obsVal !== undefined && obsVal !== "") ? String(obsVal) : "Obs-" + (allObservations.length + 1);
 
         var mCell = row[metricMeasure.name];
         var mVal = null;
         var mRendered = null;
         if (mCell && typeof mCell === "object") {
-          mVal = mCell.value !== undefined ? Number(mCell.value) : Number(mCell.rendered);
+          mVal = mCell.value !== undefined && mCell.value !== null ? Number(mCell.value) : Number(mCell.rendered);
           mRendered = mCell.rendered;
-        } else if (mCell !== null && mCell !== undefined) {
+        } else if (mCell !== null && mCell !== undefined && mCell !== "") {
           mVal = Number(mCell);
         }
 
-        if (mVal === null || isNaN(mVal)) return;
+        if (mVal === null || isNaN(mVal) || !isFinite(mVal)) return;
         if (config.suppressZeroNull && mVal === 0) return;
 
         var sizeVal = 1;
         if (sizeMeasure && row[sizeMeasure.name] !== undefined) {
           var sCell = row[sizeMeasure.name];
           var sVal = (sCell && typeof sCell === "object") ? Number(sCell.value) : Number(sCell);
-          if (!isNaN(sVal) && sVal > 0) sizeVal = sVal;
+          if (!isNaN(sVal) && isFinite(sVal) && sVal > 0) sizeVal = sVal;
         }
 
-        var drillLinks = (mCell && mCell.links) ? mCell.links : ((obsCell && obsCell.links) ? obsCell.links : null);
+        var tgtVal = null;
+        if (targetMeasure && row[targetMeasure.name] !== undefined) {
+          var tCell = row[targetMeasure.name];
+          var tv = (tCell && typeof tCell === "object") ? Number(tCell.value) : Number(tCell);
+          if (!isNaN(tv) && isFinite(tv)) tgtVal = tv;
+        }
+
+        var drillLinks = (mCell && mCell.links) ? mCell.links : ((obsCell && obsCell.links) ? obsCell.links : ((catCell && catCell.links) ? catCell.links : null));
 
         var obsObj = {
           id: obsId,
@@ -905,13 +1104,14 @@
           val: mVal,
           rendered: mRendered,
           size: sizeVal,
-          rawRow: row,
+          targetVal: tgtVal,
           links: drillLinks,
           jitterSeed: hashString(obsId + "_" + catVal)
         };
 
         if (!categoryMap[catVal]) {
           categoryMap[catVal] = [];
+          categoryOrder.push(catVal);
         }
         categoryMap[catVal].push(obsObj);
         allObservations.push(obsObj);
@@ -923,7 +1123,7 @@
       }
 
       // Filter by search keyword
-      var categoryNames = Object.keys(categoryMap);
+      var categoryNames = categoryOrder.slice();
       if (self._searchFilter) {
         var query = self._searchFilter.toLowerCase();
         categoryNames = categoryNames.filter(function (name) {
@@ -933,69 +1133,7 @@
 
       // Compute statistics per category
       var categoryStats = categoryNames.map(function (catName) {
-        var obsList = categoryMap[catName];
-        var vals = obsList.map(function (o) { return o.val; }).sort(function (a, b) { return a - b; });
-        var n = vals.length;
-
-        var mean = vals.reduce(function (a, b) { return a + b; }, 0) / n;
-        var q1 = d3.quantile(vals, 0.25) || vals[0];
-        var median = d3.quantile(vals, 0.50) || vals[Math.floor(n / 2)];
-        var q3 = d3.quantile(vals, 0.75) || vals[n - 1];
-        var iqr = q3 - q1;
-        var lowerWhisker = Math.max(vals[0], q1 - 1.5 * iqr);
-        var upperWhisker = Math.min(vals[n - 1], q3 + 1.5 * iqr);
-
-        var outliers = obsList.filter(function (o) {
-          return o.val < lowerWhisker || o.val > upperWhisker;
-        });
-
-        // Compute KDE
-        var bwMode = config.bandwidthMode || "silverman";
-        var baseBw = computeSilvermanBandwidth(vals);
-        if (bwMode === "smooth") baseBw *= 1.5;
-        else if (bwMode === "fine") baseBw *= 0.7;
-
-        var sampleMin = lowerWhisker;
-        var sampleMax = upperWhisker;
-        if (config.outlierThreshold === "full_domain") {
-          sampleMin = vals[0];
-          sampleMax = vals[n - 1];
-        }
-
-        var numPoints = 40;
-        var step = (sampleMax - sampleMin) / (numPoints - 1 || 1);
-        var samplePoints = [];
-        for (var i = 0; i < numPoints; i++) {
-          samplePoints.push(sampleMin + i * step);
-        }
-
-        var densities = computeKDE(vals, samplePoints, Math.max(baseBw, 0.001));
-        var maxDensity = Math.max.apply(null, densities) || 0.001;
-
-        var kdeData = samplePoints.map(function (pt, idx) {
-          return {
-            x: pt,
-            density: densities[idx],
-            normDensity: densities[idx] / maxDensity
-          };
-        });
-
-        return {
-          name: catName,
-          observations: obsList,
-          values: vals,
-          count: n,
-          mean: mean,
-          median: median,
-          q1: q1,
-          q3: q3,
-          iqr: iqr,
-          lowerWhisker: lowerWhisker,
-          upperWhisker: upperWhisker,
-          outliers: outliers,
-          kdeData: kdeData,
-          maxDensity: maxDensity
-        };
+        return computeCategoryStats(d3, catName, categoryMap[catName], config, false);
       });
 
       // Sorting categories
@@ -1012,201 +1150,403 @@
         categoryStats.sort(function (a, b) { return a.name.localeCompare(b.name); });
       }
 
-      // Top-N limiting
+      // Top-N limiting with true 'Other' cohort rollup
       var topN = config.topNLimit ? parseInt(config.topNLimit, 10) : 0;
+      var enableOtherRollup = !!(config.rollupOther || config.enableOtherRollup);
       if (topN > 0 && categoryStats.length > topN) {
-        categoryStats = categoryStats.slice(0, topN);
+        var kept = categoryStats.slice(0, topN);
+        var dropped = categoryStats.slice(topN);
+        if (enableOtherRollup && dropped.length > 0) {
+          var otherObs = [];
+          dropped.forEach(function (cs) {
+            cs.observations.forEach(function (o) {
+              otherObs.push(o);
+            });
+          });
+          if (otherObs.length > 0) {
+            kept.push(computeCategoryStats(d3, "Other (" + dropped.length + " Categories)", otherObs, config, true));
+          }
+        }
+        categoryStats = kept;
       }
 
       // Global benchmark target resolution
-      var allValsSorted = allObservations.map(function (o) { return o.val; }).sort(function (a, b) { return a - b; });
-      var globalMean = allValsSorted.reduce(function (a, b) { return a + b; }, 0) / (allValsSorted.length || 1);
-      var globalMedian = d3.quantile(allValsSorted, 0.50) || 0;
-      var globalP75 = d3.quantile(allValsSorted, 0.75) || 0;
-      var globalP90 = d3.quantile(allValsSorted, 0.90) || 0;
+      var visibleObs = [];
+      categoryStats.forEach(function (cs) {
+        cs.observations.forEach(function (o) { visibleObs.push(o); });
+      });
+      if (visibleObs.length === 0) visibleObs = allObservations;
 
-      var benchmarkTarget = globalMean;
+      var allValsSorted = visibleObs.map(function (o) { return o.val; }).sort(function (a, b) { return a - b; });
+      var globalMean = allValsSorted.reduce(function (a, b) { return a + b; }, 0) / (allValsSorted.length || 1);
+      var globalMedian = d3.quantile(allValsSorted, 0.50);
+      if (globalMedian === undefined) globalMedian = 0;
+      var globalP25 = d3.quantile(allValsSorted, 0.25);
+      if (globalP25 === undefined) globalP25 = 0;
+      var globalP75 = d3.quantile(allValsSorted, 0.75);
+      if (globalP75 === undefined) globalP75 = 0;
+      var globalP90 = d3.quantile(allValsSorted, 0.90);
+      if (globalP90 === undefined) globalP90 = 0;
+
       var targetMode = config.targetCalculationMode || "dataset_mean";
-      if (targetMode === "dataset_median") benchmarkTarget = globalMedian;
-      else if (targetMode === "percentile_p75") benchmarkTarget = globalP75;
-      else if (targetMode === "percentile_p90") benchmarkTarget = globalP90;
-      else if (targetMode === "fixed") benchmarkTarget = config.fixedTargetValue || globalMean;
+      var benchmarkTarget = null;
+      if (targetMode === "none") {
+        benchmarkTarget = null;
+      } else if (targetMode === "dataset_median") {
+        benchmarkTarget = globalMedian;
+      } else if (targetMode === "percentile_p75") {
+        benchmarkTarget = globalP75;
+      } else if (targetMode === "percentile_p90") {
+        benchmarkTarget = globalP90;
+      } else if (targetMode === "fixed") {
+        var fv = Number(config.fixedTargetValue);
+        benchmarkTarget = (!isNaN(fv) && fv > 0) ? fv : globalMean;
+      } else if (targetMode === "measure_column") {
+        var tgtObsVals = visibleObs
+          .map(function (o) { return o.targetVal; })
+          .filter(function (v) { return v !== null && v !== undefined && isFinite(v); });
+        if (tgtObsVals.length > 0) {
+          benchmarkTarget = tgtObsVals.reduce(function (a, b) { return a + b; }, 0) / tgtObsVals.length;
+        } else {
+          benchmarkTarget = globalMean;
+        }
+      } else {
+        benchmarkTarget = globalMean;
+      }
+
+      // Flag anomalies & min/max median peaks
+      var anomalyThresh = config.anomalyThresholdPct !== undefined ? Number(config.anomalyThresholdPct) : 25;
+      var lowerIsBetter = (config.metricPolarity || "lower_is_better") === "lower_is_better";
+      var anomalyCount = 0;
+      var maxCatMedian = -Infinity;
+      var minCatMedian = Infinity;
+      var maxCatIdx = -1;
+      var minCatIdx = -1;
+
+      categoryStats.forEach(function (cs, idx) {
+        if (cs.median > maxCatMedian) { maxCatMedian = cs.median; maxCatIdx = idx; }
+        if (cs.median < minCatMedian) { minCatMedian = cs.median; minCatIdx = idx; }
+
+        var refTarget = (targetMode === "measure_column" && cs.categoryTarget !== null) ? cs.categoryTarget : benchmarkTarget;
+        if (refTarget !== null && refTarget !== 0 && anomalyThresh > 0) {
+          var devPct = ((cs.median - refTarget) / Math.abs(refTarget)) * 100;
+          cs.isAnomaly = lowerIsBetter ? (devPct > anomalyThresh) : (devPct < -anomalyThresh);
+          if (cs.isAnomaly) anomalyCount++;
+        }
+      });
+      if (maxCatIdx >= 0) categoryStats[maxCatIdx].isPeakMax = true;
+      if (minCatIdx >= 0) categoryStats[minCatIdx].isPeakMin = true;
+
+      var valFmt = config.valueFormat || "auto";
+      var metricLabel = metricMeasure.label_short || metricMeasure.label || metricMeasure.name;
+      var showRefLine = config.showReferenceLine !== false && benchmarkTarget !== null;
 
       // Executive Scorecard HUD (Top Band)
-      if (config.hudMode !== "hidden") {
+      if (config.hudMode !== "hidden" && config.hudMode !== "none") {
         var hudElem = document.createElement("div");
         hudElem.className = "raincloud-hud";
+        hudElem.style.flex = "0 0 auto";
         hudElem.style.display = config.hudMode === "compact_strip" ? "flex" : "grid";
-        hudElem.style.gridTemplateColumns = "repeat(auto-fit, minmax(180px, 1fr))";
+        hudElem.style.gridTemplateColumns = "repeat(auto-fit, minmax(165px, 1fr))";
         hudElem.style.alignItems = "center";
-        hudElem.style.gap = "10px";
-        hudElem.style.padding = config.hudMode === "compact_strip" ? "6px 14px" : "12px 16px";
+        hudElem.style.gap = "8px";
+        hudElem.style.padding = config.hudMode === "compact_strip" ? "6px 14px" : "10px 14px";
         hudElem.style.background = theme.cardBg;
         hudElem.style.borderBottom = "1px solid " + theme.border;
-        hudElem.style.marginBottom = "12px";
 
-        var titleText = config.customTitleOverride || (metricMeasure.label + " Raincloud Distribution");
-        var subtitleText = config.customSubtitleOverride || ("Half-Violin Density + Boxplot + Observations • " + categoryStats.length + " Categories • " + allObservations.length.toLocaleString() + " Total Samples");
+        var titleText = config.customTitleOverride || (metricLabel + " Raincloud Distribution");
+        var subtitleText = config.customSubtitleOverride || ("KDE + Boxplot + Observations \u2022 " + categoryStats.length + " Categories \u2022 " + visibleObs.length.toLocaleString() + " Samples");
 
-        var varianceVsTarget = benchmarkTarget > 0 ? ((globalMedian - benchmarkTarget) / benchmarkTarget) * 100 : 0;
+        var varianceVsTarget = (benchmarkTarget && benchmarkTarget !== 0) ? ((globalMedian - benchmarkTarget) / Math.abs(benchmarkTarget)) * 100 : 0;
         var varianceSign = varianceVsTarget >= 0 ? "+" : "";
-        var isPositive = config.metricPolarity === "lower_is_better" ? varianceVsTarget <= 0 : varianceVsTarget >= 0;
-        var varColor = isPositive ? (theme.isDark ? "#34d399" : "#059669") : (theme.isDark ? "#f87171" : "#dc2626");
+        var isPositive = lowerIsBetter ? varianceVsTarget <= 0 : varianceVsTarget >= 0;
+        var varColor = isPositive ? theme.positive : theme.negative;
+        var hasDrills = visibleObs.some(function (o) { return o.links && o.links.length > 0; });
 
         if (config.hudMode === "compact_strip") {
           hudElem.innerHTML =
-            '<div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">' +
-              '<span style="font-size:12px; font-weight:700; color:' + theme.text + ';">' + titleText + '</span>' +
-              '<span style="font-size:10px; color:' + theme.subtext + ';">Total Observations: <strong>' + allObservations.length.toLocaleString() + '</strong></span>' +
-              '<span style="font-size:10px; color:' + theme.subtext + ';">Global Median: <strong>' + formatValue(globalMedian, config.valueFormat || "auto") + '</strong></span>' +
-              '<span style="font-size:10px; color:' + (theme.isDark ? "#38bdf8" : "#0284c7") + ';">' + (config.referenceLineLabel || "Target") + ': <strong>' + formatValue(benchmarkTarget, config.valueFormat || "auto") + '</strong></span>' +
+            '<div style="display:flex; align-items:center; flex-wrap:wrap; gap:12px; flex:1; min-width:0;">' +
+              '<span style="font-size:' + (12 * fontMultiplier) + 'px; font-weight:700; color:' + theme.text + ';">' + escapeHtml(titleText) + '</span>' +
+              '<span style="font-size:' + (10.5 * fontMultiplier) + 'px; color:' + theme.subtext + ';">Samples: <strong>' + visibleObs.length.toLocaleString() + '</strong></span>' +
+              '<span style="font-size:' + (10.5 * fontMultiplier) + 'px; color:' + theme.subtext + ';">Median: <strong>' + escapeHtml(formatValue(globalMedian, valFmt)) + '</strong></span>' +
+              (benchmarkTarget !== null ? '<span style="font-size:' + (10.5 * fontMultiplier) + 'px; color:' + theme.benchmarkLine + ';">' + escapeHtml(config.referenceLineLabel || "Target") + ': <strong>' + escapeHtml(formatValue(benchmarkTarget, valFmt)) + '</strong></span>' : '') +
+              (anomalyThresh > 0 ? '<span style="font-size:' + (10.5 * fontMultiplier) + 'px; font-weight:700; color:' + (anomalyCount > 0 ? theme.negative : theme.positive) + ';">Alerts: ' + anomalyCount + '</span>' : '') +
+              (hasDrills ? '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; background:rgba(37,99,235,0.1); color:#2563eb;">CLICK DOT TO DRILL</span>' : '') +
             '</div>';
         } else {
           hudElem.innerHTML =
-            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
-              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">' + titleText + '</div>' +
-              '<div style="font-size:16px; font-weight:800; color:' + theme.text + ';">' + allObservations.length.toLocaleString() + ' <span style="font-size:11px; font-weight:500; color:' + theme.subtext + ';">samples</span></div>' +
-              '<div style="font-size:10px; color:' + theme.subtext + ';">' + subtitleText + '</div>' +
+            '<div style="padding:7px 10px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + '; min-width:0;">' +
+              '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + '; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + escapeHtml(titleText) + '</div>' +
+              '<div style="font-size:' + (15 * fontMultiplier) + 'px; font-weight:800; color:' + theme.text + ';">' + visibleObs.length.toLocaleString() + ' <span style="font-size:' + (10.5 * fontMultiplier) + 'px; font-weight:500; color:' + theme.subtext + ';">samples</span></div>' +
+              '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; color:' + theme.subtext + '; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + escapeHtml(subtitleText) + '</div>' +
             '</div>' +
-            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
-              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">Dataset Median</div>' +
-              '<div style="font-size:16px; font-weight:800; color:' + theme.text + ';">' + formatValue(globalMedian, config.valueFormat || "auto") + '</div>' +
-              '<div style="font-size:10px; color:' + theme.subtext + ';">Mean: ' + formatValue(globalMean, config.valueFormat || "auto") + '</div>' +
+            '<div style="padding:7px 10px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + '; min-width:0;">' +
+              '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">Dataset Median (P50)</div>' +
+              '<div style="font-size:' + (15 * fontMultiplier) + 'px; font-weight:800; color:' + theme.text + ';">' + escapeHtml(formatValue(globalMedian, valFmt)) + '</div>' +
+              '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; color:' + theme.subtext + ';">Mean: ' + escapeHtml(formatValue(globalMean, valFmt)) + '</div>' +
             '</div>' +
-            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
-              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">' + (config.referenceLineLabel || "Benchmark Target") + '</div>' +
-              '<div style="font-size:16px; font-weight:800; color:' + (theme.isDark ? "#38bdf8" : "#0284c7") + ';">' + formatValue(benchmarkTarget, config.valueFormat || "auto") + '</div>' +
-              '<div style="font-size:10px; font-weight:700; color:' + varColor + ';">Median Variance: ' + varianceSign + varianceVsTarget.toFixed(1) + '%</div>' +
-            '</div>' +
-            '<div style="padding:8px 12px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + ';">' +
-              '<div style="font-size:10px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">Interquartile Range (P25 - P75)</div>' +
-              '<div style="font-size:16px; font-weight:800; color:' + theme.text + ';">' + formatValue(globalP75 - d3.quantile(allValsSorted, 0.25), config.valueFormat || "auto") + '</div>' +
-              '<div style="font-size:10px; color:' + theme.subtext + ';">Spread Across ' + categoryStats.length + ' Categories</div>' +
+            (benchmarkTarget !== null ? (
+              '<div style="padding:7px 10px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + '; min-width:0;">' +
+                '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + '; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + escapeHtml(config.referenceLineLabel || "Benchmark Target") + '</div>' +
+                '<div style="font-size:' + (15 * fontMultiplier) + 'px; font-weight:800; color:' + theme.benchmarkLine + ';">' + escapeHtml(formatValue(benchmarkTarget, valFmt)) + '</div>' +
+                '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; font-weight:700; color:' + varColor + ';">Median Variance: ' + varianceSign + varianceVsTarget.toFixed(1) + '%</div>' +
+              '</div>'
+            ) : '') +
+            '<div style="padding:7px 10px; border-radius:6px; background:' + theme.bg + '; border:1px solid ' + theme.border + '; min-width:0;">' +
+              '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; font-weight:600; text-transform:uppercase; color:' + theme.subtext + ';">IQR Spread &amp; Alerts</div>' +
+              '<div style="font-size:' + (15 * fontMultiplier) + 'px; font-weight:800; color:' + theme.text + ';">' + escapeHtml(formatValue(globalP75 - globalP25, valFmt)) + '</div>' +
+              '<div style="font-size:' + (9.5 * fontMultiplier) + 'px; font-weight:700; color:' + (anomalyCount > 0 ? theme.negative : theme.positive) + ';">' +
+                (anomalyThresh > 0 ? (anomalyCount + ' category alert' + (anomalyCount === 1 ? '' : 's') + ' (&gt;' + anomalyThresh + '%)') : ('P25\u2013P75 across ' + categoryStats.length + ' lanes')) +
+              '</div>' +
             '</div>';
         }
         container.appendChild(hudElem);
       }
 
-      // Interactive Search Bar
-      if (config.showSearch !== false) {
-        var searchToolbar = document.createElement("div");
-        searchToolbar.style.display = "flex";
-        searchToolbar.style.alignItems = "center";
-        searchToolbar.style.justifyContent = "space-between";
-        searchToolbar.style.gap = "12px";
-        searchToolbar.style.padding = "6px 16px";
-        searchToolbar.style.background = theme.cardBg;
-        searchToolbar.style.borderBottom = "1px solid " + theme.border;
+      // Interactive Search Bar & Legend Row
+      var showSearch = config.showSearch !== false;
+      var showLegend = config.showLegend !== false;
+      if (showSearch || showLegend) {
+        var toolbar = document.createElement("div");
+        toolbar.style.flex = "0 0 auto";
+        toolbar.style.display = "flex";
+        toolbar.style.flexWrap = "wrap";
+        toolbar.style.alignItems = "center";
+        toolbar.style.justifyContent = "space-between";
+        toolbar.style.gap = "10px";
+        toolbar.style.padding = "6px 14px";
+        toolbar.style.background = theme.cardBg;
+        toolbar.style.borderBottom = "1px solid " + theme.border;
 
-        var searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.placeholder = "🔍 Search categories (e.g. Initial Access, Persistence...)";
-        searchInput.value = self._searchFilter || "";
-        searchInput.style.padding = "5px 10px";
-        searchInput.style.fontSize = "11.5px";
-        searchInput.style.borderRadius = "5px";
-        searchInput.style.border = "1px solid " + theme.border;
-        searchInput.style.background = theme.bg;
-        searchInput.style.color = theme.text;
-        searchInput.style.width = "280px";
-        searchInput.style.outline = "none";
+        if (showSearch) {
+          var searchInput = document.createElement("input");
+          searchInput.type = "text";
+          searchInput.placeholder = "Filter categories...";
+          searchInput.value = self._searchFilter || "";
+          searchInput.style.padding = "4px 10px";
+          searchInput.style.fontSize = (11 * fontMultiplier) + "px";
+          searchInput.style.borderRadius = "5px";
+          searchInput.style.border = "1px solid " + theme.border;
+          searchInput.style.background = theme.bg;
+          searchInput.style.color = theme.text;
+          searchInput.style.width = "210px";
+          searchInput.style.maxWidth = "100%";
+          searchInput.style.outline = "none";
 
-        searchInput.oninput = function (e) {
-          self._searchFilter = e.target.value;
-          self._renderChart(d3, data, config, queryResponse);
-        };
-        searchToolbar.appendChild(searchInput);
+          searchInput.oninput = function (e) {
+            self._searchFilter = e.target.value;
+            self._renderChart(d3, data, config, queryResponse);
+          };
+          toolbar.appendChild(searchInput);
+        }
 
-        var modeBadge = document.createElement("div");
-        modeBadge.style.fontSize = "11px";
-        modeBadge.style.fontWeight = "600";
-        modeBadge.style.color = theme.subtext;
-        modeBadge.innerHTML = "View: <strong>" + (config.viewMode || "Horizontal Raincloud") + "</strong> &bull; Polar: <strong>" + (config.metricPolarity === "lower_is_better" ? "Lower is Better" : "Higher is Better") + "</strong>";
-        searchToolbar.appendChild(modeBadge);
+        if (showLegend) {
+          var legendDiv = document.createElement("div");
+          legendDiv.style.display = "flex";
+          legendDiv.style.flexWrap = "wrap";
+          legendDiv.style.alignItems = "center";
+          legendDiv.style.gap = "12px";
+          legendDiv.style.fontSize = (10.5 * fontMultiplier) + "px";
+          legendDiv.style.color = theme.subtext;
 
-        container.appendChild(searchToolbar);
+          var medLineColor = theme.isDark ? "#fbbf24" : "#b45309";
+          legendDiv.innerHTML =
+            '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:3px 3px 0 0;background:' + theme.palette[0] + ';opacity:0.55;display:inline-block;"></span>Cloud (KDE)</span>' +
+            '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:12px;height:7px;border:1.5px solid ' + theme.palette[0] + ';background:' + theme.bg + ';display:inline-flex;align-items:center;justify-content:center;"><span style="width:2px;height:7px;background:' + medLineColor + ';"></span></span>IQR &amp; Median</span>' +
+            '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:' + theme.text + ';display:inline-block;"></span>Mean</span>' +
+            '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:50%;background:' + theme.negative + ';display:inline-block;"></span>Outlier (&gt;1.5&times;IQR)</span>' +
+            (showRefLine ? '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:14px;border-top:2px dashed ' + theme.benchmarkLine + ';display:inline-block;"></span>' + escapeHtml(config.referenceLineLabel || "Target") + '</span>' : '');
+          toolbar.appendChild(legendDiv);
+        }
+
+        container.appendChild(toolbar);
       }
 
-      // Main Chart Area
+      if (categoryStats.length === 0) {
+        var emptyMsg = document.createElement("div");
+        emptyMsg.style.padding = "28px";
+        emptyMsg.style.textAlign = "center";
+        emptyMsg.style.color = theme.subtext;
+        emptyMsg.textContent = "No categories match filter \"" + self._searchFilter + "\".";
+        container.appendChild(emptyMsg);
+        return;
+      }
+
+      // Main Chart Area (flex-1 scrollable region below HUD)
       var mainArea = document.createElement("div");
       mainArea.className = "raincloud-main-area";
-      mainArea.style.padding = "16px";
+      mainArea.style.flex = "1 1 0";
+      mainArea.style.minHeight = "0";
+      mainArea.style.overflow = "auto";
+      mainArea.style.padding = "12px 14px";
       mainArea.style.boxSizing = "border-box";
       container.appendChild(mainArea);
 
-      // Render Layout
       var viewMode = config.viewMode || "horizontal_split";
-
       if (viewMode === "vertical_columns") {
-        self._renderVerticalRainclouds(d3, mainArea, categoryStats, theme, config, metricMeasure, benchmarkTarget, fontMultiplier);
+        self._renderVerticalRainclouds(d3, mainArea, categoryStats, theme, config, metricMeasure, benchmarkTarget, showRefLine, fontMultiplier);
       } else {
-        self._renderHorizontalRainclouds(d3, mainArea, categoryStats, theme, config, metricMeasure, benchmarkTarget, fontMultiplier, viewMode);
+        self._renderHorizontalRainclouds(d3, mainArea, categoryStats, theme, config, metricMeasure, benchmarkTarget, showRefLine, fontMultiplier, viewMode);
       }
     },
 
-    _renderHorizontalRainclouds: function (d3, targetElem, categoryStats, theme, config, metricMeasure, benchmarkTarget, fontMultiplier, viewMode) {
+    _attachDotInteractions: function (dot, obs, cs, catColor, isOutlier, r, ptOpacity, theme, config, metricMeasure, valFmt) {
       var self = this;
-      var numCats = categoryStats.length;
-      if (numCats === 0) return;
+      var metricLabel = metricMeasure.label_short || metricMeasure.label || metricMeasure.name;
 
-      var wrap = document.createElement("div");
-      wrap.style.width = "100%";
-      wrap.style.overflowX = "auto";
-      targetElem.appendChild(wrap);
+      dot.on("mouseenter", function () {
+        dot.attr("r", r * 1.45).attr("opacity", 1.0);
+        var tt = self._tooltip;
+        tt.style.background = theme.isDark ? "#1e293b" : "#ffffff";
+        tt.style.color = theme.text;
+        tt.style.border = "1px solid " + catColor;
 
-      var laneHeight = 84;
-      var marginTop = 30;
-      var marginBottom = 40;
-      var marginLeft = 150;
-      var marginRight = 40;
+        tt.innerHTML =
+          '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:10px;">' +
+            '<strong>' + escapeHtml(obs.id) + '</strong>' +
+            '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; background:' + catColor + '; color:#fff;">' + escapeHtml(cs.name) + '</span>' +
+          '</div>' +
+          '<div style="font-size:15px; font-weight:800; color:' + catColor + '; margin-bottom:4px;">' +
+            escapeHtml(metricLabel) + ': ' + escapeHtml(formatValue(obs.val, valFmt, obs.rendered)) +
+          '</div>' +
+          '<div style="font-size:11px; color:' + theme.subtext + '; line-height:1.4;">' +
+            'Median: <strong>' + escapeHtml(formatValue(cs.median, valFmt)) + '</strong> &bull; IQR: <strong>' + escapeHtml(formatValue(cs.iqr, valFmt)) + '</strong> &bull; N=' + cs.count + '<br/>' +
+            (isOutlier ? '<div style="color:' + theme.negative + '; font-weight:700; margin-top:2px;">Statistical Outlier (&gt;1.5&times; IQR)</div>' : '') +
+            (obs.links && obs.links.length ? '<div style="margin-top:4px; color:#2563eb; font-weight:600;">Click to drill down &rarr;</div>' : '') +
+          '</div>';
 
-      var totalHeight = marginTop + (laneHeight * numCats) + marginBottom;
-      var totalWidth = Math.max(targetElem.clientWidth || 700, 680);
-      var chartW = totalWidth - marginLeft - marginRight;
+        tt.style.display = "block";
+        tt.style.opacity = "1";
+      });
 
-      // Determine global visible domain
+      dot.on("mousemove", function (event) {
+        var tt = self._tooltip;
+        var x = event.clientX + 14;
+        var y = event.clientY - 30;
+        if (x + 250 > window.innerWidth) x = event.clientX - 260;
+        if (y + 130 > window.innerHeight) y = event.clientY - 130;
+        tt.style.left = Math.max(8, x) + "px";
+        tt.style.top = Math.max(8, y) + "px";
+      });
+
+      dot.on("mouseleave", function () {
+        dot.attr("r", r).attr("opacity", ptOpacity);
+        self._tooltip.style.display = "none";
+        self._tooltip.style.opacity = "0";
+      });
+
+      dot.on("click", function (event) {
+        if (obs.links && obs.links.length && typeof LookerCharts !== "undefined" && LookerCharts.Utils && LookerCharts.Utils.openDrillMenu) {
+          LookerCharts.Utils.openDrillMenu({
+            links: obs.links,
+            event: event
+          });
+        }
+      });
+    },
+
+    _computeDomainBounds: function (categoryStats, config) {
       var globalMin = Infinity;
       var globalMax = -Infinity;
 
       categoryStats.forEach(function (cs) {
+        var lo, hi;
         if (config.outlierThreshold === "full_domain") {
-          if (cs.values[0] < globalMin) globalMin = cs.values[0];
-          if (cs.values[cs.values.length - 1] > globalMax) globalMax = cs.values[cs.values.length - 1];
+          lo = cs.min;
+          hi = cs.max;
+        } else if (config.outlierThreshold === "p99") {
+          lo = cs.p01;
+          hi = cs.p99;
         } else {
-          if (cs.lowerWhisker < globalMin) globalMin = cs.lowerWhisker;
-          if (cs.upperWhisker > globalMax) globalMax = cs.upperWhisker;
+          lo = cs.lowerWhisker;
+          hi = cs.upperWhisker;
         }
+        if (lo < globalMin) globalMin = lo;
+        if (hi > globalMax) globalMax = hi;
       });
 
       if (globalMin === Infinity) globalMin = 0;
-      if (globalMax === -Infinity || globalMax === globalMin) globalMax = globalMin + 10;
+      if (globalMax === -Infinity || globalMax <= globalMin) globalMax = globalMin + 10;
 
-      var xPad = (globalMax - globalMin) * 0.05;
-      var xScale = d3.scaleLinear()
-        .domain([Math.max(0, globalMin - xPad), globalMax + xPad])
-        .range([0, chartW]);
+      var pad = (globalMax - globalMin) * 0.06;
+      var domainMin = globalMin >= 0 ? Math.max(0, globalMin - pad) : (globalMin - pad);
+      var domainMax = globalMax + pad;
+      return [domainMin, domainMax];
+    },
 
-      var svg = d3.select(wrap)
+    _renderHorizontalRainclouds: function (d3, targetElem, categoryStats, theme, config, metricMeasure, benchmarkTarget, showRefLine, fontMultiplier, viewMode) {
+      var self = this;
+      var numCats = categoryStats.length;
+      if (numCats === 0) return;
+
+      var valFmt = config.valueFormat || "auto";
+      var labelMode = config.showValueLabels || "all";
+      if (labelMode === "median_only") labelMode = "peaks_only";
+
+      var maxNameLen = categoryStats.reduce(function (m, cs) { return Math.max(m, cs.name.length); }, 8);
+      var availW = Math.max((targetElem.clientWidth || 680) - 28, 480);
+      var marginLeft = Math.min(Math.max(120, Math.round(maxNameLen * 6.4 * fontMultiplier + 22)), Math.round(availW * 0.36));
+      var marginTop = 26;
+      var marginBottom = 34;
+      var marginRight = labelMode === "hidden" ? 28 : 74;
+
+      var availH = Math.max((targetElem.clientHeight || 420) - 24, 240);
+      var minLaneH = numCats <= 9 ? 54 : 64;
+      var laneHeight = Math.max(minLaneH, Math.min(96, Math.floor((availH - marginTop - marginBottom) / numCats)));
+
+      var totalHeight = marginTop + (laneHeight * numCats) + marginBottom;
+      var totalWidth = availW;
+      var chartW = Math.max(240, totalWidth - marginLeft - marginRight);
+
+      var domain = self._computeDomainBounds(categoryStats, config);
+      var xScale = d3.scaleLinear().domain(domain).range([0, chartW]).clamp(true);
+
+      var svg = d3.select(targetElem)
         .append("svg")
         .attr("width", totalWidth)
         .attr("height", totalHeight)
+        .style("display", "block")
         .style("font-family", "inherit");
 
       var g = svg.append("g")
         .attr("transform", "translate(" + marginLeft + "," + marginTop + ")");
 
-      // Background alternating zebra stripes
+      // Alternating zebra stripes
       categoryStats.forEach(function (cs, idx) {
         g.append("rect")
           .attr("x", -marginLeft)
           .attr("y", idx * laneHeight)
           .attr("width", totalWidth)
           .attr("height", laneHeight)
-          .attr("fill", idx % 2 === 0 ? (theme.isDark ? "rgba(255,255,255,0.015)" : "rgba(0,0,0,0.015)") : "none");
+          .attr("fill", cs.isAnomaly
+            ? (theme.isDark ? "rgba(248,113,113,0.06)" : "rgba(239,68,68,0.04)")
+            : (idx % 2 === 0 ? (theme.isDark ? "rgba(255,255,255,0.015)" : "rgba(0,0,0,0.015)") : "none"));
       });
 
+      // X-Axis Grid & Axis Line (remove D3 domain border box)
+      var gridG = g.append("g")
+        .call(d3.axisBottom(xScale).ticks(6).tickSize(numCats * laneHeight).tickFormat(""));
+      gridG.select(".domain").remove();
+      gridG.selectAll(".tick line")
+        .attr("stroke", theme.grid)
+        .attr("stroke-opacity", 0.75)
+        .attr("stroke-dasharray", "2,2");
+
+      var xAxis = d3.axisBottom(xScale)
+        .ticks(6)
+        .tickFormat(function (d) { return formatValue(d, valFmt); });
+
+      var axisG = g.append("g")
+        .attr("transform", "translate(0," + (numCats * laneHeight) + ")")
+        .call(xAxis);
+      axisG.select(".domain").attr("stroke", theme.border);
+      axisG.selectAll(".tick line").attr("stroke", theme.border);
+      axisG.selectAll("text")
+        .attr("fill", theme.subtext)
+        .attr("font-size", (10 * fontMultiplier) + "px");
+
       // Benchmark reference vertical line
-      if (benchmarkTarget > 0 && benchmarkTarget >= xScale.domain()[0] && benchmarkTarget <= xScale.domain()[1]) {
+      if (showRefLine && benchmarkTarget >= domain[0] && benchmarkTarget <= domain[1]) {
         var bx = xScale(benchmarkTarget);
         g.append("line")
           .attr("x1", bx)
@@ -1214,74 +1554,76 @@
           .attr("y1", 0)
           .attr("y2", numCats * laneHeight)
           .attr("stroke", theme.benchmarkLine)
-          .attr("stroke-width", 1.5)
+          .attr("stroke-width", 1.75)
           .attr("stroke-dasharray", "4,3")
-          .attr("opacity", 0.7);
+          .attr("opacity", 0.8);
 
+        var anchorRight = bx > chartW * 0.72;
         g.append("text")
-          .attr("x", bx + 4)
+          .attr("x", anchorRight ? bx - 5 : bx + 5)
           .attr("y", -8)
-          .attr("font-size", "9px")
+          .attr("text-anchor", anchorRight ? "end" : "start")
+          .attr("font-size", (9.5 * fontMultiplier) + "px")
           .attr("font-weight", "700")
           .attr("fill", theme.benchmarkLine)
-          .text((config.referenceLineLabel || "Target") + ": " + formatValue(benchmarkTarget, config.valueFormat || "auto"));
+          .text((config.referenceLineLabel || "Target") + ": " + formatValue(benchmarkTarget, valFmt));
       }
-
-      // X-Axis Grid & Axis Line
-      g.append("g")
-        .attr("stroke", theme.grid)
-        .attr("stroke-opacity", 0.6)
-        .call(d3.axisBottom(xScale).ticks(6).tickSize(numCats * laneHeight).tickFormat(""));
-
-      var xAxis = d3.axisBottom(xScale)
-        .ticks(6)
-        .tickFormat(function (d) { return formatValue(d, config.valueFormat || "auto"); });
-
-      g.append("g")
-        .attr("transform", "translate(0," + (numCats * laneHeight) + ")")
-        .call(xAxis)
-        .attr("color", theme.subtext)
-        .selectAll("text")
-        .attr("font-size", (10 * fontMultiplier) + "px");
 
       // Render each category lane
       categoryStats.forEach(function (cs, laneIdx) {
         var laneG = g.append("g")
           .attr("transform", "translate(0," + (laneIdx * laneHeight) + ")");
 
-        var catColor = theme.palette[laneIdx % theme.palette.length];
-        var cloudHeight = 32;
-        var boxplotY = 40;
-        var rainCenterY = 62;
+        var catColor = cs.isOther ? theme.subtext : theme.palette[laneIdx % theme.palette.length];
+        var cloudHeight = Math.round(laneHeight * 0.36);
+        var boxplotY = Math.round(laneHeight * 0.48);
+        var rainCenterY = Math.round(laneHeight * 0.74);
 
-        // Category Label on Left
+        // Truncated Category Label on Left with full <title>
+        var maxChars = Math.max(10, Math.floor((marginLeft - 18) / (6.3 * fontMultiplier)));
+        var dispName = cs.name.length > maxChars ? (cs.name.slice(0, maxChars - 1) + "\u2026") : cs.name;
+
         var labelG = svg.append("g")
-          .attr("transform", "translate(" + (marginLeft - 14) + "," + (marginTop + (laneIdx * laneHeight) + boxplotY + 4) + ")");
+          .attr("transform", "translate(" + (marginLeft - 12) + "," + (marginTop + (laneIdx * laneHeight) + boxplotY + 2) + ")");
 
-        labelG.append("text")
+        var titleEl = labelG.append("text")
           .attr("text-anchor", "end")
-          .attr("font-size", (11.5 * fontMultiplier) + "px")
+          .attr("font-size", (11 * fontMultiplier) + "px")
           .attr("font-weight", "700")
-          .attr("fill", theme.text)
-          .text(cs.name);
+          .attr("fill", cs.isAnomaly ? theme.negative : theme.text)
+          .text((cs.isAnomaly ? "\u26A0 " : "") + dispName);
+        titleEl.append("title").text(cs.name + " (N=" + cs.count + ", Median=" + formatValue(cs.median, valFmt) + ")");
 
-        labelG.append("text")
-          .attr("y", 13)
-          .attr("text-anchor", "end")
-          .attr("font-size", (9.5 * fontMultiplier) + "px")
-          .attr("font-weight", "500")
-          .attr("fill", theme.subtext)
-          .text(cs.count + " samples • Med: " + formatValue(cs.median, config.valueFormat || "auto"));
+        if (labelMode !== "hidden") {
+          labelG.append("text")
+            .attr("y", 13)
+            .attr("text-anchor", "end")
+            .attr("font-size", (9.2 * fontMultiplier) + "px")
+            .attr("font-weight", "500")
+            .attr("fill", theme.subtext)
+            .text("N=" + cs.count + " \u2022 Med " + formatValue(cs.median, valFmt));
+        }
 
-        // 1. THE CLOUD: Half-Violin KDE (Density curve pointing upwards)
+        // Per-category target marker if measure_column mode
+        if (showRefLine && config.targetCalculationMode === "measure_column" && cs.categoryTarget !== null) {
+          var ctX = xScale(cs.categoryTarget);
+          laneG.append("line")
+            .attr("x1", ctX).attr("x2", ctX)
+            .attr("y1", 6).attr("y2", laneHeight - 6)
+            .attr("stroke", theme.benchmarkLine)
+            .attr("stroke-width", 1.5)
+            .attr("stroke-dasharray", "2,2");
+        }
+
+        // 1. THE CLOUD: Half-Violin KDE
         if (viewMode !== "rain_strip" && cs.kdeData && cs.kdeData.length > 1) {
           var yDensityScale = d3.scaleLinear()
             .domain([0, 1])
-            .range([boxplotY - 2, boxplotY - 2 - cloudHeight]);
+            .range([boxplotY - 3, Math.max(4, boxplotY - 3 - cloudHeight)]);
 
           var areaGen = d3.area()
             .x(function (d) { return xScale(d.x); })
-            .y0(boxplotY - 2)
+            .y0(boxplotY - 3)
             .y1(function (d) { return yDensityScale(d.normDensity); })
             .curve(d3.curveCatmullRom);
 
@@ -1317,34 +1659,21 @@
         var boxH = 10;
         var boxTop = boxplotY - (boxH / 2);
 
-        // Whisker line
         laneG.append("line")
-          .attr("x1", lowWhiskerX)
-          .attr("x2", highWhiskerX)
-          .attr("y1", boxplotY)
-          .attr("y2", boxplotY)
-          .attr("stroke", boxColor)
-          .attr("stroke-width", 1.5)
-          .attr("opacity", 0.85);
-
-        // Whisker end caps
-        laneG.append("line")
-          .attr("x1", lowWhiskerX)
-          .attr("x2", lowWhiskerX)
-          .attr("y1", boxplotY - 3)
-          .attr("y2", boxplotY + 3)
-          .attr("stroke", boxColor)
-          .attr("stroke-width", 1.5);
+          .attr("x1", lowWhiskerX).attr("x2", highWhiskerX)
+          .attr("y1", boxplotY).attr("y2", boxplotY)
+          .attr("stroke", boxColor).attr("stroke-width", 1.5).attr("opacity", 0.85);
 
         laneG.append("line")
-          .attr("x1", highWhiskerX)
-          .attr("x2", highWhiskerX)
-          .attr("y1", boxplotY - 3)
-          .attr("y2", boxplotY + 3)
-          .attr("stroke", boxColor)
-          .attr("stroke-width", 1.5);
+          .attr("x1", lowWhiskerX).attr("x2", lowWhiskerX)
+          .attr("y1", boxplotY - 3).attr("y2", boxplotY + 3)
+          .attr("stroke", boxColor).attr("stroke-width", 1.5);
 
-        // IQR Box
+        laneG.append("line")
+          .attr("x1", highWhiskerX).attr("x2", highWhiskerX)
+          .attr("y1", boxplotY - 3).attr("y2", boxplotY + 3)
+          .attr("stroke", boxColor).attr("stroke-width", 1.5);
+
         laneG.append("rect")
           .attr("x", Math.min(q1X, q3X))
           .attr("y", boxTop)
@@ -1355,35 +1684,47 @@
           .attr("stroke", boxColor)
           .attr("stroke-width", 1.5);
 
-        // Median Line
         laneG.append("line")
-          .attr("x1", medX)
-          .attr("x2", medX)
-          .attr("y1", boxTop - 1)
-          .attr("y2", boxTop + boxH + 1)
+          .attr("x1", medX).attr("x2", medX)
+          .attr("y1", boxTop - 1.5).attr("y2", boxTop + boxH + 1.5)
           .attr("stroke", theme.isDark ? "#fbbf24" : "#b45309")
           .attr("stroke-width", 2.5);
 
-        // Mean diamond marker
-        var meanX = xScale(cs.mean);
         laneG.append("circle")
-          .attr("cx", meanX)
+          .attr("cx", xScale(cs.mean))
           .attr("cy", boxplotY)
-          .attr("r", 2.5)
+          .attr("r", 2.6)
           .attr("fill", theme.isDark ? "#ffffff" : "#0f172a");
 
-        // 3. THE RAIN: Jittered Dots
+        // Inline Data Value Callouts respecting labelDensity
+        var showLaneCallout = labelMode === "all" || (labelMode === "peaks_only" && (cs.isPeakMax || cs.isPeakMin || cs.isAnomaly));
+        if (showLaneCallout) {
+          var peakTag = cs.isPeakMax ? " (Peak)" : (cs.isPeakMin ? " (Low)" : "");
+          laneG.append("text")
+            .attr("x", Math.min(chartW + 4, highWhiskerX + 6))
+            .attr("y", boxplotY + 3)
+            .attr("font-size", (9 * fontMultiplier) + "px")
+            .attr("font-weight", (cs.isPeakMax || cs.isPeakMin || cs.isAnomaly) ? "700" : "600")
+            .attr("fill", cs.isAnomaly ? theme.negative : theme.subtext)
+            .text(formatValue(cs.median, valFmt) + peakTag);
+        }
+
+        // 3. THE RAIN: Jittered Dots & Clipped Outlier Indicators
+        var clippedHigh = 0;
+        var clippedLow = 0;
         if (viewMode !== "cloud_boxplot") {
-          var jitterSpread = 8;
-          if (config.jitterAmount === "compact") jitterSpread = 4;
-          else if (config.jitterAmount === "wide") jitterSpread = 12;
+          var jitterSpread = Math.max(4, Math.min(11, Math.round(laneHeight * 0.1)));
+          if (config.jitterAmount === "compact") jitterSpread = Math.max(3, Math.round(jitterSpread * 0.55));
+          else if (config.jitterAmount === "wide") jitterSpread = Math.round(jitterSpread * 1.35);
 
           var basePtRadius = config.pointRadius !== undefined ? config.pointRadius : 3.5;
           var ptOpacity = config.pointOpacity !== undefined ? config.pointOpacity : 0.65;
 
           cs.observations.forEach(function (obs) {
+            if (obs.val > domain[1]) { clippedHigh++; return; }
+            if (obs.val < domain[0]) { clippedLow++; return; }
+
             var ox = xScale(obs.val);
-            // Deterministic hash jitter: range [-jitterSpread, +jitterSpread]
             var jOffset = ((obs.jitterSeed % 2000) / 1000.0 - 1.0) * jitterSpread;
             var oy = rainCenterY + jOffset;
 
@@ -1391,201 +1732,169 @@
             if (obs.size > 1) {
               r = Math.min(basePtRadius * 2, basePtRadius + Math.log2(obs.size));
             }
-
             var isOutlier = obs.val < cs.lowerWhisker || obs.val > cs.upperWhisker;
 
             var dot = laneG.append("circle")
               .attr("cx", ox)
               .attr("cy", oy)
               .attr("r", r)
-              .attr("fill", isOutlier ? (theme.isDark ? "#f87171" : "#dc2626") : catColor)
+              .attr("fill", isOutlier ? theme.negative : catColor)
               .attr("stroke", theme.isDark ? "#0b0f19" : "#ffffff")
               .attr("stroke-width", 0.75)
               .attr("opacity", ptOpacity)
               .style("cursor", "pointer");
 
-            dot.on("mouseenter", function (event) {
-              dot.attr("r", r * 1.5).attr("opacity", 1.0);
-
-              var tt = self._tooltip;
-              tt.style.background = theme.isDark ? "#1e293b" : "#ffffff";
-              tt.style.color = theme.text;
-              tt.style.border = "1px solid " + catColor;
-
-              tt.innerHTML =
-                '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:10px;">' +
-                  '<strong>' + obs.id + '</strong>' +
-                  '<span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; background:' + catColor + '; color:#fff;">' + cs.name + '</span>' +
-                '</div>' +
-                '<div style="font-size:15px; font-weight:800; color:' + catColor + '; margin-bottom:4px;">' +
-                  metricMeasure.label + ': ' + formatValue(obs.val, config.valueFormat || "auto", obs.rendered) +
-                '</div>' +
-                '<div style="font-size:11px; color:' + theme.subtext + '; line-height:1.4;">' +
-                  'Category Median: <strong>' + formatValue(cs.median, config.valueFormat || "auto") + '</strong> &bull; IQR: <strong>' + formatValue(cs.iqr, config.valueFormat || "auto") + '</strong><br/>' +
-                  (isOutlier ? '<div style="color:' + (theme.isDark ? '#f87171' : '#dc2626') + '; font-weight:700; margin-top:2px;">⚠️ Statistical Outlier (>1.5× IQR)</div>' : '') +
-                  (obs.links ? '<div style="margin-top:4px; color:#2563eb;">Click to drill down &rarr;</div>' : '') +
-                '</div>';
-
-              tt.style.display = "block";
-              tt.style.opacity = "1";
-            });
-
-            dot.on("mousemove", function (event) {
-              var tt = self._tooltip;
-              var x = event.clientX + 14;
-              var y = event.clientY - 30;
-              if (x + 240 > window.innerWidth) x = event.clientX - 250;
-              if (y + 120 > window.innerHeight) y = event.clientY - 120;
-              tt.style.left = x + "px";
-              tt.style.top = y + "px";
-            });
-
-            dot.on("mouseleave", function () {
-              dot.attr("r", r).attr("opacity", ptOpacity);
-              self._tooltip.style.display = "none";
-              self._tooltip.style.opacity = "0";
-            });
-
-            dot.on("click", function (event) {
-              if (obs.links) {
-                LookerCharts.Utils.openDrillMenu({
-                  links: obs.links,
-                  event: event
-                });
-              }
-            });
+            self._attachDotInteractions(dot, obs, cs, catColor, isOutlier, r, ptOpacity, theme, config, metricMeasure, valFmt);
           });
+
+          if (clippedHigh > 0) {
+            laneG.append("text")
+              .attr("x", chartW - 2)
+              .attr("y", rainCenterY + 3)
+              .attr("text-anchor", "end")
+              .attr("font-size", (9 * fontMultiplier) + "px")
+              .attr("font-weight", "700")
+              .attr("fill", theme.negative)
+              .text("\u25B6 +" + clippedHigh + " clipped");
+          }
+          if (clippedLow > 0) {
+            laneG.append("text")
+              .attr("x", 4)
+              .attr("y", rainCenterY + 3)
+              .attr("text-anchor", "start")
+              .attr("font-size", (9 * fontMultiplier) + "px")
+              .attr("font-weight", "700")
+              .attr("fill", theme.negative)
+              .text("\u25C0 +" + clippedLow);
+          }
         }
       });
     },
 
-    _renderVerticalRainclouds: function (d3, targetElem, categoryStats, theme, config, metricMeasure, benchmarkTarget, fontMultiplier) {
+    _renderVerticalRainclouds: function (d3, targetElem, categoryStats, theme, config, metricMeasure, benchmarkTarget, showRefLine, fontMultiplier) {
       var self = this;
       var numCats = categoryStats.length;
       if (numCats === 0) return;
 
-      var wrap = document.createElement("div");
-      wrap.style.width = "100%";
-      wrap.style.overflowX = "auto";
-      targetElem.appendChild(wrap);
+      var valFmt = config.valueFormat || "auto";
+      var labelMode = config.showValueLabels || "all";
+      if (labelMode === "median_only") labelMode = "peaks_only";
 
-      var columnWidth = Math.max(100, Math.floor(((targetElem.clientWidth || 700) - 120) / numCats));
-      var marginTop = 40;
-      var marginBottom = 70;
-      var marginLeft = 70;
-      var marginRight = 30;
+      var availW = Math.max(targetElem.clientWidth - 28 || 680, 480);
+      var columnWidth = Math.max(92, Math.floor((availW - 96) / numCats));
+      var marginTop = 34;
+      var marginBottom = 68;
+      var marginLeft = 68;
+      var marginRight = 24;
 
-      var totalWidth = marginLeft + (columnWidth * numCats) + marginRight;
-      var totalHeight = 440;
+      var totalWidth = Math.max(availW, marginLeft + (columnWidth * numCats) + marginRight);
+      var availH = Math.max((targetElem.clientHeight || 420) - 24, 320);
+      var totalHeight = Math.min(540, availH);
       var chartH = totalHeight - marginTop - marginBottom;
 
-      var globalMin = Infinity;
-      var globalMax = -Infinity;
+      var domain = self._computeDomainBounds(categoryStats, config);
+      var yScale = d3.scaleLinear().domain(domain).range([chartH, 0]).clamp(true);
 
-      categoryStats.forEach(function (cs) {
-        if (config.outlierThreshold === "full_domain") {
-          if (cs.values[0] < globalMin) globalMin = cs.values[0];
-          if (cs.values[cs.values.length - 1] > globalMax) globalMax = cs.values[cs.values.length - 1];
-        } else {
-          if (cs.lowerWhisker < globalMin) globalMin = cs.lowerWhisker;
-          if (cs.upperWhisker > globalMax) globalMax = cs.upperWhisker;
-        }
-      });
-
-      if (globalMin === Infinity) globalMin = 0;
-      if (globalMax === -Infinity || globalMax === globalMin) globalMax = globalMin + 10;
-
-      var yPad = (globalMax - globalMin) * 0.05;
-      var yScale = d3.scaleLinear()
-        .domain([Math.max(0, globalMin - yPad), globalMax + yPad])
-        .range([chartH, 0]);
-
-      var svg = d3.select(wrap)
+      var svg = d3.select(targetElem)
         .append("svg")
         .attr("width", totalWidth)
         .attr("height", totalHeight)
+        .style("display", "block")
         .style("font-family", "inherit");
 
       var g = svg.append("g")
         .attr("transform", "translate(" + marginLeft + "," + marginTop + ")");
 
-      // Horizontal Benchmark Target Line
-      if (benchmarkTarget > 0 && benchmarkTarget >= yScale.domain()[0] && benchmarkTarget <= yScale.domain()[1]) {
-        var by = yScale(benchmarkTarget);
-        g.append("line")
-          .attr("x1", 0)
-          .attr("x2", numCats * columnWidth)
-          .attr("y1", by)
-          .attr("y2", by)
-          .attr("stroke", theme.benchmarkLine)
-          .attr("stroke-width", 1.5)
-          .attr("stroke-dasharray", "4,3")
-          .attr("opacity", 0.7);
-
-        g.append("text")
-          .attr("x", numCats * columnWidth - 6)
-          .attr("y", by - 4)
-          .attr("text-anchor", "end")
-          .attr("font-size", "9px")
-          .attr("font-weight", "700")
-          .attr("fill", theme.benchmarkLine)
-          .text((config.referenceLineLabel || "Target") + ": " + formatValue(benchmarkTarget, config.valueFormat || "auto"));
-      }
-
-      // Y-Axis Grid & Labels
-      g.append("g")
-        .attr("stroke", theme.grid)
-        .attr("stroke-opacity", 0.6)
+      // Y-Axis Grid & Labels (remove D3 domain box)
+      var yGridG = g.append("g")
         .call(d3.axisLeft(yScale).ticks(6).tickSize(-numCats * columnWidth).tickFormat(""));
+      yGridG.select(".domain").remove();
+      yGridG.selectAll(".tick line")
+        .attr("stroke", theme.grid)
+        .attr("stroke-opacity", 0.75)
+        .attr("stroke-dasharray", "2,2");
 
       var yAxis = d3.axisLeft(yScale)
         .ticks(6)
-        .tickFormat(function (d) { return formatValue(d, config.valueFormat || "auto"); });
+        .tickFormat(function (d) { return formatValue(d, valFmt); });
 
-      g.append("g")
-        .call(yAxis)
-        .attr("color", theme.subtext)
-        .selectAll("text")
+      var yAxisG = g.append("g").call(yAxis);
+      yAxisG.select(".domain").attr("stroke", theme.border);
+      yAxisG.selectAll(".tick line").attr("stroke", theme.border);
+      yAxisG.selectAll("text")
+        .attr("fill", theme.subtext)
         .attr("font-size", (10 * fontMultiplier) + "px");
+
+      // Horizontal Benchmark Target Line
+      if (showRefLine && benchmarkTarget >= domain[0] && benchmarkTarget <= domain[1]) {
+        var by = yScale(benchmarkTarget);
+        g.append("line")
+          .attr("x1", 0).attr("x2", numCats * columnWidth)
+          .attr("y1", by).attr("y2", by)
+          .attr("stroke", theme.benchmarkLine)
+          .attr("stroke-width", 1.75)
+          .attr("stroke-dasharray", "4,3")
+          .attr("opacity", 0.8);
+
+        g.append("text")
+          .attr("x", numCats * columnWidth - 4)
+          .attr("y", by - 5)
+          .attr("text-anchor", "end")
+          .attr("font-size", (9.5 * fontMultiplier) + "px")
+          .attr("font-weight", "700")
+          .attr("fill", theme.benchmarkLine)
+          .text((config.referenceLineLabel || "Target") + ": " + formatValue(benchmarkTarget, valFmt));
+      }
 
       // Category Columns
       categoryStats.forEach(function (cs, colIdx) {
         var colG = g.append("g")
           .attr("transform", "translate(" + (colIdx * columnWidth) + ", 0)");
 
-        var catColor = theme.palette[colIdx % theme.palette.length];
-        var boxplotX = columnWidth * 0.45;
-        var cloudW = columnWidth * 0.35;
+        var catColor = cs.isOther ? theme.subtext : theme.palette[colIdx % theme.palette.length];
+        var boxplotX = columnWidth * 0.48;
+        var cloudW = columnWidth * 0.34;
         var rainCenterX = columnWidth * 0.72;
 
-        // X-Axis Category Name (Rotated if long)
-        g.append("text")
+        // X-Axis Category Label with truncation + <title>
+        var maxChars = Math.max(8, Math.floor((columnWidth - 8) / (6.4 * fontMultiplier)));
+        var dispName = cs.name.length > maxChars ? (cs.name.slice(0, maxChars - 1) + "\u2026") : cs.name;
+
+        var lbl = g.append("text")
           .attr("x", (colIdx * columnWidth) + (columnWidth / 2))
           .attr("y", chartH + 18)
           .attr("text-anchor", "middle")
-          .attr("font-size", (11 * fontMultiplier) + "px")
+          .attr("font-size", (10.5 * fontMultiplier) + "px")
           .attr("font-weight", "700")
-          .attr("fill", theme.text)
-          .text(cs.name);
+          .attr("fill", cs.isAnomaly ? theme.negative : theme.text)
+          .text((cs.isAnomaly ? "\u26A0 " : "") + dispName);
+        lbl.append("title").text(cs.name + " (N=" + cs.count + ", Median=" + formatValue(cs.median, valFmt) + ")");
 
-        g.append("text")
-          .attr("x", (colIdx * columnWidth) + (columnWidth / 2))
-          .attr("y", chartH + 32)
-          .attr("text-anchor", "middle")
-          .attr("font-size", (9 * fontMultiplier) + "px")
-          .attr("fill", theme.subtext)
-          .text(cs.count + " samples");
+        if (labelMode !== "hidden") {
+          g.append("text")
+            .attr("x", (colIdx * columnWidth) + (columnWidth / 2))
+            .attr("y", chartH + 32)
+            .attr("text-anchor", "middle")
+            .attr("font-size", (9 * fontMultiplier) + "px")
+            .attr("fill", theme.subtext)
+            .text("N=" + cs.count + " \u2022 " + formatValue(cs.median, valFmt));
+        }
 
         // 1. Vertical Half-Violin Cloud (Facing Left)
         if (cs.kdeData && cs.kdeData.length > 1) {
           var xDensityScale = d3.scaleLinear()
             .domain([0, 1])
-            .range([boxplotX - 2, boxplotX - 2 - cloudW]);
+            .range([boxplotX - 3, Math.max(4, boxplotX - 3 - cloudW)]);
 
           var areaGen = d3.area()
             .y(function (d) { return yScale(d.x); })
-            .x0(boxplotX - 2)
+            .x0(boxplotX - 3)
             .x1(function (d) { return xDensityScale(d.normDensity); })
+            .curve(d3.curveCatmullRom);
+
+          var lineGen = d3.line()
+            .y(function (d) { return yScale(d.x); })
+            .x(function (d) { return xDensityScale(d.normDensity); })
             .curve(d3.curveCatmullRom);
 
           colG.append("path")
@@ -1593,9 +1902,20 @@
             .attr("fill", catColor)
             .attr("fill-opacity", config.cloudFillOpacity !== undefined ? config.cloudFillOpacity : 0.45)
             .attr("d", areaGen);
+
+          colG.append("path")
+            .datum(cs.kdeData)
+            .attr("fill", "none")
+            .attr("stroke", catColor)
+            .attr("stroke-width", 1.5)
+            .attr("d", lineGen);
         }
 
         // 2. Vertical Boxplot
+        var boxColor = catColor;
+        if (config.boxplotColorMode === "slate_monochrome") boxColor = theme.subtext;
+        else if (config.boxplotColorMode === "high_contrast") boxColor = theme.isDark ? "#ffffff" : "#0f172a";
+
         var q1Y = yScale(cs.q1);
         var medY = yScale(cs.median);
         var q3Y = yScale(cs.q3);
@@ -1605,12 +1925,19 @@
         var boxLeft = boxplotX - (boxW / 2);
 
         colG.append("line")
-          .attr("x1", boxplotX)
-          .attr("x2", boxplotX)
-          .attr("y1", lowWhiskerY)
-          .attr("y2", highWhiskerY)
-          .attr("stroke", catColor)
-          .attr("stroke-width", 1.5);
+          .attr("x1", boxplotX).attr("x2", boxplotX)
+          .attr("y1", lowWhiskerY).attr("y2", highWhiskerY)
+          .attr("stroke", boxColor).attr("stroke-width", 1.5);
+
+        colG.append("line")
+          .attr("x1", boxplotX - 3).attr("x2", boxplotX + 3)
+          .attr("y1", lowWhiskerY).attr("y2", lowWhiskerY)
+          .attr("stroke", boxColor).attr("stroke-width", 1.5);
+
+        colG.append("line")
+          .attr("x1", boxplotX - 3).attr("x2", boxplotX + 3)
+          .attr("y1", highWhiskerY).attr("y2", highWhiskerY)
+          .attr("stroke", boxColor).attr("stroke-width", 1.5);
 
         colG.append("rect")
           .attr("x", boxLeft)
@@ -1619,37 +1946,78 @@
           .attr("height", Math.max(2, Math.abs(q1Y - q3Y)))
           .attr("rx", 2)
           .attr("fill", theme.isDark ? "#1e293b" : "#ffffff")
-          .attr("stroke", catColor)
+          .attr("stroke", boxColor)
           .attr("stroke-width", 1.5);
 
         colG.append("line")
-          .attr("x1", boxLeft - 1)
-          .attr("x2", boxLeft + boxW + 1)
-          .attr("y1", medY)
-          .attr("y2", medY)
+          .attr("x1", boxLeft - 1.5).attr("x2", boxLeft + boxW + 1.5)
+          .attr("y1", medY).attr("y2", medY)
           .attr("stroke", theme.isDark ? "#fbbf24" : "#b45309")
           .attr("stroke-width", 2.5);
 
-        // 3. Jittered Rain Dots (Falling along right side)
-        var jitterSpread = 6;
+        colG.append("circle")
+          .attr("cx", boxplotX)
+          .attr("cy", yScale(cs.mean))
+          .attr("r", 2.6)
+          .attr("fill", theme.isDark ? "#ffffff" : "#0f172a");
+
+        if (labelMode === "all" || (labelMode === "peaks_only" && (cs.isPeakMax || cs.isPeakMin || cs.isAnomaly))) {
+          colG.append("text")
+            .attr("x", boxplotX)
+            .attr("y", Math.max(10, highWhiskerY - 6))
+            .attr("text-anchor", "middle")
+            .attr("font-size", (9 * fontMultiplier) + "px")
+            .attr("font-weight", (cs.isPeakMax || cs.isPeakMin || cs.isAnomaly) ? "700" : "600")
+            .attr("fill", cs.isAnomaly ? theme.negative : theme.subtext)
+            .text(formatValue(cs.median, valFmt));
+        }
+
+        // 3. Jittered Rain Dots with full tooltips & drill-downs
+        var jitterSpread = 7;
+        if (config.jitterAmount === "compact") jitterSpread = 3.5;
+        else if (config.jitterAmount === "wide") jitterSpread = 11;
+
         var basePtRadius = config.pointRadius !== undefined ? config.pointRadius : 3.5;
         var ptOpacity = config.pointOpacity !== undefined ? config.pointOpacity : 0.65;
+        var clippedHigh = 0;
 
         cs.observations.forEach(function (obs) {
+          if (obs.val > domain[1] || obs.val < domain[0]) {
+            if (obs.val > domain[1]) clippedHigh++;
+            return;
+          }
           var oy = yScale(obs.val);
           var jOffset = ((obs.jitterSeed % 2000) / 1000.0 - 1.0) * jitterSpread;
           var ox = rainCenterX + jOffset;
+          var r = basePtRadius;
+          if (obs.size > 1) {
+            r = Math.min(basePtRadius * 2, basePtRadius + Math.log2(obs.size));
+          }
+          var isOutlier = obs.val < cs.lowerWhisker || obs.val > cs.upperWhisker;
 
-          colG.append("circle")
+          var dot = colG.append("circle")
             .attr("cx", ox)
             .attr("cy", oy)
-            .attr("r", basePtRadius)
-            .attr("fill", catColor)
+            .attr("r", r)
+            .attr("fill", isOutlier ? theme.negative : catColor)
             .attr("stroke", theme.isDark ? "#0b0f19" : "#ffffff")
             .attr("stroke-width", 0.75)
             .attr("opacity", ptOpacity)
             .style("cursor", "pointer");
+
+          self._attachDotInteractions(dot, obs, cs, catColor, isOutlier, r, ptOpacity, theme, config, metricMeasure, valFmt);
         });
+
+        if (clippedHigh > 0) {
+          colG.append("text")
+            .attr("x", rainCenterX)
+            .attr("y", 10)
+            .attr("text-anchor", "middle")
+            .attr("font-size", (9 * fontMultiplier) + "px")
+            .attr("font-weight", "700")
+            .attr("fill", theme.negative)
+            .text("\u25B2+" + clippedHigh);
+        }
       });
     }
   });

@@ -62,13 +62,17 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `viewMode` | Select | `Horizontal Raincloud` | `horizontal_split`, `vertical_columns`, `cloud_boxplot`, `rain_strip` |
-| `categoryDimOverride` | Select | `Auto` | Dropdown of query fields for Category Dimension |
+| `categoryDimOverride` | Select | `Auto` | Dropdown of query fields for Primary Category Dimension |
+| `secondaryDimOverride` | Select | `Auto / None` | Optional Secondary / Group Dimension (composite `Primary — Secondary` lanes) |
 | `observationDimOverride` | Select | `Auto` | Dropdown of query fields for Observation ID Dimension |
 | `metricMeasureOverride` | Select | `Auto` | Dropdown of query fields for Continuous Metric Measure |
 | `sizeMeasureOverride` | Select | `Auto / None` | Dropdown of query fields for Point Size Measure |
-| `targetCalculationMode` | Select | `Dataset Mean` | `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90`, `measure_column` |
+| `targetMeasureOverride` | Select | `Auto / None` | Dropdown of query fields for Target Benchmark Measure (when Target Mode = `measure_column`) |
+| `targetCalculationMode` | Select | `Dataset Mean` | `dataset_mean`, `dataset_median`, `fixed`, `percentile_p75`, `percentile_p90`, `measure_column`, `none` |
 | `fixedTargetValue` | Number | `0` | Fixed benchmark target value when mode is Fixed |
 | `referenceLineLabel` | String | `Benchmark Target` | Label for benchmark reference line |
+| `showReferenceLine` | Boolean | `true` | Toggle visibility of benchmark target reference line |
+| `anomalyThresholdPct` | Number | `25` | Anomaly / SLA deviation alert threshold (% deviation from target, `0 = Off`) |
 | `bandwidthMode` | Select | `Silverman Rule-of-Thumb` | `silverman`, `scott`, `smooth`, `fine` |
 | `jitterAmount` | Select | `Standard Jitter` | `standard`, `compact`, `wide` |
 | `pointRadius` | Range | `3.5` | Radius of individual rain dots in pixels (2-8) |
@@ -76,13 +80,14 @@ Configuration options are strictly organized into **2 clean tabs** (`Display` an
 | `outlierThreshold` | Select | `Tukey Fences (+1.5 IQR)` | `tukey_fence`, `p99`, `full_domain` |
 | `sortBy` | Select | `Median (Descending)` | `median_desc`, `median_asc`, `iqr_desc`, `count_desc`, `alphabetical`, `natural` |
 | `topNLimit` | Number | `0` | Limit categories to Top-N (0 = All) |
-| `rollupOther` | Boolean | `false` | Rollup unselected categories into 'Other' |
+| `rollupOther` | Boolean | `false` | Rollup unselected categories into a recomputed `'Other'` distribution cohort |
 | `suppressZeroNull` | Boolean | `true` | Suppress zero/null observations |
 | `hudMode` | Select | `Full Scorecard` | `scorecard`, `compact_strip`, `hidden` |
-| `showValueLabels` | Select | `Show All` | `all`, `median_only`, `hidden` |
+| `showValueLabels` | Select | `All` | `all`, `peaks_only` (Min/Max Peaks Only), `hidden` |
+| `showLegend` | Boolean | `true` | Show statistical layer legend (Cloud, IQR/Median, Mean, Outlier, Target) |
 | `showSearch` | Boolean | `true` | Show interactive category search bar |
-| `customTitleOverride` | Select | `Auto / None` | Custom chart title override |
-| `customSubtitleOverride` | Select | `Auto / None` | Custom chart subtitle override |
+| `customTitleOverride` | String | `""` | Custom chart title override |
+| `customSubtitleOverride` | String | `""` | Custom chart subtitle override |
 
 ### Style Tab
 | Option | Type | Default | Description |

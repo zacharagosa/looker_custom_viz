@@ -1,0 +1,49 @@
+{
+  "model": "void_weaver_analytics",
+  "view": "bandit_allocation_telemetry",
+  "fields": [
+    "bandit_allocation_telemetry.experiment_name",
+    "bandit_allocation_telemetry.day_number",
+    "bandit_allocation_telemetry.arm_name",
+    "bandit_allocation_telemetry.is_optimal_arm",
+    "bandit_allocation_telemetry.avg_traffic_share_pct",
+    "bandit_allocation_telemetry.avg_arm_cvr_pct",
+    "bandit_allocation_telemetry.avg_posterior_win_prob_pct",
+    "bandit_allocation_telemetry.avg_posterior_ci_lower_pct",
+    "bandit_allocation_telemetry.avg_posterior_ci_upper_pct",
+    "bandit_allocation_telemetry.max_cum_bandit_regret_usd",
+    "bandit_allocation_telemetry.max_cum_static_ab_regret_usd",
+    "bandit_allocation_telemetry.max_cum_regret_saved_usd",
+    "bandit_allocation_telemetry.total_daily_impressions",
+    "bandit_allocation_telemetry.total_daily_conversions",
+    "bandit_allocation_telemetry.total_daily_reward_usd",
+    "bandit_allocation_telemetry.max_beta_alpha",
+    "bandit_allocation_telemetry.max_beta_beta"
+  ],
+  "sorts": [
+    "bandit_allocation_telemetry.experiment_name asc",
+    "bandit_allocation_telemetry.day_number asc",
+    "bandit_allocation_telemetry.arm_name asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "multi_armed_bandit_allocation",
+    "layoutMode": "allocation_ribbon",
+    "targetMode": "fixed",
+    "fixedTargetValue": 80,
+    "referenceLineLabel": "Exploitation Convergence P(Best) Target",
+    "anomalyThresholdPct": 50,
+    "sortBy": "win_prob_desc",
+    "topNLimit": "all",
+    "enableOtherRollup": true,
+    "suppressZeroNull": true,
+    "hudMode": "scorecard",
+    "labelDensity": "peaks_only",
+    "showLegend": true,
+    "showSearch": true,
+    "colorPalette": "google_enterprise",
+    "metricPolarity": "higher_is_better",
+    "fontScale": "standard",
+    "valueFormat": "auto"
+  }
+}
