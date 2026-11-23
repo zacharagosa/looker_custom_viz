@@ -1,0 +1,56 @@
+{
+  "folder_id": "100",
+  "board_id": "10",
+  "dashboards": {
+    "kpis_variance": {
+      "id": "245",
+      "slug": "2cB3jFYXO61rkKvtJQLdnm",
+      "title": "KPIs, Variance & Benchmarks"
+    },
+    "tables_rankings": {
+      "id": "246",
+      "slug": "imRiyFSlNKW6fw2mIJA5cD",
+      "title": "Tables, Grids & Rankings"
+    },
+    "geospatial": {
+      "id": "247",
+      "slug": "Fz1kclGjWfxghjlVxSme5l",
+      "title": "Geospatial & Location Intelligence"
+    },
+    "flows_hierarchies": {
+      "id": "248",
+      "slug": "rbpNA4A1JmbMKPIh4GGmJi",
+      "title": "Flows, Networks & Hierarchies"
+    },
+    "time_series": {
+      "id": "249",
+      "slug": "Hthv4F2SpkbzrAtmrXRjsd",
+      "title": "Time Series, Schedules & Horizons"
+    },
+    "statistical_ml": {
+      "id": "250",
+      "slug": "0LFH8cYQKBiaAIgfcDcZkj",
+      "title": "Statistical, ML & Multivariate"
+    },
+    "experimentation": {
+      "id": "251",
+      "slug": "vHkmfuLSmI8b7fWPqd0O7z",
+      "title": "Experimentation, Causal Lift & SPC"
+    },
+    "gaming_media": {
+      "id": "252",
+      "slug": "mIZZjGSxQybxrMvZbzUefN",
+      "title": "Gaming & Media Analytics"
+    },
+    "telco_secops": {
+      "id": "253",
+      "slug": "1cyGOzch18hldinKLBFIBL",
+      "title": "Telecom, Cloud SecOps & FinOps"
+    },
+    "retail_finops": {
+      "id": "254",
+      "slug": "3aUnPVfbqIkKRAGSdrcOCe",
+      "title": "Retail, Pricing & Supply Chain"
+    }
+  }
+}

@@ -1,0 +1,642 @@
+[
+  {
+    "id": "finops_cud_attribution_bridge",
+    "name": "Cloud FinOps CUD Attribution & Savings Bridge",
+    "date_added": "2026-10-12",
+    "library": "D3.js v7",
+    "category": "Retail, Supply Chain & FinOps",
+    "description": "Executive Google Cloud Committed Use Discount (CUD) attribution reconciliation waterfall bridge, service cost breakdown, and FinOps Foundation Effective Savings Rate (ESR) efficiency matrix for multi-tenant cloud cost chargeback.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1-2 Dimensions (Organization Folder / Entity and optional GCP Service / SKU)",
+      "measures": "1-4 Measures (Gross On-Demand Cost, CUD Credit Offset, Allocated CUD Fee, Net Attributed Cost)"
+    },
+    "suggested_dataset": {
+      "model": "multicloud_focus_finops",
+      "explore": "gcp_focus_export",
+      "fields": [
+        "gcp_focus_export.x_folder_hierarchy",
+        "gcp_focus_export.service_name",
+        "gcp_focus_export.total_list_cost",
+        "gcp_focus_export.total_commitment_discount_savings",
+        "gcp_focus_export.committed_effective_cost",
+        "gcp_focus_export.total_effective_cost",
+        "gcp_focus_export.effective_savings_rate"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/finops_cud_attribution_bridge/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-12",
+    "looker_demo_url": "/explore/multicloud_focus_finops/gcp_focus_export?fields=gcp_focus_export.x_folder_hierarchy,gcp_focus_export.service_name,gcp_focus_export.total_list_cost,gcp_focus_export.total_commitment_discount_savings,gcp_focus_export.committed_effective_cost,gcp_focus_export.total_effective_cost,gcp_focus_export.effective_savings_rate&sorts=gcp_focus_export.total_list_cost+desc&limit=25&vis=%7B%22type%22%3A%22finops_cud_attribution_bridge%22%2C%22layoutMode%22%3A%22waterfall_bridge%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22hudDensity%22%3A%22full%22%2C%22showConnectorLines%22%3Atrue%2C%22showStepLabels%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22sortOrder%22%3A%22metric_desc%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "bcg_growth_share_matrix",
+    "name": "BCG Growth-Share & Strategic Portfolio Matrix",
+    "date_added": "2026-10-26",
+    "library": "D3.js v7",
+    "category": "Strategic & Pareto Analytics",
+    "description": "Enterprise-grade BCG Growth-Share & Strategic Portfolio Opportunity Matrix built with D3.js v7. Directly resolves Buganizer Cloud Blockers b/491028341, b/530918239, b/341928091, and PRD go/prd-strategic-portfolio-quadrants. Evaluates business units, game titles, and product lines across Market Footprint (Relative Share / DAU) and Monetization Growth (ARPDAU / Growth Rate) with dynamic quadrant threshold crosshairs (Median, Mean, P75, or Fixed Benchmarks). Features 3 multi-modal view modes (2x2 Matrix Grid, Continuous Scatter, Strategic Leaderboard Table), 4 strategic cohorts (Stars, Cash Cows, Question Marks, Dogs), executive strategic KPI HUD with interactive quadrant filter chips, dynamic field-role mapping (registerOptions), real-time search, 5,000+ row aggregation, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Primary Entity Dimension (e.g. Game Title / Product), optional 1 Secondary Group (e.g. Genre / Category)",
+      "measures": "2 to 3 Numeric Measures: X-Axis Metric (Relative Share / DAU), Y-Axis Metric (Growth Rate / ARPDAU), and Bubble Size (Total Bookings / Revenue)"
+    },
+    "suggested_dataset": {
+      "model": "void_weaver_analytics",
+      "explore": "title_quarterly_leaderboard",
+      "fields": [
+        "title_quarterly_leaderboard.game_title",
+        "title_quarterly_leaderboard.genre",
+        "title_quarterly_leaderboard.avg_dau",
+        "title_quarterly_leaderboard.arpdau_usd",
+        "title_quarterly_leaderboard.gross_bookings_usd"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/bcg_growth_share_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-26",
+    "looker_demo_url": "/explore/void_weaver_analytics/title_quarterly_leaderboard?fields=title_quarterly_leaderboard.game_title,title_quarterly_leaderboard.genre,title_quarterly_leaderboard.avg_dau,title_quarterly_leaderboard.arpdau_usd,title_quarterly_leaderboard.gross_bookings_usd&sorts=title_quarterly_leaderboard.gross_bookings_usd+desc&limit=500&vis=%7B%22type%22%3A%22bcg_growth_share_matrix%22%2C%22layoutMode%22%3A%22quadrant_matrix%22%2C%22xThresholdMode%22%3A%22median%22%2C%22yThresholdMode%22%3A%22median%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudDensity%22%3A%22scorecard%22%2C%22showQuadrantBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "cloud_security_compliance_radar",
+    "name": "Cloud Security Posture & Compliance Radar",
+    "date_added": "2026-10-28",
+    "library": "D3.js v7",
+    "category": "Telecom, Cloud & SecOps",
+    "description": "Enterprise-grade cloud security posture and compliance radar matrix solving Google Cloud Blockers b/489102941, b/394109283, and b/520194821. Provides multi-framework compliance radar polygons, Florence Nightingale polar area coxcomb distributions, concentric radial stacked severity rings, and executive audit scorecards with benchmark target rings, executive HUD scorecard, and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Compliance Framework Dimension, optional 1 Severity Dimension",
+      "measures": "1 Open Findings Count Measure, optional Critical/High Measure, optional Posture Score Measure"
+    },
+    "suggested_dataset": {
+      "model": "palo_alto_networks_security",
+      "explore": "prisma_cloud_compliance",
+      "fields": [
+        "prisma_cloud_compliance.compliance_framework",
+        "prisma_cloud_compliance.severity",
+        "prisma_cloud_compliance.open_findings_count",
+        "prisma_cloud_compliance.critical_high_open_count",
+        "prisma_cloud_compliance.posture_compliance_score"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-28",
+    "screenshot": "visualizations/cloud_security_compliance_radar/screenshot.png",
+    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.severity,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.posture_compliance_score&sorts=prisma_cloud_compliance.open_findings_count+desc&limit=500&vis=%7B%22type%22%3A%22cloud_security_compliance_radar%22%2C%22layoutMode%22%3A%22multiaxis_radar%22%2C%22benchmarkMode%22%3A%22fixed_target%22%2C%22targetScoreGoal%22%3A85%2C%22referenceLineLabel%22%3A%22Target+Compliance+Goal%22%2C%22criticalAlertThreshold%22%3A5%2C%22sortOrder%22%3A%22score_desc%22%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22peaks_only%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percent%22%2C%22showSpokeGrid%22%3Atrue%2C%22fillAreaOpacity%22%3A%220.45%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "dwdm_optical_spectrum_waterfall",
+    "name": "DWDM Optical Spectrum & Span Attenuation Waterfall",
+    "date_added": "2026-10-29",
+    "library": "D3.js v7",
+    "category": "Telecom & Network Infrastructure",
+    "description": "Enterprise-grade Dense Wavelength Division Multiplexing (DWDM) optical power spectrum, ITU-T C-Band channel waterfall, optical attenuation (dB/km) envelope, and OSNR Q-Factor constellation built with D3.js v7. Directly resolves Buganizer Cloud Blockers and Customer Requirements (b/482019481, b/394109282, b/520193847) for optical transport networks, hyperscale DCIs, and carrier fiber backbones (Zayo, Google Cloud Interconnect, Lumen, Nokia, Ciena). Overcomes native Looker BI limitations by providing 4 multi-modal layout modes (DWDM C-Band Channel Power Spectrum with 3D elevation waterfall ribbons, Span Distance vs Attenuation Loss Envelope with G.652D/G.654E benchmark bands, OSNR vs Q-Factor & BER Constellation Matrix with Hard/Soft Decision FEC limit zones, and Optical Route Health Scorecard Matrix), dynamic field dropdowns via _registerDynamicFieldOptions, configurable benchmark reference lines, sorting, Top-N with Other rollup, executive HUD scorecard, 7 brand palettes, and native Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Route Corridor dimension (e.g. fiber_routes.corridor), optional 1 Fiber Type dimension (e.g. fiber_routes.optical_fiber_type), optional 1 Distance field (e.g. fiber_routes.distance_miles)",
+      "measures": "1 Primary Optical Attenuation Loss measure (dB/km, e.g. optical_span_anomalies.avg_attenuation_db_per_km), 1 OSNR measure (dB, e.g. optical_span_anomalies.avg_osnr_db), optional 1 Anomaly Count measure (e.g. optical_span_anomalies.count)"
+    },
+    "suggested_dataset": {
+      "model": "zayo_network_analytics",
+      "explore": "optical_telemetry_and_predictive_maintenance",
+      "fields": [
+        "fiber_routes.corridor",
+        "fiber_routes.optical_fiber_type",
+        "fiber_routes.distance_miles",
+        "fiber_routes.provisioned_capacity_tbps",
+        "optical_span_anomalies.avg_attenuation_db_per_km",
+        "optical_span_anomalies.avg_osnr_db",
+        "optical_span_anomalies.count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/dwdm_optical_spectrum_waterfall/screenshot.png",
+    "looker_demo_url": "/explore/zayo_network_analytics/optical_telemetry_and_predictive_maintenance?fields=fiber_routes.corridor,fiber_routes.optical_fiber_type,fiber_routes.distance_miles,fiber_routes.provisioned_capacity_tbps,optical_span_anomalies.avg_attenuation_db_per_km,optical_span_anomalies.avg_osnr_db,optical_span_anomalies.count&sorts=optical_span_anomalies.avg_attenuation_db_per_km+desc&limit=50&vis=%7B%22type%22%3A%22dwdm_optical_spectrum_waterfall%22%2C%22layoutMode%22%3A%22spectral_waterfall%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22g652d_standard%22%2C%22referenceLineLabel%22%3A%22ITU-T+G.652.D+Spec+%280.20+dB%2Fkm%29%22%2C%22osnrCriticalThreshold%22%3A20%2C%22sortOrder%22%3A%22attenuation_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22decimal_3%22%2C%22showWaterfallRibbons%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-10-29",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "rfm_customer_segmentation_matrix",
+    "name": "RFM Customer Segmentation & Cohort Matrix",
+    "date_added": "2026-11-03",
+    "library": "D3.js v7",
+    "category": "Strategic & Pareto Analytics",
+    "description": "Executive Recency-Frequency-Monetary (RFM) customer segmentation matrix with 2D 5x5 R vs F trellis grid, customer value treemap, continuous value spectrum scatter, and strategic RevOps action matrix for customer lifecycle analytics.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Customer dimension, 1 Recency field (Date or Days)",
+      "measures": "2 numeric measures (Frequency / Order Count, Monetary / Total Spend)"
+    },
+    "suggested_dataset": {
+      "model": "thelook",
+      "explore": "order_items",
+      "fields": [
+        "users.id",
+        "users.name",
+        "order_items.count",
+        "order_items.total_sale_price",
+        "order_items.created_date",
+        "users.country"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-03",
+    "screenshot": "visualizations/rfm_customer_segmentation_matrix/screenshot.png",
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.id,users.name,order_items.count,order_items.total_sale_price,order_items.created_date,users.country&f[order_items.status]=Complete&sorts=order_items.total_sale_price+desc&limit=150&vis=%7B%22type%22%3A%22rfm_customer_segmentation_matrix%22%2C%22layoutMode%22%3A%22rfm_grid_matrix%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Target+LTV+Quota%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22bubbleMinRadius%22%3A5%2C%22bubbleMaxRadius%22%3A22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "surgical_procedure_variance_matrix",
+    "name": "Surgical Procedure Supply Variance Matrix",
+    "date_added": "2026-11-04",
+    "library": "D3.js v7",
+    "category": "Healthcare & Med-Surg Supply Chain",
+    "description": "Executive clinical decision support matrix for hospital OR suites comparing surgical supply cost against clinical benchmarks across specialties with dumbbell variance plots, service line decomposition waterfalls, and 2D case volume opportunity quadrants.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Service Line dimension, 1 Procedure Name dimension",
+      "measures": "1 Case Volume measure, 1 Actual Cost/Case measure, 1 Benchmark Cost measure, 1 Excess Supply Cost measure"
+    },
+    "suggested_dataset": {
+      "model": "wellverse_mba",
+      "explore": "procedure_cases",
+      "fields": [
+        "procedure_cases.service_line",
+        "procedure_cases.procedure_name",
+        "procedure_cases.case_count",
+        "procedure_cases.cost_per_case",
+        "procedure_cases.benchmark_cost_per_case",
+        "procedure_cases.excess_supply_cost",
+        "procedure_cases.cost_variance_pct"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-04",
+    "screenshot": "visualizations/surgical_procedure_variance_matrix/screenshot.png",
+    "looker_demo_url": "/explore/wellverse_mba/procedure_cases?fields=procedure_cases.service_line,procedure_cases.procedure_name,procedure_cases.case_count,procedure_cases.cost_per_case,procedure_cases.benchmark_cost_per_case,procedure_cases.excess_supply_cost,procedure_cases.cost_variance_pct&sorts=procedure_cases.case_count+desc&limit=15&vis=%7B%22type%22%3A%22surgical_procedure_variance_matrix%22%2C%22layoutMode%22%3A%22variance_dumbbell_quadrant%22%2C%22colorPalette%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "clinical_supply_disruption_matrix",
+    "name": "Clinical Supply Disruption & Shortage Matrix",
+    "date_added": "2026-11-05",
+    "library": "D3.js v7",
+    "category": "Healthcare & Med-Surg Supply Chain",
+    "description": "Hospital med-surg supply chain risk matrix evaluating critical product shortages, SLA breach horizons, clinical impact severity tiers, and equivalent substitute availability.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Category dimension, 1 Product Name dimension, 1 Severity dimension, 1 Status dimension, 1 Disruption Type dimension, 1 Alternative Available dimension, 1 Clinically Critical dimension",
+      "measures": "1 Days Active duration measure, 1 Disruption Count measure"
+    },
+    "suggested_dataset": {
+      "model": "wellverse_mba",
+      "explore": "supply_disruptions",
+      "fields": [
+        "medical_products.category",
+        "medical_products.product_name",
+        "supply_disruptions.severity",
+        "supply_disruptions.status",
+        "supply_disruptions.disruption_type",
+        "supply_disruptions.wellverse_alternative_available",
+        "medical_products.clinically_critical",
+        "supply_disruptions.avg_days_active",
+        "supply_disruptions.disruption_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-05",
+    "screenshot": "visualizations/clinical_supply_disruption_matrix/screenshot.png",
+    "looker_demo_url": "/explore/wellverse_mba/supply_disruptions?fields=medical_products.category,medical_products.product_name,supply_disruptions.severity,supply_disruptions.status,supply_disruptions.disruption_type,supply_disruptions.wellverse_alternative_available,medical_products.clinically_critical,supply_disruptions.avg_days_active,supply_disruptions.disruption_count&sorts=supply_disruptions.avg_days_active+desc&limit=25&vis=%7B%22type%22%3A%22clinical_supply_disruption_matrix%22%2C%22layoutMode%22%3A%22shortage_severity_matrix%22%2C%22colorPalette%22%3A%22wellverse_healthcare%22%2C%22targetMode%22%3A%22fixed_value%22%2C%22targetValue%22%3A45%2C%22referenceLineLabel%22%3A%22SLA+Resolution+Target+%2845d%29%22%2C%22anomalyThreshold%22%3A75%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showAlternativeBadges%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "med_surg_par_risk_matrix",
+    "name": "Med-Surg Par Level & Inventory Expiration Risk Matrix",
+    "date_added": "2026-11-06",
+    "library": "D3.js v7",
+    "category": "Healthcare & Med-Surg Supply Chain",
+    "description": "Hospital materials management decision matrix evaluating Days-on-Hand (DOH) buffer horizons against Par Level Attainment ratios, identifying stockout danger corridors, overstocked capital, and expired product waste across clinical sites of care.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Primary Dimension (Care Setting / Facility), 1 Secondary Dimension (Category)",
+      "measures": "1 On-Hand Value measure, 1 Par Target measure, 1 Days on Hand measure, 1 Expired Waste measure, 1 Stockout Events measure"
+    },
+    "suggested_dataset": {
+      "model": "wellverse_mba",
+      "explore": "inventory_snapshots",
+      "fields": [
+        "customer_facilities.care_setting",
+        "inventory_snapshots.category",
+        "inventory_snapshots.on_hand_value",
+        "inventory_snapshots.par_value",
+        "inventory_snapshots.excess_inventory",
+        "inventory_snapshots.expired_value",
+        "inventory_snapshots.stockout_events",
+        "inventory_snapshots.avg_days_on_hand"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-06",
+    "screenshot": "visualizations/med_surg_par_risk_matrix/screenshot.png",
+    "looker_demo_url": "/explore/wellverse_mba/inventory_snapshots?fields=customer_facilities.care_setting,inventory_snapshots.category,inventory_snapshots.on_hand_value,inventory_snapshots.par_value,inventory_snapshots.excess_inventory,inventory_snapshots.expired_value,inventory_snapshots.stockout_events,inventory_snapshots.avg_days_on_hand&f[inventory_snapshots.is_latest_week]=Yes&sorts=inventory_snapshots.on_hand_value+desc&limit=25&vis=%7B%22type%22%3A%22med_surg_par_risk_matrix%22%2C%22layoutMode%22%3A%22par_risk_quadrant%22%2C%22colorPalette%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showSearch%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22showGridLines%22%3Atrue%2C%22minSafeDoh%22%3A14%2C%22maxBufferDoh%22%3A30%2C%22referenceLineLabel%22%3A%22Par+Target+%28100%25%29%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "med_surg_formulary_conversion_matrix",
+    "name": "Med-Surg Formulary Compliance & Brand Conversion Matrix",
+    "date_added": "2026-11-07",
+    "library": "D3.js v7",
+    "category": "Healthcare & Med-Surg Supply Chain",
+    "description": "Hospital clinical materials management matrix evaluating med-surg formulary adherence, brand mix distributions, off-contract leakage, and unrealized private-brand conversion savings opportunities across surgical and procedural categories.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Primary Dimension (Product Category), 1 Secondary Dimension (Care Setting / Facility, optional)",
+      "measures": "1 Total Spend measure, 1 National Brand Spend measure, 1 Wellverse Brand Spend measure, 1 Brand Penetration % measure, 1 Conversion Opportunity measure, 1 Off-Contract Leakage measure"
+    },
+    "suggested_dataset": {
+      "model": "wellverse_mba",
+      "explore": "order_lines",
+      "fields": [
+        "medical_products.category",
+        "order_lines.total_spend",
+        "order_lines.national_brand_spend",
+        "order_lines.wellverse_brand_spend",
+        "order_lines.wellverse_brand_penetration",
+        "order_lines.wellverse_conversion_opportunity",
+        "order_lines.off_contract_leakage"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-07",
+    "screenshot": "visualizations/med_surg_formulary_conversion_matrix/screenshot.png",
+    "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=medical_products.category,order_lines.total_spend,order_lines.national_brand_spend,order_lines.wellverse_brand_spend,order_lines.wellverse_brand_penetration,order_lines.wellverse_conversion_opportunity,order_lines.off_contract_leakage&sorts=order_lines.total_spend+desc&limit=50&vis=%7B%22type%22%3A%22med_surg_formulary_conversion_matrix%22%2C%22layoutMode%22%3A%22conversion_opportunity_bridge%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "med_surg_fulfillment_sla_matrix",
+    "name": "Med-Surg Fulfillment & SLA Performance Matrix",
+    "date_added": "2026-11-08",
+    "library": "D3.js v7",
+    "category": "Healthcare & Med-Surg Supply Chain",
+    "description": "Hospital health system distribution logistics matrix evaluating clinical line fill rates, on-time delivery transit windows, backorder risks, delivery lead times, and contract SLA governance tiers across regional distribution centers.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Primary Dimension (Distribution Center / Facility), 1 Secondary Dimension (Region / Care Setting, optional)",
+      "measures": "1 Line Fill Rate % measure, 1 On-Time Delivery % measure, 1 Backorder Rate % measure (optional), 1 Avg Delivery Days measure (optional), 1 Total Spend measure"
+    },
+    "suggested_dataset": {
+      "model": "wellverse_mba",
+      "explore": "order_lines",
+      "fields": [
+        "distribution_centers.dc_name",
+        "distribution_centers.dc_region",
+        "order_lines.line_fill_rate",
+        "order_lines.on_time_delivery_rate",
+        "order_lines.backorder_rate",
+        "order_lines.avg_days_to_deliver",
+        "order_lines.total_spend",
+        "order_lines.order_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-08",
+    "screenshot": "visualizations/med_surg_fulfillment_sla_matrix/screenshot.png",
+    "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=distribution_centers.dc_name,distribution_centers.dc_region,order_lines.line_fill_rate,order_lines.on_time_delivery_rate,order_lines.backorder_rate,order_lines.avg_days_to_deliver,order_lines.total_spend,order_lines.order_count&sorts=order_lines.total_spend+desc&limit=20&vis=%7B%22type%22%3A%22med_surg_fulfillment_sla_matrix%22%2C%22layoutMode%22%3A%22fulfillment_sla_quadrant%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "saas_customer_churn_risk_matrix",
+    "name": "SaaS Customer Health & Churn Risk Matrix",
+    "date_added": "2026-11-09",
+    "library": "D3.js v7",
+    "category": "B2B SaaS & RevOps",
+    "description": "Executive customer success health & churn risk matrix for B2B SaaS RevOps: 2D Strategic Risk Quadrant mapping seat utilization against predictive churn risk score with ARR bubble magnitude scaling, ARR at risk bridge waterfall, multi-tier account health treemap, and high-density CSM action scorecard.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Customer Account Dimension + 1 Optional Risk Band Dimension",
+      "measures": "1 Total Active ARR ($) + Optional ARR at Risk ($), Churn Risk Score (0-100), and Seat Utilization Rate (%)"
+    },
+    "suggested_dataset": {
+      "model": "saas_qbr",
+      "explore": "qbr_customer_risk",
+      "fields": [
+        "qbr_account_risk.account_name",
+        "qbr_account_risk.risk_band",
+        "qbr_account_risk.total_active_arr",
+        "qbr_account_risk.total_arr_at_risk",
+        "qbr_account_risk.average_risk_score",
+        "qbr_account_risk.average_utilization"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/saas_customer_churn_risk_matrix/screenshot.png",
+    "looker_demo_url": "/explore/saas_qbr/qbr_customer_risk?fields=qbr_account_risk.account_name,qbr_account_risk.risk_band,qbr_account_risk.total_active_arr,qbr_account_risk.total_arr_at_risk,qbr_account_risk.average_risk_score,qbr_account_risk.average_utilization&sorts=qbr_account_risk.total_arr_at_risk+desc&limit=25&vis=%7B%22type%22%3A%22saas_customer_churn_risk_matrix%22%2C%22layoutMode%22%3A%22risk_health_quadrant%22%2C%22hudMode%22%3A%22scorecard%22%2C%22colorTheme%22%3A%22modern_slate%22%7D&origin=share-expanded&toggle=vis",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-09",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "saas_pipeline_deal_inspection_matrix",
+    "name": "SaaS Sales Pipeline Inspection & Deal Slippage Matrix",
+    "date_added": "2026-11-10",
+    "library": "D3.js v7",
+    "category": "B2B SaaS & RevOps",
+    "description": "Executive sales pipeline inspection and deal velocity matrix for B2B SaaS RevOps: 2D Strategic Deal Slippage Quadrant mapping days in stage against ARR with risk bubble scaling, stage progression & stagnation waterfall, forecast category vs risk band cross-matrix, and high-density executive deal scorecard.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Opportunity Dimension + Optional Sales Stage, Forecast Category, and Risk Band Dimensions",
+      "measures": "1 Deal ARR ($) Measure + Optional Risk Score (0-100), Days in Current Stage, and Close-Date Slip Count"
+    },
+    "suggested_dataset": {
+      "model": "saas_qbr",
+      "explore": "qbr_pipeline_inspection",
+      "fields": [
+        "qbr_deal_quality.opportunity_name",
+        "qbr_deal_quality.stage_name",
+        "qbr_deal_quality.forecast_category",
+        "qbr_deal_quality.risk_band",
+        "qbr_deal_quality.total_arr",
+        "qbr_deal_quality.average_risk_score",
+        "qbr_deal_quality.average_days_in_stage",
+        "qbr_deal_quality.average_slip_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/saas_pipeline_deal_inspection_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-10",
+    "looker_demo_url": "/explore/saas_qbr/qbr_pipeline_inspection?fields=qbr_deal_quality.opportunity_name,qbr_deal_quality.stage_name,qbr_deal_quality.forecast_category,qbr_deal_quality.risk_band,qbr_deal_quality.total_arr,qbr_deal_quality.average_risk_score,qbr_deal_quality.average_days_in_stage,qbr_deal_quality.average_slip_count&f[qbr_deal_quality.is_closed]=No&sorts=qbr_deal_quality.total_arr+desc&limit=30&vis=%7B%22type%22%3A%22saas_pipeline_deal_inspection_matrix%22%2C%22layoutMode%22%3A%22deal_slippage_quadrant%22%2C%22hudMode%22%3A%22scorecard%22%2C%22colorTheme%22%3A%22modern_slate%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "saas_sales_capacity_attainment_matrix",
+    "name": "SaaS Sales Capacity & Quota Attainment Matrix",
+    "date_added": "2026-11-11",
+    "library": "D3.js v7",
+    "category": "B2B SaaS & RevOps",
+    "description": "Executive sales capacity planning and rep quota attainment matrix for B2B SaaS RevOps: multi-modal rep quota attainment & pacing matrix with dual-stage bullet progress bars against quota benchmarks, 2x2 tenure vs attainment quadrant stratifying President's Club superstars and ramp prodigies, executive team capacity waterfall bridge, and high-density rep leaderboard scorecard.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Sales Rep Dimension + Optional Segment, Region, Ramp Status, and Tenure Dimensions",
+      "measures": "ARR Quota Measure + Closed Won ARR Measure + Optional Commit ARR, Attainment %, and Pipeline Coverage Ratio Measures"
+    },
+    "suggested_dataset": {
+      "model": "saas_qbr",
+      "explore": "qbr_performance",
+      "fields": [
+        "qbr_rep_roster.rep_name",
+        "qbr_rep_roster.segment",
+        "qbr_rep_roster.region",
+        "qbr_rep_roster.ramp_status",
+        "qbr_rep_roster.tenure_months",
+        "qbr_rep_quota.total_arr_quota",
+        "qbr_rep_performance.total_won_arr",
+        "qbr_rep_performance.total_commit_arr",
+        "qbr_rep_quota.arr_attainment",
+        "qbr_rep_quota.pipeline_coverage_ratio"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/saas_sales_capacity_attainment_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-11",
+    "looker_demo_url": "/explore/saas_qbr/qbr_performance?fields=qbr_rep_roster.rep_name,qbr_rep_roster.segment,qbr_rep_roster.region,qbr_rep_roster.ramp_status,qbr_rep_roster.tenure_months,qbr_rep_quota.total_arr_quota,qbr_rep_performance.total_won_arr,qbr_rep_performance.total_commit_arr,qbr_rep_quota.arr_attainment,qbr_rep_quota.pipeline_coverage_ratio&sorts=qbr_rep_performance.total_won_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_sales_capacity_attainment_matrix%22%2C%22layoutMode%22%3A%22attainment_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "saas_team_quota_coverage_gap_matrix",
+    "name": "SaaS Team Quota, Coverage & Gap Matrix",
+    "date_added": "2026-11-12",
+    "library": "D3.js v7",
+    "category": "B2B SaaS & RevOps",
+    "description": "Executive sales team quota attainment, pipeline coverage multiplier, and revenue deficit matrix for B2B SaaS RevOps: multi-modal sales team attainment matrix with multi-stage bullet progress bars (Won + Commit + Upside vs Quota), step-by-step quota-to-pipeline progression waterfall, 2x2 pipeline coverage vs attainment strategic quadrant, and quota-per-head capacity productivity bars.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Team Dimension + 1 Manager Dimension + Optional Region and Segment Dimensions",
+      "measures": "ARR Quota Measure + Closed Won ARR Measure + Optional Commit ARR, Upside ARR, Open Pipeline ARR, and Headcount Measures"
+    },
+    "suggested_dataset": {
+      "model": "saas_qbr",
+      "explore": "qbr_team_rollup",
+      "fields": [
+        "qbr_sales_team.manager_name",
+        "qbr_sales_team.team_name",
+        "qbr_sales_team.region",
+        "qbr_sales_team.segment",
+        "qbr_sales_team.total_headcount",
+        "qbr_sales_team.total_team_arr_quota",
+        "qbr_team_performance.total_won_arr",
+        "qbr_team_performance.total_commit_arr",
+        "qbr_team_performance.total_upside_arr",
+        "qbr_team_performance.total_open_pipeline_arr",
+        "qbr_sales_team.team_attainment",
+        "qbr_sales_team.team_quota_gap",
+        "qbr_team_performance.win_rate"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/saas_team_quota_coverage_gap_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-12",
+    "looker_demo_url": "/explore/saas_qbr/qbr_team_rollup?fields=qbr_sales_team.manager_name,qbr_sales_team.team_name,qbr_sales_team.region,qbr_sales_team.segment,qbr_sales_team.total_headcount,qbr_sales_team.total_team_arr_quota,qbr_team_performance.total_won_arr,qbr_team_performance.total_commit_arr,qbr_team_performance.total_upside_arr,qbr_team_performance.total_open_pipeline_arr,qbr_sales_team.team_attainment,qbr_sales_team.team_quota_gap,qbr_team_performance.win_rate&sorts=qbr_team_performance.total_won_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_team_quota_coverage_gap_matrix%22%2C%22layoutMode%22%3A%22team_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "saas_deal_velocity_slippage_matrix",
+    "name": "SaaS Deal Velocity & Stage Slippage Matrix",
+    "date_added": "2026-11-13",
+    "library": "D3.js v7",
+    "category": "B2B SaaS & RevOps",
+    "description": "Multi-stage sales cycle deal velocity, stage dwell time vs SLA benchmarks, and close-date slippage matrix across 4 layout paradigms with executive HUD and risk quadrants.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Stage dimension (Stage Name), 1 optional Forecast Category / Risk dimension",
+      "measures": "1 Pipeline ARR measure, 1 Days in Stage measure, 1 Close-Date Slips measure, 1 optional Risk Score measure"
+    },
+    "suggested_dataset": {
+      "model": "saas_qbr",
+      "explore": "qbr_pipeline_inspection",
+      "fields": [
+        "qbr_deal_quality.stage_name",
+        "qbr_deal_quality.forecast_category",
+        "qbr_deal_quality.open_deal_count",
+        "qbr_deal_quality.open_arr",
+        "qbr_deal_quality.average_days_in_stage",
+        "qbr_deal_quality.average_slip_count",
+        "qbr_deal_quality.average_risk_score",
+        "qbr_deal_quality.high_risk_arr"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-13",
+    "screenshot": "visualizations/saas_deal_velocity_slippage_matrix/screenshot.png",
+    "looker_demo_url": "/explore/saas_qbr/qbr_pipeline_inspection?fields=qbr_deal_quality.stage_name,qbr_deal_quality.forecast_category,qbr_deal_quality.open_deal_count,qbr_deal_quality.open_arr,qbr_deal_quality.average_days_in_stage,qbr_deal_quality.average_slip_count,qbr_deal_quality.average_risk_score,qbr_deal_quality.high_risk_arr&f[qbr_deal_quality.is_closed]=No&sorts=qbr_deal_quality.open_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_deal_velocity_slippage_matrix%22%2C%22layoutMode%22%3A%22velocity_stage_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22targetValue%22%3A60%2C%22referenceLineLabel%22%3A%22Velocity+SLA+Threshold+%2860d%29%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "cspm_compliance_benchmark_matrix",
+    "name": "Cloud Security Posture & Compliance Benchmark Matrix",
+    "date_added": "2026-11-14",
+    "library": "D3.js v7",
+    "category": "Cloud Governance & Security Compliance",
+    "description": "Multi-cloud CSPM governance matrix auditing CIS, NIST, ISO 27001, SOC 2, and PCI-DSS compliance across GKE, Compute, Storage, IAM, and Databases with remediation SLA aging waterlines and critical vulnerability alerts.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Framework Dimension, 1 Resource Asset Dimension, optional Severity",
+      "measures": "1 Compliance Posture Score, 1 Open Findings Count, 1 Critical/High Count, optional Remediation SLA Days"
+    },
+    "suggested_dataset": {
+      "model": "palo_alto_networks_security",
+      "explore": "prisma_cloud_compliance",
+      "fields": [
+        "prisma_cloud_compliance.compliance_framework",
+        "prisma_cloud_compliance.resource_type",
+        "prisma_cloud_compliance.severity",
+        "prisma_cloud_compliance.count",
+        "prisma_cloud_compliance.critical_high_open_count",
+        "prisma_cloud_compliance.open_findings_count",
+        "prisma_cloud_compliance.posture_compliance_score",
+        "prisma_cloud_compliance.avg_days_to_remediate"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/cspm_compliance_benchmark_matrix/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-14",
+    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.resource_type,prisma_cloud_compliance.severity,prisma_cloud_compliance.count,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.posture_compliance_score,prisma_cloud_compliance.avg_days_to_remediate&sorts=prisma_cloud_compliance.compliance_framework+asc,prisma_cloud_compliance.severity+asc&limit=500&vis=%7B%22type%22%3A%22cspm_compliance_benchmark_matrix%22%2C%22layoutMode%22%3A%22framework_matrix%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22compliance_asc%22%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22percentage%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A0.85%2C%22referenceLineLabel%22%3A%22CISO+Target+Compliance+SLA+%2885%25%29%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  },
+  {
+    "id": "secops_incident_dwell_time_matrix",
+    "name": "SecOps Incident Dwell-Time & SLA Frontier Matrix",
+    "date_added": "2026-11-15",
+    "library": "D3.js v7",
+    "category": "Cloud Governance & Security Compliance",
+    "description": "Multi-quadrant SecOps incident decision matrix contrasting intrusion detection lag (MTTD) against remediation containment duration (MTTR) across MITRE ATT&CK tactics, with CISO SLA breach frontiers, dwell-time waterfall bars, and SOAR playbook automation curves.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 Primary Tactic / Incident Dimension, 1 optional Severity / Category Dimension",
+      "measures": "1 MTTD (Detection Duration) Measure, 1 MTTR (Remediation Duration) Measure, 1 optional Volume / Alert Count Measure, 1 optional Automation Rate Measure"
+    },
+    "suggested_dataset": {
+      "model": "palo_alto_networks_security",
+      "explore": "cortex_security_incidents",
+      "fields": [
+        "cortex_security_incidents.mitre_tactic",
+        "cortex_security_incidents.severity",
+        "cortex_security_incidents.count",
+        "cortex_security_incidents.total_alerts",
+        "cortex_security_incidents.avg_mttd_minutes",
+        "cortex_security_incidents.avg_mttr_minutes",
+        "cortex_security_incidents.automation_rate",
+        "cortex_security_incidents.high_critical_count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-15",
+    "screenshot": "visualizations/secops_incident_dwell_time_matrix/screenshot.png",
+    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.severity,cortex_security_incidents.count,cortex_security_incidents.total_alerts,cortex_security_incidents.avg_mttd_minutes,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.automation_rate,cortex_security_incidents.high_critical_count&sorts=cortex_security_incidents.total_alerts+desc&limit=50&vis=%7B%22type%22%3A%22secops_incident_dwell_time_matrix%22%2C%22layoutMode%22%3A%22quadrant_scatter%22%2C%22colorPalette%22%3A%22cortex_navy%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22mttr_desc%22%2C%22showSearch%22%3Atrue%2C%22mttdSlaTarget%22%3A8.0%2C%22mttrSlaTarget%22%3A75.0%2C%22targetMode%22%3A%22fixed%22%2C%22referenceLineLabel%22%3A%22CISO+SLA+Target%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22valueFormat%22%3A%22decimal_1%22%7D&origin=share-expanded&toggle=vis",
+    "archived": true,
+    "archived_date": "2026-11-23",
+    "archive_reason": "Consolidated lookalike vertical/matrix wrapper to keep Looker catalog distinct and uncluttered."
+  }
+]

@@ -26,7 +26,11 @@
     "screenshot": "visualizations/radial_progress_gauge/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-04",
-    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price&limit=6&vis=%7B%22type%22%3A%22radial_progress_gauge%22%2C%22showCenterText%22%3Atrue%2C%22colorPalette%22%3A%22google%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price&limit=6&vis=%7B%22type%22%3A%22radial_progress_gauge%22%2C%22showCenterText%22%3Atrue%2C%22colorPalette%22%3A%22google%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "kpis_variance",
+    "geometry": "Radial / Polar",
+    "industry": "Cross-Industry"
   },
   {
     "id": "calendar_activity_heatmap",
@@ -55,7 +59,11 @@
     "screenshot": "visualizations/calendar_activity_heatmap/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-03",
-    "looker_demo_url": "/explore/thelook/order_items?fields=order_items.created_date,order_items.count&f[order_items.created_date]=2024-01-01+to+2024-12-31&sorts=order_items.created_date+asc&limit=400&vis=%7B%22type%22%3A%22calendar_activity_heatmap%22%2C%22layoutMode%22%3A%22github_calendar%22%2C%22colorPalette%22%3A%22github_green%22%2C%22cellSize%22%3A13%2C%22cellRadius%22%3A3%2C%22cellSpacing%22%3A3%2C%22showMonthLabels%22%3Atrue%2C%22showDayLabels%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Daily+Target%22%2C%22anomalyThresholdPct%22%3A130%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=order_items.created_date,order_items.count&f[order_items.created_date]=2024-01-01+to+2024-12-31&sorts=order_items.created_date+asc&limit=400&vis=%7B%22type%22%3A%22calendar_activity_heatmap%22%2C%22layoutMode%22%3A%22github_calendar%22%2C%22colorPalette%22%3A%22github_green%22%2C%22cellSize%22%3A13%2C%22cellRadius%22%3A3%2C%22cellSpacing%22%3A3%2C%22showMonthLabels%22%3Atrue%2C%22showDayLabels%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Daily+Target%22%2C%22anomalyThresholdPct%22%3A130%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "time_series",
+    "geometry": "Time Series / Calendar",
+    "industry": "Cross-Industry"
   },
   {
     "id": "bullet_graph",
@@ -85,7 +93,11 @@
     "screenshot": "visualizations/bullet_graph/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-05",
-    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.total_gross_margin&sorts=order_items.total_sale_price+desc&limit=8&vis=%7B%22type%22%3A%22bullet_graph%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22orientation%22%3A%22horizontal%22%2C%22qualitativeRanges%22%3A%223_tier%22%2C%22showTargetMarker%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22varianceBadgeFormat%22%3A%22attainment_pct%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22barThickness%22%3A18%2C%22rowHeight%22%3A64%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.total_gross_margin&sorts=order_items.total_sale_price+desc&limit=8&vis=%7B%22type%22%3A%22bullet_graph%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22orientation%22%3A%22horizontal%22%2C%22qualitativeRanges%22%3A%223_tier%22%2C%22showTargetMarker%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22varianceBadgeFormat%22%3A%22attainment_pct%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22barThickness%22%3A18%2C%22rowHeight%22%3A64%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "kpis_variance",
+    "geometry": "Bar / Variance",
+    "industry": "Cross-Industry"
   },
   {
     "id": "dumbbell_plot",
@@ -115,7 +127,11 @@
     "screenshot": "visualizations/dumbbell_plot/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_gross_margin,order_items.total_sale_price&sorts=order_items.total_sale_price+desc&limit=10&vis=%7B%22type%22%3A%22dumbbell_plot%22%2C%22colorTheme%22%3A%22executive_slate%22%2C%22bridgeColorMode%22%3A%22directional%22%2C%22showDirectionArrows%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22badgeMetric%22%3A%22both%22%2C%22showPointLabels%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22pointRadius%22%3A8%2C%22bridgeThickness%22%3A3%2C%22rowHeight%22%3A54%2C%22sortBy%22%3A%22none%22%2C%22showLegend%22%3Atrue%2C%22showGridLines%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-11-06"
+    "last_upgraded": "2026-11-06",
+    "private_demo": false,
+    "board_dashboard": "kpis_variance",
+    "geometry": "Bar / Variance",
+    "industry": "Cross-Industry"
   },
   {
     "id": "choropleth_map",
@@ -145,7 +161,11 @@
     "screenshot": "visualizations/choropleth_map/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-07",
-    "looker_demo_url": "/explore/thelook/order_items?fields=users.state,order_items.total_sale_price&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22choropleth_map%22%2C%22colorTheme%22%3A%22google_blue%22%2C%22colorScaleMode%22%3A%22quantile%22%2C%22showLabels%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22nullColor%22%3A%22%23e2e8f0%22%2C%22highlightColor%22%3A%22%23f59e0b%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.state,order_items.total_sale_price&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22choropleth_map%22%2C%22colorTheme%22%3A%22google_blue%22%2C%22colorScaleMode%22%3A%22quantile%22%2C%22showLabels%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22nullColor%22%3A%22%23e2e8f0%22%2C%22highlightColor%22%3A%22%23f59e0b%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "geospatial",
+    "geometry": "Geospatial Map",
+    "industry": "Cross-Industry"
   },
   {
     "id": "sparkline_matrix_table",
@@ -176,7 +196,11 @@
     "screenshot": "visualizations/sparkline_matrix_table/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price&pivots=order_items.created_month&f[order_items.created_date]=6+months&sorts=order_items.created_month+asc+0,products.category&limit=12&vis=%7B%22type%22%3A%22sparkline_matrix_table%22%2C%22tableMode%22%3A%22sparkline_matrix%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Monthly+Run-Rate+Benchmark%22%2C%22showSparklines%22%3Atrue%2C%22showMicroBars%22%3Atrue%2C%22showVarianceBadge%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22sortBy%22%3A%22metric_desc%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-11-08"
+    "last_upgraded": "2026-11-08",
+    "private_demo": false,
+    "board_dashboard": "tables_rankings",
+    "geometry": "Table / Grid",
+    "industry": "Cross-Industry"
   },
   {
     "id": "retention_cohort_decay",
@@ -206,7 +230,12 @@
     "screenshot": "visualizations/retention_cohort_decay/screenshot.png",
     "looker_demo_url": "/explore/void_weaver_analytics/player_retention_curve?fields=player_retention_curve.cohort_week,player_retention_curve.retention_day,player_retention_curve.retained_players&sorts=player_retention_curve.cohort_week+asc,player_retention_curve.retention_day+asc&limit=500&vis=%7B%22type%22%3A%22retention_cohort_decay%22%2C%22viewMode%22%3A%22split_view%22%2C%22valueDisplay%22%3A%22retention_pct%22%2C%22periodZeroHandling%22%3A%22index_100%22%2C%22showBenchmark%22%3Atrue%2C%22showLabels%22%3Atrue%2C%22colorTheme%22%3A%22indigo_violet%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-11-09"
+    "last_upgraded": "2026-11-09",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Gaming & LiveOps",
+    "geometry": "Cohort / Retention",
+    "industry": "Gaming & Telemetry"
   },
   {
     "id": "broadcast_daypart_grid",
@@ -238,7 +267,11 @@
     "screenshot": "visualizations/broadcast_daypart_grid/screenshot.png",
     "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=ad_spot_airings.airing_day_of_week,ad_spot_airings.airing_hour_of_day,broadcast_programming.network,nielsen_ratings_markets.total_grps,ad_spot_airings.total_spend_mxn&sorts=ad_spot_airings.airing_day_of_week+asc,ad_spot_airings.airing_hour_of_day+asc&limit=1500&vis=%7B%22type%22%3A%22broadcast_daypart_grid%22%2C%22viewMode%22%3A%22split_view%22%2C%22daypartPreset%22%3A%22nielsen%22%2C%22startOfWeek%22%3A%22monday%22%2C%22highlightPeaks%22%3A%22top_5%22%2C%22colorPalette%22%3A%22nielsen_broadcast%22%2C%22colorScaleMode%22%3A%22quantile%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22showMarginals%22%3Atrue%2C%22showCellValues%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-11-10"
+    "last_upgraded": "2026-11-10",
+    "private_demo": false,
+    "board_dashboard": "time_series",
+    "geometry": "Time Series / Calendar",
+    "industry": "Media & Ad-Ops"
   },
   {
     "id": "network_topology_graph",
@@ -270,7 +303,12 @@
     "screenshot": "visualizations/network_topology_graph/screenshot.png",
     "looker_demo_url": "/explore/zayo_network_analytics/network_operations_and_anomalies?fields=fiber_routes.origin_city,fiber_routes.dest_city,route_traffic_anomalies.avg_bandwidth_utilization_gbps,route_traffic_anomalies.avg_utilization_pct,route_traffic_anomalies.total_anomalies_detected&sorts=route_traffic_anomalies.avg_bandwidth_utilization_gbps+desc&limit=500&vis=%7B%22type%22%3A%22network_topology_graph%22%2C%22viewMode%22%3A%22force_directed%22%2C%22flowAnimation%22%3A%22pulse%22%2C%22nodeSizing%22%3A%22volume%22%2C%22edgeMetric%22%3A%22latency%22%2C%22colorTheme%22%3A%22cyber_dark%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showLabels%22%3A%22always%22%2C%22valueFormat%22%3A%22bandwidth%22%2C%22baseNodeRadius%22%3A15%2C%22linkDistance%22%3A125%2C%22latencyThreshold%22%3A68.0%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-11-11"
+    "last_upgraded": "2026-11-11",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Flows & Networks",
+    "geometry": "Network / Flow",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "sankey_flow_diagram",
@@ -302,7 +340,12 @@
     "screenshot": "visualizations/sankey_flow_diagram/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-12",
-    "looker_demo_url": "/explore/thelook/order_items?fields=users.traffic_source,products.category,order_items.status,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=365+days&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sankey_flow_diagram%22%2C%22viewMode%22%3A%22sankey%22%2C%22nodeAlignment%22%3A%22justify%22%2C%22linkColorMode%22%3A%22gradient%22%2C%22colorPalette%22%3A%22corporate_blue%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curvature%22%3A0.5%2C%22nodeWidth%22%3A18%2C%22nodePadding%22%3A16%2C%22showNodeValues%22%3Atrue%2C%22showNodePercentages%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22enableAnimation%22%3Atrue%2C%22highlightFlowsOnHover%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.traffic_source,products.category,order_items.status,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=365+days&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sankey_flow_diagram%22%2C%22viewMode%22%3A%22sankey%22%2C%22nodeAlignment%22%3A%22justify%22%2C%22linkColorMode%22%3A%22gradient%22%2C%22colorPalette%22%3A%22corporate_blue%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curvature%22%3A0.5%2C%22nodeWidth%22%3A18%2C%22nodePadding%22%3A16%2C%22showNodeValues%22%3Atrue%2C%22showNodePercentages%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22enableAnimation%22%3Atrue%2C%22highlightFlowsOnHover%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Flows & Networks",
+    "geometry": "Network / Flow",
+    "industry": "Cross-Industry"
   },
   {
     "id": "rank_bump_chart",
@@ -333,7 +376,11 @@
     "screenshot": "visualizations/rank_bump_chart/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price&pivots=order_items.created_month&f[order_items.created_date]=6+months&sorts=order_items.created_month+asc+0,order_items.total_sale_price+desc+0&limit=12&vis=%7B%22type%22%3A%22rank_bump_chart%22%2C%22viewMode%22%3A%22bump%22%2C%22colorPalette%22%3A%22corporate_modern%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curveInterpolation%22%3A%22bumpX%22%2C%22lineWidth%22%3A4%2C%22nodeRadius%22%3A14%2C%22showNodeRanks%22%3Atrue%2C%22showEndLabels%22%3Atrue%2C%22showRankBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22tieBreaker%22%3A%22value%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-10"
+    "last_upgraded": "2026-10-10",
+    "private_demo": false,
+    "board_dashboard": "tables_rankings",
+    "geometry": "Ranking / Trajectory",
+    "industry": "Cross-Industry"
   },
   {
     "id": "flow_arc_map",
@@ -368,7 +415,11 @@
     "screenshot": "visualizations/flow_arc_map/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=distribution_centers.name,distribution_centers.latitude,distribution_centers.longitude,users.state,order_items.total_sale_price,order_items.order_count,order_items.average_shipping_time&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22flow_arc_map%22%2C%22viewMode%22%3A%22curved_arcs%22%2C%22topRoutes%22%3A%2250%22%2C%22arcCurvature%22%3A%220.35%22%2C%22flowAnimation%22%3A%22pulse%22%2C%22colorTheme%22%3A%22cyber_dark%22%2C%22arcColorMode%22%3A%22by_origin%22%2C%22scaleEndpointRadius%22%3Atrue%2C%22maxEndpointRadius%22%3A14%2C%22minEndpointRadius%22%3A3%2C%22showExecutiveHUD%22%3Atrue%2C%22showHubFilter%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-12"
+    "last_upgraded": "2026-10-12",
+    "private_demo": false,
+    "board_dashboard": "geospatial",
+    "geometry": "Geospatial Map",
+    "industry": "Supply Chain & Logistics"
   },
   {
     "id": "telemetry_conversion_funnel",
@@ -399,7 +450,12 @@
     "screenshot": "visualizations/telemetry_conversion_funnel/screenshot.png",
     "looker_demo_url": "/explore/void_weaver_analytics/player_onboarding_funnel?fields=player_onboarding_funnel.acquisition_channel,player_onboarding_funnel.funnel_stage,player_onboarding_funnel.players_reached,player_onboarding_funnel.total_iap_revenue_usd&sorts=player_onboarding_funnel.funnel_stage+asc&limit=500&vis=%7B%22type%22%3A%22telemetry_conversion_funnel%22%2C%22funnelLayout%22%3A%22curved_pipeline%22%2C%22metricMode%22%3A%22primary_only%22%2C%22pctBaseline%22%3A%22step_to_step%22%2C%22funnelOrientation%22%3A%22horizontal%22%2C%22showDropoffBadges%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22showStepValues%22%3Atrue%2C%22showStepLabels%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22cyber_teal%22%2C%22funnelGradient%22%3A%22smooth%22%2C%22curvatureIntensity%22%3A%22curved%22%2C%22stagePadding%22%3A16%2C%22minNeckWidth%22%3A28%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-13"
+    "last_upgraded": "2026-10-13",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Gaming & LiveOps",
+    "geometry": "Funnel / Pipeline",
+    "industry": "Gaming & Telemetry"
   },
   {
     "id": "hierarchical_tree_table",
@@ -429,7 +485,11 @@
     "screenshot": "visualizations/hierarchical_tree_table/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.department,products.category,products.brand,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22hierarchical_tree_table%22%2C%22layoutMode%22%3A%22collapsible_tree%22%2C%22defaultExpansion%22%3A%22level1%22%2C%22showBars%22%3Atrue%2C%22showPercentShare%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showSummaryBar%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22colorTheme%22%3A%22slate%22%2C%22rowDensity%22%3A%22normal%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-14"
+    "last_upgraded": "2026-10-14",
+    "private_demo": false,
+    "board_dashboard": "tables_rankings",
+    "geometry": "Table / Grid",
+    "industry": "Cross-Industry"
   },
   {
     "id": "multi_layer_geo_map",
@@ -461,7 +521,11 @@
     "screenshot": "visualizations/multi_layer_geo_map/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=users.state,order_items.total_sale_price,order_items.total_gross_margin,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22multi_layer_geo_map%22%2C%22mapMode%22%3A%22dual_layer%22%2C%22stateDimOverride%22%3A%22%22%2C%22choroplethMeasureOverride%22%3A%22%22%2C%22bubbleMeasureOverride%22%3A%22%22%2C%22tertiaryMeasureOverride%22%3A%22%22%2C%22targetCalculationMode%22%3A%22percentile_p75%22%2C%22referenceLineLabel%22%3A%22P75+Target+Benchmark%22%2C%22alertThreshold%22%3A20%2C%22sortOrder%22%3A%22metric_desc%22%2C%22topN%22%3A%22all%22%2C%22suppressNulls%22%3Afalse%2C%22hudMode%22%3A%22full%22%2C%22labelDensity%22%3A%22all%22%2C%22showDualLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22polarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat1%22%3A%22auto%22%2C%22valueFormat2%22%3A%22auto%22%2C%22bubbleScale%22%3A1.2%2C%22choroplethOpacity%22%3A0.85%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-16"
+    "last_upgraded": "2026-10-16",
+    "private_demo": false,
+    "board_dashboard": "geospatial",
+    "geometry": "Geospatial Map",
+    "industry": "Cross-Industry"
   },
   {
     "id": "radar_polar_chart",
@@ -493,7 +557,11 @@
     "screenshot": "visualizations/radar_polar_chart/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.total_gross_margin,order_items.order_count,order_items.average_shipping_time&sorts=order_items.total_sale_price+desc&limit=6&vis=%7B%22type%22%3A%22radar_polar_chart%22%2C%22displayMode%22%3A%22polygon%22%2C%22normalizationMode%22%3A%22independent_max%22%2C%22maxEntities%22%3A%225%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22showGridRings%22%3Atrue%2C%22showSpokeLabels%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22colorTheme%22%3A%22google%22%2C%22webShape%22%3A%22polygon%22%2C%22curveType%22%3A%22linear%22%2C%22fillOpacity%22%3A0.25%2C%22strokeWidth%22%3A2.5%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-11"
+    "last_upgraded": "2026-10-11",
+    "private_demo": false,
+    "board_dashboard": "kpis_variance",
+    "geometry": "Radial / Polar",
+    "industry": "Cross-Industry"
   },
   {
     "id": "interactive_drilldown_treemap",
@@ -526,7 +594,12 @@
     "screenshot": "visualizations/interactive_drilldown_treemap/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.department,products.category,products.brand,order_items.total_sale_price,order_items.total_gross_margin,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22interactive_drilldown_treemap%22%2C%22displayMode%22%3A%22drilldown%22%2C%22tilingMethod%22%3A%22squarify%22%2C%22colorMode%22%3A%22branch%22%2C%22topNCount%22%3A%2250%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showBreadcrumbs%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22tilePadding%22%3A%222%22%2C%22colorTheme%22%3A%22google%22%2C%22tileCornerRadius%22%3A%224%22%2C%22labelFontSize%22%3A%2212%22%2C%22showSecondaryMetricInLabel%22%3Atrue%2C%22hoverEffect%22%3A%22elevate%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-15"
+    "last_upgraded": "2026-10-15",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Hierarchies & Multivariate",
+    "geometry": "Hierarchy / Partition",
+    "industry": "Cross-Industry"
   },
   {
     "id": "zayo_noc_executive_scorecard",
@@ -552,7 +625,11 @@
     "screenshot": "visualizations/zayo_noc_executive_scorecard/screenshot.png",
     "looker_demo_url": "/explore/zayo_network_analytics/network_operations_and_anomalies?fields=fiber_routes.corridor,fiber_routes.total_route_miles,fiber_routes.total_provisioned_capacity_tbps&sorts=fiber_routes.total_route_miles+desc&limit=10&vis=%7B%22type%22%3A%22zayo_noc_executive_scorecard%22%2C%22custom_title%22%3A%22Total+US+Optical+Fiber+Route+Miles%22%2C%22custom_subtitle%22%3A%228+Core+Backbone+Corridors+%E2%80%A2+ITU-T+G.652.D%22%2C%22badge_label%22%3A%22LIVE+NETWORK+TELEMETRY%22%2C%22targetGoalMode%22%3A%22fixed_value%22%2C%22fixedTargetValue%22%3A1000%2C%22referenceLineLabel%22%3A%22Corridor+Target+%281%2C000+mi%29%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showSparkline%22%3Atrue%2C%22colorPalette%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22miles%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-31"
+    "last_upgraded": "2026-10-31",
+    "private_demo": true,
+    "board_dashboard": null,
+    "geometry": "Custom Enterprise Card",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "zayo_predictive_maintenance_deck",
@@ -580,7 +657,11 @@
     "screenshot": "visualizations/zayo_predictive_maintenance_deck/screenshot.png",
     "looker_demo_url": "/explore/zayo_network_analytics/predictive_maintenance_queue?fields=predictive_maintenance_spans.span_id,predictive_maintenance_spans.span_name,predictive_maintenance_spans.risk_tier,predictive_maintenance_spans.failure_timeframe,predictive_maintenance_spans.primary_anomaly_trigger,predictive_maintenance_spans.anomaly_metric_value,predictive_maintenance_spans.recommended_action,predictive_maintenance_spans.dispatch_priority,predictive_maintenance_spans.predicted_failure_prob,predictive_maintenance_spans.sla_financial_risk_usd&sorts=predictive_maintenance_spans.predicted_failure_prob+desc&limit=15&vis=%7B%22type%22%3A%22zayo_predictive_maintenance_deck%22%2C%22custom_title%22%3A%22AutoML+Optical+Span+Failure+Predictor+%5Cu0026+OTDR+Dispatch+Deck%22%2C%22custom_subtitle%22%3A%22DWDM+Backbone+Optical+Health+%5Cu0026+Proactive+Dispatch+Queue%22%2C%22hudMode%22%3A%22scorecard%22%2C%22defaultFilterTab%22%3A%22ALL%22%2C%22show_otdr_trace%22%3Atrue%2C%22showSearchBar%22%3Atrue%2C%22sortOrder%22%3A%22prob_desc%22%2C%22topN%22%3A%22all%22%2C%22targetGoalMode%22%3A%22fixed_value%22%2C%22fixedTargetValue%22%3A75%2C%22referenceLineLabel%22%3A%22Critical+Failure+Threshold%22%2C%22anomalyThreshold%22%3A70%2C%22colorPalette%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-11-01"
+    "last_upgraded": "2026-11-01",
+    "private_demo": true,
+    "board_dashboard": null,
+    "geometry": "Custom Enterprise Card",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "zayo_optical_spectrum_waterfall",
@@ -609,7 +690,11 @@
     "screenshot": "visualizations/zayo_optical_spectrum_waterfall/screenshot.png",
     "looker_demo_url": "/explore/zayo_network_analytics/optical_telemetry_and_predictive_maintenance?fields=optical_span_anomalies.timestamp_date,optical_span_anomalies.avg_attenuation_db_per_km,optical_span_anomalies.avg_osnr_db,optical_span_anomalies.count&sorts=optical_span_anomalies.timestamp_date+asc&limit=30&vis=%7B%22type%22%3A%22zayo_optical_spectrum_waterfall%22%2C%22custom_title%22%3A%22DWDM+Optical+Attenuation+%5Cu0026+Telemetry+Spectrum+Analyzer%22%2C%22custom_subtitle%22%3A%22ITU-T+G.652.D+Spec+vs+ARIMA_PLUS+Anomaly+Boundary%22%2C%22chart_mode%22%3A%22optical_threshold_envelope%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22itu_standard%22%2C%22fixedTargetValue%22%3A0.25%2C%22referenceLineLabel%22%3A%22ITU-T+Anomaly+Threshold%22%2C%22alertThreshold%22%3A0.25%2C%22sortOrder%22%3A%22natural%22%2C%22topNLimit%22%3A%22all%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressNulls%22%3Atrue%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showSearchBar%22%3Atrue%2C%22colorPalette%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22decimal_3%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-11-02"
+    "last_upgraded": "2026-11-02",
+    "private_demo": true,
+    "board_dashboard": null,
+    "geometry": "Custom Enterprise Card",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "violin_distribution_plot",
@@ -639,7 +724,12 @@
     "screenshot": "visualizations/violin_distribution_plot/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.id,order_items.sale_price&f[products.category]=Jeans%2CSweaters%2COuterwear+%26+Coats%2CAccessories%2CTops+%26+Tees%2CDresses%2CSwim%2CSuits&f[order_items.sale_price]=NOT+NULL&sorts=order_items.id+asc&limit=3000&vis=%7B%22type%22%3A%22violin_distribution_plot%22%2C%22displayMode%22%3A%22violin_box%22%2C%22bandwidthFactor%22%3A%22auto%22%2C%22scalingMode%22%3A%22independent%22%2C%22yAxisScope%22%3A%22robust%22%2C%22showOutliers%22%3Atrue%2C%22showSummaryStats%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22colorPalette%22%3A%22google_modern%22%2C%22fillOpacity%22%3A%220.75%22%2C%22boxPlotWidth%22%3A%22medium%22%2C%22showGridlines%22%3Atrue%2C%22showMeanMarker%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-17"
+    "last_upgraded": "2026-10-17",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Distributions & ML Models",
+    "geometry": "Distribution / KDE",
+    "industry": "Retail & E-Commerce"
   },
   {
     "id": "dynamic_pivot_matrix",
@@ -670,7 +760,11 @@
     "screenshot": "visualizations/dynamic_pivot_matrix/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.created_year,order_items.total_sale_price&pivots=order_items.created_year&f[order_items.created_year]=2023%2C2024%2C2025%2C2026&sorts=order_items.created_year+asc+0,products.category&limit=25&vis=%7B%22type%22%3A%22dynamic_pivot_matrix%22%2C%22renderMode%22%3A%22matrix_bars%22%2C%22colorPalette%22%3A%22google_modern%22%2C%22hudMode%22%3A%22full%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22targetLabel%22%3A%22Overall+Mean%22%2C%22highlightTargetBreaches%22%3Atrue%2C%22anomalyThreshold%22%3A20%2C%22sortOrder%22%3A%22metric_desc%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22showRowTotals%22%3Atrue%2C%22showColTotals%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22pageSize%22%3A%2210%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22highlightMaxCell%22%3Atrue%2C%22fontSize%22%3A%22standard%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-18"
+    "last_upgraded": "2026-10-18",
+    "private_demo": false,
+    "board_dashboard": "tables_rankings",
+    "geometry": "Table / Grid",
+    "industry": "Cross-Industry"
   },
   {
     "id": "streamgraph_themeriver",
@@ -700,7 +794,11 @@
     "screenshot": "visualizations/streamgraph_themeriver/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-19",
-    "looker_demo_url": "/explore/thelook/order_items?fields=order_items.created_month,products.category,order_items.total_sale_price&f[order_items.created_date]=24+months&sorts=order_items.created_month+asc,order_items.total_sale_price+desc&limit=1500&vis=%7B%22type%22%3A%22streamgraph_themeriver%22%2C%22baselineMode%22%3A%22silhouette%22%2C%22curveInterpolation%22%3A%22curveCatmullRom%22%2C%22sortOrder%22%3A%22insideOut%22%2C%22topNLimit%22%3A%2212%22%2C%22showOtherRollup%22%3Atrue%2C%22suppressNulls%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22targetLabel%22%3A%22Category+Mean+Volume%22%2C%22anomalyThreshold%22%3A25%2C%22highlightTargetBreaches%22%3Atrue%2C%22showCrosshair%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_modern%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22streamOpacity%22%3A%220.85%22%2C%22strokeWidth%22%3A%221%22%2C%22fontSize%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=order_items.created_month,products.category,order_items.total_sale_price&f[order_items.created_date]=24+months&sorts=order_items.created_month+asc,order_items.total_sale_price+desc&limit=1500&vis=%7B%22type%22%3A%22streamgraph_themeriver%22%2C%22baselineMode%22%3A%22silhouette%22%2C%22curveInterpolation%22%3A%22curveCatmullRom%22%2C%22sortOrder%22%3A%22insideOut%22%2C%22topNLimit%22%3A%2212%22%2C%22showOtherRollup%22%3Atrue%2C%22suppressNulls%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22targetLabel%22%3A%22Category+Mean+Volume%22%2C%22anomalyThreshold%22%3A25%2C%22highlightTargetBreaches%22%3Atrue%2C%22showCrosshair%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_modern%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22streamOpacity%22%3A%220.85%22%2C%22strokeWidth%22%3A%221%22%2C%22fontSize%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "time_series",
+    "geometry": "Time Series / Stream",
+    "industry": "Cross-Industry"
   },
   {
     "id": "bilateral_chord_diagram",
@@ -731,7 +829,12 @@
     "looker_demo_url": "/explore/thelook/order_items?fields=distribution_centers.name,users.state,order_items.total_sale_price,order_items.order_count&f[users.country]=USA&f[order_items.created_date]=12+months&sorts=order_items.total_sale_price+desc&limit=1500&vis=%7B%22type%22%3A%22bilateral_chord_diagram%22%2C%22vizMode%22%3A%22chord%22%2C%22sortOrder%22%3A%22descending%22%2C%22topN%22%3A%2212%22%2C%22bundleOther%22%3Atrue%2C%22suppressNulls%22%3Atrue%2C%22showSelfFlow%22%3Atrue%2C%22directedFlow%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Mean+Corridor+Flow%22%2C%22anomalyThresholdPct%22%3A130%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22arcThickness%22%3A18%2C%22ribbonOpacity%22%3A0.65%2C%22padAngle%22%3A0.03%2C%22labelStyle%22%3A%22radial%22%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/bilateral_chord_diagram/screenshot.png",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-20"
+    "last_upgraded": "2026-10-20",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Flows & Networks",
+    "geometry": "Network / Flow",
+    "industry": "Cross-Industry"
   },
   {
     "id": "level_progression_balance_curve",
@@ -761,7 +864,12 @@
     "screenshot": "visualizations/level_progression_balance_curve/screenshot.png",
     "looker_demo_url": "/explore/void_weaver_analytics/level_progression_telemetry?fields=level_progression_telemetry.campaign_level,level_progression_telemetry.surviving_players,level_progression_telemetry.total_boss_wipes&sorts=level_progression_telemetry.campaign_level+asc&limit=500&vis=%7B%22type%22%3A%22level_progression_balance_curve%22%2C%22curveLayout%22%3A%22dual_axis_spikes%22%2C%22chokePointSensitivity%22%3A%22medium%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Mean+Retention+Target%22%2C%22sortOrder%22%3A%22natural%22%2C%22topN%22%3A%22all%22%2C%22suppressNulls%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22colorPalette%22%3A%22executive_slate%22%2C%22curveSmoothing%22%3A%22catmull_rom%22%2C%22areaOpacity%22%3A%22medium%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22showSearch%22%3Atrue%2C%22highlightWorstChoke%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-21"
+    "last_upgraded": "2026-10-21",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Gaming & LiveOps",
+    "geometry": "Hazard / Progression",
+    "industry": "Gaming & Telemetry"
   },
   {
     "id": "hexbin_density_map",
@@ -794,7 +902,11 @@
     "screenshot": "visualizations/hexbin_density_map/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=users.approx_latitude,users.approx_longitude,users.state,order_items.total_sale_price,order_items.order_count&f[users.country]=USA&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22hexbin_density_map%22%2C%22layout_mode%22%3A%22hexbin_density%22%2C%22aggregation_type%22%3A%22sum%22%2C%22hex_radius%22%3A20%2C%22proportional_hex_size%22%3Atrue%2C%22min_points_threshold%22%3A1%2C%22show_hud%22%3Atrue%2C%22show_search%22%3Atrue%2C%22show_legend%22%3Atrue%2C%22color_palette%22%3A%22plasma%22%2C%22basemap_theme%22%3A%22light_clean%22%2C%22hex_opacity%22%3A0.85%2C%22hex_stroke%22%3A%22crisp_white%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-22"
+    "last_upgraded": "2026-10-22",
+    "private_demo": false,
+    "board_dashboard": "geospatial",
+    "geometry": "Geospatial Map",
+    "industry": "Cross-Industry"
   },
   {
     "id": "gantt_milestones_timeline",
@@ -829,7 +941,11 @@
     "screenshot": "visualizations/gantt_milestones_timeline/screenshot.png",
     "looker_demo_url": "/explore/void_weaver_analytics/studio_release_roadmap?fields=studio_release_roadmap.task_name,studio_release_roadmap.workstream,studio_release_roadmap.task_status,studio_release_roadmap.owner_lead,studio_release_roadmap.priority_tier,studio_release_roadmap.start_date,studio_release_roadmap.end_date,studio_release_roadmap.completion_pct,studio_release_roadmap.total_budget_allocated_usd,studio_release_roadmap.projected_revenue_lift_usd&sorts=studio_release_roadmap.workstream+asc,studio_release_roadmap.start_date+asc&limit=500&vis=%7B%22type%22%3A%22gantt_milestones_timeline%22%2C%22layout_mode%22%3A%22gantt_progress%22%2C%22time_scale%22%3A%22auto%22%2C%22group_by_swimlane%22%3Atrue%2C%22sort_order%22%3A%22start_asc%22%2C%22show_milestones%22%3Atrue%2C%22hud_density%22%3A%22full%22%2C%22label_density%22%3A%22all%22%2C%22target_mode%22%3A%22mean%22%2C%22highlight_anomalies%22%3Atrue%2C%22anomaly_threshold_stddev%22%3A%221.5%22%2C%22show_search_bar%22%3Atrue%2C%22show_today_line%22%3Atrue%2C%22color_palette%22%3A%22google_enterprise%22%2C%22heatmap_metric_mode%22%3A%22gradient%22%2C%22font_scale%22%3A%22standard%22%2C%22value_format%22%3A%22compact_cur%22%2C%22bar_corner_radius%22%3A5%2C%22bar_height%22%3A22%2C%22show_gridlines%22%3Atrue%2C%22theme_mode%22%3A%22light%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-23"
+    "last_upgraded": "2026-10-23",
+    "private_demo": false,
+    "board_dashboard": "time_series",
+    "geometry": "Timeline / Schedule",
+    "industry": "Gaming & Program Ops"
   },
   {
     "id": "pareto_cumulative_analyzer",
@@ -859,7 +975,11 @@
     "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22pareto_cumulative_analyzer%22%2C%22layoutMode%22%3A%22classic_pareto%22%2C%22abcThresholdA%22%3A80%2C%22abcThresholdB%22%3A95%2C%22showKpiHud%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showThresholdLine%22%3Atrue%2C%22showDataLabels%22%3Afalse%2C%22maxItemsDisplay%22%3A35%2C%22curveInterpolation%22%3A%22monotone%22%2C%22colorTheme%22%3A%22modern_google%22%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/pareto_cumulative_analyzer/screenshot.png",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-24"
+    "last_upgraded": "2026-10-24",
+    "private_demo": false,
+    "board_dashboard": "kpis_variance",
+    "geometry": "Bar / Variance",
+    "industry": "Cross-Industry"
   },
   {
     "id": "matchmaking_mmr_distribution",
@@ -890,7 +1010,12 @@
     "looker_demo_url": "/explore/void_weaver_analytics/matchmaking_mmr_telemetry?fields=matchmaking_mmr_telemetry.mmr_bucket,matchmaking_mmr_telemetry.active_players,matchmaking_mmr_telemetry.avg_queue_wait_sec,matchmaking_mmr_telemetry.avg_win_rate_pct&sorts=matchmaking_mmr_telemetry.mmr_bucket+asc&limit=500&vis=%7B%22type%22%3A%22matchmaking_mmr_distribution%22%2C%22layoutMode%22%3A%22gaussian_bell%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudDensity%22%3A%22scorecard%22%2C%22slaThresholdMode%22%3A%22fixed%22%2C%22latencySlaThreshold%22%3A120%2C%22referenceLineLabel%22%3A%22Competitive+SLA+%28120s%29%22%2C%22anomalyThresholdPct%22%3A130%2C%22showGaussianFit%22%3Atrue%2C%22showRankTiers%22%3Atrue%2C%22showParityZones%22%3Atrue%2C%22sortOrder%22%3A%22natural%22%2C%22topNLimit%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22modern_slate%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showGridlines%22%3Atrue%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/matchmaking_mmr_distribution/screenshot.png",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-27"
+    "last_upgraded": "2026-10-27",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Gaming & LiveOps",
+    "geometry": "Distribution / KDE",
+    "industry": "Gaming & Telemetry"
   },
   {
     "id": "sunburst_partition_wheel",
@@ -922,7 +1047,12 @@
     "looker_demo_url": "/explore/thelook/order_items?fields=users.country,products.department,products.category,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22sunburst_partition_wheel%22%2C%22layoutMode%22%3A%22sunburst_wheel%22%2C%22colorMode%22%3A%22branch_palette%22%2C%22colorTheme%22%3A%22modern_google%22%2C%22innerHoleRadius%22%3A22%2C%22maxDepthDisplay%22%3A5%2C%22topNThreshold%22%3A12%2C%22valueMetricFormat%22%3A%22compact_currency%22%2C%22showExecutiveHUD%22%3Atrue%2C%22showBreadcrumbTrail%22%3Atrue%2C%22showSearchFilter%22%3Atrue%2C%22showSliceLabels%22%3Atrue%2C%22enableZoomDrill%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/sunburst_partition_wheel/screenshot.png",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-25"
+    "last_upgraded": "2026-10-25",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Hierarchies & Multivariate",
+    "geometry": "Hierarchy / Partition",
+    "industry": "Cross-Industry"
   },
   {
     "id": "ad_reach_frequency_curve",
@@ -952,7 +1082,12 @@
     "screenshot": "visualizations/ad_reach_frequency_curve/screenshot.png",
     "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,ad_spot_airings.total_airing_spots,nielsen_ratings_markets.total_grps,ad_spot_airings.total_spend_mxn&sorts=nielsen_ratings_markets.total_grps+desc&limit=500&vis=%7B%22type%22%3A%22ad_reach_frequency_curve%22%2C%22layoutMode%22%3A%22reach_frequency_curve%22%2C%22showExecutiveHUD%22%3Atrue%2C%22targetReachGoal%22%3A70%2C%22effectiveFrequencyMin%22%3A3%2C%22effectiveFrequencyMax%22%3A6%2C%22modelFittingEngine%22%3A%22bimodal_mbb%22%2C%22showDiminishingReturnInflection%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showGridlines%22%3Atrue%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-28"
+    "last_upgraded": "2026-10-28",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Media, Broadcast & Ad-Ops",
+    "geometry": "Response Curve",
+    "industry": "Media & Ad-Ops"
   },
   {
     "id": "world_choropleth_map",
@@ -983,7 +1118,11 @@
     "screenshot": "visualizations/world_choropleth_map/screenshot.png",
     "looker_demo_url": "/explore/thelook/order_items?fields=users.country,order_items.total_sale_price,order_items.order_count&sorts=order_items.total_sale_price+desc&limit=500&vis=%7B%22type%22%3A%22world_choropleth_map%22%2C%22layoutMode%22%3A%22natural_earth%22%2C%22continentFocus%22%3A%22all%22%2C%22showBubbleOverlay%22%3Atrue%2C%22showExecutiveHUD%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22colorScaleType%22%3A%22quantile%22%2C%22showGraticule%22%3Atrue%2C%22showCountryBorders%22%3Atrue%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-26"
+    "last_upgraded": "2026-10-26",
+    "private_demo": false,
+    "board_dashboard": "geospatial",
+    "geometry": "Geospatial Map",
+    "industry": "Cross-Industry"
   },
   {
     "id": "game_economy_faucet_sink",
@@ -1014,7 +1153,12 @@
     "screenshot": "visualizations/game_economy_faucet_sink/screenshot.png",
     "looker_demo_url": "/explore/void_weaver_analytics/virtual_economy_flows?fields=virtual_economy_flows.economy_activity,virtual_economy_flows.faucet_tokens_minted,virtual_economy_flows.sink_tokens_burned,virtual_economy_flows.transaction_count&sorts=virtual_economy_flows.faucet_tokens_minted+desc&limit=500&vis=%7B%22type%22%3A%22game_economy_faucet_sink%22%2C%22layoutMode%22%3A%22sankey_faucet_sink%22%2C%22showExecutiveHUD%22%3Atrue%2C%22faucetSinkRatioAlert%22%3A1.15%2C%22showNetVelocity%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22cyberpunk_neon%22%2C%22currencySymbol%22%3A%22%F0%9F%AA%99%22%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-29"
+    "last_upgraded": "2026-10-29",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Gaming & LiveOps",
+    "geometry": "Network / Flow",
+    "industry": "Gaming & Telemetry"
   },
   {
     "id": "mitre_attack_matrix",
@@ -1045,7 +1189,12 @@
     "options_upgraded": true,
     "screenshot": "visualizations/mitre_attack_matrix/screenshot.png",
     "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.mitre_technique,cortex_security_incidents.count,cortex_security_incidents.total_alerts,cortex_security_incidents.avg_mttr_minutes&sorts=cortex_security_incidents.count+desc&limit=500&vis=%7B%22type%22%3A%22mitre_attack_matrix%22%2C%22layoutMode%22%3A%22tactic_board%22%2C%22targetMode%22%3A%22p90%22%2C%22sortOrder%22%3A%22tactic_canonical%22%2C%22topN%22%3A12%2C%22groupOther%22%3Atrue%2C%22suppressZeros%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabels%22%3A%22all%22%2C%22showSearchBar%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22polarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis",
-    "last_upgraded": "2026-10-30"
+    "last_upgraded": "2026-10-30",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Cloud SecOps & Governance",
+    "geometry": "Threat / Kill-Chain",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "forecast_confidence_cone",
@@ -1077,7 +1226,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-13",
     "screenshot": "visualizations/forecast_confidence_cone/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/daily_kpis_ai_forecast?fields=mart_daily_kpis_forecast.forecast_date,mart_daily_kpis_forecast.series_type,mart_daily_kpis_forecast.revenue_projected_usd,mart_daily_kpis_forecast.revenue_lower_bound_usd,mart_daily_kpis_forecast.revenue_upper_bound_usd&f[mart_daily_kpis_forecast.game_id]=VWE&sorts=mart_daily_kpis_forecast.forecast_date+asc&limit=150&vis=%7B%22type%22%3A%22forecast_confidence_cone%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22confidenceBandOpacity%22%3A22%2C%22showConeArea%22%3Atrue%2C%22showActualHistory%22%3Atrue%2C%22showPredictionIntervals%22%3Atrue%2C%22simulationScenarioPct%22%3A0%2C%22hudMode%22%3A%22scorecard%22%2C%22showLegend%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Q4+Run-Rate+Baseline%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/daily_kpis_ai_forecast?fields=mart_daily_kpis_forecast.forecast_date,mart_daily_kpis_forecast.series_type,mart_daily_kpis_forecast.revenue_projected_usd,mart_daily_kpis_forecast.revenue_lower_bound_usd,mart_daily_kpis_forecast.revenue_upper_bound_usd&f[mart_daily_kpis_forecast.game_id]=VWE&sorts=mart_daily_kpis_forecast.forecast_date+asc&limit=150&vis=%7B%22type%22%3A%22forecast_confidence_cone%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22confidenceBandOpacity%22%3A22%2C%22showConeArea%22%3Atrue%2C%22showActualHistory%22%3Atrue%2C%22showPredictionIntervals%22%3Atrue%2C%22simulationScenarioPct%22%3A0%2C%22hudMode%22%3A%22scorecard%22%2C%22showLegend%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Q4+Run-Rate+Baseline%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Distributions & ML Models",
+    "geometry": "Time Series / Forecast",
+    "industry": "Gaming & Telemetry"
   },
   {
     "id": "marimekko_market_matrix",
@@ -1108,7 +1262,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-15",
     "screenshot": "visualizations/marimekko_market_matrix/screenshot.png",
-    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,ad_spot_airings.total_spend_mxn,ad_spot_airings.total_airing_spots&sorts=ad_spot_airings.total_spend_mxn+desc&limit=50&vis=%7B%22type%22%3A%22marimekko_market_matrix%22%2C%22layoutMode%22%3A%22marimekko%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22referenceLineLabel%22%3A%22Target+Run-Rate%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,ad_spot_airings.total_spend_mxn,ad_spot_airings.total_airing_spots&sorts=ad_spot_airings.total_spend_mxn+desc&limit=50&vis=%7B%22type%22%3A%22marimekko_market_matrix%22%2C%22layoutMode%22%3A%22marimekko%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22referenceLineLabel%22%3A%22Target+Run-Rate%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "tables_rankings",
+    "geometry": "Mosaic / Matrix",
+    "industry": "Media & Ad-Ops"
   },
   {
     "id": "roc_curve_evaluator",
@@ -1145,7 +1303,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-14",
     "screenshot": "visualizations/roc_curve_evaluator/screenshot.png",
-    "looker_demo_url": "/explore/retail_banking/roc_curve?fields=roc_curve.threshold,roc_curve.false_positive_rate,roc_curve.recall,roc_curve.precision,roc_curve.threshold_f1,roc_curve.threshold_accuracy,roc_curve.true_positives,roc_curve.false_positives,roc_curve.true_negatives,roc_curve.false_negatives&sorts=roc_curve.threshold+asc&limit=100&vis=%7B%22type%22%3A%22roc_curve_evaluator%22%2C%22curveType%22%3A%22dual_view%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConfusionMatrix%22%3Atrue%2C%22optimalMarker%22%3A%22youden_j%22%2C%22initialThreshold%22%3A0.5%2C%22enableAreaFill%22%3Atrue%2C%22showGridLines%22%3Atrue%2C%22showAUCScore%22%3Atrue%2C%22showCostModel%22%3Atrue%2C%22costPerFP%22%3A15%2C%22costPerFN%22%3A350%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/retail_banking/roc_curve?fields=roc_curve.threshold,roc_curve.false_positive_rate,roc_curve.recall,roc_curve.precision,roc_curve.threshold_f1,roc_curve.threshold_accuracy,roc_curve.true_positives,roc_curve.false_positives,roc_curve.true_negatives,roc_curve.false_negatives&sorts=roc_curve.threshold+asc&limit=100&vis=%7B%22type%22%3A%22roc_curve_evaluator%22%2C%22curveType%22%3A%22dual_view%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConfusionMatrix%22%3Atrue%2C%22optimalMarker%22%3A%22youden_j%22%2C%22initialThreshold%22%3A0.5%2C%22enableAreaFill%22%3Atrue%2C%22showGridLines%22%3Atrue%2C%22showAUCScore%22%3Atrue%2C%22showCostModel%22%3Atrue%2C%22costPerFP%22%3A15%2C%22costPerFN%22%3A350%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Distributions & ML Models",
+    "geometry": "ML Evaluation",
+    "industry": "Financial Services"
   },
   {
     "id": "cell_tower_polar_coverage",
@@ -1178,7 +1341,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-04",
     "screenshot": "visualizations/cell_tower_polar_coverage/screenshot.png",
-    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,cell_towers.equipment_vendor,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct&f[cell_towers.operational_status]=Active&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=50&vis=%7B%22type%22%3A%22cell_tower_polar_coverage%22%2C%22polarMode%22%3A%22omni_radar%22%2C%22colorTheme%22%3A%22nokia_cyan%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showLegend%22%3Atrue%2C%22beamSweepAnimation%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,cell_towers.equipment_vendor,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct&f[cell_towers.operational_status]=Active&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=50&vis=%7B%22type%22%3A%22cell_tower_polar_coverage%22%2C%22polarMode%22%3A%22omni_radar%22%2C%22colorTheme%22%3A%22nokia_cyan%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showLegend%22%3Atrue%2C%22beamSweepAnimation%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Telecom & Cloud FinOps",
+    "geometry": "Radial / Polar",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "inventory_stockout_sawtooth",
@@ -1210,7 +1378,11 @@
     "screenshot": "visualizations/inventory_stockout_sawtooth/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-18",
-    "looker_demo_url": "/explore/thelook/inventory_snapshot?fields=inventory_snapshot.snapshot_date,distribution_centers.name,inventory_snapshot.total_in_stock,inventory_snapshot.stock_coverage_ratio,inventory_snapshot.eoh_cost_total&f[inventory_snapshot.snapshot_date]=2026%2F08%2F21+to+2026%2F09%2F21&f[distribution_centers.name]=Memphis+TN&sorts=inventory_snapshot.snapshot_date+asc&limit=35&vis=%7B%22type%22%3A%22inventory_stockout_sawtooth%22%2C%22layoutMode%22%3A%22sawtooth_cycles%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Reorder+Point+%28ROP%29%22%2C%22safetyStockPct%22%3A25%2C%22reorderPointPct%22%3A50%2C%22showSafetyZone%22%3Atrue%2C%22showReorderLine%22%3Atrue%2C%22showReplenishmentPoints%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/inventory_snapshot?fields=inventory_snapshot.snapshot_date,distribution_centers.name,inventory_snapshot.total_in_stock,inventory_snapshot.stock_coverage_ratio,inventory_snapshot.eoh_cost_total&f[inventory_snapshot.snapshot_date]=2026%2F08%2F21+to+2026%2F09%2F21&f[distribution_centers.name]=Memphis+TN&sorts=inventory_snapshot.snapshot_date+asc&limit=35&vis=%7B%22type%22%3A%22inventory_stockout_sawtooth%22%2C%22layoutMode%22%3A%22sawtooth_cycles%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Reorder+Point+%28ROP%29%22%2C%22safetyStockPct%22%3A25%2C%22reorderPointPct%22%3A50%2C%22showSafetyZone%22%3Atrue%2C%22showReorderLine%22%3Atrue%2C%22showReplenishmentPoints%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "retail_finops",
+    "geometry": "Time Series / Sawtooth",
+    "industry": "Retail & Supply Chain"
   },
   {
     "id": "multi_touch_attribution_pathway",
@@ -1243,7 +1415,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-21",
     "screenshot": "visualizations/multi_touch_attribution_pathway/screenshot.png",
-    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,ad_spot_airings.daypart,ad_spot_airings.total_spend_mxn,nielsen_ratings_markets.total_grps,ad_spot_airings.total_airing_spots&sorts=ad_spot_airings.total_spend_mxn+desc&limit=500&vis=%7B%22type%22%3A%22multi_touch_attribution_pathway%22%2C%22layoutMode%22%3A%22attribution_comparison%22%2C%22colorPalette%22%3A%22sunset_media%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Target+ROAS+%2F+GRP+Benchmark%22%2C%22showValueLabels%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,ad_spot_airings.daypart,ad_spot_airings.total_spend_mxn,nielsen_ratings_markets.total_grps,ad_spot_airings.total_airing_spots&sorts=ad_spot_airings.total_spend_mxn+desc&limit=500&vis=%7B%22type%22%3A%22multi_touch_attribution_pathway%22%2C%22layoutMode%22%3A%22attribution_comparison%22%2C%22colorPalette%22%3A%22sunset_media%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Target+ROAS+%2F+GRP+Benchmark%22%2C%22showValueLabels%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Media, Broadcast & Ad-Ops",
+    "geometry": "Attribution / Path",
+    "industry": "Media & Ad-Ops"
   },
   {
     "id": "raincloud_plot",
@@ -1274,7 +1451,12 @@
     "screenshot": "visualizations/raincloud_plot/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-23",
-    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.incident_id,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.alert_count&sorts=cortex_security_incidents.mitre_tactic+asc,cortex_security_incidents.avg_mttr_minutes+desc&limit=1500&vis=%7B%22type%22%3A%22raincloud_plot%22%2C%22viewMode%22%3A%22horizontal_split%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22referenceLineLabel%22%3A%22SLA+MTTR+Target+%28180m%29%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22outlierThreshold%22%3A%22tukey_fence%22%2C%22bandwidthMode%22%3A%22silverman%22%2C%22valueFormat%22%3A%22decimal_2%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.incident_id,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.alert_count&sorts=cortex_security_incidents.mitre_tactic+asc,cortex_security_incidents.avg_mttr_minutes+desc&limit=1500&vis=%7B%22type%22%3A%22raincloud_plot%22%2C%22viewMode%22%3A%22horizontal_split%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22referenceLineLabel%22%3A%22SLA+MTTR+Target+%28180m%29%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22outlierThreshold%22%3A%22tukey_fence%22%2C%22bandwidthMode%22%3A%22silverman%22%2C%22valueFormat%22%3A%22decimal_2%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Distributions & ML Models",
+    "geometry": "Distribution / KDE",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "noc_incident_timeline",
@@ -1307,7 +1489,11 @@
     "screenshot": "visualizations/noc_incident_timeline/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-16",
-    "looker_demo_url": "/explore/zayo_network_analytics/noc_case_war_room?fields=noc_case_timeline.event_time_time,noc_case_timeline.source_system,noc_case_timeline.event_type,noc_case_timeline.description,noc_case_timeline.actor,noc_case_timeline.severity&f[noc_case_timeline.case_id]=CASE-2026-9901&sorts=noc_case_timeline.event_time_time+asc&limit=500&vis=%7B%22type%22%3A%22noc_incident_timeline%22%2C%22slaTargetHours%22%3A4%2C%22nowMode%22%3A%22latest_event%22%2C%22labelDensity%22%3A%22all%22%2C%22showHud%22%3Atrue%2C%22colorPalette%22%3A%22zayo_orange%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/zayo_network_analytics/noc_case_war_room?fields=noc_case_timeline.event_time_time,noc_case_timeline.source_system,noc_case_timeline.event_type,noc_case_timeline.description,noc_case_timeline.actor,noc_case_timeline.severity&f[noc_case_timeline.case_id]=CASE-2026-9901&sorts=noc_case_timeline.event_time_time+asc&limit=500&vis=%7B%22type%22%3A%22noc_incident_timeline%22%2C%22slaTargetHours%22%3A4%2C%22nowMode%22%3A%22latest_event%22%2C%22labelDensity%22%3A%22all%22%2C%22showHud%22%3Atrue%2C%22colorPalette%22%3A%22zayo_orange%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": true,
+    "board_dashboard": null,
+    "geometry": "Custom Enterprise Card",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "pvm_revenue_bridge",
@@ -1338,7 +1524,11 @@
     "screenshot": "visualizations/pvm_revenue_bridge/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-08",
-    "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=medical_products.category,order_lines.order_month,order_lines.total_spend,order_lines.units_ordered&f[order_lines.order_month]=2025-11+to+2026-04&sorts=order_lines.total_spend+desc&limit=500&vis=%7B%22type%22%3A%22pvm_revenue_bridge%22%2C%22layoutMode%22%3A%22pvm_waterfall%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConnectorLines%22%3Atrue%2C%22showVarianceBadges%22%3Atrue%2C%22showDataLabels%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22metricPolarity%22%3A%22higher_better%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=medical_products.category,order_lines.order_month,order_lines.total_spend,order_lines.units_ordered&f[order_lines.order_month]=2025-11+to+2026-04&sorts=order_lines.total_spend+desc&limit=500&vis=%7B%22type%22%3A%22pvm_revenue_bridge%22%2C%22layoutMode%22%3A%22pvm_waterfall%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showConnectorLines%22%3Atrue%2C%22showVarianceBadges%22%3Atrue%2C%22showDataLabels%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22metricPolarity%22%3A%22higher_better%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "retail_finops",
+    "geometry": "Financial / Waterfall",
+    "industry": "Healthcare & Supply Chain"
   },
   {
     "id": "media_audience_overlap_euler",
@@ -1370,7 +1560,12 @@
     "screenshot": "visualizations/media_audience_overlap_euler/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-09",
-    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,nielsen_ratings_markets.target_demographic,nielsen_ratings_markets.total_grps,ad_spot_airings.total_spend_mxn&sorts=nielsen_ratings_markets.total_grps+desc&limit=500&vis=%7B%22type%22%3A%22media_audience_overlap_euler%22%2C%22layoutMode%22%3A%22euler_circles%22%2C%22colorTheme%22%3A%22sunset_media%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showDataLabels%22%3A%22all%22%2C%22metricPolarity%22%3A%22higher_better%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.network,broadcast_programming.genre,nielsen_ratings_markets.target_demographic,nielsen_ratings_markets.total_grps,ad_spot_airings.total_spend_mxn&sorts=nielsen_ratings_markets.total_grps+desc&limit=500&vis=%7B%22type%22%3A%22media_audience_overlap_euler%22%2C%22layoutMode%22%3A%22euler_circles%22%2C%22colorTheme%22%3A%22sunset_media%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showDataLabels%22%3A%22all%22%2C%22metricPolarity%22%3A%22higher_better%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Media, Broadcast & Ad-Ops",
+    "geometry": "Set / Venn / Euler",
+    "industry": "Media & Ad-Ops"
   },
   {
     "id": "cloud_finops_commit_horizon",
@@ -1401,7 +1596,12 @@
     "screenshot": "visualizations/cloud_finops_commit_horizon/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-10",
-    "looker_demo_url": "/explore/multicloud_focus_finops/gcp_focus_export?fields=gcp_focus_export.commitment_discount_name,gcp_focus_export.charge_period_start_week,gcp_focus_export.commitment_utilization_rate,gcp_focus_export.unused_commitment_breakage_cost&f[gcp_focus_export.commitment_discount_name]=-NULL%2C-No+Active+Commitment%25&sorts=gcp_focus_export.commitment_discount_name,gcp_focus_export.charge_period_start_week&limit=5000&vis=%7B%22type%22%3A%22cloud_finops_commit_horizon%22%2C%22layoutMode%22%3A%22horizon_2band%22%2C%22horizonBands%22%3A2%2C%22hudMode%22%3A%22scorecard%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22valueFormat%22%3A%22percentage%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22bandHeight%22%3A44%2C%22showZeroBaseline%22%3Atrue%2C%22showCommitmentSummary%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/multicloud_focus_finops/gcp_focus_export?fields=gcp_focus_export.commitment_discount_name,gcp_focus_export.charge_period_start_week,gcp_focus_export.commitment_utilization_rate,gcp_focus_export.unused_commitment_breakage_cost&f[gcp_focus_export.commitment_discount_name]=-NULL%2C-No+Active+Commitment%25&sorts=gcp_focus_export.commitment_discount_name,gcp_focus_export.charge_period_start_week&limit=5000&vis=%7B%22type%22%3A%22cloud_finops_commit_horizon%22%2C%22layoutMode%22%3A%22horizon_2band%22%2C%22horizonBands%22%3A2%2C%22hudMode%22%3A%22scorecard%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22valueFormat%22%3A%22percentage%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22bandHeight%22%3A44%2C%22showZeroBaseline%22%3Atrue%2C%22showCommitmentSummary%22%3Atrue%2C%22showDataPoints%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Telecom & Cloud FinOps",
+    "geometry": "Time Series / Horizon",
+    "industry": "Cloud FinOps"
   },
   {
     "id": "kaplan_meier_survival_curve",
@@ -1432,41 +1632,12 @@
     "screenshot": "visualizations/kaplan_meier_survival_curve/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-20",
-    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.incident_id,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.alert_count&sorts=cortex_security_incidents.avg_mttr_minutes+asc&limit=500&vis=%7B%22type%22%3A%22kaplan_meier_survival_curve%22%2C%22viewMode%22%3A%22survival%22%2C%22showConfidenceInterval%22%3Atrue%2C%22showRiskTable%22%3Atrue%2C%22showMedianGuide%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22targetMode%22%3A%22fixed_value%22%2C%22fixedTargetValue%22%3A120%2C%22referenceLineLabel%22%3A%22Incident+SLA+%28120m%29%22%2C%22anomalyThresholdPct%22%3A25%2C%22topNLimit%22%3A%225%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Afalse%2C%22colorPalette%22%3A%22cyberpunk_dark%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%2C%22timeUnit%22%3A%22Minutes%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "finops_cud_attribution_bridge",
-    "name": "Cloud FinOps CUD Attribution & Savings Bridge",
-    "date_added": "2026-10-12",
-    "library": "D3.js v7",
-    "category": "Retail, Supply Chain & FinOps",
-    "description": "Executive Google Cloud Committed Use Discount (CUD) attribution reconciliation waterfall bridge, service cost breakdown, and FinOps Foundation Effective Savings Rate (ESR) efficiency matrix for multi-tenant cloud cost chargeback.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1-2 Dimensions (Organization Folder / Entity and optional GCP Service / SKU)",
-      "measures": "1-4 Measures (Gross On-Demand Cost, CUD Credit Offset, Allocated CUD Fee, Net Attributed Cost)"
-    },
-    "suggested_dataset": {
-      "model": "multicloud_focus_finops",
-      "explore": "gcp_focus_export",
-      "fields": [
-        "gcp_focus_export.x_folder_hierarchy",
-        "gcp_focus_export.service_name",
-        "gcp_focus_export.total_list_cost",
-        "gcp_focus_export.total_commitment_discount_savings",
-        "gcp_focus_export.committed_effective_cost",
-        "gcp_focus_export.total_effective_cost",
-        "gcp_focus_export.effective_savings_rate"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/finops_cud_attribution_bridge/screenshot.png",
-    "options_upgraded": true,
-    "last_upgraded": "2026-10-12",
-    "looker_demo_url": "/explore/multicloud_focus_finops/gcp_focus_export?fields=gcp_focus_export.x_folder_hierarchy,gcp_focus_export.service_name,gcp_focus_export.total_list_cost,gcp_focus_export.total_commitment_discount_savings,gcp_focus_export.committed_effective_cost,gcp_focus_export.total_effective_cost,gcp_focus_export.effective_savings_rate&sorts=gcp_focus_export.total_list_cost+desc&limit=25&vis=%7B%22type%22%3A%22finops_cud_attribution_bridge%22%2C%22layoutMode%22%3A%22waterfall_bridge%22%2C%22colorPalette%22%3A%22emerald_finops%22%2C%22hudDensity%22%3A%22full%22%2C%22showConnectorLines%22%3Atrue%2C%22showStepLabels%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22compact_currency%22%2C%22sortOrder%22%3A%22metric_desc%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.incident_id,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.alert_count&sorts=cortex_security_incidents.avg_mttr_minutes+asc&limit=500&vis=%7B%22type%22%3A%22kaplan_meier_survival_curve%22%2C%22viewMode%22%3A%22survival%22%2C%22showConfidenceInterval%22%3Atrue%2C%22showRiskTable%22%3Atrue%2C%22showMedianGuide%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22targetMode%22%3A%22fixed_value%22%2C%22fixedTargetValue%22%3A120%2C%22referenceLineLabel%22%3A%22Incident+SLA+%28120m%29%22%2C%22anomalyThresholdPct%22%3A25%2C%22topNLimit%22%3A%225%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Afalse%2C%22colorPalette%22%3A%22cyberpunk_dark%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%2C%22timeUnit%22%3A%22Minutes%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Distributions & ML Models",
+    "geometry": "Survival / Hazard",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "slopegraph",
@@ -1496,7 +1667,11 @@
     "screenshot": "visualizations/slopegraph/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-13",
-    "looker_demo_url": "/explore/void_weaver_analytics/title_quarterly_leaderboard?fields=title_quarterly_leaderboard.game_title,title_quarterly_leaderboard.fiscal_quarter,title_quarterly_leaderboard.gross_bookings_usd&f[title_quarterly_leaderboard.fiscal_quarter]=2026-Q2%2C2026-Q3&sorts=title_quarterly_leaderboard.game_title+asc,title_quarterly_leaderboard.fiscal_quarter+asc&limit=500&vis=%7B%22type%22%3A%22slopegraph%22%2C%22layoutMode%22%3A%22dual_axis_value%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Portfolio+Mean+Bookings%22%2C%22sortOrder%22%3A%22delta_desc%22%2C%22topEntities%22%3A%22all%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Atrue%2C%22hudDensity%22%3A%22full%22%2C%22labelDensity%22%3A%22all%22%2C%22showRankBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22lineCurve%22%3A%22straight%22%2C%22lineWidth%22%3A2.5%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22axisPadding%22%3A180%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/title_quarterly_leaderboard?fields=title_quarterly_leaderboard.game_title,title_quarterly_leaderboard.fiscal_quarter,title_quarterly_leaderboard.gross_bookings_usd&f[title_quarterly_leaderboard.fiscal_quarter]=2026-Q2%2C2026-Q3&sorts=title_quarterly_leaderboard.game_title+asc,title_quarterly_leaderboard.fiscal_quarter+asc&limit=500&vis=%7B%22type%22%3A%22slopegraph%22%2C%22layoutMode%22%3A%22dual_axis_value%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Portfolio+Mean+Bookings%22%2C%22sortOrder%22%3A%22delta_desc%22%2C%22topEntities%22%3A%22all%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Atrue%2C%22hudDensity%22%3A%22full%22%2C%22labelDensity%22%3A%22all%22%2C%22showRankBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22lineCurve%22%3A%22straight%22%2C%22lineWidth%22%3A2.5%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22axisPadding%22%3A180%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "tables_rankings",
+    "geometry": "Ranking / Trajectory",
+    "industry": "Gaming & Entertainment"
   },
   {
     "id": "content_genre_affinity_network",
@@ -1527,7 +1702,12 @@
     "screenshot": "visualizations/content_genre_affinity_network/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-14",
-    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.genre,advertiser_campaigns.industry_category,ad_spot_airings.total_spend_mxn,nielsen_ratings_markets.total_grps&sorts=ad_spot_airings.total_spend_mxn+desc&limit=100&vis=%7B%22type%22%3A%22content_genre_affinity_network%22%2C%22networkLayout%22%3A%22force_directed%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22hudMode%22%3A%22full%22%2C%22colorTheme%22%3A%22sunset_media%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/tvun_media_analytics/ad_spot_airings?fields=broadcast_programming.genre,advertiser_campaigns.industry_category,ad_spot_airings.total_spend_mxn,nielsen_ratings_markets.total_grps&sorts=ad_spot_airings.total_spend_mxn+desc&limit=100&vis=%7B%22type%22%3A%22content_genre_affinity_network%22%2C%22networkLayout%22%3A%22force_directed%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22hudMode%22%3A%22full%22%2C%22colorTheme%22%3A%22sunset_media%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Flows & Networks",
+    "geometry": "Network / Flow",
+    "industry": "Media & Ad-Ops"
   },
   {
     "id": "upset_affinity_grid",
@@ -1558,7 +1738,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-15",
     "screenshot": "visualizations/upset_affinity_grid/screenshot.png",
-    "looker_demo_url": "/explore/thelook/affinity?fields=product_a.category,product_b.category,affinity.joint_order_freq,affinity.combined_affinity&f[product_a.category]=-EMPTY&f[product_b.category]=-EMPTY&sorts=affinity.joint_order_freq+desc&limit=100&vis=%7B%22type%22%3A%22upset_affinity_grid%22%2C%22layoutMode%22%3A%22upset_matrix%22%2C%22sortOrder%22%3A%22size_desc%22%2C%22topNCount%22%3A%2220%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22hudMode%22%3A%22full%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22fontScale%22%3A%22standard%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/affinity?fields=product_a.category,product_b.category,affinity.joint_order_freq,affinity.combined_affinity&f[product_a.category]=-EMPTY&f[product_b.category]=-EMPTY&sorts=affinity.joint_order_freq+desc&limit=100&vis=%7B%22type%22%3A%22upset_affinity_grid%22%2C%22layoutMode%22%3A%22upset_matrix%22%2C%22sortOrder%22%3A%22size_desc%22%2C%22topNCount%22%3A%2220%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22hudMode%22%3A%22full%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22fontScale%22%3A%22standard%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "retail_finops",
+    "geometry": "Set / Venn / Euler",
+    "industry": "Retail & Supply Chain"
   },
   {
     "id": "parallel_coordinates_profiler",
@@ -1592,7 +1776,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-22",
     "screenshot": "visualizations/parallel_coordinates_profiler/screenshot.png",
-    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_call_drop_rate,network_kpi_telemetry.avg_energy_kwh&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=60&vis=%7B%22type%22%3A%22parallel_coordinates_profiler%22%2C%22curveType%22%3A%22smooth_spline%22%2C%22entityDimOverride%22%3A%22%22%2C%22groupDimOverride%22%3A%22%22%2C%22primaryMeasureOverride%22%3A%22%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Network+SLA+Mean+Benchmark%22%2C%22alertThreshold%22%3A25%2C%22sortOrder%22%3A%22metric_desc%22%2C%22topN%22%3A%22all%22%2C%22suppressNulls%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showBrushHUD%22%3Atrue%2C%22enableOtherRollup%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22lineOpacity%22%3A0.45%2C%22lineWidth%22%3A1.8%2C%22highlightWidth%22%3A3.5%2C%22polarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_call_drop_rate,network_kpi_telemetry.avg_energy_kwh&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=60&vis=%7B%22type%22%3A%22parallel_coordinates_profiler%22%2C%22curveType%22%3A%22smooth_spline%22%2C%22entityDimOverride%22%3A%22%22%2C%22groupDimOverride%22%3A%22%22%2C%22primaryMeasureOverride%22%3A%22%22%2C%22targetCalculationMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Network+SLA+Mean+Benchmark%22%2C%22alertThreshold%22%3A25%2C%22sortOrder%22%3A%22metric_desc%22%2C%22topN%22%3A%22all%22%2C%22suppressNulls%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22showBrushHUD%22%3Atrue%2C%22enableOtherRollup%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22lineOpacity%22%3A0.45%2C%22lineWidth%22%3A1.8%2C%22highlightWidth%22%3A3.5%2C%22polarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Hierarchies & Multivariate",
+    "geometry": "Multivariate",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "distributed_trace_flamegraph",
@@ -1624,7 +1813,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-17",
     "screenshot": "visualizations/distributed_trace_flamegraph/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.mitre_technique,cortex_security_incidents.severity,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.total_alerts&sorts=cortex_security_incidents.total_alerts+desc&limit=50&vis=%7B%22type%22%3A%22distributed_trace_flamegraph%22%2C%22layoutMode%22%3A%22topdown_icicle%22%2C%22sortOrder%22%3A%22duration_desc%22%2C%22topN%22%3A%22all%22%2C%22targetCalculationMode%22%3A%22dataset_median%22%2C%22referenceLineLabel%22%3A%22SLA+MTTR+Target%22%2C%22latencyThresholdAlert%22%3A45%2C%22hudMode%22%3A%22full%22%2C%22colorTheme%22%3A%22google_cloud_trace%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.mitre_technique,cortex_security_incidents.severity,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.total_alerts&sorts=cortex_security_incidents.total_alerts+desc&limit=50&vis=%7B%22type%22%3A%22distributed_trace_flamegraph%22%2C%22layoutMode%22%3A%22topdown_icicle%22%2C%22sortOrder%22%3A%22duration_desc%22%2C%22topN%22%3A%22all%22%2C%22targetCalculationMode%22%3A%22dataset_median%22%2C%22referenceLineLabel%22%3A%22SLA+MTTR+Target%22%2C%22latencyThresholdAlert%22%3A45%2C%22hudMode%22%3A%22full%22%2C%22colorTheme%22%3A%22google_cloud_trace%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Cloud SecOps & Governance",
+    "geometry": "Flamegraph / Trace",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "candlestick_bollinger_bands",
@@ -1657,7 +1851,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-17",
     "screenshot": "visualizations/candlestick_bollinger_bands/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/virtual_currency_candlestick?fields=virtual_currency_candlestick.trading_date,virtual_currency_candlestick.open_price,virtual_currency_candlestick.high_price,virtual_currency_candlestick.low_price,virtual_currency_candlestick.close_price,virtual_currency_candlestick.trading_volume&f[virtual_currency_candlestick.currency_pair]=GLD%2FUSDC&sorts=virtual_currency_candlestick.trading_date+asc&limit=90&vis=%7B%22type%22%3A%22candlestick_bollinger_bands%22%2C%22layoutMode%22%3A%22candlestick_bollinger%22%2C%22bollingerPeriod%22%3A20%2C%22bollingerStdDev%22%3A%222.0%22%2C%22showMovingAverage%22%3Atrue%2C%22showBollingerEnvelope%22%3Atrue%2C%22showVolumeSubchart%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22targetLabel%22%3A%2290D+Mean+Price%22%2C%22colorPalette%22%3A%22google_modern%22%2C%22valueFormat%22%3A%22currency_precise%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/virtual_currency_candlestick?fields=virtual_currency_candlestick.trading_date,virtual_currency_candlestick.open_price,virtual_currency_candlestick.high_price,virtual_currency_candlestick.low_price,virtual_currency_candlestick.close_price,virtual_currency_candlestick.trading_volume&f[virtual_currency_candlestick.currency_pair]=GLD%2FUSDC&sorts=virtual_currency_candlestick.trading_date+asc&limit=90&vis=%7B%22type%22%3A%22candlestick_bollinger_bands%22%2C%22layoutMode%22%3A%22candlestick_bollinger%22%2C%22bollingerPeriod%22%3A20%2C%22bollingerStdDev%22%3A%222.0%22%2C%22showMovingAverage%22%3Atrue%2C%22showBollingerEnvelope%22%3Atrue%2C%22showVolumeSubchart%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22targetLabel%22%3A%2290D+Mean+Price%22%2C%22colorPalette%22%3A%22google_modern%22%2C%22valueFormat%22%3A%22currency_precise%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "time_series",
+    "geometry": "Financial / OHLC",
+    "industry": "Gaming & Finance"
   },
   {
     "id": "correlation_splom_matrix",
@@ -1690,7 +1888,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-19",
     "screenshot": "visualizations/correlation_splom_matrix/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/daily_kpis?fields=mart_daily_kpis.activity_date,mart_daily_kpis.dau,mart_daily_kpis.arpdau,mart_daily_kpis.iap_revenue_usd,mart_daily_kpis.avg_session_length_sec,mart_daily_kpis.avg_playtime_min_per_dau&sorts=mart_daily_kpis.activity_date+desc&limit=250&vis=%7B%22type%22%3A%22correlation_splom_matrix%22%2C%22layoutMode%22%3A%22splom_full%22%2C%22correlationMethod%22%3A%22pearson%22%2C%22correlationThreshold%22%3A0.5%2C%22highlightStrongCorrelations%22%3Atrue%2C%22sortOrder%22%3A%22cluster%22%2C%22topNLimit%22%3A%22all%22%2C%22suppressNulls%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22showRegressionLine%22%3Atrue%2C%22showConfidenceBands%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_modern%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22pointRadius%22%3A%223%22%2C%22pointOpacity%22%3A%220.65%22%2C%22fontSize%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/daily_kpis?fields=mart_daily_kpis.activity_date,mart_daily_kpis.dau,mart_daily_kpis.arpdau,mart_daily_kpis.iap_revenue_usd,mart_daily_kpis.avg_session_length_sec,mart_daily_kpis.avg_playtime_min_per_dau&sorts=mart_daily_kpis.activity_date+desc&limit=250&vis=%7B%22type%22%3A%22correlation_splom_matrix%22%2C%22layoutMode%22%3A%22splom_full%22%2C%22correlationMethod%22%3A%22pearson%22%2C%22correlationThreshold%22%3A0.5%2C%22highlightStrongCorrelations%22%3Atrue%2C%22sortOrder%22%3A%22cluster%22%2C%22topNLimit%22%3A%22all%22%2C%22suppressNulls%22%3Atrue%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22showRegressionLine%22%3Atrue%2C%22showConfidenceBands%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_modern%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22pointRadius%22%3A%223%22%2C%22pointOpacity%22%3A%220.65%22%2C%22fontSize%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Multivariate & Clustering",
+    "geometry": "Multivariate",
+    "industry": "Gaming & Telemetry"
   },
   {
     "id": "voronoi_treemap",
@@ -1720,7 +1923,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-20",
     "screenshot": "visualizations/voronoi_treemap/screenshot.png",
-    "looker_demo_url": "/explore/thelook/events?fields=events.browser,events.event_type,events.count&f[events.browser]=Chrome%2CSafari%2CFirefox%2CIE&f[events.event_type]=Home%2CProduct%2CCart%2CPurchase%2CCancel&sorts=events.count+desc&limit=50&vis=%7B%22type%22%3A%22voronoi_treemap%22%2C%22hierarchyDepth%22%3A%222%22%2C%22polygonShape%22%3A%22convex%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22sortOrder%22%3A%22descending%22%2C%22topN%22%3A%2225%22%2C%22bundleOther%22%3Atrue%2C%22suppressNulls%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Event+Mean+Volume%22%2C%22anomalyThresholdPct%22%3A130%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%2C%22cellPadding%22%3A2%2C%22cellBorderWidth%22%3A1.5%2C%22cellOpacity%22%3A0.85%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/events?fields=events.browser,events.event_type,events.count&f[events.browser]=Chrome%2CSafari%2CFirefox%2CIE&f[events.event_type]=Home%2CProduct%2CCart%2CPurchase%2CCancel&sorts=events.count+desc&limit=50&vis=%7B%22type%22%3A%22voronoi_treemap%22%2C%22hierarchyDepth%22%3A%222%22%2C%22polygonShape%22%3A%22convex%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22all%22%2C%22sortOrder%22%3A%22descending%22%2C%22topN%22%3A%2225%22%2C%22bundleOther%22%3Atrue%2C%22suppressNulls%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Event+Mean+Volume%22%2C%22anomalyThresholdPct%22%3A130%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%2C%22cellPadding%22%3A2%2C%22cellBorderWidth%22%3A1.5%2C%22cellOpacity%22%3A0.85%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Hierarchies & Multivariate",
+    "geometry": "Hierarchy / Partition",
+    "industry": "Cross-Industry"
   },
   {
     "id": "horizon_small_multiples",
@@ -1751,7 +1959,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-21",
     "screenshot": "visualizations/horizon_small_multiples/screenshot.png",
-    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=12+months&sorts=products.category+asc,order_items.created_month+asc&limit=500&vis=%7B%22type%22%3A%22horizon_small_multiples%22%2C%22layoutMode%22%3A%22horizon_4band%22%2C%22horizonBands%22%3A4%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22peaks%22%2C%22sortOrder%22%3A%22metric_desc%22%2C%22topN%22%3A%2220%22%2C%22bundleOther%22%3Afalse%2C%22suppressNulls%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Category+Mean+Sales%22%2C%22anomalyThresholdPct%22%3A135%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22bandHeight%22%3A36%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.created_month,order_items.total_sale_price,order_items.order_count&f[order_items.created_date]=12+months&sorts=products.category+asc,order_items.created_month+asc&limit=500&vis=%7B%22type%22%3A%22horizon_small_multiples%22%2C%22layoutMode%22%3A%22horizon_4band%22%2C%22horizonBands%22%3A4%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22peaks%22%2C%22sortOrder%22%3A%22metric_desc%22%2C%22topN%22%3A%2220%22%2C%22bundleOther%22%3Afalse%2C%22suppressNulls%22%3Atrue%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Category+Mean+Sales%22%2C%22anomalyThresholdPct%22%3A135%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22bandHeight%22%3A36%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "time_series",
+    "geometry": "Time Series / Horizon",
+    "industry": "Cross-Industry"
   },
   {
     "id": "pca_biplot_projection",
@@ -1786,7 +1998,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-22",
     "screenshot": "visualizations/pca_biplot_projection/screenshot.png",
-    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_energy_kwh,network_kpi_telemetry.avg_connected_users,incident_alarms.alarm_count&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=500&vis=%7B%22type%22%3A%22pca_biplot_projection%22%2C%22layout_mode%22%3A%22pca_biplot%22%2C%22target_mode%22%3A%22chi2_95%22%2C%22highlight_anomalies%22%3Atrue%2C%22hud_mode%22%3A%22full%22%2C%22label_density%22%3A%22peaks%22%2C%22show_vector_arrows%22%3Atrue%2C%22show_cluster_hulls%22%3Atrue%2C%22color_palette%22%3A%22google_enterprise%22%2C%22theme_mode%22%3A%22light_clean%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_energy_kwh,network_kpi_telemetry.avg_connected_users,incident_alarms.alarm_count&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=500&vis=%7B%22type%22%3A%22pca_biplot_projection%22%2C%22layout_mode%22%3A%22pca_biplot%22%2C%22target_mode%22%3A%22chi2_95%22%2C%22highlight_anomalies%22%3Atrue%2C%22hud_mode%22%3A%22full%22%2C%22label_density%22%3A%22peaks%22%2C%22show_vector_arrows%22%3Atrue%2C%22show_cluster_hulls%22%3Atrue%2C%22color_palette%22%3A%22google_enterprise%22%2C%22theme_mode%22%3A%22light_clean%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Multivariate & Clustering",
+    "geometry": "Multivariate",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "hierarchical_cluster_dendrogram",
@@ -1821,7 +2038,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-23",
     "screenshot": "visualizations/hierarchical_cluster_dendrogram/screenshot.png",
-    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_energy_kwh,network_kpi_telemetry.avg_connected_users,incident_alarms.alarm_count&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=500&vis=%7B%22type%22%3A%22hierarchical_cluster_dendrogram%22%2C%22layout_mode%22%3A%22cluster_heatmap%22%2C%22num_clusters_k%22%3A3%2C%22distance_metric%22%3A%22euclidean%22%2C%22linkage_method%22%3A%22average%22%2C%22standardization%22%3A%22zscore_cols%22%2C%22hud_density%22%3A%22full%22%2C%22label_density%22%3A%22all%22%2C%22highlight_anomalies%22%3Atrue%2C%22show_dendrogram_tree%22%3Atrue%2C%22show_cell_values%22%3Atrue%2C%22color_palette%22%3A%22google_enterprise%22%2C%22font_scale%22%3A%22standard%22%2C%22value_format%22%3A%22auto%22%2C%22theme_mode%22%3A%22light%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/nokia_network_ops/network_operations?fields=cell_towers.site_name,cell_towers.market,network_kpi_telemetry.avg_throughput_mbps,network_kpi_telemetry.avg_latency_ms,network_kpi_telemetry.avg_packet_loss_pct,network_kpi_telemetry.avg_energy_kwh,network_kpi_telemetry.avg_connected_users,incident_alarms.alarm_count&sorts=network_kpi_telemetry.avg_throughput_mbps+desc&limit=500&vis=%7B%22type%22%3A%22hierarchical_cluster_dendrogram%22%2C%22layout_mode%22%3A%22cluster_heatmap%22%2C%22num_clusters_k%22%3A3%2C%22distance_metric%22%3A%22euclidean%22%2C%22linkage_method%22%3A%22average%22%2C%22standardization%22%3A%22zscore_cols%22%2C%22hud_density%22%3A%22full%22%2C%22label_density%22%3A%22all%22%2C%22highlight_anomalies%22%3Atrue%2C%22show_dendrogram_tree%22%3Atrue%2C%22show_cell_values%22%3Atrue%2C%22color_palette%22%3A%22google_enterprise%22%2C%22font_scale%22%3A%22standard%22%2C%22value_format%22%3A%22auto%22%2C%22theme_mode%22%3A%22light%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Multivariate & Clustering",
+    "geometry": "Hierarchy / Partition",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "episode_binge_dropoff_matrix",
@@ -1856,7 +2078,12 @@
     "looker_demo_url": "/explore/void_weaver_analytics/media_binge_stream_dropoff?fields=media_binge_stream_dropoff.series_title,media_binge_stream_dropoff.season_num,media_binge_stream_dropoff.episode_num,media_binge_stream_dropoff.episode_title,media_binge_stream_dropoff.total_unique_viewers,media_binge_stream_dropoff.completion_rate_pct,media_binge_stream_dropoff.binge_retention_pct,media_binge_stream_dropoff.dropoff_rate_pct&sorts=media_binge_stream_dropoff.series_title+asc,media_binge_stream_dropoff.episode_num+asc&limit=500&vis=%7B%22type%22%3A%22episode_binge_dropoff_matrix%22%2C%22layoutMode%22%3A%22binge_funnel_curve%22%2C%22hookThresholdPct%22%3A80%2C%22chasmAlertThresholdPct%22%3A15%2C%22kpiHudDensity%22%3A%22full%22%2C%22colorTheme%22%3A%22velora_purple%22%2C%22showSearchFilter%22%3Atrue%2C%22showHookMarker%22%3Atrue%2C%22showChasmAlerts%22%3Atrue%2C%22curveInterpolation%22%3A%22monotone%22%7D&origin=share-expanded&toggle=vis",
     "screenshot": "visualizations/episode_binge_dropoff_matrix/screenshot.png",
     "options_upgraded": true,
-    "last_upgraded": "2026-10-24"
+    "last_upgraded": "2026-10-24",
+    "private_demo": false,
+    "board_dashboard": "gaming_media",
+    "board_tab": "Media, Broadcast & Ad-Ops",
+    "geometry": "Cohort / Retention",
+    "industry": "Media & Ad-Ops"
   },
   {
     "id": "unit_economics_payback_curve",
@@ -1888,39 +2115,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-25",
     "screenshot": "visualizations/unit_economics_payback_curve/screenshot.png",
-    "looker_demo_url": "/explore/thelook/order_items?fields=users.traffic_source,order_items.created_month,order_items.total_sale_price,order_items.order_count,order_items.count&f[order_items.created_month]=2025-01+to+2026-06&f[users.traffic_source]=-EMPTY&sorts=users.traffic_source+asc,order_items.created_month+asc&limit=500&vis=%7B%22type%22%3A%22unit_economics_payback_curve%22%2C%22layoutMode%22%3A%22payback_curve%22%2C%22cacAssumptionMode%22%3A%22fixed_cac_override%22%2C%22fixedCacValue%22%3A140%2C%22grossMarginPct%22%3A65%2C%22targetPaybackMonths%22%3A10%2C%22ltvBenchmarkMultiple%22%3A3.0%2C%22hudDensity%22%3A%22full%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22polarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showShadedZones%22%3Atrue%2C%22strokeWidth%22%3A%222.5%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "bcg_growth_share_matrix",
-    "name": "BCG Growth-Share & Strategic Portfolio Matrix",
-    "date_added": "2026-10-26",
-    "library": "D3.js v7",
-    "category": "Strategic & Pareto Analytics",
-    "description": "Enterprise-grade BCG Growth-Share & Strategic Portfolio Opportunity Matrix built with D3.js v7. Directly resolves Buganizer Cloud Blockers b/491028341, b/530918239, b/341928091, and PRD go/prd-strategic-portfolio-quadrants. Evaluates business units, game titles, and product lines across Market Footprint (Relative Share / DAU) and Monetization Growth (ARPDAU / Growth Rate) with dynamic quadrant threshold crosshairs (Median, Mean, P75, or Fixed Benchmarks). Features 3 multi-modal view modes (2x2 Matrix Grid, Continuous Scatter, Strategic Leaderboard Table), 4 strategic cohorts (Stars, Cash Cows, Question Marks, Dogs), executive strategic KPI HUD with interactive quadrant filter chips, dynamic field-role mapping (registerOptions), real-time search, 5,000+ row aggregation, 2 clean option tabs (Display & Style), and native Looker drill-down menus.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Primary Entity Dimension (e.g. Game Title / Product), optional 1 Secondary Group (e.g. Genre / Category)",
-      "measures": "2 to 3 Numeric Measures: X-Axis Metric (Relative Share / DAU), Y-Axis Metric (Growth Rate / ARPDAU), and Bubble Size (Total Bookings / Revenue)"
-    },
-    "suggested_dataset": {
-      "model": "void_weaver_analytics",
-      "explore": "title_quarterly_leaderboard",
-      "fields": [
-        "title_quarterly_leaderboard.game_title",
-        "title_quarterly_leaderboard.genre",
-        "title_quarterly_leaderboard.avg_dau",
-        "title_quarterly_leaderboard.arpdau_usd",
-        "title_quarterly_leaderboard.gross_bookings_usd"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/bcg_growth_share_matrix/screenshot.png",
-    "options_upgraded": true,
-    "last_upgraded": "2026-10-26",
-    "looker_demo_url": "/explore/void_weaver_analytics/title_quarterly_leaderboard?fields=title_quarterly_leaderboard.game_title,title_quarterly_leaderboard.genre,title_quarterly_leaderboard.avg_dau,title_quarterly_leaderboard.arpdau_usd,title_quarterly_leaderboard.gross_bookings_usd&sorts=title_quarterly_leaderboard.gross_bookings_usd+desc&limit=500&vis=%7B%22type%22%3A%22bcg_growth_share_matrix%22%2C%22layoutMode%22%3A%22quadrant_matrix%22%2C%22xThresholdMode%22%3A%22median%22%2C%22yThresholdMode%22%3A%22median%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudDensity%22%3A%22scorecard%22%2C%22showQuadrantBadges%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=users.traffic_source,order_items.created_month,order_items.total_sale_price,order_items.order_count,order_items.count&f[order_items.created_month]=2025-01+to+2026-06&f[users.traffic_source]=-EMPTY&sorts=users.traffic_source+asc,order_items.created_month+asc&limit=500&vis=%7B%22type%22%3A%22unit_economics_payback_curve%22%2C%22layoutMode%22%3A%22payback_curve%22%2C%22cacAssumptionMode%22%3A%22fixed_cac_override%22%2C%22fixedCacValue%22%3A140%2C%22grossMarginPct%22%3A65%2C%22targetPaybackMonths%22%3A10%2C%22ltvBenchmarkMultiple%22%3A3.0%2C%22hudDensity%22%3A%22full%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22polarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22curveSmoothing%22%3A%22monotone%22%2C%22showShadedZones%22%3Atrue%2C%22strokeWidth%22%3A%222.5%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "retail_finops",
+    "geometry": "Financial / Payback",
+    "industry": "Retail & E-Commerce"
   },
   {
     "id": "bgp_route_flap_matrix",
@@ -1954,73 +2153,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-27",
     "screenshot": "visualizations/bgp_route_flap_matrix/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/bgp_peering_telemetry?fields=bgp_peering_telemetry.origin_pop,bgp_peering_telemetry.peer_asn,bgp_peering_telemetry.total_flaps_24h,bgp_peering_telemetry.total_withdrawals_24h,bgp_peering_telemetry.avg_dampening_penalty,bgp_peering_telemetry.avg_rtt_latency_ms,bgp_peering_telemetry.sla_latency_threshold_ms&sorts=bgp_peering_telemetry.total_flaps_24h+desc&limit=64&vis=%7B%22type%22%3A%22bgp_route_flap_matrix%22%2C%22layoutMode%22%3A%22flap_matrix%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudDensity%22%3A%22scorecard%22%2C%22slaThresholdMode%22%3A%22fixed%22%2C%22fixedLatencySla%22%3A45%2C%22referenceLineLabel%22%3A%22Peering+SLA+%2845ms%29%22%2C%22dampeningThreshold%22%3A2000%2C%22showSlaBadges%22%3Atrue%2C%22showDampenedBorders%22%3Atrue%2C%22sortOrder%22%3A%22flaps_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22modern_slate%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22showGridlines%22%3Atrue%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "cloud_security_compliance_radar",
-    "name": "Cloud Security Posture & Compliance Radar",
-    "date_added": "2026-10-28",
-    "library": "D3.js v7",
-    "category": "Telecom, Cloud & SecOps",
-    "description": "Enterprise-grade cloud security posture and compliance radar matrix solving Google Cloud Blockers b/489102941, b/394109283, and b/520194821. Provides multi-framework compliance radar polygons, Florence Nightingale polar area coxcomb distributions, concentric radial stacked severity rings, and executive audit scorecards with benchmark target rings, executive HUD scorecard, and native Looker drill-down menus.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Compliance Framework Dimension, optional 1 Severity Dimension",
-      "measures": "1 Open Findings Count Measure, optional Critical/High Measure, optional Posture Score Measure"
-    },
-    "suggested_dataset": {
-      "model": "palo_alto_networks_security",
-      "explore": "prisma_cloud_compliance",
-      "fields": [
-        "prisma_cloud_compliance.compliance_framework",
-        "prisma_cloud_compliance.severity",
-        "prisma_cloud_compliance.open_findings_count",
-        "prisma_cloud_compliance.critical_high_open_count",
-        "prisma_cloud_compliance.posture_compliance_score"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-10-28",
-    "screenshot": "visualizations/cloud_security_compliance_radar/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.severity,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.posture_compliance_score&sorts=prisma_cloud_compliance.open_findings_count+desc&limit=500&vis=%7B%22type%22%3A%22cloud_security_compliance_radar%22%2C%22layoutMode%22%3A%22multiaxis_radar%22%2C%22benchmarkMode%22%3A%22fixed_target%22%2C%22targetScoreGoal%22%3A85%2C%22referenceLineLabel%22%3A%22Target+Compliance+Goal%22%2C%22criticalAlertThreshold%22%3A5%2C%22sortOrder%22%3A%22score_desc%22%2C%22hudMode%22%3A%22full%22%2C%22dataLabelDensity%22%3A%22peaks_only%22%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percent%22%2C%22showSpokeGrid%22%3Atrue%2C%22fillAreaOpacity%22%3A%220.45%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "dwdm_optical_spectrum_waterfall",
-    "name": "DWDM Optical Spectrum & Span Attenuation Waterfall",
-    "date_added": "2026-10-29",
-    "library": "D3.js v7",
-    "category": "Telecom & Network Infrastructure",
-    "description": "Enterprise-grade Dense Wavelength Division Multiplexing (DWDM) optical power spectrum, ITU-T C-Band channel waterfall, optical attenuation (dB/km) envelope, and OSNR Q-Factor constellation built with D3.js v7. Directly resolves Buganizer Cloud Blockers and Customer Requirements (b/482019481, b/394109282, b/520193847) for optical transport networks, hyperscale DCIs, and carrier fiber backbones (Zayo, Google Cloud Interconnect, Lumen, Nokia, Ciena). Overcomes native Looker BI limitations by providing 4 multi-modal layout modes (DWDM C-Band Channel Power Spectrum with 3D elevation waterfall ribbons, Span Distance vs Attenuation Loss Envelope with G.652D/G.654E benchmark bands, OSNR vs Q-Factor & BER Constellation Matrix with Hard/Soft Decision FEC limit zones, and Optical Route Health Scorecard Matrix), dynamic field dropdowns via _registerDynamicFieldOptions, configurable benchmark reference lines, sorting, Top-N with Other rollup, executive HUD scorecard, 7 brand palettes, and native Looker drill-down menus.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Route Corridor dimension (e.g. fiber_routes.corridor), optional 1 Fiber Type dimension (e.g. fiber_routes.optical_fiber_type), optional 1 Distance field (e.g. fiber_routes.distance_miles)",
-      "measures": "1 Primary Optical Attenuation Loss measure (dB/km, e.g. optical_span_anomalies.avg_attenuation_db_per_km), 1 OSNR measure (dB, e.g. optical_span_anomalies.avg_osnr_db), optional 1 Anomaly Count measure (e.g. optical_span_anomalies.count)"
-    },
-    "suggested_dataset": {
-      "model": "zayo_network_analytics",
-      "explore": "optical_telemetry_and_predictive_maintenance",
-      "fields": [
-        "fiber_routes.corridor",
-        "fiber_routes.optical_fiber_type",
-        "fiber_routes.distance_miles",
-        "fiber_routes.provisioned_capacity_tbps",
-        "optical_span_anomalies.avg_attenuation_db_per_km",
-        "optical_span_anomalies.avg_osnr_db",
-        "optical_span_anomalies.count"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/dwdm_optical_spectrum_waterfall/screenshot.png",
-    "looker_demo_url": "/explore/zayo_network_analytics/optical_telemetry_and_predictive_maintenance?fields=fiber_routes.corridor,fiber_routes.optical_fiber_type,fiber_routes.distance_miles,fiber_routes.provisioned_capacity_tbps,optical_span_anomalies.avg_attenuation_db_per_km,optical_span_anomalies.avg_osnr_db,optical_span_anomalies.count&sorts=optical_span_anomalies.avg_attenuation_db_per_km+desc&limit=50&vis=%7B%22type%22%3A%22dwdm_optical_spectrum_waterfall%22%2C%22layoutMode%22%3A%22spectral_waterfall%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22g652d_standard%22%2C%22referenceLineLabel%22%3A%22ITU-T+G.652.D+Spec+%280.20+dB%2Fkm%29%22%2C%22osnrCriticalThreshold%22%3A20%2C%22sortOrder%22%3A%22attenuation_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22decimal_3%22%2C%22showWaterfallRibbons%22%3Atrue%7D&origin=share-expanded&toggle=vis",
-    "options_upgraded": true,
-    "last_upgraded": "2026-10-29"
+    "looker_demo_url": "/explore/void_weaver_analytics/bgp_peering_telemetry?fields=bgp_peering_telemetry.origin_pop,bgp_peering_telemetry.peer_asn,bgp_peering_telemetry.total_flaps_24h,bgp_peering_telemetry.total_withdrawals_24h,bgp_peering_telemetry.avg_dampening_penalty,bgp_peering_telemetry.avg_rtt_latency_ms,bgp_peering_telemetry.sla_latency_threshold_ms&sorts=bgp_peering_telemetry.total_flaps_24h+desc&limit=64&vis=%7B%22type%22%3A%22bgp_route_flap_matrix%22%2C%22layoutMode%22%3A%22flap_matrix%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudDensity%22%3A%22scorecard%22%2C%22slaThresholdMode%22%3A%22fixed%22%2C%22fixedLatencySla%22%3A45%2C%22referenceLineLabel%22%3A%22Peering+SLA+%2845ms%29%22%2C%22dampeningThreshold%22%3A2000%2C%22showSlaBadges%22%3Atrue%2C%22showDampenedBorders%22%3Atrue%2C%22sortOrder%22%3A%22flaps_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22modern_slate%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_num%22%2C%22showGridlines%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Telecom & Cloud FinOps",
+    "geometry": "Mosaic / Matrix",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "zero_trust_blast_radius",
@@ -2052,7 +2190,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-10-30",
     "screenshot": "visualizations/zero_trust_blast_radius/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/threat_firewall_events?fields=threat_firewall_events.threat_category,threat_firewall_events.action,threat_firewall_events.severity,threat_firewall_events.threat_count,threat_firewall_events.blocked_threat_count&sorts=threat_firewall_events.threat_count+desc&limit=500&vis=%7B%22type%22%3A%22zero_trust_blast_radius%22%2C%22layoutMode%22%3A%22blast_radius_rings%22%2C%22targetMode%22%3A%22fixed_target%22%2C%22targetContainmentPct%22%3A95%2C%22referenceLineLabel%22%3A%22Target+Containment+SLA+%2895%25%29%22%2C%22criticalAlertThreshold%22%3A100%2C%22sortBy%22%3A%22threat_desc%22%2C%22topN%22%3A12%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Afalse%2C%22hudMode%22%3A%22scorecard%22%2C%22dataLabels%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/threat_firewall_events?fields=threat_firewall_events.threat_category,threat_firewall_events.action,threat_firewall_events.severity,threat_firewall_events.threat_count,threat_firewall_events.blocked_threat_count&sorts=threat_firewall_events.threat_count+desc&limit=500&vis=%7B%22type%22%3A%22zero_trust_blast_radius%22%2C%22layoutMode%22%3A%22blast_radius_rings%22%2C%22targetMode%22%3A%22fixed_target%22%2C%22targetContainmentPct%22%3A95%2C%22referenceLineLabel%22%3A%22Target+Containment+SLA+%2895%25%29%22%2C%22criticalAlertThreshold%22%3A100%2C%22sortBy%22%3A%22threat_desc%22%2C%22topN%22%3A12%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Afalse%2C%22hudMode%22%3A%22scorecard%22%2C%22dataLabels%22%3A%22all%22%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_num%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Cloud SecOps & Governance",
+    "geometry": "Radial / Polar",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "otdr_fiber_event_analyzer",
@@ -2086,7 +2229,12 @@
     "screenshot": "visualizations/otdr_fiber_event_analyzer/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-10-31",
-    "looker_demo_url": "/explore/zayo_network_analytics/optical_telemetry_and_predictive_maintenance?fields=fiber_routes.corridor,fiber_routes.optical_fiber_type,fiber_routes.distance_miles,fiber_routes.provisioned_capacity_tbps,optical_span_anomalies.avg_attenuation_db_per_km,optical_span_anomalies.avg_osnr_db,optical_span_anomalies.count&sorts=optical_span_anomalies.avg_attenuation_db_per_km+desc&limit=50&vis=%7B%22type%22%3A%22otdr_fiber_event_analyzer%22%2C%22layoutMode%22%3A%22otdr_trace_reflectogram%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22g652d_standard%22%2C%22referenceLineLabel%22%3A%22ITU-T+G.652.D+Spec+%280.20+dB%2Fkm%29%22%2C%22criticalAttenuationThreshold%22%3A0.25%2C%22sortOrder%22%3A%22attenuation_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22decimal_3%22%2C%22animateTrace%22%3Atrue%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/zayo_network_analytics/optical_telemetry_and_predictive_maintenance?fields=fiber_routes.corridor,fiber_routes.optical_fiber_type,fiber_routes.distance_miles,fiber_routes.provisioned_capacity_tbps,optical_span_anomalies.avg_attenuation_db_per_km,optical_span_anomalies.avg_osnr_db,optical_span_anomalies.count&sorts=optical_span_anomalies.avg_attenuation_db_per_km+desc&limit=50&vis=%7B%22type%22%3A%22otdr_fiber_event_analyzer%22%2C%22layoutMode%22%3A%22otdr_trace_reflectogram%22%2C%22showExecutiveHUD%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22g652d_standard%22%2C%22referenceLineLabel%22%3A%22ITU-T+G.652.D+Spec+%280.20+dB%2Fkm%29%22%2C%22criticalAttenuationThreshold%22%3A0.25%2C%22sortOrder%22%3A%22attenuation_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22zayo_telecom%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22decimal_3%22%2C%22animateTrace%22%3Atrue%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Telecom & Cloud FinOps",
+    "geometry": "Waveform / Telemetry",
+    "industry": "Telecom & Networks"
   },
   {
     "id": "tornado_sensitivity_chart",
@@ -2117,7 +2265,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-01",
     "screenshot": "visualizations/tornado_sensitivity_chart/screenshot.png",
-    "looker_demo_url": "/explore/saas_qbr/qbr_customer_risk?fields=qbr_account_risk.account_name,qbr_account_risk.total_arr_at_risk,qbr_account_risk.renewal_arr_180d,qbr_account_risk.total_active_arr&f[qbr_account_risk.risk_band]=High+Risk%2CWatch&sorts=qbr_account_risk.total_arr_at_risk+desc&limit=10&vis=%7B%22type%22%3A%22tornado_sensitivity_chart%22%2C%22chartMode%22%3A%22tornado_bars%22%2C%22custom_title%22%3A%22Enterprise+SaaS+Account+Risk+%5Cu0026+Renewal+Sensitivity%22%2C%22custom_subtitle%22%3A%22Downside+ARR+at+Risk+vs+Upside+180d+Renewal+Spread%22%2C%22hudMode%22%3A%22scorecard%22%2C%22baselineMode%22%3A%22measure_column%22%2C%22baselineLabel%22%3A%22Active+Portfolio+ARR%22%2C%22sortOrder%22%3A%22swing_desc%22%2C%22topN%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearchBar%22%3Atrue%2C%22suppressZeroVariance%22%3Atrue%2C%22colorPalette%22%3A%22modern_slate%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/saas_qbr/qbr_customer_risk?fields=qbr_account_risk.account_name,qbr_account_risk.total_arr_at_risk,qbr_account_risk.renewal_arr_180d,qbr_account_risk.total_active_arr&f[qbr_account_risk.risk_band]=High+Risk%2CWatch&sorts=qbr_account_risk.total_arr_at_risk+desc&limit=10&vis=%7B%22type%22%3A%22tornado_sensitivity_chart%22%2C%22chartMode%22%3A%22tornado_bars%22%2C%22custom_title%22%3A%22Enterprise+SaaS+Account+Risk+%5Cu0026+Renewal+Sensitivity%22%2C%22custom_subtitle%22%3A%22Downside+ARR+at+Risk+vs+Upside+180d+Renewal+Spread%22%2C%22hudMode%22%3A%22scorecard%22%2C%22baselineMode%22%3A%22measure_column%22%2C%22baselineLabel%22%3A%22Active+Portfolio+ARR%22%2C%22sortOrder%22%3A%22swing_desc%22%2C%22topN%22%3A%22all%22%2C%22labelDensity%22%3A%22all%22%2C%22showSearchBar%22%3Atrue%2C%22suppressZeroVariance%22%3Atrue%2C%22colorPalette%22%3A%22modern_slate%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "kpis_variance",
+    "geometry": "Bar / Variance",
+    "industry": "B2B SaaS & Finance"
   },
   {
     "id": "price_elasticity_revenue_optimizer",
@@ -2149,464 +2301,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-02",
     "screenshot": "visualizations/price_elasticity_revenue_optimizer/screenshot.png",
-    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.average_sale_price,order_items.count,order_items.total_sale_price,order_items.total_gross_margin&sorts=order_items.total_sale_price+desc&limit=25&vis=%7B%22type%22%3A%22price_elasticity_revenue_optimizer%22%2C%22custom_title%22%3A%22Price+Elasticity+%5Cu0026+Demand+Revenue+Optimization+Schedule%22%2C%22custom_subtitle%22%3A%22Empirical+Demand+P+vs+Q+%7C+Dual-Axis+Total+Revenue+R%28P%29+%3D+P%2AQ%22%2C%22layoutMode%22%3A%22demand_revenue_curve%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22optimal_revenue_price%22%2C%22fixedTargetPrice%22%3A61.67%2C%22referenceLineLabel%22%3A%22Optimal+Revenue+Price+P%2A%22%2C%22elasticityThreshold%22%3A1.25%2C%22sortOrder%22%3A%22price_asc%22%2C%22topNLimit%22%3A%2220%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressNulls%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22showSearchBar%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22inelastic_favorable%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "rfm_customer_segmentation_matrix",
-    "name": "RFM Customer Segmentation & Cohort Matrix",
-    "date_added": "2026-11-03",
-    "library": "D3.js v7",
-    "category": "Strategic & Pareto Analytics",
-    "description": "Executive Recency-Frequency-Monetary (RFM) customer segmentation matrix with 2D 5x5 R vs F trellis grid, customer value treemap, continuous value spectrum scatter, and strategic RevOps action matrix for customer lifecycle analytics.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Customer dimension, 1 Recency field (Date or Days)",
-      "measures": "2 numeric measures (Frequency / Order Count, Monetary / Total Spend)"
-    },
-    "suggested_dataset": {
-      "model": "thelook",
-      "explore": "order_items",
-      "fields": [
-        "users.id",
-        "users.name",
-        "order_items.count",
-        "order_items.total_sale_price",
-        "order_items.created_date",
-        "users.country"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-03",
-    "screenshot": "visualizations/rfm_customer_segmentation_matrix/screenshot.png",
-    "looker_demo_url": "/explore/thelook/order_items?fields=users.id,users.name,order_items.count,order_items.total_sale_price,order_items.created_date,users.country&f[order_items.status]=Complete&sorts=order_items.total_sale_price+desc&limit=150&vis=%7B%22type%22%3A%22rfm_customer_segmentation_matrix%22%2C%22layoutMode%22%3A%22rfm_grid_matrix%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22dataset_mean%22%2C%22referenceLineLabel%22%3A%22Target+LTV+Quota%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22bubbleMinRadius%22%3A5%2C%22bubbleMaxRadius%22%3A22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "surgical_procedure_variance_matrix",
-    "name": "Surgical Procedure Supply Variance Matrix",
-    "date_added": "2026-11-04",
-    "library": "D3.js v7",
-    "category": "Healthcare & Med-Surg Supply Chain",
-    "description": "Executive clinical decision support matrix for hospital OR suites comparing surgical supply cost against clinical benchmarks across specialties with dumbbell variance plots, service line decomposition waterfalls, and 2D case volume opportunity quadrants.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Service Line dimension, 1 Procedure Name dimension",
-      "measures": "1 Case Volume measure, 1 Actual Cost/Case measure, 1 Benchmark Cost measure, 1 Excess Supply Cost measure"
-    },
-    "suggested_dataset": {
-      "model": "wellverse_mba",
-      "explore": "procedure_cases",
-      "fields": [
-        "procedure_cases.service_line",
-        "procedure_cases.procedure_name",
-        "procedure_cases.case_count",
-        "procedure_cases.cost_per_case",
-        "procedure_cases.benchmark_cost_per_case",
-        "procedure_cases.excess_supply_cost",
-        "procedure_cases.cost_variance_pct"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-04",
-    "screenshot": "visualizations/surgical_procedure_variance_matrix/screenshot.png",
-    "looker_demo_url": "/explore/wellverse_mba/procedure_cases?fields=procedure_cases.service_line,procedure_cases.procedure_name,procedure_cases.case_count,procedure_cases.cost_per_case,procedure_cases.benchmark_cost_per_case,procedure_cases.excess_supply_cost,procedure_cases.cost_variance_pct&sorts=procedure_cases.case_count+desc&limit=15&vis=%7B%22type%22%3A%22surgical_procedure_variance_matrix%22%2C%22layoutMode%22%3A%22variance_dumbbell_quadrant%22%2C%22colorPalette%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "clinical_supply_disruption_matrix",
-    "name": "Clinical Supply Disruption & Shortage Matrix",
-    "date_added": "2026-11-05",
-    "library": "D3.js v7",
-    "category": "Healthcare & Med-Surg Supply Chain",
-    "description": "Hospital med-surg supply chain risk matrix evaluating critical product shortages, SLA breach horizons, clinical impact severity tiers, and equivalent substitute availability.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Category dimension, 1 Product Name dimension, 1 Severity dimension, 1 Status dimension, 1 Disruption Type dimension, 1 Alternative Available dimension, 1 Clinically Critical dimension",
-      "measures": "1 Days Active duration measure, 1 Disruption Count measure"
-    },
-    "suggested_dataset": {
-      "model": "wellverse_mba",
-      "explore": "supply_disruptions",
-      "fields": [
-        "medical_products.category",
-        "medical_products.product_name",
-        "supply_disruptions.severity",
-        "supply_disruptions.status",
-        "supply_disruptions.disruption_type",
-        "supply_disruptions.wellverse_alternative_available",
-        "medical_products.clinically_critical",
-        "supply_disruptions.avg_days_active",
-        "supply_disruptions.disruption_count"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-05",
-    "screenshot": "visualizations/clinical_supply_disruption_matrix/screenshot.png",
-    "looker_demo_url": "/explore/wellverse_mba/supply_disruptions?fields=medical_products.category,medical_products.product_name,supply_disruptions.severity,supply_disruptions.status,supply_disruptions.disruption_type,supply_disruptions.wellverse_alternative_available,medical_products.clinically_critical,supply_disruptions.avg_days_active,supply_disruptions.disruption_count&sorts=supply_disruptions.avg_days_active+desc&limit=25&vis=%7B%22type%22%3A%22clinical_supply_disruption_matrix%22%2C%22layoutMode%22%3A%22shortage_severity_matrix%22%2C%22colorPalette%22%3A%22wellverse_healthcare%22%2C%22targetMode%22%3A%22fixed_value%22%2C%22targetValue%22%3A45%2C%22referenceLineLabel%22%3A%22SLA+Resolution+Target+%2845d%29%22%2C%22anomalyThreshold%22%3A75%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%2C%22showAlternativeBadges%22%3Atrue%2C%22showSearch%22%3Atrue%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "med_surg_par_risk_matrix",
-    "name": "Med-Surg Par Level & Inventory Expiration Risk Matrix",
-    "date_added": "2026-11-06",
-    "library": "D3.js v7",
-    "category": "Healthcare & Med-Surg Supply Chain",
-    "description": "Hospital materials management decision matrix evaluating Days-on-Hand (DOH) buffer horizons against Par Level Attainment ratios, identifying stockout danger corridors, overstocked capital, and expired product waste across clinical sites of care.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Primary Dimension (Care Setting / Facility), 1 Secondary Dimension (Category)",
-      "measures": "1 On-Hand Value measure, 1 Par Target measure, 1 Days on Hand measure, 1 Expired Waste measure, 1 Stockout Events measure"
-    },
-    "suggested_dataset": {
-      "model": "wellverse_mba",
-      "explore": "inventory_snapshots",
-      "fields": [
-        "customer_facilities.care_setting",
-        "inventory_snapshots.category",
-        "inventory_snapshots.on_hand_value",
-        "inventory_snapshots.par_value",
-        "inventory_snapshots.excess_inventory",
-        "inventory_snapshots.expired_value",
-        "inventory_snapshots.stockout_events",
-        "inventory_snapshots.avg_days_on_hand"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-06",
-    "screenshot": "visualizations/med_surg_par_risk_matrix/screenshot.png",
-    "looker_demo_url": "/explore/wellverse_mba/inventory_snapshots?fields=customer_facilities.care_setting,inventory_snapshots.category,inventory_snapshots.on_hand_value,inventory_snapshots.par_value,inventory_snapshots.excess_inventory,inventory_snapshots.expired_value,inventory_snapshots.stockout_events,inventory_snapshots.avg_days_on_hand&f[inventory_snapshots.is_latest_week]=Yes&sorts=inventory_snapshots.on_hand_value+desc&limit=25&vis=%7B%22type%22%3A%22med_surg_par_risk_matrix%22%2C%22layoutMode%22%3A%22par_risk_quadrant%22%2C%22colorPalette%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showSearch%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22showGridLines%22%3Atrue%2C%22minSafeDoh%22%3A14%2C%22maxBufferDoh%22%3A30%2C%22referenceLineLabel%22%3A%22Par+Target+%28100%25%29%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "med_surg_formulary_conversion_matrix",
-    "name": "Med-Surg Formulary Compliance & Brand Conversion Matrix",
-    "date_added": "2026-11-07",
-    "library": "D3.js v7",
-    "category": "Healthcare & Med-Surg Supply Chain",
-    "description": "Hospital clinical materials management matrix evaluating med-surg formulary adherence, brand mix distributions, off-contract leakage, and unrealized private-brand conversion savings opportunities across surgical and procedural categories.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Primary Dimension (Product Category), 1 Secondary Dimension (Care Setting / Facility, optional)",
-      "measures": "1 Total Spend measure, 1 National Brand Spend measure, 1 Wellverse Brand Spend measure, 1 Brand Penetration % measure, 1 Conversion Opportunity measure, 1 Off-Contract Leakage measure"
-    },
-    "suggested_dataset": {
-      "model": "wellverse_mba",
-      "explore": "order_lines",
-      "fields": [
-        "medical_products.category",
-        "order_lines.total_spend",
-        "order_lines.national_brand_spend",
-        "order_lines.wellverse_brand_spend",
-        "order_lines.wellverse_brand_penetration",
-        "order_lines.wellverse_conversion_opportunity",
-        "order_lines.off_contract_leakage"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-07",
-    "screenshot": "visualizations/med_surg_formulary_conversion_matrix/screenshot.png",
-    "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=medical_products.category,order_lines.total_spend,order_lines.national_brand_spend,order_lines.wellverse_brand_spend,order_lines.wellverse_brand_penetration,order_lines.wellverse_conversion_opportunity,order_lines.off_contract_leakage&sorts=order_lines.total_spend+desc&limit=50&vis=%7B%22type%22%3A%22med_surg_formulary_conversion_matrix%22%2C%22layoutMode%22%3A%22conversion_opportunity_bridge%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "med_surg_fulfillment_sla_matrix",
-    "name": "Med-Surg Fulfillment & SLA Performance Matrix",
-    "date_added": "2026-11-08",
-    "library": "D3.js v7",
-    "category": "Healthcare & Med-Surg Supply Chain",
-    "description": "Hospital health system distribution logistics matrix evaluating clinical line fill rates, on-time delivery transit windows, backorder risks, delivery lead times, and contract SLA governance tiers across regional distribution centers.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Primary Dimension (Distribution Center / Facility), 1 Secondary Dimension (Region / Care Setting, optional)",
-      "measures": "1 Line Fill Rate % measure, 1 On-Time Delivery % measure, 1 Backorder Rate % measure (optional), 1 Avg Delivery Days measure (optional), 1 Total Spend measure"
-    },
-    "suggested_dataset": {
-      "model": "wellverse_mba",
-      "explore": "order_lines",
-      "fields": [
-        "distribution_centers.dc_name",
-        "distribution_centers.dc_region",
-        "order_lines.line_fill_rate",
-        "order_lines.on_time_delivery_rate",
-        "order_lines.backorder_rate",
-        "order_lines.avg_days_to_deliver",
-        "order_lines.total_spend",
-        "order_lines.order_count"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-08",
-    "screenshot": "visualizations/med_surg_fulfillment_sla_matrix/screenshot.png",
-    "looker_demo_url": "/explore/wellverse_mba/order_lines?fields=distribution_centers.dc_name,distribution_centers.dc_region,order_lines.line_fill_rate,order_lines.on_time_delivery_rate,order_lines.backorder_rate,order_lines.avg_days_to_deliver,order_lines.total_spend,order_lines.order_count&sorts=order_lines.total_spend+desc&limit=20&vis=%7B%22type%22%3A%22med_surg_fulfillment_sla_matrix%22%2C%22layoutMode%22%3A%22fulfillment_sla_quadrant%22%2C%22colorTheme%22%3A%22wellverse_healthcare%22%2C%22hudMode%22%3A%22scorecard%22%2C%22showValueLabels%22%3A%22all%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "saas_customer_churn_risk_matrix",
-    "name": "SaaS Customer Health & Churn Risk Matrix",
-    "date_added": "2026-11-09",
-    "library": "D3.js v7",
-    "category": "B2B SaaS & RevOps",
-    "description": "Executive customer success health & churn risk matrix for B2B SaaS RevOps: 2D Strategic Risk Quadrant mapping seat utilization against predictive churn risk score with ARR bubble magnitude scaling, ARR at risk bridge waterfall, multi-tier account health treemap, and high-density CSM action scorecard.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Customer Account Dimension + 1 Optional Risk Band Dimension",
-      "measures": "1 Total Active ARR ($) + Optional ARR at Risk ($), Churn Risk Score (0-100), and Seat Utilization Rate (%)"
-    },
-    "suggested_dataset": {
-      "model": "saas_qbr",
-      "explore": "qbr_customer_risk",
-      "fields": [
-        "qbr_account_risk.account_name",
-        "qbr_account_risk.risk_band",
-        "qbr_account_risk.total_active_arr",
-        "qbr_account_risk.total_arr_at_risk",
-        "qbr_account_risk.average_risk_score",
-        "qbr_account_risk.average_utilization"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/saas_customer_churn_risk_matrix/screenshot.png",
-    "looker_demo_url": "/explore/saas_qbr/qbr_customer_risk?fields=qbr_account_risk.account_name,qbr_account_risk.risk_band,qbr_account_risk.total_active_arr,qbr_account_risk.total_arr_at_risk,qbr_account_risk.average_risk_score,qbr_account_risk.average_utilization&sorts=qbr_account_risk.total_arr_at_risk+desc&limit=25&vis=%7B%22type%22%3A%22saas_customer_churn_risk_matrix%22%2C%22layoutMode%22%3A%22risk_health_quadrant%22%2C%22hudMode%22%3A%22scorecard%22%2C%22colorTheme%22%3A%22modern_slate%22%7D&origin=share-expanded&toggle=vis",
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-09"
-  },
-  {
-    "id": "saas_pipeline_deal_inspection_matrix",
-    "name": "SaaS Sales Pipeline Inspection & Deal Slippage Matrix",
-    "date_added": "2026-11-10",
-    "library": "D3.js v7",
-    "category": "B2B SaaS & RevOps",
-    "description": "Executive sales pipeline inspection and deal velocity matrix for B2B SaaS RevOps: 2D Strategic Deal Slippage Quadrant mapping days in stage against ARR with risk bubble scaling, stage progression & stagnation waterfall, forecast category vs risk band cross-matrix, and high-density executive deal scorecard.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Opportunity Dimension + Optional Sales Stage, Forecast Category, and Risk Band Dimensions",
-      "measures": "1 Deal ARR ($) Measure + Optional Risk Score (0-100), Days in Current Stage, and Close-Date Slip Count"
-    },
-    "suggested_dataset": {
-      "model": "saas_qbr",
-      "explore": "qbr_pipeline_inspection",
-      "fields": [
-        "qbr_deal_quality.opportunity_name",
-        "qbr_deal_quality.stage_name",
-        "qbr_deal_quality.forecast_category",
-        "qbr_deal_quality.risk_band",
-        "qbr_deal_quality.total_arr",
-        "qbr_deal_quality.average_risk_score",
-        "qbr_deal_quality.average_days_in_stage",
-        "qbr_deal_quality.average_slip_count"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/saas_pipeline_deal_inspection_matrix/screenshot.png",
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-10",
-    "looker_demo_url": "/explore/saas_qbr/qbr_pipeline_inspection?fields=qbr_deal_quality.opportunity_name,qbr_deal_quality.stage_name,qbr_deal_quality.forecast_category,qbr_deal_quality.risk_band,qbr_deal_quality.total_arr,qbr_deal_quality.average_risk_score,qbr_deal_quality.average_days_in_stage,qbr_deal_quality.average_slip_count&f[qbr_deal_quality.is_closed]=No&sorts=qbr_deal_quality.total_arr+desc&limit=30&vis=%7B%22type%22%3A%22saas_pipeline_deal_inspection_matrix%22%2C%22layoutMode%22%3A%22deal_slippage_quadrant%22%2C%22hudMode%22%3A%22scorecard%22%2C%22colorTheme%22%3A%22modern_slate%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "saas_sales_capacity_attainment_matrix",
-    "name": "SaaS Sales Capacity & Quota Attainment Matrix",
-    "date_added": "2026-11-11",
-    "library": "D3.js v7",
-    "category": "B2B SaaS & RevOps",
-    "description": "Executive sales capacity planning and rep quota attainment matrix for B2B SaaS RevOps: multi-modal rep quota attainment & pacing matrix with dual-stage bullet progress bars against quota benchmarks, 2x2 tenure vs attainment quadrant stratifying President's Club superstars and ramp prodigies, executive team capacity waterfall bridge, and high-density rep leaderboard scorecard.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Sales Rep Dimension + Optional Segment, Region, Ramp Status, and Tenure Dimensions",
-      "measures": "ARR Quota Measure + Closed Won ARR Measure + Optional Commit ARR, Attainment %, and Pipeline Coverage Ratio Measures"
-    },
-    "suggested_dataset": {
-      "model": "saas_qbr",
-      "explore": "qbr_performance",
-      "fields": [
-        "qbr_rep_roster.rep_name",
-        "qbr_rep_roster.segment",
-        "qbr_rep_roster.region",
-        "qbr_rep_roster.ramp_status",
-        "qbr_rep_roster.tenure_months",
-        "qbr_rep_quota.total_arr_quota",
-        "qbr_rep_performance.total_won_arr",
-        "qbr_rep_performance.total_commit_arr",
-        "qbr_rep_quota.arr_attainment",
-        "qbr_rep_quota.pipeline_coverage_ratio"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/saas_sales_capacity_attainment_matrix/screenshot.png",
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-11",
-    "looker_demo_url": "/explore/saas_qbr/qbr_performance?fields=qbr_rep_roster.rep_name,qbr_rep_roster.segment,qbr_rep_roster.region,qbr_rep_roster.ramp_status,qbr_rep_roster.tenure_months,qbr_rep_quota.total_arr_quota,qbr_rep_performance.total_won_arr,qbr_rep_performance.total_commit_arr,qbr_rep_quota.arr_attainment,qbr_rep_quota.pipeline_coverage_ratio&sorts=qbr_rep_performance.total_won_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_sales_capacity_attainment_matrix%22%2C%22layoutMode%22%3A%22attainment_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "saas_team_quota_coverage_gap_matrix",
-    "name": "SaaS Team Quota, Coverage & Gap Matrix",
-    "date_added": "2026-11-12",
-    "library": "D3.js v7",
-    "category": "B2B SaaS & RevOps",
-    "description": "Executive sales team quota attainment, pipeline coverage multiplier, and revenue deficit matrix for B2B SaaS RevOps: multi-modal sales team attainment matrix with multi-stage bullet progress bars (Won + Commit + Upside vs Quota), step-by-step quota-to-pipeline progression waterfall, 2x2 pipeline coverage vs attainment strategic quadrant, and quota-per-head capacity productivity bars.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Team Dimension + 1 Manager Dimension + Optional Region and Segment Dimensions",
-      "measures": "ARR Quota Measure + Closed Won ARR Measure + Optional Commit ARR, Upside ARR, Open Pipeline ARR, and Headcount Measures"
-    },
-    "suggested_dataset": {
-      "model": "saas_qbr",
-      "explore": "qbr_team_rollup",
-      "fields": [
-        "qbr_sales_team.manager_name",
-        "qbr_sales_team.team_name",
-        "qbr_sales_team.region",
-        "qbr_sales_team.segment",
-        "qbr_sales_team.total_headcount",
-        "qbr_sales_team.total_team_arr_quota",
-        "qbr_team_performance.total_won_arr",
-        "qbr_team_performance.total_commit_arr",
-        "qbr_team_performance.total_upside_arr",
-        "qbr_team_performance.total_open_pipeline_arr",
-        "qbr_sales_team.team_attainment",
-        "qbr_sales_team.team_quota_gap",
-        "qbr_team_performance.win_rate"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/saas_team_quota_coverage_gap_matrix/screenshot.png",
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-12",
-    "looker_demo_url": "/explore/saas_qbr/qbr_team_rollup?fields=qbr_sales_team.manager_name,qbr_sales_team.team_name,qbr_sales_team.region,qbr_sales_team.segment,qbr_sales_team.total_headcount,qbr_sales_team.total_team_arr_quota,qbr_team_performance.total_won_arr,qbr_team_performance.total_commit_arr,qbr_team_performance.total_upside_arr,qbr_team_performance.total_open_pipeline_arr,qbr_sales_team.team_attainment,qbr_sales_team.team_quota_gap,qbr_team_performance.win_rate&sorts=qbr_team_performance.total_won_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_team_quota_coverage_gap_matrix%22%2C%22layoutMode%22%3A%22team_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "saas_deal_velocity_slippage_matrix",
-    "name": "SaaS Deal Velocity & Stage Slippage Matrix",
-    "date_added": "2026-11-13",
-    "library": "D3.js v7",
-    "category": "B2B SaaS & RevOps",
-    "description": "Multi-stage sales cycle deal velocity, stage dwell time vs SLA benchmarks, and close-date slippage matrix across 4 layout paradigms with executive HUD and risk quadrants.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Stage dimension (Stage Name), 1 optional Forecast Category / Risk dimension",
-      "measures": "1 Pipeline ARR measure, 1 Days in Stage measure, 1 Close-Date Slips measure, 1 optional Risk Score measure"
-    },
-    "suggested_dataset": {
-      "model": "saas_qbr",
-      "explore": "qbr_pipeline_inspection",
-      "fields": [
-        "qbr_deal_quality.stage_name",
-        "qbr_deal_quality.forecast_category",
-        "qbr_deal_quality.open_deal_count",
-        "qbr_deal_quality.open_arr",
-        "qbr_deal_quality.average_days_in_stage",
-        "qbr_deal_quality.average_slip_count",
-        "qbr_deal_quality.average_risk_score",
-        "qbr_deal_quality.high_risk_arr"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-13",
-    "screenshot": "visualizations/saas_deal_velocity_slippage_matrix/screenshot.png",
-    "looker_demo_url": "/explore/saas_qbr/qbr_pipeline_inspection?fields=qbr_deal_quality.stage_name,qbr_deal_quality.forecast_category,qbr_deal_quality.open_deal_count,qbr_deal_quality.open_arr,qbr_deal_quality.average_days_in_stage,qbr_deal_quality.average_slip_count,qbr_deal_quality.average_risk_score,qbr_deal_quality.high_risk_arr&f[qbr_deal_quality.is_closed]=No&sorts=qbr_deal_quality.open_arr+desc&limit=50&vis=%7B%22type%22%3A%22saas_deal_velocity_slippage_matrix%22%2C%22layoutMode%22%3A%22velocity_stage_matrix%22%2C%22colorTheme%22%3A%22slate%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22metric_desc%22%2C%22showSearch%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22valueFormat%22%3A%22compact_currency%22%2C%22targetValue%22%3A60%2C%22referenceLineLabel%22%3A%22Velocity+SLA+Threshold+%2860d%29%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "cspm_compliance_benchmark_matrix",
-    "name": "Cloud Security Posture & Compliance Benchmark Matrix",
-    "date_added": "2026-11-14",
-    "library": "D3.js v7",
-    "category": "Cloud Governance & Security Compliance",
-    "description": "Multi-cloud CSPM governance matrix auditing CIS, NIST, ISO 27001, SOC 2, and PCI-DSS compliance across GKE, Compute, Storage, IAM, and Databases with remediation SLA aging waterlines and critical vulnerability alerts.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Framework Dimension, 1 Resource Asset Dimension, optional Severity",
-      "measures": "1 Compliance Posture Score, 1 Open Findings Count, 1 Critical/High Count, optional Remediation SLA Days"
-    },
-    "suggested_dataset": {
-      "model": "palo_alto_networks_security",
-      "explore": "prisma_cloud_compliance",
-      "fields": [
-        "prisma_cloud_compliance.compliance_framework",
-        "prisma_cloud_compliance.resource_type",
-        "prisma_cloud_compliance.severity",
-        "prisma_cloud_compliance.count",
-        "prisma_cloud_compliance.critical_high_open_count",
-        "prisma_cloud_compliance.open_findings_count",
-        "prisma_cloud_compliance.posture_compliance_score",
-        "prisma_cloud_compliance.avg_days_to_remediate"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "screenshot": "visualizations/cspm_compliance_benchmark_matrix/screenshot.png",
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-14",
-    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.resource_type,prisma_cloud_compliance.severity,prisma_cloud_compliance.count,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.posture_compliance_score,prisma_cloud_compliance.avg_days_to_remediate&sorts=prisma_cloud_compliance.compliance_framework+asc,prisma_cloud_compliance.severity+asc&limit=500&vis=%7B%22type%22%3A%22cspm_compliance_benchmark_matrix%22%2C%22layoutMode%22%3A%22framework_matrix%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22compliance_asc%22%2C%22showSearch%22%3Atrue%2C%22valueFormat%22%3A%22percentage%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A0.85%2C%22referenceLineLabel%22%3A%22CISO+Target+Compliance+SLA+%2885%25%29%22%7D&origin=share-expanded&toggle=vis"
-  },
-  {
-    "id": "secops_incident_dwell_time_matrix",
-    "name": "SecOps Incident Dwell-Time & SLA Frontier Matrix",
-    "date_added": "2026-11-15",
-    "library": "D3.js v7",
-    "category": "Cloud Governance & Security Compliance",
-    "description": "Multi-quadrant SecOps incident decision matrix contrasting intrusion detection lag (MTTD) against remediation containment duration (MTTR) across MITRE ATT&CK tactics, with CISO SLA breach frontiers, dwell-time waterfall bars, and SOAR playbook automation curves.",
-    "dependencies": [
-      "https://d3js.org/d3.v7.min.js"
-    ],
-    "fields_required": {
-      "dimensions": "1 Primary Tactic / Incident Dimension, 1 optional Severity / Category Dimension",
-      "measures": "1 MTTD (Detection Duration) Measure, 1 MTTR (Remediation Duration) Measure, 1 optional Volume / Alert Count Measure, 1 optional Automation Rate Measure"
-    },
-    "suggested_dataset": {
-      "model": "palo_alto_networks_security",
-      "explore": "cortex_security_incidents",
-      "fields": [
-        "cortex_security_incidents.mitre_tactic",
-        "cortex_security_incidents.severity",
-        "cortex_security_incidents.count",
-        "cortex_security_incidents.total_alerts",
-        "cortex_security_incidents.avg_mttd_minutes",
-        "cortex_security_incidents.avg_mttr_minutes",
-        "cortex_security_incidents.automation_rate",
-        "cortex_security_incidents.high_critical_count"
-      ]
-    },
-    "deployed": true,
-    "instance_wide": true,
-    "options_upgraded": true,
-    "last_upgraded": "2026-11-15",
-    "screenshot": "visualizations/secops_incident_dwell_time_matrix/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/cortex_security_incidents?fields=cortex_security_incidents.mitre_tactic,cortex_security_incidents.severity,cortex_security_incidents.count,cortex_security_incidents.total_alerts,cortex_security_incidents.avg_mttd_minutes,cortex_security_incidents.avg_mttr_minutes,cortex_security_incidents.automation_rate,cortex_security_incidents.high_critical_count&sorts=cortex_security_incidents.total_alerts+desc&limit=50&vis=%7B%22type%22%3A%22secops_incident_dwell_time_matrix%22%2C%22layoutMode%22%3A%22quadrant_scatter%22%2C%22colorPalette%22%3A%22cortex_navy%22%2C%22hudMode%22%3A%22scorecard%22%2C%22sortBy%22%3A%22mttr_desc%22%2C%22showSearch%22%3Atrue%2C%22mttdSlaTarget%22%3A8.0%2C%22mttrSlaTarget%22%3A75.0%2C%22targetMode%22%3A%22fixed%22%2C%22referenceLineLabel%22%3A%22CISO+SLA+Target%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22valueFormat%22%3A%22decimal_1%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/thelook/order_items?fields=products.category,order_items.average_sale_price,order_items.count,order_items.total_sale_price,order_items.total_gross_margin&sorts=order_items.total_sale_price+desc&limit=25&vis=%7B%22type%22%3A%22price_elasticity_revenue_optimizer%22%2C%22custom_title%22%3A%22Price+Elasticity+%5Cu0026+Demand+Revenue+Optimization+Schedule%22%2C%22custom_subtitle%22%3A%22Empirical+Demand+P+vs+Q+%7C+Dual-Axis+Total+Revenue+R%28P%29+%3D+P%2AQ%22%2C%22layoutMode%22%3A%22demand_revenue_curve%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetGoalMode%22%3A%22optimal_revenue_price%22%2C%22fixedTargetPrice%22%3A61.67%2C%22referenceLineLabel%22%3A%22Optimal+Revenue+Price+P%2A%22%2C%22elasticityThreshold%22%3A1.25%2C%22sortOrder%22%3A%22price_asc%22%2C%22topNLimit%22%3A%2220%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressNulls%22%3Atrue%2C%22labelDensity%22%3A%22all%22%2C%22showSearchBar%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22inelastic_favorable%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "retail_finops",
+    "geometry": "Response Curve",
+    "industry": "Retail & E-Commerce"
   },
   {
     "id": "cloud_governance_posture_pack",
@@ -2642,7 +2341,12 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-16",
     "screenshot": "visualizations/cloud_governance_posture_pack/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.cloud_provider,prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.resource_type,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.posture_compliance_score,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.avg_days_to_remediate,prisma_cloud_compliance.count,prisma_cloud_compliance.passed_count&sorts=prisma_cloud_compliance.open_findings_count+desc&limit=500&vis=%7B%22type%22%3A%22cloud_governance_posture_pack%22%2C%22layoutMode%22%3A%22circle_pack%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A0.85%2C%22referenceLineLabel%22%3A%22CISO+SLA+Target+%2885%25%29%22%2C%22anomalyThresholdPct%22%3A65%2C%22sortBy%22%3A%22findings_desc%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percentage%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.cloud_provider,prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.resource_type,prisma_cloud_compliance.open_findings_count,prisma_cloud_compliance.posture_compliance_score,prisma_cloud_compliance.critical_high_open_count,prisma_cloud_compliance.avg_days_to_remediate,prisma_cloud_compliance.count,prisma_cloud_compliance.passed_count&sorts=prisma_cloud_compliance.open_findings_count+desc&limit=500&vis=%7B%22type%22%3A%22cloud_governance_posture_pack%22%2C%22layoutMode%22%3A%22circle_pack%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22hudMode%22%3A%22scorecard%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A0.85%2C%22referenceLineLabel%22%3A%22CISO+SLA+Target+%2885%25%29%22%2C%22anomalyThresholdPct%22%3A65%2C%22sortBy%22%3A%22findings_desc%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percentage%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "telco_secops",
+    "board_tab": "Cloud SecOps & Governance",
+    "geometry": "Hierarchy / Partition",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "policy_drift_spc_control_chart",
@@ -2674,7 +2378,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-17",
     "screenshot": "visualizations/policy_drift_spc_control_chart/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/threat_firewall_events?fields=threat_firewall_events.event_date,threat_firewall_events.rule_name,threat_firewall_events.threat_count,threat_firewall_events.blocked_threat_count,threat_firewall_events.threat_block_rate&sorts=threat_firewall_events.event_date+asc&limit=500&vis=%7B%22type%22%3A%22policy_drift_spc_control_chart%22%2C%22layoutMode%22%3A%22xmr_control%22%2C%22sigmaMultiplier%22%3A%223.0%22%2C%22showSigmaZones%22%3Atrue%2C%22showNelsonRules%22%3Atrue%2C%22showMovingRange%22%3Atrue%2C%22targetMode%22%3A%22percentile_p90%22%2C%22referenceLineLabel%22%3A%22P90+Threat+SLA%22%2C%22anomalyAlertThreshold%22%3A5%2C%22hudMode%22%3A%22full%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/threat_firewall_events?fields=threat_firewall_events.event_date,threat_firewall_events.rule_name,threat_firewall_events.threat_count,threat_firewall_events.blocked_threat_count,threat_firewall_events.threat_block_rate&sorts=threat_firewall_events.event_date+asc&limit=500&vis=%7B%22type%22%3A%22policy_drift_spc_control_chart%22%2C%22layoutMode%22%3A%22xmr_control%22%2C%22sigmaMultiplier%22%3A%223.0%22%2C%22showSigmaZones%22%3Atrue%2C%22showNelsonRules%22%3Atrue%2C%22showMovingRange%22%3Atrue%2C%22targetMode%22%3A%22percentile_p90%22%2C%22referenceLineLabel%22%3A%22P90+Threat+SLA%22%2C%22anomalyAlertThreshold%22%3A5%2C%22hudMode%22%3A%22full%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_number%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "experimentation",
+    "geometry": "SPC Control Chart",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "compliance_sla_ridgeline_analyzer",
@@ -2707,7 +2415,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-18",
     "screenshot": "visualizations/compliance_sla_ridgeline_analyzer/screenshot.png",
-    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.finding_id,prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.cloud_provider,prisma_cloud_compliance.severity,prisma_cloud_compliance.resource_type,prisma_cloud_compliance.days_open&f[prisma_cloud_compliance.finding_status]=OPEN%2CEXEMPTED&sorts=prisma_cloud_compliance.days_open+desc&limit=1500&vis=%7B%22type%22%3A%22compliance_sla_ridgeline_analyzer%22%2C%22layoutMode%22%3A%22ridgeline_joyplot%22%2C%22groupDimOverride%22%3A%22prisma_cloud_compliance.compliance_framework%22%2C%22subGroupDimOverride%22%3A%22prisma_cloud_compliance.cloud_provider%22%2C%22severityDimOverride%22%3A%22prisma_cloud_compliance.severity%22%2C%22valueFieldOverride%22%3A%22prisma_cloud_compliance.days_open%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A30%2C%22referenceLineLabel%22%3A%22CISO+30-Day+Remediation+SLA%22%2C%22anomalyThresholdPct%22%3A55%2C%22sortBy%22%3A%22breach_desc%22%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22days_1dp%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/palo_alto_networks_security/prisma_cloud_compliance?fields=prisma_cloud_compliance.finding_id,prisma_cloud_compliance.compliance_framework,prisma_cloud_compliance.cloud_provider,prisma_cloud_compliance.severity,prisma_cloud_compliance.resource_type,prisma_cloud_compliance.days_open&f[prisma_cloud_compliance.finding_status]=OPEN%2CEXEMPTED&sorts=prisma_cloud_compliance.days_open+desc&limit=1500&vis=%7B%22type%22%3A%22compliance_sla_ridgeline_analyzer%22%2C%22layoutMode%22%3A%22ridgeline_joyplot%22%2C%22groupDimOverride%22%3A%22prisma_cloud_compliance.compliance_framework%22%2C%22subGroupDimOverride%22%3A%22prisma_cloud_compliance.cloud_provider%22%2C%22severityDimOverride%22%3A%22prisma_cloud_compliance.severity%22%2C%22valueFieldOverride%22%3A%22prisma_cloud_compliance.days_open%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A30%2C%22referenceLineLabel%22%3A%22CISO+30-Day+Remediation+SLA%22%2C%22anomalyThresholdPct%22%3A55%2C%22sortBy%22%3A%22breach_desc%22%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorTheme%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22lower_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22days_1dp%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "experimentation",
+    "geometry": "Distribution / KDE",
+    "industry": "Cloud & SecOps"
   },
   {
     "id": "causal_impact_synthetic_control",
@@ -2744,7 +2456,11 @@
     "screenshot": "visualizations/causal_impact_synthetic_control/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-20",
-    "looker_demo_url": "/explore/void_weaver_analytics/causal_impact_experiments?fields=causal_impact_experiments.observation_date,causal_impact_experiments.market_segment,causal_impact_experiments.period_phase,causal_impact_experiments.is_treated,causal_impact_experiments.total_observed_value,causal_impact_experiments.total_counterfactual_predicted,causal_impact_experiments.total_ci_lower,causal_impact_experiments.total_ci_upper,causal_impact_experiments.total_pointwise_lift,causal_impact_experiments.total_cumulative_lift,causal_impact_experiments.total_cumulative_ci_lower,causal_impact_experiments.total_cumulative_ci_upper,causal_impact_experiments.avg_donor_weight_pct,causal_impact_experiments.avg_causal_p_value,causal_impact_experiments.avg_pre_period_rmspe&sorts=causal_impact_experiments.observation_date+asc&limit=500&vis=%7B%22type%22%3A%22causal_impact_synthetic_control%22%2C%22layoutMode%22%3A%22stacked_triptych%22%2C%22targetMode%22%3A%22fixed_value%22%2C%22fixedTargetValue%22%3A15000%2C%22referenceLineLabel%22%3A%22Daily+Lift+Goal+%28%2415K%29%22%2C%22anomalyThresholdPct%22%3A5%2C%22sortBy%22%3A%22chronological%22%2C%22topNLimit%22%3A%22all%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Afalse%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showSearch%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/causal_impact_experiments?fields=causal_impact_experiments.observation_date,causal_impact_experiments.market_segment,causal_impact_experiments.period_phase,causal_impact_experiments.is_treated,causal_impact_experiments.total_observed_value,causal_impact_experiments.total_counterfactual_predicted,causal_impact_experiments.total_ci_lower,causal_impact_experiments.total_ci_upper,causal_impact_experiments.total_pointwise_lift,causal_impact_experiments.total_cumulative_lift,causal_impact_experiments.total_cumulative_ci_lower,causal_impact_experiments.total_cumulative_ci_upper,causal_impact_experiments.avg_donor_weight_pct,causal_impact_experiments.avg_causal_p_value,causal_impact_experiments.avg_pre_period_rmspe&sorts=causal_impact_experiments.observation_date+asc&limit=500&vis=%7B%22type%22%3A%22causal_impact_synthetic_control%22%2C%22layoutMode%22%3A%22stacked_triptych%22%2C%22targetMode%22%3A%22fixed_value%22%2C%22fixedTargetValue%22%3A15000%2C%22referenceLineLabel%22%3A%22Daily+Lift+Goal+%28%2415K%29%22%2C%22anomalyThresholdPct%22%3A5%2C%22sortBy%22%3A%22chronological%22%2C%22topNLimit%22%3A%22all%22%2C%22enableOtherRollup%22%3Afalse%2C%22suppressZeroNull%22%3Afalse%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showSearch%22%3Atrue%2C%22showLegend%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22compact_currency%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "experimentation",
+    "geometry": "Causal / Time Series",
+    "industry": "Gaming & Experimentation"
   },
   {
     "id": "sequential_ab_peeking_monitor",
@@ -2782,7 +2498,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-21",
     "screenshot": "visualizations/sequential_ab_peeking_monitor/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/sequential_ab_telemetry?fields=sequential_ab_telemetry.experiment_name,sequential_ab_telemetry.experiment_day,sequential_ab_telemetry.stopping_verdict,sequential_ab_telemetry.surface_area,sequential_ab_telemetry.avg_cum_relative_lift_pct,sequential_ab_telemetry.avg_always_valid_ci_lower_pct,sequential_ab_telemetry.avg_always_valid_ci_upper_pct,sequential_ab_telemetry.avg_upper_efficacy_bound_pct,sequential_ab_telemetry.avg_lower_harm_bound_pct,sequential_ab_telemetry.avg_futility_bound_pct,sequential_ab_telemetry.avg_srm_p_value,sequential_ab_telemetry.avg_traffic_split_pct,sequential_ab_telemetry.avg_mde_target_pct,sequential_ab_telemetry.avg_prob_beat_control,sequential_ab_telemetry.avg_guardrail_latency_delta_ms,sequential_ab_telemetry.max_cum_control_users,sequential_ab_telemetry.max_cum_treatment_users&sorts=sequential_ab_telemetry.experiment_name+asc,sequential_ab_telemetry.experiment_day+asc&limit=500&vis=%7B%22type%22%3A%22sequential_ab_peeking_monitor%22%2C%22layoutMode%22%3A%22sequential_boundaries%22%2C%22targetMode%22%3A%22measure_column%22%2C%22referenceLineLabel%22%3A%22MDE+Launch+Threshold%22%2C%22sortBy%22%3A%22urgency_desc%22%2C%22topNLimit%22%3A6%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percent_delta%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/sequential_ab_telemetry?fields=sequential_ab_telemetry.experiment_name,sequential_ab_telemetry.experiment_day,sequential_ab_telemetry.stopping_verdict,sequential_ab_telemetry.surface_area,sequential_ab_telemetry.avg_cum_relative_lift_pct,sequential_ab_telemetry.avg_always_valid_ci_lower_pct,sequential_ab_telemetry.avg_always_valid_ci_upper_pct,sequential_ab_telemetry.avg_upper_efficacy_bound_pct,sequential_ab_telemetry.avg_lower_harm_bound_pct,sequential_ab_telemetry.avg_futility_bound_pct,sequential_ab_telemetry.avg_srm_p_value,sequential_ab_telemetry.avg_traffic_split_pct,sequential_ab_telemetry.avg_mde_target_pct,sequential_ab_telemetry.avg_prob_beat_control,sequential_ab_telemetry.avg_guardrail_latency_delta_ms,sequential_ab_telemetry.max_cum_control_users,sequential_ab_telemetry.max_cum_treatment_users&sorts=sequential_ab_telemetry.experiment_name+asc,sequential_ab_telemetry.experiment_day+asc&limit=500&vis=%7B%22type%22%3A%22sequential_ab_peeking_monitor%22%2C%22layoutMode%22%3A%22sequential_boundaries%22%2C%22targetMode%22%3A%22measure_column%22%2C%22referenceLineLabel%22%3A%22MDE+Launch+Threshold%22%2C%22sortBy%22%3A%22urgency_desc%22%2C%22topNLimit%22%3A6%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22all%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22percent_delta%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "experimentation",
+    "geometry": "Experimentation / Boundaries",
+    "industry": "Gaming & Experimentation"
   },
   {
     "id": "uplift_cate_qini_curve",
@@ -2819,7 +2539,11 @@
     "options_upgraded": true,
     "last_upgraded": "2026-11-22",
     "screenshot": "visualizations/uplift_cate_qini_curve/screenshot.png",
-    "looker_demo_url": "/explore/void_weaver_analytics/uplift_cate_telemetry?fields=uplift_cate_telemetry.campaign_name,uplift_cate_telemetry.decile_rank,uplift_cate_telemetry.decile_label,uplift_cate_telemetry.targeted_pct,uplift_cate_telemetry.player_segment,uplift_cate_telemetry.persuasion_quadrant,uplift_cate_telemetry.avg_cate_lift_pct,uplift_cate_telemetry.avg_cate_ci_lower_pct,uplift_cate_telemetry.avg_cate_ci_upper_pct,uplift_cate_telemetry.avg_control_rate_pct,uplift_cate_telemetry.avg_treatment_rate_pct,uplift_cate_telemetry.avg_cumulative_qini_gain,uplift_cate_telemetry.avg_random_baseline_gain,uplift_cate_telemetry.avg_oracle_qini_gain,uplift_cate_telemetry.total_treatment_users,uplift_cate_telemetry.total_incremental_conversions,uplift_cate_telemetry.avg_cum_net_profit_usd,uplift_cate_telemetry.avg_auuc_score&sorts=uplift_cate_telemetry.campaign_name+asc,uplift_cate_telemetry.decile_rank+asc&limit=500&vis=%7B%22type%22%3A%22uplift_cate_qini_curve%22%2C%22layoutMode%22%3A%22qini_gain_curve%22%2C%22targetMode%22%3A%22measure_column%22%2C%22referenceLineLabel%22%3A%22Min+Incremental+Lift+Threshold%22%2C%22anomalyThresholdPct%22%3A-1.0%2C%22sortBy%22%3A%22qini_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/uplift_cate_telemetry?fields=uplift_cate_telemetry.campaign_name,uplift_cate_telemetry.decile_rank,uplift_cate_telemetry.decile_label,uplift_cate_telemetry.targeted_pct,uplift_cate_telemetry.player_segment,uplift_cate_telemetry.persuasion_quadrant,uplift_cate_telemetry.avg_cate_lift_pct,uplift_cate_telemetry.avg_cate_ci_lower_pct,uplift_cate_telemetry.avg_cate_ci_upper_pct,uplift_cate_telemetry.avg_control_rate_pct,uplift_cate_telemetry.avg_treatment_rate_pct,uplift_cate_telemetry.avg_cumulative_qini_gain,uplift_cate_telemetry.avg_random_baseline_gain,uplift_cate_telemetry.avg_oracle_qini_gain,uplift_cate_telemetry.total_treatment_users,uplift_cate_telemetry.total_incremental_conversions,uplift_cate_telemetry.avg_cum_net_profit_usd,uplift_cate_telemetry.avg_auuc_score&sorts=uplift_cate_telemetry.campaign_name+asc,uplift_cate_telemetry.decile_rank+asc&limit=500&vis=%7B%22type%22%3A%22uplift_cate_qini_curve%22%2C%22layoutMode%22%3A%22qini_gain_curve%22%2C%22targetMode%22%3A%22measure_column%22%2C%22referenceLineLabel%22%3A%22Min+Incremental+Lift+Threshold%22%2C%22anomalyThresholdPct%22%3A-1.0%2C%22sortBy%22%3A%22qini_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "experimentation",
+    "geometry": "Causal / Uplift",
+    "industry": "Gaming & Experimentation"
   },
   {
     "id": "multi_armed_bandit_allocation",
@@ -2855,6 +2579,10 @@
     "screenshot": "visualizations/multi_armed_bandit_allocation/screenshot.png",
     "options_upgraded": true,
     "last_upgraded": "2026-11-23",
-    "looker_demo_url": "/explore/void_weaver_analytics/bandit_allocation_telemetry?fields=bandit_allocation_telemetry.experiment_name,bandit_allocation_telemetry.day_number,bandit_allocation_telemetry.arm_name,bandit_allocation_telemetry.is_optimal_arm,bandit_allocation_telemetry.avg_traffic_share_pct,bandit_allocation_telemetry.avg_arm_cvr_pct,bandit_allocation_telemetry.avg_posterior_win_prob_pct,bandit_allocation_telemetry.avg_posterior_ci_lower_pct,bandit_allocation_telemetry.avg_posterior_ci_upper_pct,bandit_allocation_telemetry.max_cum_bandit_regret_usd,bandit_allocation_telemetry.max_cum_static_ab_regret_usd,bandit_allocation_telemetry.max_cum_regret_saved_usd,bandit_allocation_telemetry.total_daily_impressions,bandit_allocation_telemetry.total_daily_conversions,bandit_allocation_telemetry.total_daily_reward_usd,bandit_allocation_telemetry.max_beta_alpha,bandit_allocation_telemetry.max_beta_beta&sorts=bandit_allocation_telemetry.experiment_name+asc,bandit_allocation_telemetry.day_number+asc,bandit_allocation_telemetry.arm_name+asc&limit=500&vis=%7B%22type%22%3A%22multi_armed_bandit_allocation%22%2C%22layoutMode%22%3A%22allocation_ribbon%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A80%2C%22referenceLineLabel%22%3A%22Exploitation+Convergence+P%28Best%29+Target%22%2C%22anomalyThresholdPct%22%3A50%2C%22sortBy%22%3A%22win_prob_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis"
+    "looker_demo_url": "/explore/void_weaver_analytics/bandit_allocation_telemetry?fields=bandit_allocation_telemetry.experiment_name,bandit_allocation_telemetry.day_number,bandit_allocation_telemetry.arm_name,bandit_allocation_telemetry.is_optimal_arm,bandit_allocation_telemetry.avg_traffic_share_pct,bandit_allocation_telemetry.avg_arm_cvr_pct,bandit_allocation_telemetry.avg_posterior_win_prob_pct,bandit_allocation_telemetry.avg_posterior_ci_lower_pct,bandit_allocation_telemetry.avg_posterior_ci_upper_pct,bandit_allocation_telemetry.max_cum_bandit_regret_usd,bandit_allocation_telemetry.max_cum_static_ab_regret_usd,bandit_allocation_telemetry.max_cum_regret_saved_usd,bandit_allocation_telemetry.total_daily_impressions,bandit_allocation_telemetry.total_daily_conversions,bandit_allocation_telemetry.total_daily_reward_usd,bandit_allocation_telemetry.max_beta_alpha,bandit_allocation_telemetry.max_beta_beta&sorts=bandit_allocation_telemetry.experiment_name+asc,bandit_allocation_telemetry.day_number+asc,bandit_allocation_telemetry.arm_name+asc&limit=500&vis=%7B%22type%22%3A%22multi_armed_bandit_allocation%22%2C%22layoutMode%22%3A%22allocation_ribbon%22%2C%22targetMode%22%3A%22fixed%22%2C%22fixedTargetValue%22%3A80%2C%22referenceLineLabel%22%3A%22Exploitation+Convergence+P%28Best%29+Target%22%2C%22anomalyThresholdPct%22%3A50%2C%22sortBy%22%3A%22win_prob_desc%22%2C%22topNLimit%22%3A%22all%22%2C%22enableOtherRollup%22%3Atrue%2C%22suppressZeroNull%22%3Atrue%2C%22hudMode%22%3A%22scorecard%22%2C%22labelDensity%22%3A%22peaks_only%22%2C%22showLegend%22%3Atrue%2C%22showSearch%22%3Atrue%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22metricPolarity%22%3A%22higher_is_better%22%2C%22fontScale%22%3A%22standard%22%2C%22valueFormat%22%3A%22auto%22%7D&origin=share-expanded&toggle=vis",
+    "private_demo": false,
+    "board_dashboard": "experimentation",
+    "geometry": "Experimentation / Stream",
+    "industry": "Gaming & Experimentation"
   }
 ]

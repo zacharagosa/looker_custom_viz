@@ -294,17 +294,21 @@ def main():
         except Exception as e:
             print(f"Notice updating catalog: {e}")
 
-    # Step 7: Sync to consolidated showcase dashboard organized by category (max 5 viz/tab)
+    # Step 7: Sync only the single Looker Board dashboard owning this visualization + rebuild searchable catalog
     dash_url = None
     if not args.skip_dashboard_sync:
-        print(f"[7/7] Syncing to Looker Showcase Dashboard '{args.dashboard}' by category tabs...")
+        print(f"[7/7] Syncing Looker Board dashboard for '{args.viz}' and updating Searchable Catalog...")
         try:
             sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-            from sync_dashboard import sync_dashboard
-            dash_url = sync_dashboard(dashboard_id=args.dashboard, profile=args.profile)
-            print(f"  -> Showcase Dashboard updated successfully: {dash_url}")
+            from sync_board import sync_board
+            cfg = sync_board(viz_id=args.viz, profile=args.profile)
+            if cfg and cfg.get("board_id"):
+                dash_url = f"https://{LOOKER_HOST}/boards/{cfg['board_id']}"
+                print(f"  -> Looker Board dashboard updated successfully: {dash_url}")
+            from build_catalog import build_catalog
+            build_catalog(upload_gcs=True)
         except Exception as e:
-            print(f"  -> Notice syncing to showcase dashboard: {e}")
+            print(f"  -> Notice syncing board/catalog: {e}")
 
     print("\n" + "="*60)
     print("DEPLOYMENT & INSTANCE-WIDE REGISTRATION COMPLETE!")

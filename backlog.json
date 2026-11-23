@@ -1,0 +1,129 @@
+[
+  {
+    "id": "ternary_composition_simplex",
+    "name": "Ternary 3-Component Composition Simplex Plot",
+    "geometry": "Ternary / Simplex",
+    "engine": "D3.js v7 (Barycentric SVG + Contour Density)",
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Multivariate & Clustering",
+    "industry": "Gaming & Economy / Media Mix",
+    "why_distinct": "Equilateral triangle barycentric coordinate system plotting 3-part ratios summing to 100% (e.g. PvE vs PvP vs Social playtime share or Paid vs Organic vs Referral mix) with optional KDE density contours — zero bar/quadrant chrome.",
+    "status": "queued"
+  },
+  {
+    "id": "echarts_3d_surface_terrain",
+    "name": "Interactive 3D Surface & Volatility Terrain (ECharts GL)",
+    "geometry": "3D WebGL Surface",
+    "engine": "Apache ECharts 5 + ECharts-GL (WebGL)",
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Multivariate & Clustering",
+    "industry": "Financial Services / Cloud Telemetry",
+    "why_distinct": "Rotatable WebGL 3D continuous topographic surface for option-volatility smiles, latency-vs-load-vs-concurrency surfaces, or price-elasticity profit peaks.",
+    "status": "queued"
+  },
+  {
+    "id": "dorling_proportional_cartogram",
+    "name": "Dorling Proportional-Circle Geographic Cartogram",
+    "geometry": "Geospatial Cartogram",
+    "engine": "D3.js v7 Force + TopoJSON",
+    "board_dashboard": "geospatial",
+    "industry": "Cross-Industry",
+    "why_distinct": "Replaces distorted tiny/huge land polygons with non-overlapping force-packed proportional circles anchored near geographic centroids, eliminating visual bias from low-population large states/countries.",
+    "status": "queued"
+  },
+  {
+    "id": "radial_edge_bundling_wheel",
+    "name": "Hierarchical Edge-Bundling Dependency Wheel",
+    "geometry": "Radial Edge Bundling",
+    "engine": "D3.js v7 Cluster + CurveBundleBeta",
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Flows & Networks",
+    "industry": "Cloud & Microservices / Telecom",
+    "why_distinct": "Circular hierarchical leaf layout with tension-adjustable B-spline bundled edges showing incoming vs outgoing service/module dependencies cleanly at 100+ nodes without hairball clutter.",
+    "status": "queued"
+  },
+  {
+    "id": "waffle_isotype_unit_chart",
+    "name": "Proportional Waffle & Isotype Unit Matrix",
+    "geometry": "Unit / Waffle Chart",
+    "engine": "Custom Canvas 2D / Crisp SVG Grid",
+    "board_dashboard": "kpis_variance",
+    "industry": "Executive Communications / Media",
+    "why_distinct": "Clean 10x10 or custom-grid unit pictogram blocks representing exact part-to-whole shares with zero noisy axes — ideal for boardroom storytelling and conversion rates.",
+    "status": "queued"
+  },
+  {
+    "id": "contour_2d_density_topography",
+    "name": "2D Kernel Density Contour Topography Map",
+    "geometry": "2D Density Contour",
+    "engine": "D3.js v7 d3-contour + Canvas Scatter Overlay",
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Distributions & ML Models",
+    "industry": "Gaming Telemetry / Retail Analytics",
+    "why_distinct": "Continuous topographic elevation bands (isolines) revealing multi-modal bivariate clusters across 5,000+ raw points without scatter overplotting.",
+    "status": "queued"
+  },
+  {
+    "id": "polar_wind_rose_clock",
+    "name": "24-Hour Polar Clock & Cyclical Wind-Rose",
+    "geometry": "Radial / Polar Clock",
+    "engine": "Apache ECharts 5 (Polar Bar Stack)",
+    "board_dashboard": "time_series",
+    "industry": "Media & Broadcast / Energy / Retail",
+    "why_distinct": "Circular 24-hour / 12-month radial rose plotting cyclical peak intensity and segmented composition around a true clock face.",
+    "status": "queued"
+  },
+  {
+    "id": "arc_linear_sequence_diagram",
+    "name": "Linear Arc Sequence & Hop Distance Diagram",
+    "geometry": "Linear Arc Diagram",
+    "engine": "D3.js v7 SVG Arcs",
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Flows & Networks",
+    "industry": "Media / Customer Journey / SecOps",
+    "why_distinct": "Orders nodes along a single horizontal spine with forward hops arcing above and backward/loopback hops arcing below, exposing regressions and rework cycles instantly.",
+    "status": "queued"
+  },
+  {
+    "id": "beeswarm_dot_density_strip",
+    "name": "Collision-Free Force Beeswarm Dot Strip",
+    "geometry": "Beeswarm Strip",
+    "engine": "HTML5 Canvas 2D + D3 Force",
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Distributions & ML Models",
+    "industry": "B2B SaaS / Financial Services",
+    "why_distinct": "Exact-value collision-resolved dot swarms (no artificial jitter) scaled by bubble size so every individual deal, account, or anomaly is inspectable without overlapping.",
+    "status": "queued"
+  },
+  {
+    "id": "icicle_flame_partition_browser",
+    "name": "Zoomable Hierarchical Icicle Partition Browser",
+    "geometry": "Icicle Partition",
+    "engine": "D3.js v7 Partition (Horizontal/Vertical)",
+    "board_dashboard": "flows_hierarchies",
+    "board_tab": "Hierarchies & Multivariate",
+    "industry": "Cloud FinOps / Retail Taxonomy",
+    "why_distinct": "Full-width stacked orthogonal partition bands with click-to-zoom ancestry strips — dramatically easier to read exact text labels and relative widths than nested treemaps.",
+    "status": "queued"
+  },
+  {
+    "id": "what_if_monte_carlo_simulator",
+    "name": "Interactive What-If Monte Carlo Fan Simulator",
+    "geometry": "Interactive Simulation",
+    "engine": "HTML5 Canvas 2D (500-path stochastic fan)",
+    "board_dashboard": "experimentation",
+    "industry": "FinOps / SaaS / Pricing",
+    "why_distinct": "Live in-tile interactive sliders (growth rate, churn delta, pricing lift) that re-simulate 500 client-side Monte Carlo trajectories at 60 FPS with P10/P50/P90 probability cones.",
+    "status": "queued"
+  },
+  {
+    "id": "hex_tile_us_cartogram",
+    "name": "Equal-Area Hex-Tile US State Cartogram",
+    "geometry": "Hex Cartogram",
+    "engine": "D3.js v7 SVG Hex Grid",
+    "board_dashboard": "geospatial",
+    "industry": "Cross-Industry",
+    "why_distinct": "Every US state + DC rendered as an identical-size hexagon in approximate geographic position, with optional micro-sparkline or KPI number inside every hex so small states (RI, DE, DC, MA) are equally legible.",
+    "status": "queued"
+  }
+]
