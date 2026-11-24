@@ -1,0 +1,37 @@
+{
+  "model": "multicloud_focus_finops",
+  "view": "focus_unified_billing",
+  "fields": [
+    "focus_unified_billing.charge_period_start_week",
+    "focus_unified_billing.service_category",
+    "focus_unified_billing.provider_name",
+    "focus_unified_billing.total_effective_cost",
+    "focus_unified_billing.count"
+  ],
+  "pivots": [
+    "focus_unified_billing.provider_name"
+  ],
+  "sorts": [
+    "focus_unified_billing.charge_period_start_week asc",
+    "focus_unified_billing.service_category asc"
+  ],
+  "limit": "500",
+  "vis_config": {
+    "type": "ternary_composition_simplex",
+    "displayMode": "scatter_contours",
+    "showDensityContours": true,
+    "contourBandwidth": "medium",
+    "showClusterHulls": false,
+    "showCentroidGuide": true,
+    "gridStep": "20",
+    "labelDensity": "centroids",
+    "showLegend": true,
+    "hudMode": "hidden",
+    "colorTheme": "publication_light",
+    "colorPalette": "google_enterprise",
+    "pointRadius": 5,
+    "pointOpacity": 0.78,
+    "valueFormat": "currency",
+    "fontScale": "standard"
+  }
+}

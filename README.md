@@ -1,6 +1,6 @@
 # Looker Custom Visualizations
 
-A curated, de-duplicated library of **67 production custom visualizations** for Google Cloud Looker, organized into 10 focused dashboards on a Looker Board and indexed in an interactive searchable catalog.
+A curated, de-duplicated library of **68 production custom visualizations** for Google Cloud Looker, organized into 10 focused dashboards on a Looker Board and indexed in an interactive searchable catalog.
 
 ---
 
@@ -13,7 +13,7 @@ A curated, de-duplicated library of **67 production custom visualizations** for 
 
 ---
 
-## 🎨 Active Visualization Library (67 Visualizations across 10 Focused Dashboards)
+## 🎨 Active Visualization Library (68 Visualizations across 10 Focused Dashboards)
 
 Every visualization uses a clean **2-tab option schema (`Display` and `Style`)**, dynamic query-driven field-role dropdowns (`registerOptions`), debounced `ResizeObserver` layout stability, and native Looker drill-down menu integration.
 
@@ -73,7 +73,7 @@ Every visualization uses a clean **2-tab option schema (`Display` and `Style`)**
 | [**Candlestick / OHLC & Bollinger Volatility Envelope**](visualizations/candlestick_bollinger_bands/)<br>`candlestick_bollinger_bands` | Financial / OHLC | Gaming & Finance | D3.js v7 | [📸 View](visualizations/candlestick_bollinger_bands/screenshot.png) |
 | [**Horizon Time-Series Small Multiples**](visualizations/horizon_small_multiples/)<br>`horizon_small_multiples` | Time Series / Horizon | Cross-Industry | D3.js v7 | [📸 View](visualizations/horizon_small_multiples/screenshot.png) |
 
-### Statistical, ML & Multivariate (8 Visualizations)
+### Statistical, ML & Multivariate (9 Visualizations)
 
 | Visualization | Geometry | Industry | Library | Preview |
 | :--- | :--- | :--- | :--- | :---: |
@@ -85,6 +85,7 @@ Every visualization uses a clean **2-tab option schema (`Display` and `Style`)**
 | [**Correlation & Covariance Splom Matrix**](visualizations/correlation_splom_matrix/)<br>`correlation_splom_matrix` | Multivariate | Gaming & Telemetry | D3.js v7 | [📸 View](visualizations/correlation_splom_matrix/screenshot.png) |
 | [**PCA Biplot & Multivariate Diagnostic Projection**](visualizations/pca_biplot_projection/)<br>`pca_biplot_projection` | Multivariate | Telecom & Networks | D3.js v7 | [📸 View](visualizations/pca_biplot_projection/screenshot.png) |
 | [**Hierarchical Cluster Dendrogram & Heatmap**](visualizations/hierarchical_cluster_dendrogram/)<br>`hierarchical_cluster_dendrogram` | Hierarchy / Partition | Telecom & Networks | D3.js v7 | [📸 View](visualizations/hierarchical_cluster_dendrogram/screenshot.png) |
+| [**Ternary 3-Component Composition Simplex Plot**](visualizations/ternary_composition_simplex/)<br>`ternary_composition_simplex` | Ternary / Simplex | Cloud FinOps | D3.js v7 | [📸 View](visualizations/ternary_composition_simplex/screenshot.png) |
 
 ### Experimentation, Causal Lift & SPC (6 Visualizations)
 

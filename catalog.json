@@ -2584,5 +2584,42 @@
     "board_dashboard": "experimentation",
     "geometry": "Experimentation / Stream",
     "industry": "Gaming & Experimentation"
+  },
+  {
+    "id": "ternary_composition_simplex",
+    "name": "Ternary 3-Component Composition Simplex Plot",
+    "date_added": "2026-11-24",
+    "library": "D3.js v7",
+    "category": "Statistical & Multivariate",
+    "description": "Publication-grade equilateral barycentric simplex plot mapping 3-part ratios summing to 100% (3 separate measures or 1 measure pivoted across 3 categories) with clipped 2D KDE density contours, directional iso-percentage edge ticks, cluster convex hulls, centroid markers, hover iso-guides, and Looker drill-down menus.",
+    "dependencies": [
+      "https://d3js.org/d3.v7.min.js"
+    ],
+    "fields_required": {
+      "dimensions": "1 to 2 Dimensions (Observation Label + optional Color Group / Cluster)",
+      "measures": "3 Numeric Measures OR 1 Numeric Measure pivoted across 3 Categories (+ optional Size Measure)"
+    },
+    "suggested_dataset": {
+      "model": "multicloud_focus_finops",
+      "explore": "focus_unified_billing",
+      "fields": [
+        "focus_unified_billing.charge_period_start_week",
+        "focus_unified_billing.service_category",
+        "focus_unified_billing.provider_name",
+        "focus_unified_billing.total_effective_cost",
+        "focus_unified_billing.count"
+      ]
+    },
+    "deployed": true,
+    "instance_wide": true,
+    "screenshot": "visualizations/ternary_composition_simplex/screenshot.png",
+    "options_upgraded": true,
+    "last_upgraded": "2026-11-24",
+    "private_demo": false,
+    "board_dashboard": "statistical_ml",
+    "board_tab": "Multivariate & Clustering",
+    "geometry": "Ternary / Simplex",
+    "industry": "Cloud FinOps",
+    "looker_demo_url": "/explore/multicloud_focus_finops/focus_unified_billing?fields=focus_unified_billing.charge_period_start_week,focus_unified_billing.service_category,focus_unified_billing.provider_name,focus_unified_billing.total_effective_cost,focus_unified_billing.count&pivots=focus_unified_billing.provider_name&sorts=focus_unified_billing.charge_period_start_week+asc,focus_unified_billing.service_category+asc&limit=500&vis=%7B%22type%22%3A%22ternary_composition_simplex%22%2C%22displayMode%22%3A%22scatter_contours%22%2C%22showDensityContours%22%3Atrue%2C%22contourBandwidth%22%3A%22medium%22%2C%22showClusterHulls%22%3Afalse%2C%22showCentroidGuide%22%3Atrue%2C%22gridStep%22%3A%2220%22%2C%22labelDensity%22%3A%22centroids%22%2C%22showLegend%22%3Atrue%2C%22hudMode%22%3A%22hidden%22%2C%22colorTheme%22%3A%22publication_light%22%2C%22colorPalette%22%3A%22google_enterprise%22%2C%22pointRadius%22%3A5%2C%22pointOpacity%22%3A0.78%2C%22valueFormat%22%3A%22currency%22%2C%22fontScale%22%3A%22standard%22%7D&origin=share-expanded&toggle=vis"
   }
 ]
