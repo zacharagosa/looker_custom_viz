@@ -18,19 +18,21 @@ Specifically designed for Telecommunications, 5G RAN Network Operations (Nokia A
 - **5G SLA Benchmark Rings & Anomaly Alerts (`Display`)**:
   - Concentric dashed SLA benchmark ring rendered at customizable targets (`fixed` e.g. 500 Mbps, `dataset_mean`, `percentile_p75`, `percentile_p90`, or `second_measure`).
   - Automated anomaly alerts when a sector's variance drops below SLA goal beyond the threshold percentage.
-- **Executive Scorecard HUD & Search (`Display`)**: Full Scorecard HUD displaying active 5G sites, peak sector throughput, network mean latency, and 5G SLA compliance percentage. Live client-side site search filter.
+- **Chart-First Minimalist Layout & Optional HUD (`Display`)**: 90%+ of the viewport is dedicated to the polar radar canvas by default (`hudMode: "none"`, `showSearch: false`), with an optional compact metric strip or full scorecard HUD and live site search filter.
+- **Dynamic Market Perimeter Arcs & Central Hub**: Contiguous market clusters (`Atlanta`, `Chicago`, `Dallas`, `Seattle`) render clean outer perimeter arcs, while a central hub summarizes total active sites and SLA compliance percentage.
 - **Interactive Pan & Zoom Navigation**: SVG zoom container with on-screen Zoom In (`+`), Zoom Out (`−`), and Reset (`↺`) controls.
-- **Animated 360° Radar Sweep Line (`Display`)**: Continuous rotating beam sweep line simulating active cellular base station radar telemetry.
-- **Signature Telecom Brand Palettes (`Style`)**:
+- **Optional Animated 360° Radar Sweep Line (`Display`)**: Toggleable rotating beam sweep line (`beamSweepAnimation`) with automatic `visibilitychange` pausing.
+- **Signature Telecom & Light-First Brand Palettes (`Style`)**:
+  - `Google Enterprise (Light)` (Default light-mode publication palette)
+  - `Modern Slate (Light)`
   - `Nokia 5G Cyan / Deep Navy` (Signature Nokia AirScale dark theme: `#050d1a`, `#0064d2`, `#00c9ff`, `#ffffff`)
-  - `Google Enterprise` (Google Slate, Blue, Green, Red)
-  - `Cyberpunk Radar` (Midnight slate with neon cyan and pink)
-  - `Modern Slate`
+  - `Cyberpunk Radar (Midnight)`
   - `Emerald FinOps`
   - `Sunset Amber`
   - `Wellverse Healthcare`
   - `Thermal RF Heat`
   - `Custom Hex Override` (Direct hex pickers)
+- **Sector Color Encoding (`Style`)**: Color lobes by `SLA Compliance & Signal Intensity` (`sla_status`), `Primary Metric Intensity Ramp` (`primary_ramp`), or `Secondary Metric` (`secondary_ramp`).
 - **Metric Polarity (`Style`)**: Toggle `Higher is Better` (Throughput, Coverage) vs `Lower is Better` (Latency, Packet Loss, Alarms).
 - **One-Click Looker Drill Links**: Click any radiation lobe, scatter pin, or heat tile to open Looker's native drill-down menu.
 
@@ -61,20 +63,21 @@ Specifically designed for Telecommunications, 5G RAN Network Operations (Nokia A
 - `showReferenceLine`: Show Concentric Benchmark SLA Target Ring
 - `anomalyThresholdPct`: RF Deviation Anomaly Alert Threshold % (default: `35`)
 - `sortBy`: Sort Sector Sites By (`none`, `metric_desc`, `metric_asc`, `azimuth_asc`, `site_asc`)
-- `topNLimit`: Top-N Sites Limit (0 = All, Max 60)
+- `topNLimit`: Top-N Sites Limit (0 = All, Max 72)
 - `enableOtherRollup`: Group Remaining into Other Rollup Sector
 - `suppressZeroNull`: Suppress Zero / Null Telemetry Sites
-- `hudMode`: Executive Scorecard HUD Mode (`scorecard`, `compact_strip`, `none`)
-- `labelDensity`: Compass & Sector Label Density (`all`, `cardinal`, `none`)
+- `hudMode`: Summary Header Strip (`none` default, `compact_strip`, `scorecard`)
+- `labelDensity`: Compass & Site Callout Density (`all`, `cardinal`, `none`)
 - `customTitle`: Custom Map Title Override
-- `customSubtitle`: Custom Subtitle / Description Override
-- `showSearch`: Show Interactive Cell Site Search Bar
-- `showLegend`: Show Concentric Range Ring Legend
-- `beamSweepAnimation`: Enable Animated 360° Radar Sweep Line
-- `enableZoom`: Enable Pan & Zoom Navigation
+- `customSubtitle`: Custom Subtitle Override
+- `showSearch`: Show Interactive Site Search Filter (`false` default)
+- `showLegend`: Show Legend (`true` default)
+- `beamSweepAnimation`: Enable Animated 360° Radar Sweep (`false` default)
+- `enableZoom`: Enable Pan & Zoom Controls (`true` default)
 
 ### Section: `Style`
-- `colorTheme`: Brand Palette Preset (`nokia_cyan`, `google_blue`, `cyberpunk_dark`, `modern_slate`, `emerald_finops`, `sunset_media`, `wellverse_healthcare`, `thermal_heat`, `custom`)
+- `colorTheme`: Brand Palette Preset (`google_blue` default, `modern_slate`, `nokia_cyan`, `cyberpunk_dark`, `emerald_finops`, `sunset_media`, `wellverse_healthcare`, `thermal_heat`, `custom`)
+- `colorBy`: Sector Color Encoding (`sla_status` default, `primary_ramp`, `secondary_ramp`)
 - `customPrimaryColor`: Custom Primary Beam / Scale Hex
 - `customPositiveColor`: Custom Positive / Compliant Hex
 - `customNegativeColor`: Custom Alert / Non-Compliant Hex

@@ -4,24 +4,30 @@
   "fields": [
     "cell_towers.site_name",
     "cell_towers.market",
+    "cell_towers.operational_status",
     "cell_towers.equipment_vendor",
     "network_kpi_telemetry.avg_throughput_mbps",
     "network_kpi_telemetry.avg_latency_ms",
     "network_kpi_telemetry.avg_packet_loss_pct"
   ],
-  "filters": {
-    "cell_towers.operational_status": "Active"
-  },
   "sorts": [
-    "network_kpi_telemetry.avg_throughput_mbps desc"
+    "cell_towers.market asc",
+    "cell_towers.site_name asc"
   ],
-  "limit": "50",
+  "limit": "60",
   "vis_config": {
     "type": "cell_tower_polar_coverage",
     "polarMode": "omni_radar",
-    "colorTheme": "nokia_cyan",
-    "hudMode": "scorecard",
+    "colorTheme": "google_blue",
+    "colorBy": "sla_status",
+    "targetCalculationMode": "fixed",
+    "fixedTargetValue": 500,
+    "referenceLineLabel": "5G SLA Target (500 Mbps)",
+    "showReferenceLine": true,
+    "hudMode": "none",
+    "showSearch": false,
     "showLegend": true,
-    "beamSweepAnimation": true
+    "beamSweepAnimation": false,
+    "labelDensity": "all"
   }
 }
